@@ -14,7 +14,7 @@ public class SubExamDetailEntity {
 
     private String subExamTitle;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "exam_detail_id")
     private ExamDetailEntity examDetail;
 }

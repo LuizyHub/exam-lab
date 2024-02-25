@@ -6,9 +6,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 public class ExamsRepositoryTest {
 
     @Autowired
@@ -16,13 +19,6 @@ public class ExamsRepositoryTest {
 
     @Autowired
     private SubExamDetailRepository subExamDetailRepository;
-
-    @AfterEach
-    public void tearDown() {
-        // 데이터 전체 삭제, 따라서 초반 테스트용도에만 사용할 것!!
-        subExamDetailRepository.deleteAll();
-        examDetailRepository.deleteAll();
-    }
 
     @Test
     public void testInsertlData() {

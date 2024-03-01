@@ -33,7 +33,6 @@ public class ExamsController {
     @GetMapping("/{id}/questions")
     public QuestionsList getExamQuestions(@PathVariable("id") Long id, @ModelAttribute QuestionsOption questionsOption) {
         log.info("questionOptionDto = {}", questionsOption);
-        QuestionsList questionsList = examsService.getQuestionsList(questionsOption);
-        return questionsList;
+        return examsService.getQuestionsList(id, questionsOption);
     }
 }

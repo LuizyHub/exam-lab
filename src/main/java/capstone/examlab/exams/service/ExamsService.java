@@ -11,5 +11,5 @@ public interface ExamsService {
 
     public ExamList getExamList();
 
-    public QuestionsList getQuestionsList(QuestionsOption questionsOption);
+    public QuestionsList getQuestionsList(long id, QuestionsOption questionsOption);
 }

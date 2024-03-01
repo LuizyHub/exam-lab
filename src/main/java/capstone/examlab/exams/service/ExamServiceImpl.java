@@ -1,6 +1,7 @@
 package capstone.examlab.exams.service;
 
 import capstone.examlab.exams.dto.*;
+import capstone.examlab.questions.service.QuestionsService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,6 +9,12 @@ import java.util.List;
 
 @Service
 public class ExamServiceImpl implements ExamsService {
+    private final QuestionsService questionsService;
+
+    public ExamServiceImpl(QuestionsService questionsService) {
+        this.questionsService = questionsService;
+    }
+
     @Override
     public ExamType getExamType(Long id) {
         ExamType examType = new ExamType();
@@ -51,7 +58,13 @@ public class ExamServiceImpl implements ExamsService {
         return examList;
     }
 
-    @Override
+    public QuestionsList getQuestionsList(long id, QuestionsOption questionsOption) {
+        //새로운 시험지 생기면 조건 추가
+        if(id == 1) return questionsService.findByDriverLicenseQuestions(questionsOption);
+        return null;
+    }
+
+   /* @Override
     public QuestionsList getQuestionsList(QuestionsOption questionsOption) {
         QuestionsList questionsList = new QuestionsList();
 
@@ -121,5 +134,5 @@ public class ExamServiceImpl implements ExamsService {
 
 
         return questionsList;
-    }
+    }*/
 }

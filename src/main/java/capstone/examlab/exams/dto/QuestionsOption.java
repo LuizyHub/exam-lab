@@ -11,5 +11,5 @@ import java.util.List;
 public class QuestionsOption {
     private List<String> tags;
     private Integer count;
-    private List<String> includes;
+    private String includes;
 }

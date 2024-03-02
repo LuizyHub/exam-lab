@@ -2,18 +2,16 @@ package capstone.examlab.exams.service;
 
 import capstone.examlab.exams.dto.*;
 import capstone.examlab.questions.service.QuestionsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ExamServiceImpl implements ExamsService {
     private final QuestionsService questionsService;
-
-    public ExamServiceImpl(QuestionsService questionsService) {
-        this.questionsService = questionsService;
-    }
 
     @Override
     public ExamType getExamType(Long id) {

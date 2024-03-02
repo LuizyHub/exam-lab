@@ -21,7 +21,7 @@ public class ExamsRepositoryTest {
     private SubExamDetailRepository subExamDetailRepository;
 
     @Test
-    public void testInsertlData() {
+    public void testInsertlData() throws Exception {
         // 데이터 삽입
         ExamDetailEntity examDetail = new ExamDetailEntity();
         examDetail.setExamTitle("운전면허");

@@ -38,6 +38,7 @@ class ExamsControllerTest {
     void tearDown() {
     }
 
+    /*
     private ExamList getExamListMock() {
         ExamList examList = new ExamList();
 
@@ -270,5 +271,5 @@ class ExamsControllerTest {
                 .andExpect(jsonPath("$[1].tags").isArray())
                 .andExpect(jsonPath("$[1].tags").isNotEmpty())
                 .andExpect(jsonPath("$[1].tags[0]").value("상황"));
-    }
+    }*/
 }

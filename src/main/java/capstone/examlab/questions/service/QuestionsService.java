@@ -1,9 +1,9 @@
 package capstone.examlab.questions.service;
 
-import capstone.examlab.exams.dto.QuestionsList;
-import capstone.examlab.exams.dto.QuestionsOption;
+import capstone.examlab.questions.dto.QuestionsList;
+import capstone.examlab.questions.dto.QuestionsOption;
 
 
 public interface QuestionsService {
-    QuestionsList findByDriverLicenseQuestions(QuestionsOption questionsOption);
+    QuestionsList findByDriverLicenseQuestions(Long examId, QuestionsOption questionsOption);
 }

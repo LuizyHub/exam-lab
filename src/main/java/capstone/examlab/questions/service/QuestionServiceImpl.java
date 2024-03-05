@@ -1,8 +1,8 @@
 package capstone.examlab.questions.service;
 
-import capstone.examlab.exams.dto.Question;
-import capstone.examlab.exams.dto.QuestionsList;
-import capstone.examlab.exams.dto.QuestionsOption;
+import capstone.examlab.questions.dto.Question;
+import capstone.examlab.questions.dto.QuestionsList;
+import capstone.examlab.questions.dto.QuestionsOption;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.repository.DriverLicenseQuestionsRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class QuestionServiceImpl implements QuestionsService {
     private final DriverLicenseQuestionsRepository driverLicenseQuestionsRepository;
 
     @Override
-    public QuestionsList findByDriverLicenseQuestions(QuestionsOption questionsOption) {
+    public QuestionsList findByDriverLicenseQuestions(Long examId, QuestionsOption questionsOption) {
         //default 10설정
         Pageable pageable = PageRequest.of(0, questionsOption.getCount());
         Page<QuestionEntity> quizPage;

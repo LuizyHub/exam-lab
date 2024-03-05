@@ -1,4 +1,4 @@
-package capstone.examlab.exams.dto;
+package capstone.examlab.questions.dto;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package capstone.examlab.exams.repository;
 
-import capstone.examlab.exams.dto.Question;
-import capstone.examlab.exams.dto.QuestionsList;
-import capstone.examlab.exams.dto.QuestionsOption;
+import capstone.examlab.questions.dto.Question;
+import capstone.examlab.questions.dto.QuestionsList;
+import capstone.examlab.questions.dto.QuestionsOption;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.repository.DriverLicenseQuestionsRepository;
 import capstone.examlab.questions.service.QuestionsService;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +43,7 @@ public class QuesionsRepositoryTest {
                 .includes("고속도로")
                 .build();
 
-        QuestionsList questionsList = questionsService.findByDriverLicenseQuestions(questionsOption);
+        QuestionsList questionsList = questionsService.findByDriverLicenseQuestions(1L, questionsOption);
 
         //결과 검증
         assertThat(questionsList).isNotNull();
@@ -60,7 +59,7 @@ public class QuesionsRepositoryTest {
         questionsOption.setIncludes("표지판");
         questionsOption.setCount(5);
 
-        questionsList = questionsService.findByDriverLicenseQuestions(questionsOption);
+        questionsList = questionsService.findByDriverLicenseQuestions(1L, questionsOption);
 
         //결과 검증
         assertThat(questionsList).isNotNull();
@@ -74,7 +73,7 @@ public class QuesionsRepositoryTest {
         questionsOption.setTags(null);
         questionsOption.setIncludes(null);
 
-        questionsList = questionsService.findByDriverLicenseQuestions(questionsOption);
+        questionsList = questionsService.findByDriverLicenseQuestions(1L, questionsOption);
 
         //결과 검증
         assertThat(questionsList).isNotNull();

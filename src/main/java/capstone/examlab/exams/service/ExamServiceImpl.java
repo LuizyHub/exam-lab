@@ -56,7 +56,7 @@ public class ExamServiceImpl implements ExamsService {
         return examList;
     }
 
-    public QuestionsList getQuestionsList(long id, QuestionsOption questionsOption) {
+    public QuestionsList getQuestionsList(Long id, QuestionsOption questionsOption) {
         //새로운 시험지 생기면 조건 추가
         if(id == 1) return questionsService.findByDriverLicenseQuestions(questionsOption);
         return null;

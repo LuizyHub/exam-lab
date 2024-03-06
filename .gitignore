@@ -9,6 +9,13 @@ build/
 src/main/resources/application-secrets.properties
 *.trace.db
 
+### auto Genarate ###
+*.mv.db
+
+### Docker file ###
+.env
+docker-compose.yml
+
 ### STS ###
 .apt_generated
 .classpath

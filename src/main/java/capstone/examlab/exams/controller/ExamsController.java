@@ -3,6 +3,9 @@ package capstone.examlab.exams.controller;
 import capstone.examlab.exams.dto.ExamList;
 import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.exams.dto.ExamType;
+import capstone.examlab.valid.ValidExamId;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +25,9 @@ public class ExamsController {
         return examList;
     }
 
-    @GetMapping("/{id}/type")
-    public ExamType getExamType(@PathVariable("id") Long id) {
-        ExamType examType = examsService.getExamType(id);
+    @GetMapping("/{examId}/type")
+    public ExamType getExamType(@PathVariable @ValidExamId Long examId) {
+        ExamType examType = examsService.getExamType(examId);
         return examType;
     }
 }

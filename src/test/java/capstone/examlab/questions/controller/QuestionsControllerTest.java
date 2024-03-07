@@ -1,47 +1,30 @@
-package capstone.examlab.exams.controller;
+package capstone.examlab.questions.controller;
 
-import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.repository.ExamRepository;
-import capstone.examlab.exams.service.ExamsService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import capstone.examlab.questions.service.QuestionsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@WebMvcTest(ExamsController.class)
-class ExamsControllerTest {
+@WebMvcTest(QuestionsController.class)
+class QuestionsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private ExamsService examsService;
+    private QuestionsService questionsService;
 
     @MockBean
     private ExamRepository examRepository;
 
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
 
     // 없는 문제 ID로 요청을 보내면 400 Bad Request를 반환하는지 테스트
     @Test
@@ -50,7 +33,10 @@ class ExamsControllerTest {
         Long examId = 0L;
         when(examRepository.existsById(examId)).thenReturn(false);
 
-        mockMvc.perform(get("/api/v1/exams/{examId}/type", examId))
+        mockMvc.perform(get("/api/v1/exams/{examId}/questions", examId)
+                        .queryParam("tags", "상황")
+                        .queryParam("includes", "고속도로")
+                        .queryParam("count", String.valueOf(10)))
                 .andExpect(status().isBadRequest());
     }
 }

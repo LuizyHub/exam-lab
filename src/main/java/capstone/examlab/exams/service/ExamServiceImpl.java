@@ -1,58 +1,44 @@
 package capstone.examlab.exams.service;
 
 import capstone.examlab.exams.dto.*;
-import capstone.examlab.questions.service.QuestionsService;
+import capstone.examlab.exams.repository.ExamRepository;
+import capstone.examlab.exams.repository.SubExamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class ExamServiceImpl implements ExamsService {
-    private final QuestionsService questionsService;
+    private final ExamRepository examRepository;
+    private final SubExamRepository subExamRepository;
 
     @Override
     public ExamType getExamType(Long id) {
-        ExamType examType = new ExamType();
+        // id 검증은 이미 controller에서 수행하므로 생략
+        // get()으로 가져오는 것은 Optional이기 때문에 null이 아님을 보장
+        Map<String, List<String>> types = subExamRepository.findById(id).get().getTypes();
 
-        List<String> tagList = new ArrayList<>();
-        tagList.add("상황");
-        tagList.add("표지");
-        examType.put("tags", tagList);
-
-        return examType;
+        return new ExamType(types);
     }
 
     @Override
     public ExamList getExamList() {
         ExamList examList = new ExamList();
-
-        ExamDetail examDetail1 = new ExamDetail();
-        examDetail1.setTitle("운전면허");
-        examDetail1.getSubExams().add(SubExamDetail.builder()
-                .examId(1L)
-                .subTitle("1종")
-                .build());
-        examDetail1.getSubExams().add(SubExamDetail.builder()
-                .examId(2L)
-                .subTitle("2종")
-                .build());
-        examList.add(examDetail1);
-
-        ExamDetail examDetail2 = new ExamDetail();
-        examDetail2.setTitle("수능");
-        examDetail2.getSubExams().add(SubExamDetail.builder()
-                .examId(3L)
-                .subTitle("수학")
-                .build());
-        examDetail2.getSubExams().add(SubExamDetail.builder()
-                .examId(4L)
-                .subTitle("영어")
-                .build());
-        examList.add(examDetail2);
-
+        examRepository.findAll()
+                .forEach(exam -> {
+                    examList.add(ExamDetail.builder()
+                            .examTitle(exam.getExamTitle())
+                            .subExams(exam.getSubExams().stream()
+                                    .map(subExam -> SubExamDetail.builder()
+                                            .examId(subExam.getSubExamId())
+                                            .subTitle(subExam.getSubExamTitle())
+                                            .build())
+                                    .toList())
+                            .build());
+                });
         return examList;
     }
 }

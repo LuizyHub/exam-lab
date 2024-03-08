@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+// application 실행 시 한번만 동작하는 초기화 클래스
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer implements ApplicationRunner {

@@ -7,8 +7,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Data
+@Builder
+
 public class ExamDetail {
     private String examTitle;
     private List<SubExamDetail> subExams = new ArrayList<>();

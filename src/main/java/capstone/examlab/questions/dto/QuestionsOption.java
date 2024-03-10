@@ -9,13 +9,13 @@ import java.util.List;
 @Builder
 public class QuestionsOption {
     private List<String> tags;
-    private Integer count;
+    private String count;
     private String includes;
 
     @Builder
-    public QuestionsOption(List<String> tags, Integer count, String includes) {
+    public QuestionsOption(List<String> tags, String count, String includes) {
         this.tags = tags;
-        this.count = (count == null) ? 10 : count;
+        this.count = (count == null) ? "10" : count;
         this.includes = includes;
     }
 }

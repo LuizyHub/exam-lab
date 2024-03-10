@@ -3,6 +3,7 @@ package capstone.examlab.questions.controller;
 import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.dto.QuestionsOption;
 import capstone.examlab.questions.service.QuestionsService;
+import capstone.examlab.valid.ValidQuestionOption;
 import capstone.examlab.valid.ValidExamId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

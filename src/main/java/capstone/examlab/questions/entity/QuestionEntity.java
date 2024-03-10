@@ -1,4 +1,5 @@
 package capstone.examlab.questions.entity;
+import capstone.examlab.questions.dto.QuestionImage;
 import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @Data
-@Document(indexName = "driver-quiz")
+@Document(indexName = "driver-question")
 public class QuestionEntity {
     @Id
     private String id;
@@ -20,18 +21,18 @@ public class QuestionEntity {
     private String question;
     @Field(type = FieldType.Text)
     private List<String> options;
-    @Field(type = FieldType.Text)
-    private List<String> questionImageUrls;
-    @Field(type = FieldType.Text)
-    private List<String> questionImageDescriptions;
+    @Field(type = FieldType.Object)
+    private List<QuestionImage> questionImagesIn;
+    @Field(type = FieldType.Object)
+    private List<QuestionImage> questionImagesOut;
     @Field(type = FieldType.Keyword)
     private List<Integer> answers;
     @Field(type = FieldType.Text)
     private String commentary;
-    @Field(type = FieldType.Text)
-    private List<String> commentaryImageUrls;
-    @Field(type = FieldType.Text)
-    private List<String> commentaryImageDescriptions;
+    @Field(type = FieldType.Object)
+    private List<QuestionImage> commentaryImagesIn;
+    @Field(type = FieldType.Object)
+    private List<QuestionImage> commentaryImagesOut;
     @Field(type = FieldType.Text)
     private List<String> tags;
 }

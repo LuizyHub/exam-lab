@@ -2,10 +2,9 @@ package capstone.examlab.questions.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.List;
+
 
 @Data
 @Builder
@@ -13,29 +12,13 @@ public class Question {
     private String id;
     private String type;
     private String question;
-    private ArrayList<String> questionImageUrls;
-    private ArrayList<String> questionImageDescriptions;
-    private ArrayList<String> options;
-    private ArrayList<Integer> answers;
+    private List<QuestionImage> questionImagesIn;
+    private List<QuestionImage> questionImagesOut;
+    private List<String> options;
+    private List<Integer> answers;
     private String commentary;
-    private ArrayList<String> commentaryImageUrls;
-    private ArrayList<String> commentaryImageDescriptions;
-    private ArrayList<String> tags;
-
-    public Question() {
-    }
-
-    public Question(String id, String type, String question, ArrayList<String> questionImageUrls, ArrayList<String> questionImageDescriptions, ArrayList<String> options, ArrayList<Integer> answers, String commentary, ArrayList<String> commentaryImageUrls, ArrayList<String> commentaryImageDescriptions, ArrayList<String> tags) {
-        this.id = id;
-        this.type = type;
-        this.question = question;
-        this.questionImageUrls = questionImageUrls;
-        this.questionImageDescriptions = questionImageDescriptions;
-        this.options = options;
-        this.answers = answers;
-        this.commentary = commentary;
-        this.commentaryImageUrls = commentaryImageUrls;
-        this.commentaryImageDescriptions = commentaryImageDescriptions;
-        this.tags = tags;
-    }
+    private List<QuestionImage> commentaryImagesIn;
+    private List<QuestionImage> commentaryImagesOut;
+    private List<String> tags;
 }
+

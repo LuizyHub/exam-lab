@@ -10,7 +10,6 @@ import java.util.List;
 public interface DriverLicenseQuestionsRepository extends ElasticsearchRepository<QuestionEntity, String> {
     //Tags O, Includes X
     Page<QuestionEntity> findByTagsIn(List<String> tags, Pageable pageable);
-
     //Tags X, Inlcludes O
     Page<QuestionEntity> findByQuestionContainingOrOptionsContaining(String QuestionInclude, String OptionInclude, Pageable pageable);
     //All O

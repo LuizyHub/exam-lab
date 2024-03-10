@@ -1,9 +1,11 @@
 package capstone.examlab.questions.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class Image {
+@Builder
+public class QuestionImage {
     private String url;
     private String description;
     private String attribute;

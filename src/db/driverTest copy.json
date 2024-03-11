@@ -1,0 +1,500 @@
+{
+    "sample": [
+        {
+            "id": "1",
+            "type": "객관식",
+            "question": "다음 중 총중량 <img src=1, class=test_left> 1.5톤 피견인 승용자동차를 4.5톤 <img src=2, class=test_left>화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 \n것은?",
+            "options": [
+                "① 제1종 대형면허 및 소형견인차면허",
+                "② 제1종 보통면허 및 대형견인차면허",
+                "③ 제1종 보통면허 및 소형견인차면허",
+                "④ 제2종 보통면허 및 대형견인차면허"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "4"
+            ],
+            "commentary": "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인\n하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
+            "commentary_images_in": [
+                {
+                    "url": "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FAQtFt%2FbtsFsomqaCh%2FNGPOqCOT8f8Qj4jo9kRovk%2Fimg.png",
+                    "description": "",
+                    "attribute": ""
+                },
+                {
+                    "url": "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FAQtFt%2FbtsFsomqaCh%2FNGPOqCOT8f8Qj4jo9kRovk%2Fimg.png",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "commentary_images_out": [
+                {
+                    "url": "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fnspuc%2FbtsFt5GRCru%2FQyCoV4BBeEMoBGyNWoMCRk%2Fimg.png",
+                    "description": "",
+                    "attribute": ""
+                },
+                {
+                    "url": "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FujfxA%2FbtsFt3h0k4a%2F5GpaX5MNHe2xFIttutXq1K%2Fimg.png",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "tags": []
+        },
+        {
+            "id": "2",
+            "type": "객관식",
+            "outside_image": "",
+            "images": [
+                "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FujfxA%2FbtsFt3h0k4a%2F5GpaX5MNHe2xFIttutXq1K%2Fimg.png"
+            ],
+            "question": "도로교통법령상 운전면허증 발급에 대한 설명으로 옳지 않은 것은?<br><img src=1, class=test_right>",
+            "options": [
+                "① 운전면허시험 합격일로부터 30일 이내에 운전면허증을 발급받아야 한다.",
+                "② 영문운전면허증을 발급받을 수 없다.",
+                "③ 모바일운전면허증을 발급받을 수 있다.",
+                "④ 운전면허증을 잃어버린 경우에는 재발급 받을 수 있다."
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "2"
+            ],
+            "commentary": "도로교통법시행규칙 제77조∼제81조",
+            "commentary_images_in": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                },
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "commentary_images_out": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                },
+                {
+                    "url": "문제 이미지 URL",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "tags": []
+        },
+        {
+            "id": "3",
+            "outside_image": "",
+            "images": [
+                "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FujfxA%2FbtsFt3h0k4a%2F5GpaX5MNHe2xFIttutXq1K%2Fimg.png",
+                "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fnspuc%2FbtsFt5GRCru%2FQyCoV4BBeEMoBGyNWoMCRk%2Fimg.png"
+            ],
+            "question": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas fuga reprehenderit modi iste quam, voluptatem at. Rerum quos explicabo nesciunt placeat, possimus maxime dolores odit, accusantium pariatur odio repellat aut? Laudantium laboriosam temporibus nostrum ad velit, illo vero doloremque et rerum quo. Saepe voluptate fugiat esse debitis perspiciatis, unde doloremque quis ex iure voluptates quod, tempora error soluta eveniet pariatur.<img src=1, class=test_inner_right> Nisi vitae similique non, dicta error repellendus illo dolorum placeat perspiciatis officiis sapiente velit maiores sint? Optio quae maxime iure sapiente et corrupti, accusamus porro. At sed atque quam tempore! Rem harum dolore maiores ipsa quam ullam. Ipsum autem quos nesciunt optio maiores temporibus assumenda, porro magnam debitis. Unde, dolores. Sequi at perspiciatis ipsum numquam voluptate amet sapiente atque reiciendis? Officiis asperiores iusto, similique maiores odio ipsum accusamus. Ab qui ea vero non enim? Ad dolor est eius iure quo? Provident, omnis officiis. Reiciendis hic at voluptatem. Itaque quibusdam vel hic? Soluta iusto ad nisi deserunt, sapiente iure, earum cupiditate, esse quae voluptate pariatur. Cum veritatis sapiente nihil nobis vel! Minus ad natus dignissimos odio consequuntur quia impedit, dolores dolorem? Exercitationem, enim. Nisi vitae similique non, dicta error repellendus illo dolorum placeat perspiciatis officiis sapiente velit maiores sint? Optio quae maxime iure sapiente et corrupti, accusamus porro. At sed atque quam tempore! Rem harum dolore maiores ipsa quam ullam. Ipsum autem quos nesciunt optio maiores temporibus assumenda, porro magnam debitis. Unde, dolores. Sequi at perspiciatis ipsum numquam voluptate amet sapiente atque reiciendis? Officiis asperiores iusto, similique maiores odio ipsum accusamus. Ab qui ea vero non enim? Ad dolor est eius iure quo? Provident, omnis officiis. Reiciendis hic at voluptatem. Itaque quibusdam vel hic? Soluta iusto ad nisi deserunt, sapiente iure, earum cupiditate, esse quae voluptate pariatur. Cum veritatis sapiente nihil nobis vel! Minus ad natus dignissimos odio consequuntur quia impedit, dolores dolorem? Exercitationem, enim. Provident assumenda obcaecati exercitationem dignissimos in saepe beatae? Rem consequuntur maxime error? Dicta, magnam, incidunt dolor animi officia laborum quaerat pariatur odio aperiam voluptatem similique eligendi nulla expedita consequuntur! Distinctio? Nisi vitae similique non, dicta error repellendus illo dolorum placeat perspiciatis officiis sapiente velit maiores sint? Optio quae maxime iure sapiente et corrupti, accusamus porro. At sed atque quam tempore! Rem harum dolore maiores ipsa quam ullam. Ipsum autem quos nesciunt optio maiores temporibus assumenda, porro magnam debitis. Unde, dolores. Sequi at perspiciatis ipsum numquam voluptate amet sapiente atque reiciendis? Officiis asperiores iusto, similique maiores odio ipsum accusamus. Ab qui ea vero non enim? Ad dolor est eius iure quo? Provident, omnis officiis. Reiciendis hic at voluptatem. Itaque quibusdam vel hic? Soluta iusto ad nisi deserunt, sapiente iure, earum cupiditate, esse quae voluptate pariatur. Cum veritatis sapiente nihil nobis vel! Minus ad natus dignissimos odio consequuntur quia impedit, dolores dolorem? Exercitationem enim.<img src=2, class=test_inner_left> debitis. Unde, dolores. Sequi at perspiciatis ipsum numquam voluptate amet sapiente atque reiciendis? Officiis asperiores iusto, similique maiores odio ipsum accusamus. Ab qui ea vero non enim? Ad dolor est eius iure quo? Provident, omnis officiis. Reiciendis hic at voluptatem. Itaque quibusdam vel hic? Soluta iusto ad nisi deserunt, sapiente iure, earum cupiditate, esse quae voluptate pariatur. Cum veritatis sapiente nihil nobis vel! Minus ad natus dignissimos odio consequuntur quia impedit, dolores dolorem? Exercitationem, enim. debitis. Unde, dolores. Sequi at perspiciatis ipsum numquam voluptate amet sapiente atque reiciendis? Officiis asperiores iusto, similique maiores odio ipsum accusamus. Ab qui ea vero non enim? Ad dolor est eius iure quo? Provident, omnis officiis. Reiciendis hic at voluptatem. Itaque quibusdam vel hic? Soluta iusto ad nisi deserunt, sapiente iure, earum cupiditate, esse quae voluptate pariatur. Cum veritatis sapiente nihil nobis vel! Minus ad natus dignissimos odio consequuntur quia impedit, dolores dolorem? Exercitationem, enim. A laboriosam praesentium minima quas perferendis ex officiis culpa qui dolor odio! Cumque saepe provident debitis maxime amet! Expedita voluptas recusandae earum quod. Saepe rem laborum voluptatem adipisci, eaque laboriosam assumenda possimus ex. Vel, rem unde dolor odio cupiditate eum inventore nostrum quidem maiores quos iste nesciunt enim! Dicta eligendi facilis veritatis, doloribus id necessitatibus voluptates cum eaque non odio exercitationem perspiciatis quibusdam. Sint vel ea cumque tempore adipisci? Rem, non! Quos facilis sunt, quibusdam repellat in aliquam!",
+            "options": [
+                "① 1년",
+                "② 2년",
+                "③ 3년",
+                "④ 4년"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "도로교통법 제96조에 따라 국제운전면허증의 유효기간은 발급받은 날부터 1년이다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "4",
+            "question": "도로교통법상 승차정원 15인승의 긴급 승합자동차를 처음 운전하려고 할 때 필요한 조건으로 맞는 것은?",
+            "options": [
+                "① 제1종 보통면허, 교통안전교육 3시간",
+                "② 제1종 특수면허(대형견인차), 교통안전교육 2시간",
+                "③ 제1종 특수면허(구난차), 교통안전교육 2시간",
+                "④ 제2종 보통면허, 교통안전교육 3시간"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "도로교통법 시행규칙 별표18 승차정원 15인승의 승합자동차는 1종 대형면허 또는 1종 보통면허가 필요하고 긴급자\n동차 업무에 종사하는 사람은 도로교통법 시행령 제38조의2 제2항에 따른 신규(3시간) 및 정기교통안전교육(2시간)\n을 받아야 한다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "5",
+            "question": "도로교통법상 연습운전면허의 유효 기간은?",
+            "options": [
+                "① 받은 날부터 6개월",
+                "② 받은 날부터 1년",
+                "③ 받은 날부터 2년",
+                "④ 받은 날부터 3년"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "2"
+            ],
+            "explanation": "도로교통법 제81조에 따라 연습운전면허는 그 면허를 받은 날부터 1년 동안 효력을 가진다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "6",
+            "question": "도로교통법상 운전면허의 조건 부과기준 중 운전면허증 기재방법으로 바르지 않는 것은?",
+            "options": [
+                "① A: 수동변속기",
+                "② E: 청각장애인 표지 및 볼록거울",
+                "③ G: 특수제작 및 승인차",
+                "④ H: 우측 방향지시기"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "도로교통법 시행규칙 제54조(운전면허의 조건 등) 제3항에 의거, 운전면허 조건의 부과기준은 별표20\nA는 자동변속기, B는 의수, C는 의족, D는 보청기, E는 청각장애인 표지 및 볼록거울, F는 수동제동기․가속기, G는 \n특수제작 및 승인차, H는 우측 방향지시기, I는 왼쪽 엑셀레이터이며, 신체장애인이 운전면허시험에 응시할 때 조\n건에 맞는 차량으로 시험에 응시 및 합격해야 하며, 합격 후 해당 조건에 맞는 면허증 발급",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "7",
+            "question": "승차정원이 11명인 승합자동차로 총중량 780킬로그램의 피견인자동차를 견인하고자 한다. 운전자가 취득해야하는 운전면허의 \n종류는?",
+            "options": [
+                "① 제1종 보통면허 및 소형견인차면허",
+                "② 제2종 보통면허 및 제1종 소형견인차면허",
+                "③ 제1종 보통면허 및 구난차면허",
+                "④ 제2종 보통면허 및 제1종 구난차면허"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "도로교통법시행규칙 별표18 비고3, 총중량 750킬로그램을 초과하는 3톤이하의 피견인자동차를 견인하기 위해서는 \n견인하는 자동차를 운전할 수 있는 면허와 제1종 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "8",
+            "question": "운전면허 종류별 운전할 수 있는 차에 관한 설명으로 맞는 것 2가지는?",
+            "options": [
+                "① 제1종 대형면허로 아스팔트살포기를 운전할 수 있다.",
+                "② 제1종 보통면허로 덤프트럭을 운전할 수 있다.",
+                "③ 제2종 보통면허로 250시시 이륜자동차를 운전할 수 있다.",
+                "④ 제2종 소형면허로 원동기장치자전거를 운전할 수 있다."
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1",
+                "4"
+            ],
+            "explanation": "도로교통법 시행규칙 별표18(운전할 수 있는 차의 종류)에 따라 덤프트럭은 제1종 대형면허, 배기량 125시시 초과 \n이륜자동차는 2종 소형면허가 필요하다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "9",
+            "question": "승차정원이 12명인 승합자동차를 도로에서 운전하려고 한다. 운전자가 취득해야하는 운전면허의 종류는?",
+            "options": [
+                "① 제1종 대형견인차면허",
+                "② 제1종 구난차면허",
+                "③ 제1종 보통면허",
+                "④ 제2종 보통면허"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "3"
+            ],
+            "explanation": "도로교통법 시행규칙 별표18, 제1종 보통면허로 승차정원 15명 이하의 승합자동차 운전가능, ①, ②, ④는 승차정원 \n10명 이하의 승합자동차 운전가능",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "10",
+            "question": "다음 중 제2종 보통면허를 취득할 수 있는 사람은?",
+            "options": [
+                "① 한쪽 눈은 보지 못하나 다른 쪽 눈의 시력이 0.5인 사람",
+                "② 붉은색, 녹색, 노란색의 색채 식별이 불가능한 사람",
+                "③ 17세인 사람",
+                "④ 듣지 못하는 사람"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "4"
+            ],
+            "explanation": "도로교통법 시행령 제45조 제1항 제1호 나목에 따라 제2종 운전면허는 18세 이상으로, 두 눈을 동시에 뜨고 잰 \n시력이 0.5 이상(다만, 한쪽 눈을 보지 못하는 사람은 다른 쪽 눈의 시력이 0.6 이상이어야 한다.)의 시력이 있어야 \n한다. 또한 붉은색, 녹색 및 노란색의 색채 식별이 가능해야 하나 듣지 못해도 취득이 가능하다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "11",
+            "question": "다음 중 도로교통법상 원동기장치자전거의 정의(기준)에 대한 설명으로 옳은 것은?",
+            "options": [
+                "① 배기량 50시시 이하 - 최고정격출력 0.59킬로와트 이하",
+                "② 배기량 50시시 미만 - 최고정격출력 0.59킬로와트 미만",
+                "③ 배기량 125시시 이하 - 최고정격출력 11킬로와트 이하",
+                "④ 배기량 125시시 미만 - 최고정격출력 11킬로와트 미만"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "3"
+            ],
+            "explanation": "도로교통법 제2조 제19호 나목 정의 참조",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "12",
+            "question": "다음 중 도로교통법상 제1종 대형면허 시험에 응시할 수 있는 기준은?",
+            "options": [
+                "① 자동차의 운전경력이 6개월 이상이면서 18세인 사람",
+                "② 자동차의 운전경력이 1년 이상이면서 18세인 사람",
+                "③ 자동차의 운전경력이 6개월 이상이면서 19세인 사람",
+                "④ 자동차의 운전경력이 1년 이상이면서 19세인 사람"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "4"
+            ],
+            "explanation": "도로교통법 제82조 제1항 제6호에 따라 제1종 대형면허는 19세 미만이거나 자동차(이륜자동차는 제외한다)의 운전\n경력이 1년 미만인 사람은 받을 수 없다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "13",
+            "question": "거짓 그밖에 부정한 수단으로 운전면허를 받아 벌금이상의 형이 확정된 경우 얼마동안 운전면허를 취득할 수 없는\n가?",
+            "options": [
+                "① 취소일로부터 1년",
+                "② 취소일로부터 2년",
+                "③ 취소일로부터 3년",
+                "④ 취소일로부터 4년"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "2"
+            ],
+            "explanation": "도로교통법 제82조 제2항에 따라 거짓 그밖에 부정한 수단으로 운전면허를 받아 벌금이상의 형이 확정된 경우 운\n전면허 취득 결격기간은 취소일로부터 2년이다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "14",
+            "question": "도로주행시험에 불합격한 사람은 불합격한 날부터 (  )이 지난 후에 다시 도로주행시험에 응시할 수 있다. \n(   )에 기준으로 맞는 것은?",
+            "options": [
+                "① 1일",
+                "② 3일",
+                "③ 5일",
+                "④ 7일"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "2"
+            ],
+            "explanation": "도로교통법 시행령 제49조 제4항에 따라 도로주행시험에 불합격한 사람은 불합격한 날부터 3일이 지난 후에 다시 \n도로주행시험에 응시할 수 있다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "15",
+            "question": "‘착한운전 마일리지' 제도에 대한 설명으로 적절치 않은 2가지는?",
+            "options": [
+                "① 교통법규를 잘 지키고 이를 실천한 운전자에게 실질적인 인센티브를 부여하는 제도이다.",
+                "② 운전자가 정지처분을 받게 될 경우 누산점수에서 공제할 수 있다.",
+                "③ 범칙금이나 과태료 미납자도 마일리지 제도의 무위반․무사고 서약에 참여할 수 있다.",
+                "④ 서약 실천기간 중에 교통사고를 유발하거나 교통법규를 위반하면 다시 서약할 수 없다."
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "3",
+                "4"
+            ],
+            "explanation": "도로교통법 시행규칙〔별표 28〕운전자가 정지처분을 받게 될 경우 누산점수에서 이를 공제할 수 있다. 운전면허를 \n소지한 누구나 마일리지 제도에 참여할 수 있지만, 범칙금이나 과태료 미납자는 서약할 수 없다. 서약 실천기간 중에  \n교통사고를 발생하거나 교통법규를 위반하면 그 다음 날부터 다시 서약할 수 있다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "16",
+            "question": "원동기 장치자전거 중 개인형 이동장치의 정의에 대한 설명으로 바르지 않은 것은?",
+            "options": [
+                "① 오르막 각도가 25도 미만이어야 한다.",
+                "② 차체 중량이 30킬로그램 미만이어야 한다.",
+                "③ 자전거등이란 자전거와 개인형 이동장치를 말한다.",
+                "④ 시속 25킬로미터 이상으로 운행할 경우 전동기가 작동하지 않아야 한다."
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "도로교통법 제2조 제19호2, 자전거 이용 활성화에 관한 법률 제3조 제1호 \"개인형 이동장치\"란 제19호 나목의 원동\n기장치자전거 중 시속 25킬로미터 이상으로 운행할 경우 전동기가 작동하지 아니하고 차체 중량이 30킬로그램 미\n만인 것으로서 행정안전부령으로 정하는 것을 말하며, 등판각도는 규정되어 있지 않다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "17",
+            "question": "개인형 이동장치의 기준에 대한 설명이다. 바르게 설명된 것은 ?",
+            "options": [
+                "① 원동기를 단 차 중 시속 30킬로미터 이상으로 운행할 경우 전동기가 작동하지 아니하여야 한다.",
+                "② 최고 정격출력 11킬로와트 이하의 원동기를 단 차로 전기자전거를 포함한다.",
+                "③ 최고 정격출력 11킬로와트 이하의 원동기를 단 차로 차체 중량이 35킬로그램 미만인 것을 말한다.",
+                "④ 차체 중량은 30킬로그램 미만이어야 한다."
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "4"
+            ],
+            "explanation": "도로교통법 제2조 19호 나목 그 밖에 배기량 125시시 이하(전기를 동력으로 하는 경우에는 최고 정격출력 11킬로와\n트 이하)의 원동기를 단 차(자전거 이용 활성화에 관한 법률 제2조 제1호의 2에 따른 전기자전거는 제외한다)\n19의 2호 “개인형 이동장치”란 제19호 나목의 원동기장치자전거 중 시속 25킬로미터 이상으로 운행할 경우 전동\n기가 작동하지 아니하고 차체 중량이 30킬로그램 미만인 것으로서 행정안전부령으로 정하는 것을 말한다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "18",
+            "question": "다음 중 운전면허 취득 결격기간이 2년에 해당하는 사유 2가지는?",
+            "options": [
+                "① 무면허 운전을 3회한 때",
+                "② 다른 사람을 위하여 운전면허시험에 응시한 때",
+                "③ 자동차를 이용하여 감금한 때",
+                "④ 정기적성검사를 받지 아니하여 운전면허가 취소된 때"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1",
+                "2"
+            ],
+            "explanation": "자동차를 이용하여 감금한 때는 운전면허 취득 결격기간이 1년이나 정기적성검사를 받지 아니하여 운전면허가 취\n소된 때는 운전면허 취득 결격기간이 없다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "19",
+            "question": "도로교통법령상 영문운전면허증에 대한 설명으로 옳지 않은 것은?",
+            "options": [
+                "① 영문운전면허증 인정 국가에서 운전할 때 별도의 번역공증서 없이 운전이 가능하다.",
+                "② 영문운전면허증 인정 국가에서는 체류기간에 상관없이 사용할 수 있다.",
+                "③ 영문운전면허증 불인정 국가에서는 한국운전면허증, 국제운전면허증, 여권을 지참해야 한다.",
+                "④ 운전면허증 뒤쪽에 영문으로 운전면허증의 내용을 표기한 것이다."
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "2"
+            ],
+            "explanation": "영문운전면허증 안내(도로교통공단) 운전할 수 있는 기간이 국가마다 상이하며, 대부분 3개월 정도의 단기간만 허용\n          하고 있으므로 장기체류를 하는 경우 해당국 운전면허를 취득해야 한다.",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "20",
+            "question": "도로교통법상 원동기장치자전거는 전기를 동력으로 하는 경우에는 최고정격출력 ( )이하의 이륜자동차 이다. (   )에 기준\n으로 맞는 것은?",
+            "options": [
+                "① 11킬로와트",
+                "② 9킬로와트",
+                "③ 5킬로와트",
+                "④ 0.59킬로와트"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "도로교통법 제2조(용어) 원동기장치자전거란 자동차관리법상 이륜자동차 가운데 배기량 125시시 이하(전기를 동력\n으로 하는 경우에는 최고정격출력 11킬로와트 이하)의 이륜자동차와 그 밖에 배기량 125시시 이하(전기를 동력으\n로 하는 경우에는 최고정격출력 11킬로와트 이하)의 원동기를 단 차",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        }
+    ]
+}

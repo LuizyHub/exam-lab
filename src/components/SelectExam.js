@@ -203,4 +203,3 @@ export default function SelectExam() {
     </div>
   )
 }
-

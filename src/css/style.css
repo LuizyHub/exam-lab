@@ -1,0 +1,34 @@
+/* p {
+  width: 500px;
+  height: 300px;
+  margin-top: 100px;
+} */
+
+.test_left {
+  width: 30px;
+  height: 25px;
+  /* float: left; */
+}
+
+.test_right {
+  width: 200px;
+  height: 200px;
+}
+
+.test_inner_right {
+  width: 200px;
+  height: 200px;
+  float: right;
+}
+
+.test_inner_center {
+  width: 200px;
+  height: 200px;
+  float: none;
+}
+
+.test_inner_left {
+  width: 200px;
+  height: 200px;
+  float: left;
+}

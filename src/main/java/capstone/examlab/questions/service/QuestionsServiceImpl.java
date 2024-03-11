@@ -20,8 +20,7 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     @Override
     public QuestionsList findByDriverLicenseQuestions(Long examId, QuestionsOption questionsOption) {
-        int count = Integer.parseInt(questionsOption.getCount());
-        Pageable pageable = PageRequest.of(0, count);
+        Pageable pageable = PageRequest.of(0, questionsOption.getCount());
         Page<QuestionEntity> questionsPage;
         if(questionsOption.getTags()==null&questionsOption.getIncludes()==null){
             questionsPage = driverLicenseQuestionsRepository.findAll(pageable);

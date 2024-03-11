@@ -17,7 +17,7 @@ public class QuestionsController {
 
     private final QuestionsService questionsService;
     @GetMapping
-    public QuestionsList getExamQuestions(@PathVariable @ValidExamId Long examId, @ModelAttribute QuestionsOption questionsOption) {
+    public QuestionsList getExamQuestions(@PathVariable @ValidExamId Long examId, @ModelAttribute @ValidQuestionOption QuestionsOption questionsOption) {
         log.info("questionOptionDto = {}", questionsOption);
         return questionsService.findByDriverLicenseQuestions(examId, questionsOption);
     }

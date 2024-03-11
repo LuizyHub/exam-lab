@@ -39,7 +39,7 @@ public class QuesionsRepositoryTest {
         //테스트할 DTO값 설정
         QuestionsOption questionsOption = QuestionsOption.builder()
                 .tags(List.of("상황"))
-                .count("3")
+                .count(3)
                 .includes("고속도로")
                 .build();
 
@@ -57,7 +57,7 @@ public class QuesionsRepositoryTest {
         //Tags = null일시 테스트
         questionsOption.setTags(null);
         questionsOption.setIncludes("표지판");
-        questionsOption.setCount("5");
+        questionsOption.setCount(5);
 
         questionsList = questionsService.findByDriverLicenseQuestions(1L, questionsOption);
 

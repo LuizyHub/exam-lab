@@ -27,14 +27,13 @@ public class QuestionOptionValidator implements ConstraintValidator<ValidQuestio
         }
 
         try {
-            int count = Integer.parseInt(questionsOption.getCount());
-            if (count <= 0) {
+            if (questionsOption.getCount() <= 0) {
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate("Not positive count").addConstraintViolation();
                 return false;
             }
 
-            Pageable pageable = PageRequest.of(0, count);
+            Pageable pageable = PageRequest.of(0, questionsOption.getCount());
             Page<QuestionEntity> questionsPage;
 
             if (questionsOption.getTags() == null && questionsOption.getIncludes() == null) {
@@ -47,6 +46,7 @@ public class QuestionOptionValidator implements ConstraintValidator<ValidQuestio
                 questionsPage = driverLicenseQuestionsRepository.findByTagsInAndQuestionContainingOrOptionsContaining(questionsOption.getTags(), questionsOption.getIncludes(), questionsOption.getIncludes(), pageable);
             }
 
+            if(questionsPage == null) return false;
             return questionsPage.getTotalElements() != 0;
         } catch (NumberFormatException e) {
             context.disableDefaultConstraintViolation();

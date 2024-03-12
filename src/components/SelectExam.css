@@ -1,0 +1,100 @@
+.examList button{
+    background-color: #007bff; /* Green */
+    border: none;
+    color:white;
+    padding: 15px 32px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+    border-radius: 10px;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    margin-right: 15px;
+  }
+  
+
+.keyword {
+    font-size: 10px;
+    background-color: #007bff;
+    padding: 2px 5px;
+    margin-right: 5px;
+    border-radius: 3px;
+  }
+  
+
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 배경색 */
+    width: 300px;
+    padding: 1px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .modal-content button {
+    background-color: #ccc;
+    border: none;
+    color: black;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-content button:hover {
+    background-color: #999;
+  }
+  
+
+  .modal-content .tags {
+    margin-bottom: 10px;
+  }
+  
+  .modal-content .tags button {
+    background-color: #007bff;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-content .tags button:hover {
+    background-color: #0056b3;
+  }
+  
+  .modal-content input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .modal-content input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-content input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+

@@ -14,4 +14,7 @@ public interface DriverLicenseQuestionsRepository extends ElasticsearchRepositor
     Page<QuestionEntity> findByQuestionContainingOrOptionsContaining(String QuestionInclude, String OptionInclude, Pageable pageable);
     //All O
     Page<QuestionEntity> findByTagsInAndQuestionContainingOrOptionsContaining(List<String> tags, String QuestionInclude, String OptionInclude, Pageable pageable);
+
+    //for valid test
+    boolean existsByTags(String tag);
 }

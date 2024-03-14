@@ -35,12 +35,14 @@ class QuestionsControllerTest {
 
     private final Long existExamId = 1L;
 
+    private final List<String> existTags = List.of("상황", "법");
+
     @BeforeEach
     public void beforeTest() {
         when(examRepository.existsById(existExamId)).thenReturn(true);
         when(questionsService.findByDriverLicenseQuestions(any(), any())).thenReturn(new QuestionsList());
-        when(driverLicenseQuestionsRepository.existsByTags("상황")).thenReturn(true);
-        when(driverLicenseQuestionsRepository.existsByTags("법")).thenReturn(true);
+        when(driverLicenseQuestionsRepository.existsByTags(existTags.get(0))).thenReturn(true);
+        when(driverLicenseQuestionsRepository.existsByTags(existTags.get(1))).thenReturn(true);
     }
 
     @Test

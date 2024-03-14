@@ -1,6 +1,6 @@
-import SelectExam from "./components/SelectExam";
-import LabExam from "./components/LabExam";
-import EditExam from "./components/EditExam";
+import SelectExam from "./page/SelectExam";
+import LabExam from "./page/LabExam";
+import EditExam from "./page/EditExam";
 import EditTest from "./test/EditPage/EditTest";
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 

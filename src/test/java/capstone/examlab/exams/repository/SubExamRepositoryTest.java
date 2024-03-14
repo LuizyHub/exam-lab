@@ -4,6 +4,7 @@ import capstone.examlab.exams.entity.Exam;
 import capstone.examlab.exams.entity.SubExam;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
+@Tag("db_test")
 class SubExamRepositoryTest {
 
     @Autowired

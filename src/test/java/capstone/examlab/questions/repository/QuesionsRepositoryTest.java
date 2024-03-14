@@ -6,6 +6,7 @@ import capstone.examlab.questions.dto.QuestionsOption;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.repository.DriverLicenseQuestionsRepository;
 import capstone.examlab.questions.service.QuestionsService;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
+@Tag("db_test")
 public class QuesionsRepositoryTest {
 
     @Autowired

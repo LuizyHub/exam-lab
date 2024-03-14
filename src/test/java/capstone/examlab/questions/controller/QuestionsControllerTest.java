@@ -5,6 +5,7 @@ import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.repository.DriverLicenseQuestionsRepository;
 import capstone.examlab.questions.service.QuestionsService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(QuestionsController.class)
+@Tag("basic_test")
 class QuestionsControllerTest {
 
     @Autowired
@@ -41,7 +43,6 @@ class QuestionsControllerTest {
         when(driverLicenseQuestionsRepository.existsByTags("법")).thenReturn(true);
     }
 
-    // 통과 예시
     @Test
     void validQuestionControllerTest() throws Exception {
         mockMvc.perform(get("/api/v1/exams/{examId}/questions", existExamId)

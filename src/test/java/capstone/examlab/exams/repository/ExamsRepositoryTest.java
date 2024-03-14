@@ -2,6 +2,7 @@ package capstone.examlab.exams.repository;
 
 import capstone.examlab.exams.entity.Exam;
 import capstone.examlab.exams.entity.SubExam;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
+@Tag("db_test")
 public class ExamsRepositoryTest {
 
     @Autowired

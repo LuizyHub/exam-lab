@@ -34,7 +34,7 @@ public class DatabaseInitializer implements ApplicationRunner {
         // 부시험 데이터 생성
         SubExam subExam = new SubExam();
         subExam.setSubExamTitle("1종, 2종");
-        subExam.setTypes(Map.of("tags", List.of("상황", "표지")));
+        subExam.setTypes(Map.of("tags", List.of("상황", "표지", "화물", "법")));
         subExam = subExamRepository.save(subExam);
 
         // 시험과 부시험 관계

@@ -47,10 +47,25 @@ dependencies {
 
 tasks.named('test') {
 	outputs.dir snippetsDir
-	useJUnitPlatform()
+	useJUnitPlatform(){
+		includeTags 'basic_test'
+		excludeTags 'db_test'
+	}
 }
 
 tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
+}
+
+task basicTest(type:Test) {
+	useJUnitPlatform {
+		includeTags 'basic_test'
+	}
+}
+
+task dbTest(type: Test) {
+	useJUnitPlatform {
+		includeTags 'db_test'
+	}
 }

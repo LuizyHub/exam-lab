@@ -50,8 +50,8 @@ class QuestionsControllerTest {
     @Test
     void validQuestionControllerTest() throws Exception {
         mockMvc.perform(get("/api/v1/exams/{examId}/questions", existExamId)
-                        .queryParam("tags", "상황")
-                        .queryParam("tags", "법")
+                        .queryParam("tags", existTags.get(0))
+                        .queryParam("tags", existTags.get(1))
                         .queryParam("count", String.valueOf(3))
                         .queryParam("includes", "고속도로"))
                 .andExpect(status().isOk());
@@ -76,13 +76,13 @@ class QuestionsControllerTest {
     void invalidTagsTest() throws Exception {
         // Then
         mockMvc.perform(get("/api/v1/exams/{examId}/questions", existExamId)
-                        .queryParam("tags", "상황")
+                        .queryParam("tags", existTags.get(0))
                         .queryParam("tags", "없는태그"))
                 .andExpect(status().isBadRequest());
 
         mockMvc.perform(get("/api/v1/exams/{examId}/questions", existExamId)
-                        .queryParam("tags", "상황")
-                        .queryParam("tags", "법"))
+                        .queryParam("tags", existTags.get(0))
+                        .queryParam("tags", existTags.get(1)))
                 .andExpect(status().isOk());
     }
 

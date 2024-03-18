@@ -3,6 +3,9 @@ plugins {
 	id 'org.springframework.boot' version '3.2.2'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+
+	//OpenAPI
+	id 'com.epages.restdocs-api-spec' version '0.19.1'
 }
 
 group = 'capstone'
@@ -43,19 +46,16 @@ dependencies {
 
 	//Elastic Search
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+
+	//OpenAPI
+	testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.19.1'
 }
 
 tasks.named('test') {
-	outputs.dir snippetsDir
 	useJUnitPlatform(){
 		includeTags 'basic_test'
 		excludeTags 'db_test'
 	}
-}
-
-tasks.named('asciidoctor') {
-	inputs.dir snippetsDir
-	dependsOn test
 }
 
 task basicTest(type:Test) {
@@ -68,4 +68,21 @@ task dbTest(type: Test) {
 	useJUnitPlatform {
 		includeTags 'db_test'
 	}
+}
+
+task copyOasToStatic(type: Copy) {
+	dependsOn 'openapi3'
+	doFirst {
+		delete 'src/main/resources/static/api/v1/openapi3.yaml'
+	}
+	from 'build/api-spec/openapi3.yaml'
+	into 'src/main/resources/static/api/v1'
+}
+
+openapi3 {
+	server = 'http://localhost:8080'
+	title = 'Exam Lab API'
+	description = 'API for Exam Lab'
+	version = '0.1.0'
+	format = 'yaml'
 }

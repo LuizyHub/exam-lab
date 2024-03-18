@@ -1,88 +1,95 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.2'
-	id 'io.spring.dependency-management' version '1.1.4'
-	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 
-	//OpenAPI
-	id 'com.epages.restdocs-api-spec' version '0.19.1'
+    //OpenAPI
+    id 'com.epages.restdocs-api-spec' version '0.19.1'
 }
 
 group = 'capstone'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('snippetsDir', file("build/generated-snippets"))
+    set('snippetsDir', file("build/generated-snippets"))
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
-	//Validation
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	//H2 DB
-	runtimeOnly 'com.h2database:h2'
+    //H2 DB
+    runtimeOnly 'com.h2database:h2'
 
-	//Elastic Search
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    //Elastic Search
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
-	//OpenAPI
-	testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.19.1'
+    //OpenAPI
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.19.1'
 }
 
 tasks.named('test') {
-	useJUnitPlatform(){
-		includeTags 'basic_test'
-		excludeTags 'db_test'
-	}
+    useJUnitPlatform() {
+        includeTags 'basic_test'
+        includeTags 'openapi_test'
+        excludeTags 'db_test'
+    }
 }
 
-task basicTest(type:Test) {
-	useJUnitPlatform {
-		includeTags 'basic_test'
-	}
+task basicTest(type: Test) {
+    useJUnitPlatform {
+        includeTags 'basic_test'
+    }
 }
 
 task dbTest(type: Test) {
-	useJUnitPlatform {
-		includeTags 'db_test'
-	}
+    useJUnitPlatform {
+        includeTags 'db_test'
+    }
+}
+
+task openApiTest(type: Test) {
+    useJUnitPlatform {
+        includeTags 'openapi_test'
+    }
 }
 
 task copyOasToStatic(type: Copy) {
-	dependsOn 'openapi3'
-	doFirst {
-		delete 'src/main/resources/static/api/v1/openapi3.yaml'
-	}
-	from 'build/api-spec/openapi3.yaml'
-	into 'src/main/resources/static/api/v1'
+    dependsOn 'openapi3'
+    doFirst {
+        delete 'src/main/resources/static/api/v1/openapi3.yaml'
+    }
+    from 'build/api-spec/openapi3.yaml'
+    into 'src/main/resources/static/api/v1'
 }
 
 openapi3 {
-	server = 'http://localhost:8080'
-	title = 'Exam Lab API'
-	description = 'API for Exam Lab'
-	version = '0.1.0'
-	format = 'yaml'
+    servers = [{ url = 'http://exam-lab.store/' }, { url = 'http://localhost:8080/' }]
+    title = 'Exam Lab API'
+    description = 'API for Exam Lab'
+    version = '0.1.0'
+    format = 'yaml'
 }

@@ -1,0 +1,101 @@
+openapi: 3.0.1
+info:
+  title: Exam Lab API
+  description: API for Exam Lab
+  version: 0.1.0
+servers:
+- url: http://exam-lab.store/
+- url: http://localhost:8080/
+tags: []
+paths:
+  /api/v1/exams:
+    get:
+      tags:
+      - exams
+      summary: Get all exams
+      description: Get all exams
+      operationId: exams
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamList'
+              examples:
+                exams:
+                  value: "[{\"exam_title\":\"운전면허\",\"sub_exams\":[{\"exam_id\":1,\"\
+                    sub_title\":\"1종, 2종\"}]}]"
+  /api/v1/exams/{examId}/type:
+    get:
+      tags:
+      - exams
+      summary: Get exam type
+      description: Get exam type
+      operationId: exam-typenon-exam-type
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamType'
+              examples:
+                exam-type:
+                  value: "{\"tags\":[\"상황\",\"표지\",\"화물\",\"법\"]}"
+        "400":
+          description: "400"
+components:
+  schemas:
+    ExamList:
+      title: ExamList
+      type: array
+      description: List of exams
+      items:
+        required:
+        - exam_title
+        - sub_exams
+        type: object
+        properties:
+          sub_exams:
+            type: array
+            description: List of sub exams
+            items:
+              required:
+              - exam_id
+              - sub_title
+              type: object
+              properties:
+                sub_title:
+                  type: string
+                  description: Sub exam title
+                exam_id:
+                  type: number
+                  description: Sub exam id
+          exam_title:
+            type: string
+            description: Exam title
+        description: List of exams
+    ExamType:
+      title: ExamType
+      required:
+      - tags
+      type: object
+      properties:
+        tags:
+          type: array
+          description: List of tags
+          items:
+            oneOf:
+            - type: object
+            - type: boolean
+            - type: string
+            - type: number

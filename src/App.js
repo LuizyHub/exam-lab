@@ -1,7 +1,8 @@
-import SelectExam from "./page/SelectExam";
-import LabExam from "./page/LabExam";
-import EditExam from "./page/EditExam";
-import EditTest from "./test/EditPage/EditTest";
+import SelectExam from "./components/SelectExam";
+import LabExam from "./components/LabExam";
+import EditExam from "./test/EditPage/EditTest"
+import EditTest from "./test/EditPage/EditTestQuill";
+import EditReactQuill from "./test/EditPage/EditTestReactQuill"
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -15,6 +16,7 @@ function App() {
           <Route path="/lab" element={<LabExam />} />
           <Route path="/edit" element={<EditExam />} />
           <Route path="/editTest" element={<EditTest />} />
+          <Route path="/editReactQuill" element={<EditReactQuill />} />
           <Route path="/htmlParse" element={<ParsingImageTest />} />
         </Routes>
       </div>

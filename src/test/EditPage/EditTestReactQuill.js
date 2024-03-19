@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import ReactQuill from 'react-quill';
-import parse from 'html-react-parser'
 import 'react-quill/dist/quill.snow.css';
 
 export default function EditTest() {
-  const initialEditorValues = [`<p>input</p>`, '<p>input</p>', '<p>input</p>'];
 
-  const [blockValues, setBlockValues] = useState(initialEditorValues);
+  //상태 변수를 사용하여 각 편집 영역의 내용 및 활성화 상태를 관리한다.
+  const [blockValues, setBlockValues] = useState(['', '', '']);
 
   //여기서 activeBlock은 현재 활성화된 편집 영역을 나타내는 상태 변수이다.
   const [activeBlocks, setActiveBlocks] = useState([false, false, false]);
@@ -27,11 +26,14 @@ export default function EditTest() {
   //에디터 내용이 변경될 때 호출되며, 현재 활성화된 편집 영역에 따라 상태를 업데이트한다.
   //content의 값은 해당 react quill의 텍스트의 값을 가져오는 것이다.
   function handleBlockChange(index, eventValue, isActive) {
+
     if (isActive) {
+      const sanitizedValue = eventValue.trim();
+
       const newBlockValues = [...blockValues];
-      newBlockValues[index] = eventValue;
+      newBlockValues[index] = sanitizedValue;
       setBlockValues(newBlockValues);
-      console.log(`Input ${index} changed:`, newBlockValues[index]);
+      console.log(`Input ${index} changed:`, sanitizedValue);
     }
   };
 
@@ -39,9 +41,9 @@ export default function EditTest() {
   function handleBlockSelect(index, value) {
     const newActiveBlocks = activeBlocks.map((value, i) => index === i);
     setActiveBlocks(newActiveBlocks);
-    console.log(`newActiveBlocks = ${newActiveBlocks}`);
     console.log(`${index} = ${value}`);
   }
+
 
   return (
     <div style={{ display: 'flex' }}>
@@ -59,20 +61,19 @@ export default function EditTest() {
               <option>option</option>
             </select>
             <div key={index}>
-              <div
+              <input
                 style={{ border: '1px solid #ccc', padding: '10px', width: '90%' }}
 
                 onClick={() => { handleBlockSelect(index, blockValue) }}
                 type="text"
                 //해당 에디터의 값이 input으로 전달된다.
-                // dangerouslySetInnerHTML={{ __html: blockValue }}
+                value={blockValue}
                 // 해당 인풋 값이 변화되는 이벤트
                 //e.target.value는 내가 입력한 값을 확인하는 것?
                 onChange={(e) => handleBlockChange(index, e.target.value, activeBlocks[index])}
                 readOnly
-              >{parse(blockValue)}</div>
+              />
             </div>
-            <button>Create</button>
           </div>
         ))}
 
@@ -101,12 +102,8 @@ export default function EditTest() {
           ]}
           //여기서 value의 값을 전달하고 안하고 한다.
           value={blockValues[activeBlocks.findIndex(block => block)]}
-          onChange={(content) => {
-            console.log(`Quill 에디터의 내용:`, content);
-            handleBlockChange(activeBlocks.findIndex(block => block), content, true)
-          }}
+          onChange={(content) => handleBlockChange(activeBlocks.findIndex(block => block), content, true)}
         />
-        {/* <button>Click</button> */}
       </div>
     </div>
   );

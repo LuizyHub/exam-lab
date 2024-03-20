@@ -1,5 +1,5 @@
-import SelectExam from "./components/SelectExam";
-import LabExam from "./components/LabExam";
+import SelectExam from "./page/SelectExam";
+import LabExam from "./page/LabExam";
 import EditExam from "./test/EditPage/EditTest"
 import EditTest from "./test/EditPage/EditTestQuill";
 import EditReactQuill from "./test/EditPage/EditTestReactQuill"

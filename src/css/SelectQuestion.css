@@ -1,0 +1,79 @@
+.select-question-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.select-question-container h2 {
+    margin-bottom: 10px;
+}
+
+
+.tags {
+    margin-bottom: 10px;
+}
+
+.tags button {
+    margin-right: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.tags button.selected-tag {
+    background-color: blue;
+}
+
+.keyword-container {
+    margin-bottom: 5px;
+}
+
+.keyword {
+    background-color: #ccc;
+    padding: 2px 5px;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.question-count {
+    margin-bottom: 10px;
+}
+
+.question-count button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.question-count button.selected-count {
+    background-color: blue;
+}
+
+input[type="text"] {
+    width: 200px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}

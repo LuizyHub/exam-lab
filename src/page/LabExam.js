@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../css/style.css"
-
-import labExamAxios from "../function/labExamAxios";
 import { handleShuffle } from '../function/shuffleArray'
 import { renderImages, parseImages } from '../function/renderImages'
 
 export default function LabExam() {
-  const [data, setData] = useState([]);
-  const [limit, setLimit] = useState(5);
+
+  const location = useLocation();
+  const { selectedQuestions } = location.state;
+  const [isQuestion, setIsQuestion] = useState([]);
   const [isCommentary, setIsCommentary] = useState(false); //답안지 상태관리
 
-  //api연결
+
   useEffect(() => {
-    labExamAxios(limit, setData)
-  }, [limit]);
+    setIsQuestion(selectedQuestions);
+  })
+
 
   const handleCommentary = () => {
     setIsCommentary(!isCommentary)
@@ -24,18 +25,12 @@ export default function LabExam() {
     <div>
       <h2>Test</h2>
       {/* 문제 섞기 버튼 */}
-      <button onClick={() => handleShuffle(data, setData)}>Shuffle</button>
+      <button onClick={() => handleShuffle(isQuestion, setIsQuestion)}>Shuffle</button>
       <button onClick={handleCommentary}>Commentary</button>
-      <select onChange={(e) => { setLimit(e.target.value); }}>
-        <option value={5}>5</option>
-        <option value={10}>10</option>
-        <option value={15}>15</option>
-        <option value={20}>20</option>
-      </select>
       <Link to="/">back</Link>
       <ol style={{ listStylePosition: 'inside' }}>
         {/* , listStyleType: 'none'   */}
-        {data.map((item, index) => (
+        {isQuestion.map((item, index) => (
           <div key={index}>
             <li key={index} style={{ marginBottom: '70px', border: '1px solid black', width: '70%' }}>
               {/* 질문 */}

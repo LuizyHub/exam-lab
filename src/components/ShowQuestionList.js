@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ShowQuestion from "./ShowQuestion";
 import SelectedQuestionList from "./SelectedQuestionList";
 import '../css/ShowQuestionList.css'
@@ -6,12 +7,8 @@ import '../css/ShowQuestionList.css'
 
 export default function ShowQuestionList({questions}){
 
-    // 문제에 해당하는 문제 보여주기 
-    // const location = useLocation();
-    // const { url } = location.state;
 
-    const [data, setData] = useState([]);
-    const [limit, setLimit] = useState(20);
+    const navigate = useNavigate();
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [showSelectedList, setShowSelectedList] = useState(true);
 
@@ -21,25 +18,6 @@ export default function ShowQuestionList({questions}){
         setSelectedQuestions(questions);
     }, [questions]);
 
-    // json-server 사용시 
-    // useEffect(() => {
-    //     fetch('http://localhost:3001/sample')
-    //       .then(res => res.json())
-    //       .then((data) => {
-    //         setData(data.slice(0, limit));
-    //         setSelectedQuestions(data.slice(0, limit));
-    //       })
-    //       .catch((error) => {
-    //         console.error("Error fetching data:", error);
-    //       });
-    //   }, [limit]);
-
-
-    // 문제 선택 리스트 핸들러
-    const handleShowSelectQuestionList = (e) => {
-        e.preventDefault();
-    }
-   
 
      // 문제 선택 핸들러
      const handleSelectQuestion = (item) => {
@@ -55,11 +33,17 @@ export default function ShowQuestionList({questions}){
         }
     };
 
+    // 시험지 생성 버튼을 누르면, 선택된 문제 리스트가 LabExam으로 넘어간다. 
+    const handleSubmitQuestion = () => {
+        navigate('../lab', {state : {selectedQuestions}})
+
+    }
+
 
 
 return (
     <div>
-         <button style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', marginBottom: '20px', cursor: 'pointer' }}>시험지 생성</button>
+         <button onClick={handleSubmitQuestion} style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', marginBottom: '20px', cursor: 'pointer' }}>시험지 생성</button>
     <div style={{ display: 'flex', flexDirection: 'row' }}>
         
     {/* 선택된 문제 리스트 */}
@@ -68,7 +52,7 @@ return (
         <button style={{ padding: '10px 0px', marginLeft: '300px'}} onClick={() => setShowSelectedList(!showSelectedList)}>
                     {showSelectedList ? 'X' : '+'}
                 </button>
-        <h2 style={{ marginBottom: '20px', borderBottom: '2px solid #333' }}>선택된 문제 리스트</h2>
+        <h2 style={{ marginBottom: '20px', borderBottom: '2px solid #333', textAlign: 'center' }}>선택된 문제 리스트</h2>
         <ol style={{ padding: 0 }}>
         {selectedQuestions.map((item, index) => (
                             <li key={index} className="slide-item">
@@ -87,7 +71,7 @@ return (
 
     {/* 문제 고르기 */}
     <div style={{ flex: 8, height: '100vh', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-        <h2 style={{ marginBottom: '20px', borderBottom: '2px solid #333' }}>문제 고르기</h2>
+        <h2 style={{ marginBottom: '20px', borderBottom: '2px solid #333', textAlign:'center' }}>문제 고르기</h2>
         {Array.isArray(questions) && questions.length > 0 ? (
             <ol style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', listStylePosition: 'inside', padding: 0 }}>
                 {questions.map((item, index) => (

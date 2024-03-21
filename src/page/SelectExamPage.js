@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import './SelectExam.css';
-import SelectQuestion from "../components/SelectQuestion";
 
 export default function SelectExamPage() {
   const navigate = useNavigate();
@@ -49,16 +48,6 @@ export default function SelectExamPage() {
         </select>
       )}
 
-      {/* {selectedExamType}
-      {selectedSubExamType} */}
-
-      {/* {selectedSubExamType && isDataLoaded && (
-        <SelectQuestion 
-          
-          examType={selectedExamType}
-          subExamType={selectedSubExamType}
-        />
-      )} */}
     </div>
   )
 }

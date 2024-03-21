@@ -29,7 +29,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EXAM_LAB_BE_PEM }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H your_server_ip >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.BE_SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Upload build folder to server
         run: |

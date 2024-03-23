@@ -49,6 +49,9 @@ dependencies {
 
     //OpenAPI
     testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.19.1'
+
+    //MongoDB
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
 
 tasks.named('test') {

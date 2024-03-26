@@ -16,4 +16,7 @@ public class UserAddDto {
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private String passwordConfirm;
 }

@@ -22,7 +22,7 @@
         <h2>로그인</h2>
     </div>
 
-    <form action="item.html" th:action="@{/api/v1/users/login}" th:object="${user}" method="post">
+    <form action="item.html" th:action="@{/users/login}" th:object="${user}" method="post">
 
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>

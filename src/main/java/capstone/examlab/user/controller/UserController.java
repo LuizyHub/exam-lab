@@ -4,12 +4,11 @@ import capstone.examlab.SessionConst;
 import capstone.examlab.user.domain.User;
 import capstone.examlab.user.dto.LoginDto;
 import capstone.examlab.user.dto.UserAddDto;
-import capstone.examlab.user.repository.UserRepository;
+import capstone.examlab.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -23,9 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final ObjectProvider<User> userProvider;
-
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @PostMapping("/add")
     public String add(@Validated @ModelAttribute("user") UserAddDto userAddDto, BindingResult bindingResult) {
@@ -34,7 +31,7 @@ public class UserController {
             bindingResult.reject("passwordConfirm", "비밀번호가 일치하지 않습니다.");
         }
 
-        if (userRepository.findByUserId(userAddDto.getUserId()).isPresent()) {
+        if (userService.isUserIdExist(userAddDto.getUserId())) {
             bindingResult.reject("userId", "이미 사용중인 아이디입니다.");
         }
 
@@ -42,17 +39,11 @@ public class UserController {
             return "users/addUserForm";
         }
 
-        log.info("user={}", userAddDto);
-        User user = userProvider.getObject();
-
-        user.setUserId(userAddDto.getUserId());
-        user.setName(userAddDto.getName());
-        user.setPassword(userAddDto.getPassword());
-
-        userRepository.save(user);
+        userService.addUser(userAddDto);
 
         return "redirect:/";
     }
+
 
     @PostMapping("/login")
     public String login(@Validated @ModelAttribute("user") LoginDto loginDto, BindingResult bindingResult,
@@ -62,7 +53,7 @@ public class UserController {
             return "users/loginForm";
         }
 
-        Optional<User> user = userRepository.findByUserId(loginDto.getUserId());
+        Optional<User> user = userService.findUserById(loginDto.getUserId());
 
         if (user.isEmpty() || !user.get().getPassword().equals(loginDto.getPassword())) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");

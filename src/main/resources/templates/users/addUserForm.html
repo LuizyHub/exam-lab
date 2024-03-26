@@ -24,7 +24,7 @@
 
     <h4 class="mb-3">회원 정보 입력</h4>
 
-    <form action="" th:action="@{/api/v1/users/add}" th:object="${user}" method="post">
+    <form action="" th:action="@{/users/add}" th:object="${user}" method="post">
 
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
@@ -41,6 +41,12 @@
             <input type="password" id="password" th:field="*{password}" class="form-control"
                    th:errorclass="field-error">
             <div class="field-error" th:errors="*{password}" />
+        </div>
+        <div>
+            <label for="passwordConfirm">비밀번호 확인</label>
+            <input type="password" id="passwordConfirm" th:field="*{passwordConfirm}" class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{passwordConfirm}" />
         </div>
         <div>
             <label for="name">이름</label>

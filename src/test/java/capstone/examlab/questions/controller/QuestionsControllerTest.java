@@ -4,6 +4,7 @@ import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.repository.DriverLicenseQuestionsRepository;
 import capstone.examlab.questions.service.QuestionsService;
+import capstone.examlab.user.argumentresolver.LoginUserArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ class QuestionsControllerTest {
 
     @MockBean
     private DriverLicenseQuestionsRepository driverLicenseQuestionsRepository;
+
+    @MockBean
+    private LoginUserArgumentResolver loginUserArgumentResolver;
 
     private final Long existExamId = 1L;
 

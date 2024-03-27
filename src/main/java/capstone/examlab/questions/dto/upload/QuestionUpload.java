@@ -1,4 +1,4 @@
-package capstone.examlab.questions.dto;
+package capstone.examlab.questions.dto.upload;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,17 +8,12 @@ import java.util.Map;
 
 @Data
 @Builder
-public class Question {
-    private String id;
+public class QuestionUpload {
+    private String uuid;
     private String type;
     private String question;
-    private List<ImageDto> questionImagesIn;
-    private List<ImageDto> questionImagesOut;
     private List<String> options;
     private List<Integer> answers;
     private String commentary;
-    private List<ImageDto> commentaryImagesIn;
-    private List<ImageDto> commentaryImagesOut;
     private Map<String, List<String>> tagsMap;
 }
-

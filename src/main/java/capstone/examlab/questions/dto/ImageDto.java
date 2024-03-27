@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class QuestionImage {
+public class ImageDto {
     private String url;
     private String description;
     private String attribute;

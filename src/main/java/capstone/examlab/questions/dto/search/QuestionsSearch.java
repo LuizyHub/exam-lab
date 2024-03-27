@@ -1,7 +1,6 @@
-package capstone.examlab.questions.dto;
+package capstone.examlab.questions.dto.search;
 
 import capstone.examlab.valid.ValidTags;
-import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +14,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionsOption {
+public class QuestionsSearch {
     //tag에 정규식과 notempty넣어줘야함
-    @ValidTags
+   // @ValidTags
     private List<String> tags;
 
     @Builder.Default

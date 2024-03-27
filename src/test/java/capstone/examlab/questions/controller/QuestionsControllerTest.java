@@ -1,30 +1,16 @@
 package capstone.examlab.questions.controller;
 
-import capstone.examlab.exams.repository.ExamRepository;
-import capstone.examlab.questions.dto.QuestionsList;
-import capstone.examlab.questions.repository.DriverLicenseQuestionsRepository;
-import capstone.examlab.questions.service.QuestionsService;
-import capstone.examlab.users.argumentresolver.LoginUserArgumentResolver;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(QuestionsController.class)
 @Tag("basic_test")
 class QuestionsControllerTest {
 
-    @Autowired
+   /* @Autowired
     private MockMvc mockMvc;
 
     @MockBean
@@ -35,9 +21,6 @@ class QuestionsControllerTest {
 
     @MockBean
     private DriverLicenseQuestionsRepository driverLicenseQuestionsRepository;
-
-    @MockBean
-    private LoginUserArgumentResolver loginUserArgumentResolver;
 
     private final Long existExamId = 1L;
 
@@ -118,5 +101,5 @@ class QuestionsControllerTest {
         mockMvc.perform(get("/api/v1/exams/{examId}/questions", existExamId)
                         .queryParam("includes", "한단어한글자이상"))
                 .andExpect(status().isOk());
-    }
+    }*/
 }

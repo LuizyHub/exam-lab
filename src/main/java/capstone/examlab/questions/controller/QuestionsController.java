@@ -1,5 +1,6 @@
 package capstone.examlab.questions.controller;
 
+import capstone.examlab.image.dto.ImagesUploadInfo;
 import capstone.examlab.questions.dto.ImageSave;
 import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.dto.search.QuestionsSearch;
@@ -28,6 +29,19 @@ public class QuestionsController {
         return ResponseEntity.ok("data add success");
     }
 
+    //form-data형식으로 imageFile 및 데이터 받기
+    @PostMapping("questions/image")
+    public ResponseEntity<String> addImagesInQuestions(@ModelAttribute ImagesUploadInfo imagesUploadInfo) {
+        boolean notNull = questionsService.addImageInQuestions(imagesUploadInfo);
+        if(notNull) {
+            return ResponseEntity.ok("image add success");
+        }
+        else{
+            return ResponseEntity.badRequest().body("image add error");
+        }
+    }
+
+
 
 /*
     @GetMapping
@@ -36,16 +50,4 @@ public class QuestionsController {
         return questionsService.findByDriverLicenseQuestions(examId, questionsSearch);
     }
 */
-
-    //이미지 관련 API
-    @PostMapping("image")
-    public List<String> saveImages(@ModelAttribute ImageSave imageSave) {
-        return questionsService.saveImages(imageSave);
-    }
-
-    @DeleteMapping("image/delete/{imageName}")
-    public ResponseEntity<String> deleteImages(@PathVariable String imageName){
-        questionsService.deleteImages(imageName);
-        return ResponseEntity.ok("delete "+imageName);
-    }
 }

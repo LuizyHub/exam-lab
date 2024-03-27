@@ -1,15 +1,17 @@
 package capstone.examlab.questions.service;
 
-import capstone.examlab.questions.dto.QuestionsList;
-import capstone.examlab.questions.dto.QuestionsOption;
-import capstone.examlab.questions.dto.ImageSaveDto;
+import capstone.examlab.questions.dto.ImageSave;
+import capstone.examlab.questions.dto.upload.QuestionsUpload;
+
 import java.util.List;
 
 
 public interface QuestionsService {
-    QuestionsList findByDriverLicenseQuestions(Long examId, QuestionsOption questionsOption);
+   void addQuestionsByExamId(Long examId, QuestionsUpload questionsUpload);
 
-    List<String> saveImages(ImageSaveDto imageSaveDto);
+    //QuestionsList findByDriverLicenseQuestions(Long examId, QuestionsSearch questionsSearch);
+
+    List<String> saveImages(ImageSave imageSave);
 
     void deleteImages(String imageName);
 }

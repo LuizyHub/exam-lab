@@ -1,10 +1,9 @@
-package capstone.examlab.questions.service;
+package capstone.examlab.image.service;
 
-import capstone.examlab.questions.dto.ImageSaveDto;
+import capstone.examlab.questions.dto.ImageSave;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,7 @@ public class ImageServiceImpl implements ImageService{
 
     //이미지 저장 로직
     @Transactional
-    public List<String> saveImagesInS3(ImageSaveDto saveDto) {
+    public List<String> saveImagesInS3(ImageSave saveDto) {
         List<String> resultList = new ArrayList<>();
 
         for (int i = 0; i < saveDto.getImages().size(); i++) {

@@ -4,6 +4,7 @@ import capstone.examlab.image.dto.ImagesUploadInfo;
 import capstone.examlab.questions.dto.ImageSave;
 import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.dto.search.QuestionsSearch;
+import capstone.examlab.questions.dto.update.QuestionsUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionsUpload;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface QuestionsService {
 
     QuestionsList searchFromQuestions(Long examId, QuestionsSearch questionsSearch);
 
+    public boolean updateQuestionsByUUID(QuestionsUpdateDto questionsUpdateDto);
 }

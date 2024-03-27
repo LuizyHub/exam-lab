@@ -1,6 +1,6 @@
 package capstone.examlab.valid;
 
-import capstone.examlab.questions.repository.questionsRepository;
+import capstone.examlab.questions.repository.QuestionsRepository;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -9,7 +9,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TagsValidator implements ConstraintValidator<ValidTags, List<String>> {
 
-    private final questionsRepository questionsRepository;
+    private final QuestionsRepository questionsRepository;
 
     @Override
     public void initialize(ValidTags constraintAnnotation) {

@@ -1,8 +1,6 @@
 package capstone.examlab.image.service;
 
-import capstone.examlab.questions.dto.ImageSave;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,45 +15,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService{
 
-    private static String bucketName = "examlab-image";
-    private static String folderName = "test_images/";  //저장 폴더명 임시 부여
+    private static String BUCKET_NAME = "examlab-image";
+    private static String FOLDER_NAME = "test_images/";  //저장 폴더명 임시 부여
+    //private static String FOLDER_NAME = "driver_images/"; //실제 사용 폴더명
     private final AmazonS3 amazonS3;
 
-    //이미지 저장 로직
     @Transactional
-    public List<String> saveImagesInS3(ImageSave saveDto) {
-        List<String> resultList = new ArrayList<>();
-
-        for (int i = 0; i < saveDto.getImages().size(); i++) {
-            String value = saveImage(saveDto.getImages().get(i));
-            resultList.add(value);
-        }
-        return resultList;
-    }
-
-    @Transactional
-    public String saveImage(MultipartFile multipartFile) {
-        String originalName = multipartFile.getOriginalFilename();
+    public String saveImageInS3(MultipartFile multipartImage, int index){
+        String originalName = multipartImage.getOriginalFilename();
         String accessUrl = ""; //반환 URL저장
-        String filename = folderName+originalName;
-
+        String filename = FOLDER_NAME+index+originalName;
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType(multipartFile.getContentType());
-            objectMetadata.setContentLength(multipartFile.getInputStream().available());
+            objectMetadata.setContentType(multipartImage.getContentType());
+            objectMetadata.setContentLength(multipartImage.getInputStream().available());
 
-            amazonS3.putObject(bucketName, filename, multipartFile.getInputStream(), objectMetadata);
+            amazonS3.putObject(BUCKET_NAME, filename, multipartImage.getInputStream(), objectMetadata);
 
-            accessUrl = amazonS3.getUrl(bucketName, filename).toString();
+            accessUrl = amazonS3.getUrl(BUCKET_NAME, filename).toString();
         } catch(IOException e) {
 
         }
         return accessUrl;
-    }
-
-    //이미지 삭제 로직
-    public void deleteImageInFolder(String imageName) {
-        imageName = folderName+imageName;
-        amazonS3.deleteObject(new DeleteObjectRequest(bucketName, imageName));
     }
 }

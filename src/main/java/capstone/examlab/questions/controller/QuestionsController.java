@@ -41,13 +41,10 @@ public class QuestionsController {
         }
     }
 
-
-
-/*
-    @GetMapping
-    public QuestionsList getExamQuestions(@PathVariable @ValidExamId Long examId, @ModelAttribute @Valid QuestionsSearch questionsSearch) {
+    //Read API
+    @GetMapping("{examId}/questions/search")
+    public QuestionsList selectQuestions(@PathVariable Long examId, @RequestBody QuestionsSearch questionsSearch) {
         log.info("questionOptionDto = {}", questionsSearch);
-        return questionsService.findByDriverLicenseQuestions(examId, questionsSearch);
+        return questionsService.searchFromQuestions(examId, questionsSearch);
     }
-*/
 }

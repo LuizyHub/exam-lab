@@ -3,6 +3,7 @@ package capstone.examlab.questions.service;
 import capstone.examlab.image.dto.ImagesUploadInfo;
 import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.*;
+import capstone.examlab.questions.dto.search.QuestionsSearch;
 import capstone.examlab.questions.dto.upload.QuestionUpload;
 import capstone.examlab.questions.dto.upload.QuestionsUpload;
 import capstone.examlab.questions.entity.QuestionEntity;
@@ -27,6 +28,9 @@ import java.util.*;
 public class QuestionsServiceImpl implements QuestionsService {
     private final QuestionsRepository questionsRepository;
     private final ImageService imageService;
+    private final BoolQueryBuilder boolQueryBuilder;
+    private final ElasticsearchTemplate elasticsearchTemplate;
+
     //Create 로직
     @Override
     public void addQuestionsByExamId(Long examId, QuestionsUpload questionsUploadDto) {
@@ -153,4 +157,40 @@ public class QuestionsServiceImpl implements QuestionsService {
         return true;
     }
 
+    //Read 로직
+    @Override
+    public QuestionsList searchFromQuestions(Long examId, QuestionsSearch questionsSearch) {
+        Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearch);
+
+        //쿼리문 코드 적용 및 elasticSearch 통신 관련 코드
+        NativeQuery searchQuery = new NativeQuery(query);
+        searchQuery.setPageable(PageRequest.of(0, questionsSearch.getCount()));
+        SearchHits<QuestionEntity> searchHits = elasticsearchTemplate.search(searchQuery, QuestionEntity.class);
+
+        QuestionsList questionsList = new QuestionsList();
+        int count = 0;
+        for (SearchHit<QuestionEntity> hit : searchHits) {
+            if (count >= questionsSearch.getCount()) {
+                break; // 요청된 개수 이상의 결과가 나왔을 경우 종료
+            }
+            QuestionEntity entity = hit.getContent();
+            Question question = Question.builder()
+                    .id(entity.getId())
+                    .type(entity.getType())
+                    .question(entity.getQuestion())
+                    .questionImagesIn(new ArrayList<>(entity.getQuestionImagesIn()))
+                    .questionImagesOut(new ArrayList<>(entity.getQuestionImagesOut()))
+                    .options(new ArrayList<>(entity.getOptions()))
+                    .answers(new ArrayList<>(entity.getAnswers()))
+                    .commentary(entity.getCommentary())
+                    .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
+                    .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
+                    .tagsMap(new HashMap<>(entity.getTagsMap()))
+                    .build();
+            questionsList.add(question);
+            count++;
+        }
+
+        return questionsList;
+    }
 }

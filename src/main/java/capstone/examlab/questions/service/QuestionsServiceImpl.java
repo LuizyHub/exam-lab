@@ -4,6 +4,8 @@ import capstone.examlab.image.dto.ImagesUploadInfo;
 import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.*;
 import capstone.examlab.questions.dto.search.QuestionsSearch;
+import capstone.examlab.questions.dto.update.QuestionUpdateDto;
+import capstone.examlab.questions.dto.update.QuestionsUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUpload;
 import capstone.examlab.questions.dto.upload.QuestionsUpload;
 import capstone.examlab.questions.entity.QuestionEntity;
@@ -190,7 +192,27 @@ public class QuestionsServiceImpl implements QuestionsService {
             questionsList.add(question);
             count++;
         }
-
         return questionsList;
     }
+
+    //Update 로직
+    @Override
+    public boolean updateQuestionsByUUID(QuestionsUpdateDto questionsUpdateDto) {
+        int size = questionsUpdateDto.size();
+        if(size == 0) return false;
+        for (QuestionUpdateDto questionUpdateDto : questionsUpdateDto) {
+            Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
+            optionalQuestion.ifPresent(question -> {
+                question.setQuestion(questionUpdateDto.getQuestion());
+                question.setOptions(questionUpdateDto.getOptions());
+                question.setAnswers(questionUpdateDto.getAnswers());
+                question.setCommentary(questionUpdateDto.getCommentary());
+                question.setTagsMap(questionUpdateDto.getTagsMap());
+                questionsRepository.save(question);
+            });
+        }
+        return true;
+    }
+
+
 }

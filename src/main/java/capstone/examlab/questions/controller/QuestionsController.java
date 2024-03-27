@@ -4,10 +4,10 @@ import capstone.examlab.image.dto.ImagesUploadInfo;
 import capstone.examlab.questions.dto.ImageSave;
 import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.dto.search.QuestionsSearch;
+import capstone.examlab.questions.dto.update.QuestionsUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionsUpload;
 import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.valid.ValidExamId;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +46,16 @@ public class QuestionsController {
     public QuestionsList selectQuestions(@PathVariable Long examId, @RequestBody QuestionsSearch questionsSearch) {
         log.info("questionOptionDto = {}", questionsSearch);
         return questionsService.searchFromQuestions(examId, questionsSearch);
+    }
+
+    //Update API
+    @PostMapping("/questions/update")
+    public ResponseEntity<String> updateQuestions(@RequestBody QuestionsUpdateDto questionsUpdateDto){
+        boolean updated = questionsService.updateQuestionsByUUID(questionsUpdateDto);
+        if(updated){
+            return ResponseEntity.ok("data update success");
+        }else{
+            return ResponseEntity.badRequest().body("data update error");
+        }
     }
 }

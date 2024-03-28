@@ -26,6 +26,27 @@ paths:
                 exams:
                   value: "[{\"exam_title\":\"운전면허\",\"sub_exams\":[{\"exam_id\":1,\"\
                     sub_title\":\"1종, 2종\"}]}]"
+  /api/v1/users:
+    post:
+      tags:
+      - users
+      summary: Add user
+      description: 사용자 추가성공할 경우 200 OK를 반환합니다실패할 경우 400 Bad Request를 반환합니다.
+      operationId: user add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-v1-users-963924044'
+            examples:
+              user add:
+                value: "{\"password\":\"a3308b90-a755-498b-9182-7866fa4ed31c!\",\"\
+                  password_confirm\":\"a3308b90-a755-498b-9182-7866fa4ed31c!\",\"\
+                  user_id\":\"a3308b90-a755-498b-9182-7866fa4ed31c@gmail.com\",\"\
+                  name\":\"a3308b90-a755-498b-9182-7866fa4ed31c\"}"
+      responses:
+        "200":
+          description: "200"
   /api/v1/users/login:
     post:
       tags:
@@ -42,8 +63,8 @@ paths:
               login:
                 value: "{\"password\":\"lab111!\",\"user_id\":\"lab1@gmail.com\"}"
       responses:
-        "302":
-          description: "302"
+        "200":
+          description: "200"
   /api/v1/users/logout:
     post:
       tags:
@@ -54,13 +75,6 @@ paths:
       responses:
         "200":
           description: "200"
-          content:
-            text/plain;charset=UTF-8:
-              schema:
-                $ref: '#/components/schemas/api-v1-users-logout486549215'
-              examples:
-                logout:
-                  value: ok
   /api/v1/users/status:
     get:
       tags:
@@ -73,12 +87,12 @@ paths:
         "200":
           description: "200"
           content:
-            text/plain;charset=UTF-8:
+            application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-users-logout486549215'
+                $ref: '#/components/schemas/api-v1-users-status615510992'
               examples:
                 user status:
-                  value: lab1
+                  value: "{\"user_name\":\"lab1\",\"login\":true}"
   /api/v1/exams/{examId}/type:
     get:
       tags:
@@ -164,5 +178,35 @@ components:
             - type: boolean
             - type: string
             - type: number
-    api-v1-users-logout486549215:
+    api-v1-users-status615510992:
+      required:
+      - login
+      - user_name
       type: object
+      properties:
+        user_name:
+          type: string
+          description: 사용자 이름
+        login:
+          type: boolean
+          description: 로그인 여부
+    api-v1-users-963924044:
+      required:
+      - name
+      - password
+      - password_confirm
+      - user_id
+      type: object
+      properties:
+        password:
+          type: string
+          description: Password
+        password_confirm:
+          type: string
+          description: Password confirm
+        user_id:
+          type: string
+          description: User id
+        name:
+          type: string
+          description: User name

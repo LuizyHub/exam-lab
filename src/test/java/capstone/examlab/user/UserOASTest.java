@@ -1,20 +1,17 @@
 package capstone.examlab.user;
 
 import capstone.examlab.RestDocsOpenApiSpecTest;
-import capstone.examlab.user.repository.UserRepository;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.Cookie;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
@@ -48,8 +45,8 @@ class UserOASTest extends RestDocsOpenApiSpecTest {
 
         this.mockMvc.perform(
                         get("/api/v1/users/status").session(session)
+                                .contentType("application/json")
                 )
-                .andExpect(content().string(userNm))
                 .andExpect(status().isOk())
                 .andDo(document("user status",
                         resource(ResourceSnippetParameters.builder()
@@ -58,6 +55,10 @@ class UserOASTest extends RestDocsOpenApiSpecTest {
                                         "로그인 상태가 아닌 경우 401 Unauthorized를 반환합니다.")
                                 .tag("users")
                                 .summary("Get user status")
+                                .responseFields(
+                                        fieldWithPath("login").description("로그인 여부"),
+                                        fieldWithPath("user_name").description("사용자 이름")
+                                )
                                 .build()
                         )
                 ));
@@ -90,14 +91,11 @@ class UserOASTest extends RestDocsOpenApiSpecTest {
             put("password", userPw);
         }};
 
-
-        System.out.println(objectMapper.writeValueAsString(request));
-        mockMvc.perform(post("/api/v1/users/login")
+        session = (MockHttpSession) mockMvc.perform(post("/api/v1/users/login")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request))
                 )
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"))
+                .andExpect(status().isOk())
                 .andDo(document("login", resource(ResourceSnippetParameters.builder()
                         .description("로그인" +
                                 "성공할 경우 redirect 시킵니다" +
@@ -107,6 +105,48 @@ class UserOASTest extends RestDocsOpenApiSpecTest {
                         .requestFields(
                                 fieldWithPath("user_id").description("User id").type("String"),
                                 fieldWithPath("password").description("Password").type("String")
+                        )
+                        .build()
+                )))
+                .andReturn().getRequest().getSession();
+
+        // 로그인 상태 확인
+        mockMvc.perform(get("/api/v1/users/status").session(session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("login").value(true))
+                .andExpect(jsonPath("user_name").value(userNm));
+    }
+
+    @Test
+    @Transactional
+    void userAdd() throws Exception {
+        final String userName = UUID.randomUUID().toString();
+        final String userId = String.format("%s@gmail.com", userName);
+        final String userPw = String.format("%s!", userName);
+        final String userPwConfirm = userPw;
+        Map<String, String> request = new HashMap<>() {{
+            put("user_id", userId);
+            put("password", userPw);
+            put("password_confirm", userPwConfirm);
+            put("name", userName);
+        }};
+
+        mockMvc.perform(post("/api/v1/users")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(request))
+                )
+                .andExpect(status().isOk())
+                .andDo(document("user add", resource(ResourceSnippetParameters.builder()
+                        .description("사용자 추가" +
+                                "성공할 경우 200 OK를 반환합니다" +
+                                "실패할 경우 400 Bad Request를 반환합니다.")
+                        .tag("users")
+                        .summary("Add user")
+                        .requestFields(
+                                fieldWithPath("user_id").description("User id"),
+                                fieldWithPath("password").description("Password"),
+                                fieldWithPath("password_confirm").description("Password confirm"),
+                                fieldWithPath("name").description("User name")
                         )
                         .build()
                 )));
@@ -120,7 +160,7 @@ class UserOASTest extends RestDocsOpenApiSpecTest {
         session = (MockHttpSession) mockMvc.perform(post("/api/v1/users/login")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().is3xxRedirection())
+                .andExpect(status().isOk())
                 .andReturn().getRequest().getSession();
     }
 

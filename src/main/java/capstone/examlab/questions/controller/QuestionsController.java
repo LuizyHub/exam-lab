@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -55,6 +57,29 @@ public class QuestionsController {
             return ResponseEntity.ok("data update success");
         }else{
             return ResponseEntity.badRequest().body("data update error");
+        }
+    }
+
+    //Delete API
+    //문제들(examId) 삭제 API
+    @DeleteMapping("{examId}/questions")
+    public ResponseEntity<String> deleteQuestionsByExamId(@PathVariable Long examId) {
+        boolean deleted = questionsService.deleteQuestionsByExamId(examId);
+        if (deleted) {
+            return ResponseEntity.ok("data delete success");
+        } else {
+            return ResponseEntity.badRequest().body("data delete error");
+        }
+    }
+
+    //문제들(List<uuid>) API
+    @DeleteMapping("questions/uuid")
+    public ResponseEntity<String> deleteQuestionsByUUID(@RequestBody List<String> uuidList) {
+        boolean deleted = questionsService.deleteQuestionsByUuidList(uuidList);
+        if (deleted) {
+            return ResponseEntity.ok("data delete success");
+        } else {
+            return ResponseEntity.badRequest().body("data delete error");
         }
     }
 }

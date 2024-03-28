@@ -1,19 +1,15 @@
 package capstone.examlab.questions.controller;
 
 import capstone.examlab.image.dto.ImagesUploadInfo;
-import capstone.examlab.questions.dto.ImageSave;
 import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.dto.search.QuestionsSearch;
 import capstone.examlab.questions.dto.update.QuestionsUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionsUpload;
 import capstone.examlab.questions.service.QuestionsService;
-import capstone.examlab.valid.ValidExamId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -51,6 +47,9 @@ public class QuestionsController {
     //Update API
     @PostMapping("/questions/update")
     public ResponseEntity<String> updateQuestions(@RequestBody QuestionsUpdateDto questionsUpdateDto){
+  /*      for (QuestionUpdateDto questionUpdateDto : questionsUpdateDto) {
+            log.info(questionUpdateDto.toString());
+        }*/
         boolean updated = questionsService.updateQuestionsByUUID(questionsUpdateDto);
         if(updated){
             return ResponseEntity.ok("data update success");

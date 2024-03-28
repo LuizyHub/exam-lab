@@ -1,8 +1,8 @@
-package capstone.examlab.user.config;
+package capstone.examlab.users.config;
 
-import capstone.examlab.user.domain.User;
-import capstone.examlab.user.domain.UserDoc;
-import capstone.examlab.user.domain.UserEntity;
+import capstone.examlab.users.domain.User;
+import capstone.examlab.users.domain.UserDoc;
+import capstone.examlab.users.domain.UserEntity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

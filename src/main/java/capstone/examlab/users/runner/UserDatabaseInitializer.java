@@ -1,7 +1,7 @@
-package capstone.examlab.user.runner;
+package capstone.examlab.users.runner;
 
-import capstone.examlab.user.domain.User;
-import capstone.examlab.user.repository.UserRepository;
+import capstone.examlab.users.domain.User;
+import capstone.examlab.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;

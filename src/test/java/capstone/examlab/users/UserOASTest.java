@@ -1,4 +1,4 @@
-package capstone.examlab.user;
+package capstone.examlab.users;
 
 import capstone.examlab.RestDocsOpenApiSpecTest;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;

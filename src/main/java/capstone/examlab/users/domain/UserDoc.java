@@ -1,4 +1,4 @@
-package capstone.examlab.user.domain;
+package capstone.examlab.users.domain;
 
 import lombok.Getter;
 import lombok.Setter;

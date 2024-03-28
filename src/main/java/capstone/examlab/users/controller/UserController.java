@@ -1,11 +1,11 @@
-package capstone.examlab.user.controller;
+package capstone.examlab.users.controller;
 
 import capstone.examlab.SessionConst;
-import capstone.examlab.user.argumentresolver.Login;
-import capstone.examlab.user.domain.User;
-import capstone.examlab.user.dto.LoginDto;
-import capstone.examlab.user.dto.UserAddDto;
-import capstone.examlab.user.service.UserService;
+import capstone.examlab.users.argumentresolver.Login;
+import capstone.examlab.users.domain.User;
+import capstone.examlab.users.dto.LoginDto;
+import capstone.examlab.users.dto.UserAddDto;
+import capstone.examlab.users.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -61,13 +61,6 @@ public class UserController {
                         @Validated @ModelAttribute("user") LoginDto loginDto, BindingResult bindingResult,
                         @RequestParam(defaultValue = "/") String redirectURL,
                         HttpServletRequest request) {
-//        log.info("loginDto={}", loginDto);
-//        log.info("loggedInUser={}", loggedInUser);
-//
-//        // 이미 로그인한 사용자가 있으면 로그인된 사용자 폼으로 이동
-//        if (loggedInUser != null) {
-//            return "users/loggedInForm";
-//        }
 
         // 압력 검증 오류
         if (bindingResult.hasErrors()) {

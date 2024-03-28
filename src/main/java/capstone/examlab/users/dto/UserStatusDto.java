@@ -1,4 +1,4 @@
-package capstone.examlab.user.dto;
+package capstone.examlab.users.dto;
 
 import lombok.Builder;
 import lombok.Data;

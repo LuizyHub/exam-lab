@@ -1,12 +1,12 @@
-package capstone.examlab.user.api;
+package capstone.examlab.users.api;
 
 import capstone.examlab.SessionConst;
-import capstone.examlab.user.argumentresolver.Login;
-import capstone.examlab.user.domain.User;
-import capstone.examlab.user.dto.LoginDto;
-import capstone.examlab.user.dto.UserAddDto;
-import capstone.examlab.user.dto.UserStatusDto;
-import capstone.examlab.user.service.UserService;
+import capstone.examlab.users.argumentresolver.Login;
+import capstone.examlab.users.domain.User;
+import capstone.examlab.users.dto.LoginDto;
+import capstone.examlab.users.dto.UserAddDto;
+import capstone.examlab.users.dto.UserStatusDto;
+import capstone.examlab.users.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

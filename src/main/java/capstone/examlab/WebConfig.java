@@ -1,6 +1,6 @@
 package capstone.examlab;
 
-import capstone.examlab.user.argumentresolver.LoginUserArgumentResolver;
+import capstone.examlab.users.argumentresolver.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

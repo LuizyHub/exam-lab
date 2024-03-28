@@ -1,6 +1,6 @@
-package capstone.examlab.user.repository;
+package capstone.examlab.users.repository;
 
-import capstone.examlab.user.domain.UserEntity;
+import capstone.examlab.users.domain.UserEntity;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -4,7 +4,7 @@ import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.repository.DriverLicenseQuestionsRepository;
 import capstone.examlab.questions.service.QuestionsService;
-import capstone.examlab.user.argumentresolver.LoginUserArgumentResolver;
+import capstone.examlab.users.argumentresolver.LoginUserArgumentResolver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,7 @@
 package capstone.examlab.user.controller;
 
 import capstone.examlab.SessionConst;
+import capstone.examlab.user.argumentresolver.Login;
 import capstone.examlab.user.domain.User;
 import capstone.examlab.user.dto.LoginDto;
 import capstone.examlab.user.dto.UserAddDto;
@@ -25,7 +26,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/add")
-    public String add(@Validated @ModelAttribute("user") UserAddDto userAddDto, BindingResult bindingResult) {
+    public String add(@Validated @ModelAttribute("user") UserAddDto userAddDto, BindingResult bindingResult,
+                      @RequestParam(defaultValue = "/") String redirectURL) {
 
         if (!userAddDto.getPassword().equals(userAddDto.getPasswordConfirm())) {
             bindingResult.reject("passwordConfirm", "비밀번호가 일치하지 않습니다.");
@@ -41,20 +43,40 @@ public class UserController {
 
         userService.addUser(userAddDto);
 
-        return "redirect:/";
+        return "redirect:" + redirectURL;
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/users/login";
     }
 
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute("user") LoginDto loginDto, BindingResult bindingResult,
+    public String login(@Login User loggedInUser,
+                        @Validated @ModelAttribute("user") LoginDto loginDto, BindingResult bindingResult,
                         @RequestParam(defaultValue = "/") String redirectURL,
                         HttpServletRequest request) {
+//        log.info("loginDto={}", loginDto);
+//        log.info("loggedInUser={}", loggedInUser);
+//
+//        // 이미 로그인한 사용자가 있으면 로그인된 사용자 폼으로 이동
+//        if (loggedInUser != null) {
+//            return "users/loggedInForm";
+//        }
+
+        // 압력 검증 오류
         if (bindingResult.hasErrors()) {
             return "users/loginForm";
         }
 
         Optional<User> user = userService.findUserById(loginDto.getUserId());
 
+        // 사용자가 없거나 비밀번호가 일치하지 않으면 로그인 폼으로 이동
         if (user.isEmpty() || !user.get().getPassword().equals(loginDto.getPassword())) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "users/loginForm";
@@ -70,9 +92,16 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(@ModelAttribute("user") LoginDto loginDto) {
+    public String login(@Login User loggedInUser,
+                        @ModelAttribute("user") LoginDto loginDto) {
+        // 이미 로그인한 사용자가 있으면 로그인된 사용자 폼으로 이동
+        if (loggedInUser != null) {
+            return "users/loggedInForm";
+        }
+
         return "users/loginForm";
     }
+
     @GetMapping("/add")
     public String add(@ModelAttribute("user") UserAddDto userAddDto) {
         return "users/addUserForm";

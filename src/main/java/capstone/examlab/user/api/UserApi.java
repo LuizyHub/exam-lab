@@ -4,6 +4,8 @@ import capstone.examlab.SessionConst;
 import capstone.examlab.user.argumentresolver.Login;
 import capstone.examlab.user.domain.User;
 import capstone.examlab.user.dto.LoginDto;
+import capstone.examlab.user.dto.UserAddDto;
+import capstone.examlab.user.dto.UserStatusDto;
 import capstone.examlab.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,28 +30,27 @@ public class UserApi {
     private final UserService userService;
 
     @GetMapping("/status")
-    public String status(@Login User user, HttpServletResponse response) {
+    public UserStatusDto status(@Login User user, HttpServletResponse response) {
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "fail";
+            return UserStatusDto.FAIL;
         }
-        return user.getName();
+        return UserStatusDto.builder().isLogin(true).userName(user.getName()).build();
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public void logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        return "ok";
     }
 
     @PostMapping("/login")
     public List<ObjectError> login(@Validated @RequestBody LoginDto loginDto, BindingResult bindingResult,
                                    @RequestParam(defaultValue = "/") String redirectURL,
                                    HttpServletRequest request,
-                                   HttpServletResponse response) throws IOException {
+                                   HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return bindingResult.getAllErrors();
@@ -70,7 +71,27 @@ public class UserApi {
         log.info("UserApi.login: user={}", user.get());
 
         session.setAttribute(SessionConst.LOGIN_USER, user.get().getId());
-        response.sendRedirect(redirectURL);
+        return null;
+    }
+
+    @PostMapping
+    public List<ObjectError> add(@Validated @RequestBody UserAddDto userAddDto, BindingResult bindingResult,
+                                 HttpServletResponse response) throws IOException {
+
+        if (!userAddDto.getPassword().equals(userAddDto.getPasswordConfirm())) {
+            bindingResult.reject("passwordConfirm", "비밀번호가 일치하지 않습니다.");
+        }
+
+        if (userService.isUserIdExist(userAddDto.getUserId())) {
+            bindingResult.reject("userId", "이미 사용중인 아이디입니다.");
+        }
+
+        if (bindingResult.hasErrors()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return bindingResult.getAllErrors();
+        }
+
+        userService.addUser(userAddDto);
         return null;
     }
 

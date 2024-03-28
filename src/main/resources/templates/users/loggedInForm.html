@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        .btn-primary {
+            background-color: #29B8B5;
+        }
+        .btn-primary:hover {
+            background-color: #238C8A;
+        }
+        .btn-primary:focus {
+            background-color: #238C8A;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2>로그인 되어있습니다</h2>
+    </div>
+
+    <form th:action="@{/users/logout}" method="post">
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-danger btn-lg" type="submit">로그아웃</button>
+            </div>
+        </div>
+    </form>
+
+
+</div> <!-- /container -->
+</body>
+</html>

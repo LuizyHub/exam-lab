@@ -12,6 +12,15 @@
             border-color: #dc3545;
             color: #dc3545;
         }
+        .btn-primary {
+            background-color: #29B8B5;
+        }
+        .btn-primary:hover {
+            background-color: #238C8A;
+        }
+        .btn-primary:focus {
+            background-color: #238C8A;
+        }
     </style>
 </head>
 <body>
@@ -63,8 +72,8 @@
                 <button class="w-100 btn btn-primary btn-lg" type="submit">회원 가입</button>
             </div>
             <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='items.html'"
-                        th:onclick="|location.href='@{/}'|"
+                <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='index.html'"
+                        th:onclick="|location.href='@{/users/login}'|"
                         type="button">취소</button>
             </div>
         </div>

@@ -4,12 +4,16 @@ import capstone.examlab.image.dto.ImagesUploadInfo;
 import capstone.examlab.questions.dto.QuestionsList;
 import capstone.examlab.questions.dto.search.QuestionsSearch;
 import capstone.examlab.questions.dto.update.QuestionsUpdateDto;
+import capstone.examlab.questions.dto.upload.QuestionUpload;
+import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.dto.upload.QuestionsUpload;
 import capstone.examlab.questions.service.QuestionsService;
+import capstone.examlab.valid.ValidExamId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,9 +23,21 @@ import java.util.List;
 @RequestMapping("api/v1/exams/")
 public class QuestionsController {
     private final QuestionsService questionsService;
+
     //Create API, '신규 문제' 저장 API
-    //Json형태의 텍스트 데이터 받기
     @PostMapping("{examId}/questions")
+    public ResponseEntity<String> addQuestionsByExamId(@PathVariable Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart List<MultipartFile> questionImagesIn, @RequestPart List<MultipartFile> questionImagesOut, @RequestPart List<MultipartFile> commentaryImagesIn, @RequestPart List<MultipartFile> commentaryImagesOut) {
+        boolean saved = questionsService.addQuestionsByExamId(examId, questionUploadInfo,questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
+        if(saved){
+            return ResponseEntity.ok("question add suucess");
+        }
+        else{
+            return ResponseEntity.badRequest().body("question add error");
+        }
+    }
+
+    //Json형태의 텍스트 데이터 받기
+/*    @PostMapping("{examId}/questions")
     public ResponseEntity<String> addQuestionsByExamId(@PathVariable Long examId, @RequestBody QuestionsUpload questionsUpload) {
         questionsService.addQuestionsByExamId(examId,questionsUpload );
         return ResponseEntity.ok("data add success");
@@ -37,7 +53,7 @@ public class QuestionsController {
         else{
             return ResponseEntity.badRequest().body("image add error");
         }
-    }
+    }*/
 
     //Read API
     @GetMapping("{examId}/questions/search")

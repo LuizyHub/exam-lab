@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ImageService {
-    String saveImageInS3(MultipartFile imageFile, int questionImagesOutCount);
+    String saveImageInS3(MultipartFile imageFile);
 }

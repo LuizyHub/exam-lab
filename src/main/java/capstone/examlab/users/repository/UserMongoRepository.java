@@ -1,6 +1,6 @@
-package capstone.examlab.user.repository;
+package capstone.examlab.users.repository;
 
-import capstone.examlab.user.domain.UserDoc;
+import capstone.examlab.users.domain.UserDoc;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

@@ -1,8 +1,8 @@
-package capstone.examlab.user.service;
+package capstone.examlab.users.service;
 
-import capstone.examlab.user.domain.User;
-import capstone.examlab.user.dto.UserAddDto;
-import capstone.examlab.user.repository.UserRepository;
+import capstone.examlab.users.domain.User;
+import capstone.examlab.users.dto.UserAddDto;
+import capstone.examlab.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;

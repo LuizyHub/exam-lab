@@ -1,8 +1,8 @@
-package capstone.examlab.user.argumentresolver;
+package capstone.examlab.users.argumentresolver;
 
 import capstone.examlab.SessionConst;
-import capstone.examlab.user.domain.User;
-import capstone.examlab.user.repository.UserRepository;
+import capstone.examlab.users.domain.User;
+import capstone.examlab.users.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

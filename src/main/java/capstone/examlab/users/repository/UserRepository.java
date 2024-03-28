@@ -1,6 +1,6 @@
-package capstone.examlab.user.repository;
+package capstone.examlab.users.repository;
 
-import capstone.examlab.user.domain.User;
+import capstone.examlab.users.domain.User;
 
 import java.util.Optional;
 

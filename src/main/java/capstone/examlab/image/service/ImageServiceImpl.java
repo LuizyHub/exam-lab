@@ -21,10 +21,10 @@ public class ImageServiceImpl implements ImageService{
     private final AmazonS3 amazonS3;
 
     @Transactional
-    public String saveImageInS3(MultipartFile multipartImage, int index){
+    public String saveImageInS3(MultipartFile multipartImage){
         String originalName = multipartImage.getOriginalFilename();
         String accessUrl = ""; //반환 URL저장
-        String filename = FOLDER_NAME+index+originalName;
+        String filename = FOLDER_NAME+originalName;
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(multipartImage.getContentType());

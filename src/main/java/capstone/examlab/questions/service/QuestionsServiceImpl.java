@@ -7,6 +7,7 @@ import capstone.examlab.questions.dto.search.QuestionsSearch;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.update.QuestionsUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUpload;
+import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.dto.upload.QuestionsUpload;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.repository.BoolQueryBuilder;
@@ -15,6 +16,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -35,6 +38,44 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Create 로직
     @Override
+    public boolean addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut ){
+        log.info(questionUploadInfo.toString());
+        for (int i = 0; i <questionImagesIn.size() ; i++) {
+            String imageUrl = imageService.saveImageInS3(questionImagesIn.get(i));
+            questionUploadInfo.getQuestionImagesTextIn().get(i).setUrl(imageUrl);
+        }
+        for (int i = 0; i <questionImagesOut.size() ; i++) {
+            String imageUrl = imageService.saveImageInS3(questionImagesOut.get(i));
+            questionUploadInfo.getQuestionImagesTextOut().get(i).setUrl(imageUrl);
+        }
+        for (int i = 0; i <commentaryImagesIn.size() ; i++) {
+            String imageUrl = imageService.saveImageInS3(commentaryImagesIn.get(i));
+            questionUploadInfo.getCommentaryImagesTextIn().get(i).setUrl(imageUrl);
+        }
+        for (int i = 0; i <commentaryImagesOut.size() ; i++) {
+            String imageUrl = imageService.saveImageInS3(commentaryImagesOut.get(i));
+            questionUploadInfo.getCommentaryImagesTextOut().get(i).setUrl(imageUrl);
+        }
+        //uuid랑 examid처리 해서 데이터 넣어주기
+        String uuid = UUID.randomUUID().toString();
+        QuestionEntity question = QuestionEntity.builder()
+                .id(uuid)
+                .examId(examId)
+                .type(questionUploadInfo.getType())
+                .question(questionUploadInfo.getQuestion())
+                .options(questionUploadInfo.getOptions())
+                .questionImagesIn(questionUploadInfo.getQuestionImagesTextIn())
+                .questionImagesOut(questionUploadInfo.getQuestionImagesTextOut())
+                .answers(questionUploadInfo.getAnswers())
+                .commentary(questionUploadInfo.getCommentary())
+                .commentaryImagesIn(questionUploadInfo.getCommentaryImagesTextIn())
+                .commentaryImagesOut(questionUploadInfo.getCommentaryImagesTextOut())
+                .tagsMap(questionUploadInfo.getTagsMap())
+                .build();
+        questionsRepository.save(question);
+        return questionsRepository.existsById(uuid);
+    }
+ /*   @Override
     public void addQuestionsByExamId(Long examId, QuestionsUpload questionsUploadDto) {
         List<QuestionEntity> questionEntities = new ArrayList<>();
         if(questionsUploadDto != null) {
@@ -157,7 +198,7 @@ public class QuestionsServiceImpl implements QuestionsService {
             }
         }
         return true;
-    }
+    }*/
 
     //Read 로직
     @Override

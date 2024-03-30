@@ -19,7 +19,7 @@ public class UserDatabaseInitializer implements ApplicationRunner {
     private final UserRepository userRepository;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         try {
             User user1 = userProvider.getObject();
             user1.setUserId("lab1@gmail.com");
@@ -28,7 +28,7 @@ public class UserDatabaseInitializer implements ApplicationRunner {
 
             userRepository.save(user1);
         } catch (DuplicateKeyException e) {
-            log.error("User data already exists");
+            log.warn("Test User data already exists");
         }
 
         try {
@@ -39,7 +39,7 @@ public class UserDatabaseInitializer implements ApplicationRunner {
 
             userRepository.save(user2);
         } catch (DuplicateKeyException e) {
-            log.error("User data already exists");
+            log.warn("Test User data already exists");
         }
 
         try {
@@ -50,7 +50,7 @@ public class UserDatabaseInitializer implements ApplicationRunner {
 
             userRepository.save(user3);
         } catch (DuplicateKeyException e) {
-            log.error("User data already exists");
+            log.warn("Test User data already exists");
         }
     }
 }

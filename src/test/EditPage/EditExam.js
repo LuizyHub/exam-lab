@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { isElement } from 'react-dom/test-utils';
+import parse from 'html-react-parser';
 
 export default function EditExam() {
   const [content, setContent] = useState('');
   const [contentType, setContentType] = useState('');
-  const [imageFiles, setImageFiles] = useState([]); // 이미지 파일들을 저장할 배열 상태-> 이부분 수정 필요 정확히 역할은?
-  const [imageUrl, setImageUrl] = useState([]); //이미지 url값을 저장.. 배열로
+  // const [imageFiles, setImageFiles] = useState([]); // 이미지 파일들을 저장할 배열 상태-> 이부분 수정 필요 정확히 역할은?
+  const [isImageUrl, setImageUrl] = useState([]); //이미지 url값을 저장.. 배열로
+  const [isImageId, setImageId] = useState([]); // 이미지의 ID를 저장하는 상태 변수
   const [isImageSize, setImageSize] = useState(50); //이미지 크기 값 저장
   // 여기서 우리가 style로 직접 주게된다면 style들을 저장하거나 해당 요소들을 확인 할 수 있는 코드를 작성해야한다.
   const imageSelectorRef = useRef(null); // 파일 선택 input 요소에 접근에 대한 참조
@@ -14,10 +15,8 @@ export default function EditExam() {
   const [editorState, setEditorState] = useState({
     type: '',
     content: '',
-    imageUrl: []
+    isImageUrl: []
   });
-
-  // const { contentOBJ, imageFilesOBJ, imageUrlOBJ } = editorState;
 
   //---------------------------------------------------------------------- Tool Click area
   const focusEditor = () => {
@@ -37,6 +36,7 @@ export default function EditExam() {
     setStyle(element);
     focusEditor();
   }
+
   //contentType
   const handleContentType = (e) => { //여기서 setContentType이 적용이 되기 때문에 
     //----------------------------------------------------------------------------------------------------------- content를 저장하는 부분
@@ -46,42 +46,121 @@ export default function EditExam() {
     // console.log(editorState);
   }
 
+  //tool button ctrl
   const handleImgToolClick = () => {//imageSelectorRef와 유사하게 작명이 필요하다. 즉, ref를 통해서 동작하는 fn명은 유사할 필요가 있다.
     // 파일 선택 input을 클릭합니다.
     imageSelectorRef.current.click();
   }
 
+  const handleImgSize = (e) => {
+    const value = parseInt(e.currentTarget.value); //이벤트로 가져온 value
+    setImageSize(value); //아직 딜레이가 있음 이걸 해결 해야함
+    console.log(value);
+
+    const Image = document.querySelector('img');
+    Image.style.maxWidth = `${isImageSize}%`;
+    console.log(Image);
+  }
 
   //---------------------------------------------------------------------- save data area
   //여기에 html로 저장이 될 수 있게 코드를 작성
   //이 코드가 납득이 안된다..
   const handleContent = () => {
-    //----------------------------------------------------------------------------------------------------------- content를 저장하는 부분
-    const inputContent = editorRef.current.innerHTML; //여기에는 html의 입력란을 제외한 html이 값이 들어간다.
+    // content를 저장하는 부분
+    const inputContent = editorRef.current.innerHTML;
     setContent(inputContent);
-    // setEditorState({ ...editorState, content: inputContent }); //객체에 배열값을 저장하는 코드
-    // console.log("Updated editorState:", editorState); // editorState 값을 확인
-    console.log(contentType, content, imageUrl);
+    console.log(`Data push : ${contentType}, ${content}, ${isImageUrl}`);
+
+    // 이미지 추적
+    const parsedContent = parse(inputContent);
+    let hasImages = false;
+    const updatedImageIds = [...isImageId]; // 새로운 이미지 ID 배열
+    const updatedImageUrls = [...isImageUrl]; // 새로운 이미지 URL 배열
+
+    React.Children.forEach(parsedContent, child => {
+      if (child.type === 'img') {
+        hasImages = true;
+        const imageUrl = child.props.src;
+        const imageId = child.props.id; // 이미지에 고유 아이디가 있다
+
+        // 이미지가 배열에 없는 경우에만 추가합니다.
+        if (!updatedImageIds.includes(imageId)) {
+          updatedImageIds.push(imageId);
+        }
+
+        if (!updatedImageUrls.includes(imageUrl)) {
+          updatedImageUrls.push(imageUrl);
+        }
+        console.log('이미지 URL:', updatedImageUrls);
+        // console.log('이미지 imageUrl', imageUrl);
+      }
+    });
+
+    // 이미지가 포함되지 않은 경우에는 imageIds와 imageUrls를 비웁니다.
+    if (!hasImages && (isImageId.length > 0 || isImageUrl.length > 0)) {
+      console.log('이미지가 포함되지 않았습니다. 이미지 ID와 URL을 초기화합니다.');
+      setImageId([]);
+      setImageUrl([]);
+    } else {
+      setImageId(updatedImageIds); // 새로운 이미지 ID 배열로 업데이트합니다.
+      setImageUrl(updatedImageUrls); // 새로운 이미지 URL 배열로 업데이트합니다.
+    }
+
+    //이미지 정규식으로 추출 및 추적
+    // --------------------------------------------------------- 이미지 태그의 id를 추출하는 정규 표현식
+    const imgIdRegex = /<img.*?id="(.*?)".*?>/g;
+
+    // inputContent에서 이미지 태그의 id를 추출하여 배열에 저장
+    const imageIdsInContent = [];
+    let idMatch;
+    while ((idMatch = imgIdRegex.exec(inputContent)) !== null) {
+      imageIdsInContent.push(idMatch[1]);
+    }
+
+    // 이미지가 삭제되었는지 확인하고, 해당 아이디가 없는 경우 배열에서 제거합니다.
+    const remainingImageIds = updatedImageIds.filter(id => {
+      return imageIdsInContent.includes(id);
+      // if (isImageUrl.includes(src)) {
+      //   console.log(src);
+      // }
+    });
+
+    setImageId(remainingImageIds);
+    console.log('삭제된 이미지의 ID:', isImageId);
+
+    // ---------------------------------------------------------------- 이미지 태그의 url로 추출하는 정규 표현식
+    // 이미지 태그의 src를 추출하는 정규 표현식
+    const imgSrcRegex = /<img.*?src="(.*?)".*?>/g;
+
+    // inputContent에서 이미지 태그의 src를 추출하여 배열에 저장
+    const imageUrlsInContent = [];
+    let urlMatch;
+    while ((urlMatch = imgSrcRegex.exec(inputContent)) !== null) {
+      imageUrlsInContent.push(urlMatch[1]);
+    }
+
+    // 이미지가 삭제되었는지 확인하고, 해당 URL이 없는 경우 배열에서 제거합니다.
+    const remainingImageUrls = updatedImageUrls.filter(url => {
+      return imageUrlsInContent.includes(url);
+    });
+
+    setImageUrl(remainingImageUrls);
+    console.log('삭제된 이미지의 ID:', isImageUrl);
+
+    // if (hasImages) {
+    //   console.log('이미지가 포함되어 있습니다.');
+    // } else {
+    //   console.log('이미지가 포함되어 있지 않습니다.');
+    // }
   };
 
   //어떤 동작을 해도 데이터를 저장하는 코드
   useEffect(() => {
-    handleContent();
-  }, [content, contentType, imageUrl]);
+    handleContent();//저장만 되게 해야하는데 여기서 계속해서 이미지의 url을 확인하고 저장하고 있음
+  }, [content, contentType]);
 
   //---------------------------------------------------------------------- image uploading area
 
-
-  // 에디터가 업데이트될 때 이미지 삽입
-  /** 
-  왜 useEffect를 사용해야 하는건가? -> 렌더링 문제 때문에 그렇다. 더 명확한 답이 필요하다.
-  useEffect(() => {
-    if (editorRef.current && imageFiles.length > 0) {
-      const file = imageFiles[imageFiles.length - 1];
-      insertImageData(file, 300);//이미지 크기를 인자로 전달 그리고 조절
-    }
-  }, [imageFiles]);
-*/
   // 이미지 선택 핸들러
   const handleImageSelect = (e) => {
     const files = e.target.files;
@@ -99,22 +178,34 @@ export default function EditExam() {
         return;
       }
 
-      // 이미지 파일을 읽어들임
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const imageDataUrl = e.target.result;
-        //--------------------------------------------------------------------------------------------- 이미지 URL 배열에 추가
-        setImageUrl([...imageUrl, imageDataUrl]);
-        // 이미지 삽입
-        insertImageData(imageDataUrl);
-      };
-      reader.readAsDataURL(file);
+      readImageData(file);
+
     }
+  };
+
+  const readImageData = (file) => {
+    // 이미지 파일을 읽어들임
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const imageDataUrl = e.target.result;
+      //--------------------------------------------------------------------------------------------- 이미지 URL 배열에 추가
+      // setImageUrl([...isImageUrl, imageDataUrl]);
+      // 이미지 삽입
+      insertImageData(imageDataUrl);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // 고유한 아이디 생성 함수
+  const generateUniqueId = () => {
+    return 'img_' + Math.random().toString(36).substr(2, 9); // 랜덤한 문자열을 이용한 고유 아이디 생성
   };
 
   // 이미지 삽입 함수
   const insertImageData = (imageDataUrl) => {
     const imgElement = document.createElement('img');
+    const imageId = generateUniqueId(); // 고유한 아이디 생성
+    imgElement.setAttribute('id', imageId); // 이미지에 아이디 설정
     imgElement.src = imageDataUrl;
     // 이미지 크기를 조절
     imgElement.style.maxWidth = '50%';
@@ -125,20 +216,9 @@ export default function EditExam() {
     } else {
       console.error("Editor reference is null.");
     }
-  };
 
-  //----------------------------------------------------클릭된 이미지 확인 하는 코드
-  const handleImageCheck = (imgElement, size) => {
-    // const queryImage = document.querySelector('img');
-    // console.log(queryImage);
-    //해당 이미지가 생성되어 있는 요소이기에 addEventlistener로 접근해야한다.
-    imgElement.addEventListener('click', () => {
-      console.log(imgElement);
-      let currentSize = parseInt(imgElement.style.maxWidth);
-      currentSize = size; // 예시로 10% 감소시킵니다.
-      imgElement.style.maxWidth = `${currentSize}%`;
-    });
-  };
+  }
+
 
   return (
     <div>
@@ -156,20 +236,13 @@ export default function EditExam() {
         <button name='strikeThrough' onClick={handleToolClick} style={{ marginRight: '5px' }}><s>S</s></button>
         <button onClick={handleImgToolClick} style={{ marginRight: '5px' }}>IMG</button>
 
-        <input type='number' value={isImageSize} onChange={(e) => {
-          const Image = document.querySelector('img');
-          const value = parseInt(e.target.value); //이벤트로 가져온 value
-          setImageSize(value); //아직 딜레이가 있음 이걸 해결 해야함
-          console.log(value)
-          Image.style.maxWidth = `${isImageSize}%`;
-          console.log(Image);
-        }} style={{ width: '60px' }} />
+        <input type='number' value={isImageSize} onChange={handleImgSize} style={{ width: '60px' }} />
       </div>
 
       <input
         type="file"
         accept="image/*"
-        style={{ display: 'none' }}
+        // style={{ display: 'none' }}
         ref={imageSelectorRef}
         onChange={handleImageSelect}
       />

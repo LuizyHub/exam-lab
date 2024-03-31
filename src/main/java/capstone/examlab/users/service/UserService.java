@@ -19,13 +19,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-
     public void addUser(UserAddDto userAddDto) {
         User user = userProvider.getObject();
 
-        user.setUserId(userAddDto.getUserId());
-        user.setName(userAddDto.getName());
-        user.setPassword(userAddDto.getPassword());
+        user.setByUserAddDto(userAddDto);
 
         userRepository.save(user);
     }
@@ -35,8 +32,6 @@ public class UserService {
     }
 
     public boolean isUserIdExist(String userId) {
-        return userRepository.findByUserId(userId).isPresent();
+        return findUserById(userId).isPresent();
     }
-
-
 }

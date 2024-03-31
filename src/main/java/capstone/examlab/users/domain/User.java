@@ -1,5 +1,6 @@
 package capstone.examlab.users.domain;
 
+import capstone.examlab.users.dto.UserAddDto;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
@@ -18,4 +19,10 @@ public abstract class User {
     abstract public String getUserId();
 
     abstract public void setUserId(String userId);
+
+    public void setByUserAddDto(UserAddDto userAddDto) {
+        this.setUserId(userAddDto.getUserId());
+        this.setName(userAddDto.getName());
+        this.setPassword(userAddDto.getPassword());
+    }
 }

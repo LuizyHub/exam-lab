@@ -14,9 +14,9 @@ public interface QuestionsService {
 
     QuestionsList searchFromQuestions(Long examId, QuestionsSearch questionsSearch);
 
-    boolean updateQuestionsByUUID(QuestionUpdateDto questionsUpdateDto);
+    boolean updateQuestionsByQuestionId(QuestionUpdateDto questionsUpdateDto);
 
     boolean deleteQuestionsByExamId(Long examId);
 
-    boolean deleteQuestionsByUuidList(String uuid);
+    boolean deleteQuestionsByQuestionId(String questionId);
 }

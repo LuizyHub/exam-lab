@@ -1,4 +1,4 @@
-package capstone.examlab.exams.entity;
+package capstone.examlab.exams.domain;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,16 +15,13 @@ import java.util.*;
 @Slf4j
 @Data
 @Entity
-public class SubExam {
+public class Exam {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long subExamId;
+    private Long examId;
 
-    private String subExamTitle;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exam_id")
-    private Exam exam;
+    private String examTitle;
 
     @Getter(AccessLevel.NONE) // 이 필드에 대한 getter는 생성하지 않음
     @Setter(AccessLevel.NONE) // 이 필드에 대한 setter는 생성하지 않음
@@ -61,7 +57,7 @@ public class SubExam {
             // Map을 JSON 문자열로 변환하여 metadata에 저장합니다.
             this.typesMetadata = objectMapper.writeValueAsString(types);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Map을 JSON 문자열로 변환하는 중 에러가 발생했습니다. = {}", e.getMessage());
         }
     }
 }

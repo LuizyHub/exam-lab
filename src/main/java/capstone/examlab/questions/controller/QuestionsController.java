@@ -42,7 +42,7 @@ public class QuestionsController {
     }
 
     //Update API
-    @PatchMapping("/questions")
+    @PutMapping("/questions")
     public ResponseEntity<String> updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto){
         boolean updated = questionsService.updateQuestionsByQuestionId(questionUpdateDto);
         if(updated){

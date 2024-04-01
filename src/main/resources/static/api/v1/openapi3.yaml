@@ -24,8 +24,33 @@ paths:
                 $ref: '#/components/schemas/ExamList'
               examples:
                 exams:
-                  value: "[{\"exam_title\":\"운전면허\",\"sub_exams\":[{\"exam_id\":1,\"\
-                    sub_title\":\"1종, 2종\"}]}]"
+                  value: "[{\"exam_title\":\"운전면허 - 1,2종\",\"exam_id\":1},{\"exam_title\"\
+                    :\"수능 - 영어\",\"exam_id\":2}]"
+    post:
+      tags:
+      - exams
+      summary: Add exams
+      description: 회원만이 시험을 추가할 수 있습니다.
+      operationId: add-exams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamAdd'
+            examples:
+              add-exams:
+                value: "{\"types\":{\"난이도\":[\"상\",\"중\",\"하\"],\"단원\":[\"1\",\"2\"\
+                  ,\"3\"]},\"exam_title\":\"소웨공\"}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-exams-examId486549215'
+              examples:
+                add-exams:
+                  value: "3"
   /api/v1/users:
     post:
       tags:
@@ -40,10 +65,79 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"a3308b90-a755-498b-9182-7866fa4ed31c!\",\"\
-                  password_confirm\":\"a3308b90-a755-498b-9182-7866fa4ed31c!\",\"\
-                  user_id\":\"a3308b90-a755-498b-9182-7866fa4ed31c@gmail.com\",\"\
-                  name\":\"a3308b90-a755-498b-9182-7866fa4ed31c\"}"
+                value: "{\"password\":\"47f9efa3-cf5b-4049-ae6a-2e98c8441a78!\",\"\
+                  password_confirm\":\"47f9efa3-cf5b-4049-ae6a-2e98c8441a78!\",\"\
+                  user_id\":\"47f9efa3-cf5b-4049-ae6a-2e98c8441a78@gmail.com\",\"\
+                  name\":\"47f9efa3-cf5b-4049-ae6a-2e98c8441a78\"}"
+      responses:
+        "200":
+          description: "200"
+  /api/v1/exams/{examId}:
+    get:
+      tags:
+      - exams
+      summary: Get exam type
+      description: Get exam type
+      operationId: exam-typenon-exam-type
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamType'
+              examples:
+                exam-type:
+                  value: "{\"tags\":[\"상황\",\"표지\",\"화물\",\"법\"]}"
+        "400":
+          description: "400"
+    delete:
+      tags:
+      - exams
+      summary: Patch exams
+      description: 본인의 시험만 수정할 수 있습니다.시험 내용을 덮어쓰기 합니다.
+      operationId: delete-exams
+      parameters:
+      - name: examId
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+    patch:
+      tags:
+      - exams
+      summary: Delete exams
+      description: 본인의 시험만 삭제할 수 있습니다
+      operationId: patch-exams
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-v1-exams-examId486549215'
+            examples:
+              patch-exams:
+                value: "{\"types\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"\
+                  1\",\"2\",\"3\",\"4\",\"5\"]}}"
       responses:
         "200":
           description: "200"
@@ -93,35 +187,28 @@ paths:
               examples:
                 user status:
                   value: "{\"user_name\":\"lab1\",\"login\":true}"
-  /api/v1/exams/{examId}/type:
-    get:
-      tags:
-      - exams
-      summary: Get exam type
-      description: Get exam type
-      operationId: exam-typenon-exam-type
-      parameters:
-      - name: examId
-        in: path
-        description: Exam id
-        required: true
-        schema:
-          type: integer
-          format: int32
-      responses:
-        "200":
-          description: "200"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExamType'
-              examples:
-                exam-type:
-                  value: "{\"tags\":[\"상황\",\"표지\",\"화물\",\"법\"]}"
-        "400":
-          description: "400"
 components:
   schemas:
+    ExamAdd:
+      title: ExamAdd
+      type: object
+    ExamList:
+      title: ExamList
+      type: array
+      description: List of exams
+      items:
+        required:
+        - exam_id
+        - exam_title
+        type: object
+        properties:
+          exam_id:
+            type: number
+            description: Exam id
+          exam_title:
+            type: string
+            description: Exam title
+        description: List of exams
     api-v1-users-login1770795545:
       required:
       - password
@@ -134,35 +221,6 @@ components:
         user_id:
           type: string
           description: User id
-    ExamList:
-      title: ExamList
-      type: array
-      description: List of exams
-      items:
-        required:
-        - exam_title
-        - sub_exams
-        type: object
-        properties:
-          sub_exams:
-            type: array
-            description: List of sub exams
-            items:
-              required:
-              - exam_id
-              - sub_title
-              type: object
-              properties:
-                sub_title:
-                  type: string
-                  description: Sub exam title
-                exam_id:
-                  type: number
-                  description: Sub exam id
-          exam_title:
-            type: string
-            description: Exam title
-        description: List of exams
     ExamType:
       title: ExamType
       required:
@@ -178,6 +236,8 @@ components:
             - type: boolean
             - type: string
             - type: number
+    api-v1-exams-examId486549215:
+      type: object
     api-v1-users-status615510992:
       required:
       - login

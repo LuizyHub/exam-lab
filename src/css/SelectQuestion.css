@@ -18,8 +18,8 @@
 
 .tags button {
     margin-left: 10px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #E8F6F6;
+    color: #2D2C2B;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
@@ -28,7 +28,7 @@
 }
 
 .tags button.selected-tag {
-    background-color: blue;
+    background-color: #5BB6B4;
 }
 
 .keyword-list {
@@ -84,8 +84,8 @@
 }
 
 .question-count button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #E8F6F6;
+    color: #2D2C2B;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
@@ -99,7 +99,7 @@
 }
 
 .question-count button.selected-count {
-    background-color: blue;
+    background-color: #5BB6B4;
 }
 
 input[type="text"] {
@@ -109,7 +109,7 @@ input[type="text"] {
 }
 
 input[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #5BB6B4;
     color: white;
     border: none;
     border-radius: 5px;
@@ -119,5 +119,5 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #5BB6B4;
 }

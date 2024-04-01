@@ -1,38 +1,24 @@
 package capstone.examlab.exams.controller;
 
 import capstone.examlab.RestDocsOpenApiSpecTest;
-import capstone.examlab.exams.dto.*;
-import capstone.examlab.exams.repository.ExamRepository;
-import capstone.examlab.exams.service.ExamsService;
-import capstone.examlab.questions.dto.QuestionsList;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.Schema;
 import com.epages.restdocs.apispec.SimpleType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@WebMvcTest(ExamsController.class)
 @SpringBootTest
 @Tag("openapi_test")
 class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
@@ -59,9 +45,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .responseFields(
                                         fieldWithPath("[]").description("List of exams").type(JsonFieldType.ARRAY),
                                         subsectionWithPath("[].exam_title").description("Exam title").type(JsonFieldType.STRING),
-                                        fieldWithPath("[].sub_exams").description("List of sub exams"),
-                                        fieldWithPath("[].sub_exams[].exam_id").description("Sub exam id").type(JsonFieldType.NUMBER),
-                                        fieldWithPath("[].sub_exams[].sub_title").description("Sub exam title").type(JsonFieldType.STRING)
+                                        fieldWithPath("[].exam_id").description("Exam id").type(JsonFieldType.NUMBER)
                                 )
                                 .responseSchema(Schema.schema("ExamList"))
                                 .build()

@@ -12,10 +12,6 @@ import java.util.List;
 public interface QuestionsService {
     boolean addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut );
 
-    //void addQuestionsByExamId(Long examId, QuestionsUpload questionsUpload);
-
-    //boolean addImageInQuestions(ImagesUploadInfo imagesUploadInfo);
-
     QuestionsList searchFromQuestions(Long examId, QuestionsSearch questionsSearch);
 
     boolean updateQuestionsByUUID(QuestionUpdateDto questionsUpdateDto);

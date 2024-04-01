@@ -20,7 +20,7 @@ import java.util.List;
 public class QuestionsController {
     private final QuestionsService questionsService;
 
-    //Create API, '신규 문제' 저장 API
+    //Create API
     @PostMapping("{examId}/questions")
     public ResponseEntity<String> addQuestionsByExamId(@PathVariable Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
            @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn, @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut) {
@@ -33,25 +33,6 @@ public class QuestionsController {
         }
     }
 
-    //Json형태의 텍스트 데이터 받기
-/*    @PostMapping("{examId}/questions")
-    public ResponseEntity<String> addQuestionsByExamId(@PathVariable Long examId, @RequestBody QuestionsUpload questionsUpload) {
-        questionsService.addQuestionsByExamId(examId,questionsUpload );
-        return ResponseEntity.ok("data add success");
-    }
-
-    //form-data형식으로 imageFile 및 데이터 받기
-    @PostMapping("questions/image")
-    public ResponseEntity<String> addImagesInQuestions(@ModelAttribute ImagesUploadInfo imagesUploadInfo) {
-        boolean notNull = questionsService.addImageInQuestions(imagesUploadInfo);
-        if(notNull) {
-            return ResponseEntity.ok("image add success");
-        }
-        else{
-            return ResponseEntity.badRequest().body("image add error");
-        }
-    }*/
-
     //Read API
     @GetMapping("{examId}/questions/search")
     public QuestionsList selectQuestions(@PathVariable Long examId, @RequestBody QuestionsSearch questionsSearch) {
@@ -62,9 +43,6 @@ public class QuestionsController {
     //Update API
     @PostMapping("/questions/update")
     public ResponseEntity<String> updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto){
-  /*      for (QuestionUpdateDto questionUpdateDto : questionsUpdateDto) {
-            log.info(questionUpdateDto.toString());
-        }*/
         boolean updated = questionsService.updateQuestionsByUUID(questionUpdateDto);
         if(updated){
             return ResponseEntity.ok("data update success");
@@ -73,8 +51,7 @@ public class QuestionsController {
         }
     }
 
-    //Delete API
-    //문제들(examId) 삭제 API
+    //Delete API with examId
     @DeleteMapping("{examId}/questions")
     public ResponseEntity<String> deleteQuestionsByExamId(@PathVariable Long examId) {
         boolean deleted = questionsService.deleteQuestionsByExamId(examId);
@@ -85,7 +62,7 @@ public class QuestionsController {
         }
     }
 
-    //문제들(List<uuid>) API
+    //Delete Api with uuid
     @DeleteMapping("questions/{uuid}")
     public ResponseEntity<String> deleteQuestionsByUUID(@PathVariable String uuid) {
         boolean deleted = questionsService.deleteQuestionsByUuidList(uuid);

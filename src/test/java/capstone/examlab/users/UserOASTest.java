@@ -21,6 +21,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
+@Transactional
 @Tag("openapi_test")
 class UserOASTest extends RestDocsOpenApiSpecTest {
 

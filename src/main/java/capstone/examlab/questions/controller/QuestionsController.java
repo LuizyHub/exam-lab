@@ -5,6 +5,7 @@ import capstone.examlab.questions.dto.search.QuestionsSearch;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.service.QuestionsService;
+import capstone.examlab.valid.ValidExamId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -34,16 +35,16 @@ public class QuestionsController {
     }
 
     //Read API
-    @GetMapping("{examId}/questions/search")
-    public QuestionsList selectQuestions(@PathVariable Long examId, @RequestBody QuestionsSearch questionsSearch) {
+    @GetMapping("{examId}/questions")
+    public QuestionsList selectQuestions(@PathVariable @ValidExamId Long examId, @RequestBody QuestionsSearch questionsSearch) {
         log.info("questionOptionDto = {}", questionsSearch);
         return questionsService.searchFromQuestions(examId, questionsSearch);
     }
 
     //Update API
-    @PostMapping("/questions/update")
+    @PatchMapping("/questions")
     public ResponseEntity<String> updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto){
-        boolean updated = questionsService.updateQuestionsByUUID(questionUpdateDto);
+        boolean updated = questionsService.updateQuestionsByQuestionId(questionUpdateDto);
         if(updated){
             return ResponseEntity.ok("data update success");
         }else{
@@ -53,7 +54,7 @@ public class QuestionsController {
 
     //Delete API with examId
     @DeleteMapping("{examId}/questions")
-    public ResponseEntity<String> deleteQuestionsByExamId(@PathVariable Long examId) {
+    public ResponseEntity<String> deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId) {
         boolean deleted = questionsService.deleteQuestionsByExamId(examId);
         if (deleted) {
             return ResponseEntity.ok("data delete success");
@@ -62,10 +63,10 @@ public class QuestionsController {
         }
     }
 
-    //Delete Api with uuid
-    @DeleteMapping("questions/{uuid}")
-    public ResponseEntity<String> deleteQuestionsByUUID(@PathVariable String uuid) {
-        boolean deleted = questionsService.deleteQuestionsByUuidList(uuid);
+    //Delete Api with questionId
+    @DeleteMapping("questions/{questionId}")
+    public ResponseEntity<String> deleteQuestionsByQuestionId(@PathVariable String questionId) {
+        boolean deleted = questionsService.deleteQuestionsByQuestionId(questionId);
         if (deleted) {
             return ResponseEntity.ok("data delete success");
         } else {

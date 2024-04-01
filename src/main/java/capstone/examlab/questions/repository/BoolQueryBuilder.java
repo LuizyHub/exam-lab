@@ -14,16 +14,15 @@ public class BoolQueryBuilder {
         // "must" 조건을 추가할 리스트 생성
         List<Query> mustQueries = new ArrayList<>();
 
-        // "must" 조건에 해당하는 Term 쿼리들 추가
+        // "must" 조건(examId, tagsMap)에 해당하는 Term 쿼리들 추가
         mustQueries.add(new TermQuery.Builder().field("examId").value(examId).build()._toQuery());
-
         Map<String, List<String>> tagsMap = questionsSearch.getTagsMap();
         if (tagsMap != null) {
             for (Map.Entry<String, List<String>> entry : tagsMap.entrySet()) {
-                String key = "tagsMap."+entry.getKey(); // 키 가져오기
-                List<String> values = entry.getValue(); // 값 리스트 가져오기
+                String key = "tagsMap."+entry.getKey();
+                List<String> values = entry.getValue();
 
-                // 각 값에 대해 쿼리 생성
+                // 각 tag 'key-value'에 대해 쿼리 생성
                 for (String value : values) {
                     mustQueries.add(new TermQuery.Builder().field(key).value(value).build()._toQuery());
                 }
@@ -31,19 +30,17 @@ public class BoolQueryBuilder {
         }
 
         List<String> includes = questionsSearch.getIncludes();
-        // question 필드에 운전면허를 포함하는 MatchPhrasePrefix 쿼리 추가
+        //검색어 포함 여부를 위한 MatchPhrasePrefix 쿼리 추가
         if(includes!=null){
             for (String include : includes) {
                 mustQueries.add(new MatchPhrasePrefixQuery.Builder()
                         .field("question")
-                        .query(include)  // query 설정
+                        .query(include)
                         .build()._toQuery());
             }
         }
 
-        // BoolQuery 빌더 생성
         BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();
-
         // 생성했던 "must" 조건 설정
         boolQueryBuilder.must(mustQueries);
 

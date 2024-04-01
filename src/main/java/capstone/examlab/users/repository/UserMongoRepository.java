@@ -5,6 +5,6 @@ import capstone.examlab.users.domain.UserDoc;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-@ProfileMongo
+@Profile("mongo")
 public interface UserMongoRepository extends MongoRepository<UserDoc, String>, UserRepository<UserDoc>{
 }

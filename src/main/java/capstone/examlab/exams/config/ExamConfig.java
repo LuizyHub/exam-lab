@@ -1,6 +1,6 @@
 package capstone.examlab.exams.config;
 
-import capstone.examlab.config.ProfileJPA;
+import capstone.examlab.config.profile.ProfileJPA;
 import capstone.examlab.exams.domain.Exam;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

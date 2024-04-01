@@ -1,5 +1,7 @@
 package capstone.examlab.users.config;
 
+import capstone.examlab.config.profile.ProfileJPA;
+import capstone.examlab.config.profile.ProfileMongo;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.users.domain.UserDoc;
 import capstone.examlab.users.domain.UserEntity;
@@ -11,14 +13,14 @@ import org.springframework.context.annotation.Scope;
 @Configuration
 public class UserConfig {
     @Bean
-    @Profile("jpa")
+    @ProfileJPA
     @Scope("prototype")
     public User userJpa() {
         return new UserEntity();
     }
 
     @Bean
-    @Profile("mongo")
+    @ProfileMongo
     @Scope("prototype")
     public User userMongo() {
         return new UserDoc();

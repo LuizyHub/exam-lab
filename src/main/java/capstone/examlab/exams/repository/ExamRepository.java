@@ -1,6 +1,6 @@
 package capstone.examlab.exams.repository;
 
-import capstone.examlab.config.ProfileJPA;
+import capstone.examlab.config.profile.ProfileJPA;
 import capstone.examlab.exams.domain.Exam;
 import org.springframework.data.jpa.repository.JpaRepository;
 

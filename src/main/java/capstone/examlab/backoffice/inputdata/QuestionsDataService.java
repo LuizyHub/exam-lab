@@ -1,4 +1,4 @@
-package capstone.examlab.questions.datainput;
+package capstone.examlab.backoffice.inputdata;
 
 import capstone.examlab.questions.entity.QuestionEntity;
 

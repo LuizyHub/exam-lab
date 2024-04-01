@@ -45,9 +45,9 @@ class ExamsControllerTest {
     void validExamIdTest() throws Exception {
         //when
         Long examId = 0L;
-        when(examRepository.existsById(examId)).thenReturn(false);
+        when(examRepository.existsByExamId(examId)).thenReturn(false);
 
-        mockMvc.perform(get("/api/v1/exams/{examId}/type", examId))
+        mockMvc.perform(get("/api/v1/exams/{examId}", examId))
                 .andExpect(status().isBadRequest());
     }
 }

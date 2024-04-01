@@ -1,11 +1,13 @@
 package capstone.examlab.exams.service;
 
-import capstone.examlab.exams.dto.ExamList;
-import capstone.examlab.exams.dto.ExamType;
+import capstone.examlab.exams.dto.ExamTypeDto;
+import capstone.examlab.exams.dto.ExamDto;
+
+import java.util.List;
 
 public interface ExamsService {
 
-    public ExamType getExamType(Long id);
+    public ExamTypeDto getExamType(Long id);
 
-    public ExamList getExamList();
+    public List<ExamDto> getExamList();
 }

@@ -115,7 +115,7 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Update 로직
     @Override
-    public boolean updateQuestionsByUUID(QuestionUpdateDto questionUpdateDto) {
+    public boolean updateQuestionsByQuestionId(QuestionUpdateDto questionUpdateDto) {
         //Optional 통한 데이터 존재 검증
         Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
         if (optionalQuestion.isPresent()) {
@@ -144,10 +144,10 @@ public class QuestionsServiceImpl implements QuestionsService {
     }
 
     @Override
-    public boolean deleteQuestionsByUuidList(String uuid) {
-        questionsRepository.deleteById(uuid);
+    public boolean deleteQuestionsByQuestionId(String questionId) {
+        questionsRepository.deleteById(questionId);
 
         //삭제 검증
-        return !questionsRepository.existsById(uuid);
+        return !questionsRepository.existsById(questionId);
     }
 }

@@ -22,6 +22,6 @@ public class ExamIdValidator implements ConstraintValidator<ValidExamId, Long> {
         if (examId == null) {
             return false;
         }
-        return examRepository.existsById(examId);
+        return examRepository.existsByExamId(examId);
     }
 }

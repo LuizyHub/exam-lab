@@ -1,4 +1,4 @@
-package capstone.examlab.questions.datainput;
+package capstone.examlab.backoffice.inputdata;
 
 
 import capstone.examlab.questions.entity.QuestionEntity;
@@ -12,11 +12,11 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("waring")
+@RequestMapping("backoffice")
 public class QuestionsDataController {
     private final QuestionsDataService questionsDataService;
     //'기존 문제' 저장 로직
-    @PostMapping("{examId}/questions/save")
+    @PostMapping("{examId}/questions")
     public ResponseEntity<String> addOriginalQuestions(@PathVariable Long examId, @RequestBody List<QuestionEntity> questionEntities) {
         for (QuestionEntity questionEntity : questionEntities) {
             questionEntity.setExamId(examId);

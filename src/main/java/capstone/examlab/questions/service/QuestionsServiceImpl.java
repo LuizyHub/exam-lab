@@ -5,10 +5,7 @@ import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.*;
 import capstone.examlab.questions.dto.search.QuestionsSearch;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
-import capstone.examlab.questions.dto.update.QuestionsUpdateDto;
-import capstone.examlab.questions.dto.upload.QuestionUpload;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
-import capstone.examlab.questions.dto.upload.QuestionsUpload;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.repository.BoolQueryBuilder;
 import capstone.examlab.questions.repository.QuestionsRepository;
@@ -16,8 +13,6 @@ import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -38,23 +33,31 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Create 로직
     @Override
-    public boolean addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut ){
+    public boolean addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
         log.info(questionUploadInfo.toString());
-        for (int i = 0; i <questionImagesIn.size() ; i++) {
-            String imageUrl = imageService.saveImageInS3(questionImagesIn.get(i));
-            questionUploadInfo.getQuestionImagesTextIn().get(i).setUrl(imageUrl);
+        if (questionImagesIn != null) {
+            for (int i = 0; i < questionImagesIn.size(); i++) {
+                String imageUrl = imageService.saveImageInS3(questionImagesIn.get(i));
+                questionUploadInfo.getQuestionImagesTextIn().get(i).setUrl(imageUrl);
+            }
         }
-        for (int i = 0; i <questionImagesOut.size() ; i++) {
-            String imageUrl = imageService.saveImageInS3(questionImagesOut.get(i));
-            questionUploadInfo.getQuestionImagesTextOut().get(i).setUrl(imageUrl);
+        if (questionImagesOut != null) {
+            for (int i = 0; i < questionImagesOut.size(); i++) {
+                String imageUrl = imageService.saveImageInS3(questionImagesOut.get(i));
+                questionUploadInfo.getQuestionImagesTextOut().get(i).setUrl(imageUrl);
+            }
         }
-        for (int i = 0; i <commentaryImagesIn.size() ; i++) {
-            String imageUrl = imageService.saveImageInS3(commentaryImagesIn.get(i));
-            questionUploadInfo.getCommentaryImagesTextIn().get(i).setUrl(imageUrl);
+        if (commentaryImagesIn != null) {
+            for (int i = 0; i < commentaryImagesIn.size(); i++) {
+                String imageUrl = imageService.saveImageInS3(commentaryImagesIn.get(i));
+                questionUploadInfo.getCommentaryImagesTextIn().get(i).setUrl(imageUrl);
+            }
         }
-        for (int i = 0; i <commentaryImagesOut.size() ; i++) {
-            String imageUrl = imageService.saveImageInS3(commentaryImagesOut.get(i));
-            questionUploadInfo.getCommentaryImagesTextOut().get(i).setUrl(imageUrl);
+        if (commentaryImagesOut != null) {
+            for (int i = 0; i < commentaryImagesOut.size(); i++) {
+                String imageUrl = imageService.saveImageInS3(commentaryImagesOut.get(i));
+                questionUploadInfo.getCommentaryImagesTextOut().get(i).setUrl(imageUrl);
+            }
         }
         //uuid랑 examid처리 해서 데이터 넣어주기
         String uuid = UUID.randomUUID().toString();
@@ -238,21 +241,20 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Update 로직
     @Override
-    public boolean updateQuestionsByUUID(QuestionsUpdateDto questionsUpdateDto) {
-        int size = questionsUpdateDto.size();
-        if(size == 0) return false;
-        for (QuestionUpdateDto questionUpdateDto : questionsUpdateDto) {
-            Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
-            optionalQuestion.ifPresent(question -> {
-                question.setQuestion(questionUpdateDto.getQuestion());
-                question.setOptions(questionUpdateDto.getOptions());
-                question.setAnswers(questionUpdateDto.getAnswers());
-                question.setCommentary(questionUpdateDto.getCommentary());
-                question.setTagsMap(questionUpdateDto.getTagsMap());
-                questionsRepository.save(question);
-            });
+    public boolean updateQuestionsByUUID(QuestionUpdateDto questionUpdateDto) {
+        Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
+        if (optionalQuestion.isPresent()) {
+            QuestionEntity question = optionalQuestion.get();
+            question.setQuestion(questionUpdateDto.getQuestion());
+            question.setOptions(questionUpdateDto.getOptions());
+            question.setAnswers(questionUpdateDto.getAnswers());
+            question.setCommentary(questionUpdateDto.getCommentary());
+            question.setTagsMap(questionUpdateDto.getTagsMap());
+            questionsRepository.save(question);
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
     //Delete 로직
@@ -268,18 +270,11 @@ public class QuestionsServiceImpl implements QuestionsService {
     }
 
     @Override
-    public boolean deleteQuestionsByUuidList(List<String> uuidList) {
+    public boolean deleteQuestionsByUuidList(String uuid) {
         // 각각의 UUID에 대해 문제를 삭제
-        for (String uuid : uuidList) {
-            questionsRepository.deleteById(uuid);
-        }
+        questionsRepository.deleteById(uuid);
 
         // 삭제 후에 해당 UUID로 조회된 데이터의 개수를 확인하여 반환
-        for (String uuid : uuidList) {
-            if (questionsRepository.existsById(uuid)) {
-                return false; // 문제가 남아있음을 표시
-            }
-        }
-        return true;
+        return !questionsRepository.existsById(uuid); // 문제가 남아있음을 표시
     }
 }

@@ -5,18 +5,28 @@ export default function EditExam() {
   const [content, setContent] = useState('');
   const [contentType, setContentType] = useState('');
   // const [imageFiles, setImageFiles] = useState([]); // 이미지 파일들을 저장할 배열 상태-> 이부분 수정 필요 정확히 역할은?
+
   const [isImageUrl, setImageUrl] = useState([]); //이미지 url값을 저장.. 배열로
   const [isImageId, setImageId] = useState([]); // 이미지의 ID를 저장하는 상태 변수
   const [isImageSize, setImageSize] = useState(50); //이미지 크기 값 저장
+
+  const [selectedImage, setSelectedImage] = useState(null); // 클릭된 이미지 정보를 저장할 상태 변수
+
   // 여기서 우리가 style로 직접 주게된다면 style들을 저장하거나 해당 요소들을 확인 할 수 있는 코드를 작성해야한다.
   const imageSelectorRef = useRef(null); // 파일 선택 input 요소에 접근에 대한 참조
   const editorRef = useRef(null); //이미지를 appendChild할 때 dom의 위치를 참조하기 위함
   // 객체로 저장
-  const [editorState, setEditorState] = useState({
-    type: '',
-    content: '',
-    isImageUrl: []
-  });
+  // const [editorState, setEditorState] = useState({
+  //   type: '',
+  //   content: '',
+  //   isImageUrl: []
+  // });
+
+  //어떤 동작을 해도 데이터를 저장하는 코드
+  useEffect(() => {
+    handleContent();//저장만 되게 해야하는데 여기서 계속해서 이미지의 url을 확인하고 저장하고 있음
+  }, [content, contentType]);
+
 
   //---------------------------------------------------------------------- Tool Click area
   const focusEditor = () => {
@@ -54,17 +64,17 @@ export default function EditExam() {
 
   const handleImgSize = (e) => {
     const value = parseInt(e.currentTarget.value); //이벤트로 가져온 value
-    setImageSize(value); //아직 딜레이가 있음 이걸 해결 해야함
-    console.log(value);
+    if (selectedImage) {
+      // 선택된 이미지가 있는 경우에만 이미지 크기 업데이트
+      selectedImage.style.maxWidth = `${value}%`; // 선택된 이미지의 스타일 변경
+    }
 
-    const Image = document.querySelector('img');
-    Image.style.maxWidth = `${isImageSize}%`;
-    console.log(Image);
+    setImageSize(value);
+    console.log(value);
   }
 
   //---------------------------------------------------------------------- save data area
-  //여기에 html로 저장이 될 수 있게 코드를 작성
-  //이 코드가 납득이 안된다..
+  // 이미지 추적 후 여기에 html로 저장이 될 수는 함수
   const handleContent = () => {
     // content를 저장하는 부분
     const inputContent = editorRef.current.innerHTML;
@@ -91,7 +101,6 @@ export default function EditExam() {
         if (!updatedImageUrls.includes(imageUrl)) {
           updatedImageUrls.push(imageUrl);
         }
-        console.log('이미지 URL:', updatedImageUrls);
         // console.log('이미지 imageUrl', imageUrl);
       }
     });
@@ -126,7 +135,7 @@ export default function EditExam() {
     });
 
     setImageId(remainingImageIds);
-    console.log('삭제된 이미지의 ID:', isImageId);
+    console.log('이미지의 ID:', isImageId);
 
     // ---------------------------------------------------------------- 이미지 태그의 url로 추출하는 정규 표현식
     // 이미지 태그의 src를 추출하는 정규 표현식
@@ -145,7 +154,7 @@ export default function EditExam() {
     });
 
     setImageUrl(remainingImageUrls);
-    console.log('삭제된 이미지의 ID:', isImageUrl);
+    console.log('이미지의 Url:', isImageUrl);
 
     // if (hasImages) {
     //   console.log('이미지가 포함되어 있습니다.');
@@ -154,14 +163,10 @@ export default function EditExam() {
     // }
   };
 
-  //어떤 동작을 해도 데이터를 저장하는 코드
-  useEffect(() => {
-    handleContent();//저장만 되게 해야하는데 여기서 계속해서 이미지의 url을 확인하고 저장하고 있음
-  }, [content, contentType]);
 
   //---------------------------------------------------------------------- image uploading area
 
-  // 이미지 선택 핸들러
+  // 로컬 이미지 선택 및 규격 설정 핸들러
   const handleImageSelect = (e) => {
     const files = e.target.files;
     if (!!files && files.length > 0) {
@@ -183,6 +188,7 @@ export default function EditExam() {
     }
   };
 
+  // 이미지를 렌더링하는 함수
   const readImageData = (file) => {
     // 이미지 파일을 읽어들임
     const reader = new FileReader();
@@ -191,26 +197,38 @@ export default function EditExam() {
       //--------------------------------------------------------------------------------------------- 이미지 URL 배열에 추가
       // setImageUrl([...isImageUrl, imageDataUrl]);
       // 이미지 삽입
-      insertImageData(imageDataUrl);
+      insertImageConfig(imageDataUrl);
     };
     reader.readAsDataURL(file);
   }
 
   // 고유한 아이디 생성 함수
   const generateUniqueId = () => {
-    return 'img_' + Math.random().toString(36).substr(2, 9); // 랜덤한 문자열을 이용한 고유 아이디 생성
+    return 'img_' + Math.random().toString(36).slice(2, 11); // 랜덤한 문자열을 이용한 고유 아이디 생성
   };
 
-  // 이미지 삽입 함수
-  const insertImageData = (imageDataUrl) => {
+  // 이미지 삽입, 이미지 설정 함수
+  const insertImageConfig = (imageDataUrl) => {
+
     const imgElement = document.createElement('img');
     const imageId = generateUniqueId(); // 고유한 아이디 생성
+
     imgElement.setAttribute('id', imageId); // 이미지에 아이디 설정
     imgElement.src = imageDataUrl;
-    // 이미지 크기를 조절
-    imgElement.style.maxWidth = '50%';
+
+    // 초기 이미지 크기 값 설정
+    const imageSize = imgElement.style.maxWidth = '50%';
     imgElement.style.height = 'auto';
-    // 에디터에 이미지 삽입
+
+    // 이미지 클릭 이벤트 핸들러 추가
+    imgElement.onclick = (e) => {
+      const imageSize = parseInt(e.target.style.maxWidth); // 클릭된 이미지의 크기 가져오기
+      setImageSize(imageSize);
+      setSelectedImage(e.target); // 클릭된 이미지 정보 저장
+      console.log(e.target);
+    };
+
+    // 에디터에 이미지 DOM에 삽입
     if (editorRef.current) {
       editorRef.current.appendChild(imgElement);
     } else {
@@ -218,7 +236,6 @@ export default function EditExam() {
     }
 
   }
-
 
   return (
     <div>

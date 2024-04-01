@@ -23,7 +23,7 @@ public class QuestionsController {
 
     //Create API
     @PostMapping("{examId}/questions")
-    public ResponseEntity<String> addQuestionsByExamId(@PathVariable Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
+    public ResponseEntity<String> addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
            @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn, @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut) {
         boolean saved = questionsService.addQuestionsByExamId(examId, questionUploadInfo,questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
         if(saved){

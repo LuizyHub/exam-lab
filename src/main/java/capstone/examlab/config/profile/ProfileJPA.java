@@ -1,4 +1,4 @@
-package capstone.examlab.config;
+package capstone.examlab.config.profile;
 
 import org.springframework.context.annotation.Profile;
 

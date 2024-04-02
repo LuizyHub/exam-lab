@@ -43,7 +43,7 @@ export default function ShowQuestionList({questions}){
 
 return (
     <div>
-         <button onClick={handleSubmitQuestion} style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', marginBottom: '20px', cursor: 'pointer' }}>시험지 생성</button>
+         <button onClick={handleSubmitQuestion} style={{ padding: '10px 20px', backgroundColor: '#5BB6B4', color: 'white', border: 'none', borderRadius: '5px', marginBottom: '20px', cursor: 'pointer' }}>시험지 생성</button>
     <div style={{ display: 'flex', flexDirection: 'row' }}>
         
     {/* 선택된 문제 리스트 */}

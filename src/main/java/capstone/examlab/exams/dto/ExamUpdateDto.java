@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class ExamPatchDto {
+public class ExamUpdateDto {
     @NotNull
     private Map<String, List<String>> types;
 }

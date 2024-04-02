@@ -7,6 +7,7 @@ import capstone.examlab.exhandler.exception.UnauthorizedException;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ExamServiceImpl implements ExamsService {
@@ -22,19 +24,36 @@ public class ExamServiceImpl implements ExamsService {
     private final ExamRepository examRepository;
 
     @Override
-    public ExamTypeDto getExamType(@ValidExamId Long id) {
+    public ExamTypeDto getExamType(@ValidExamId Long id, User user) {
         // id 검증은 이미 controller에서 수행하므로 생략
         // get()으로 가져오는 것은 Optional이기 때문에 null이 아님을 보장
         Exam exam = (Exam) examRepository.findByExamId(id).get();
+
+        log.error("exam.getUser() = {}", exam.getUser());
+        if (user == null) {
+            if (exam.getUser() != null) {
+                throw new UnauthorizedException();
+            }
+        }
+        else {
+            if (exam.getUser()!=null && !user.equals(exam.getUser())) {
+                throw new UnauthorizedException();
+            }
+        }
+//        if (exam.getUser()!=null && !user.equals(exam.getUser())) {
+//            throw new UnauthorizedException();
+//        }
+
         Map<String, List<String>> types = exam.getTypes();
 
         return new ExamTypeDto(types);
     }
 
     @Override
-    public List<ExamDto> getExamList() {
+    public List<ExamDto> getExamList(User user) {
         List<ExamDto> examList = new ArrayList<>();
         examRepository.findAll()
+                .stream().filter(exam -> ((Exam)exam).getUser() == null || (user != null && ((Exam)exam).getUser().equals(user)))
                 .forEach(exam -> {
                     examList.add(ExamDto.builder()
                             .examTitle(((Exam)exam).getExamTitle())
@@ -72,7 +91,7 @@ public class ExamServiceImpl implements ExamsService {
     }
 
     @Override
-    public void patchExam(Long id, ExamPatchDto examPatchDto, User user) {
+    public void patchExam(Long id, ExamUpdateDto examUpdateDto, User user) {
         // id 검증은 이미 controller에서 수행하므로 생략
         // get()으로 가져오는 것은 Optional이기 때문에 null이 아님을 보장
         Exam exam = (Exam) examRepository.findByExamId(id).get();
@@ -81,7 +100,7 @@ public class ExamServiceImpl implements ExamsService {
             throw new UnauthorizedException();
         }
 
-        exam.setTypes(examPatchDto.getTypes());
+        exam.setTypes(examUpdateDto.getTypes());
 
         examRepository.save(exam);
     }

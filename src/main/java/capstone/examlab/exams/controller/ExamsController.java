@@ -2,7 +2,7 @@ package capstone.examlab.exams.controller;
 
 import capstone.examlab.exams.dto.ExamAddDto;
 import capstone.examlab.exams.dto.ExamDto;
-import capstone.examlab.exams.dto.ExamPatchDto;
+import capstone.examlab.exams.dto.ExamUpdateDto;
 import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.exams.dto.ExamTypeDto;
 import capstone.examlab.users.argumentresolver.Login;
@@ -26,14 +26,18 @@ public class ExamsController {
     private final ExamsService examsService;
 
     @GetMapping
-    public List<ExamDto> getExams() {
-        List<ExamDto> examList = examsService.getExamList();
+    public List<ExamDto> getExams(@Login User user) {
+        List<ExamDto> examList = examsService.getExamList(user);
         return examList;
     }
 
     @GetMapping("/{examId}")
-    public ExamTypeDto getExamType(@PathVariable @ValidExamId Long examId) {
-        ExamTypeDto examType = examsService.getExamType(examId);
+    public ExamTypeDto getExamType(
+            @Login User user,
+            @PathVariable @ValidExamId Long examId) {
+
+        ExamTypeDto examType = examsService.getExamType(examId, user);
+
         return examType;
     }
 
@@ -67,11 +71,11 @@ public class ExamsController {
         examsService.deleteExam(examId, user);
     }
 
-    @PatchMapping("/{examId}")
+    @PutMapping("/{examId}")
     public void updateExam(
             @Login User user,
             @PathVariable @ValidExamId Long examId,
-            @Validated @RequestBody ExamPatchDto examPatchDto,
+            @Validated @RequestBody ExamUpdateDto examUpdateDto,
             HttpServletResponse response) {
 
         // AOP 도입 예정
@@ -80,6 +84,6 @@ public class ExamsController {
             return;
         }
 
-        examsService.patchExam(examId, examPatchDto, user);
+        examsService.patchExam(examId, examUpdateDto, user);
     }
 }

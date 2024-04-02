@@ -80,8 +80,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                 .andExpect(status().isOk())
                 .andDo(document("delete-exams",
                         resource(ResourceSnippetParameters.builder()
-                                .description("본인의 시험만 수정할 수 있습니다." +
-                                        "시험 내용을 덮어쓰기 합니다.")
+                                .description("본인의 시험만 삭제할 수 있습니다")
                                 .tag("exams")
                                 .summary("delete exams")
                                 .build()
@@ -106,7 +105,8 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                 .andExpect(status().isOk())
                 .andDo(document("patch-exams",
                         resource(ResourceSnippetParameters.builder()
-                                .description("본인의 시험만 삭제할 수 있습니다")
+                                .description("본인의 시험만 수정할 수 있습니다." +
+                                        "시험 내용을 덮어쓰기 합니다.")
                                 .tag("exams")
                                 .summary("patch exams")
                                 .pathParameters(

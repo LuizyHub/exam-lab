@@ -47,7 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams486549215'
+                $ref: '#/components/schemas/api-v1-exams-examId486549215'
               examples:
                 add-exams:
                   value: "3"
@@ -65,10 +65,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"9fc56033-a91c-4a2d-b484-feb1d5d5b652!\",\"\
-                  password_confirm\":\"9fc56033-a91c-4a2d-b484-feb1d5d5b652!\",\"\
-                  user_id\":\"9fc56033-a91c-4a2d-b484-feb1d5d5b652@gmail.com\",\"\
-                  name\":\"9fc56033-a91c-4a2d-b484-feb1d5d5b652\"}"
+                value: "{\"password\":\"d7059d65-0342-4cb2-84a1-b99bc901bd5a!\",\"\
+                  password_confirm\":\"d7059d65-0342-4cb2-84a1-b99bc901bd5a!\",\"\
+                  user_id\":\"d7059d65-0342-4cb2-84a1-b99bc901bd5a@gmail.com\",\"\
+                  name\":\"d7059d65-0342-4cb2-84a1-b99bc901bd5a\"}"
       responses:
         "200":
           description: "200"
@@ -103,7 +103,7 @@ paths:
       tags:
       - exams
       summary: patch exams
-      description: 본인의 시험만 삭제할 수 있습니다
+      description: 본인의 시험만 수정할 수 있습니다.시험 내용을 덮어쓰기 합니다.
       operationId: patch-exams
       parameters:
       - name: examId
@@ -117,7 +117,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-exams486549215'
+              $ref: '#/components/schemas/api-v1-exams-examId486549215'
             examples:
               patch-exams:
                 value: "{\"types\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"\
@@ -129,7 +129,7 @@ paths:
       tags:
       - exams
       summary: delete exams
-      description: 본인의 시험만 수정할 수 있습니다.시험 내용을 덮어쓰기 합니다.
+      description: 본인의 시험만 삭제할 수 있습니다
       operationId: delete-exams
       parameters:
       - name: examId
@@ -236,18 +236,6 @@ components:
             - type: boolean
             - type: string
             - type: number
-    api-v1-users-status615510992:
-      required:
-      - login
-      - user_name
-      type: object
-      properties:
-        user_name:
-          type: string
-          description: 사용자 이름
-        login:
-          type: boolean
-          description: 로그인 여부
     api-v1-users-963924044:
       required:
       - name
@@ -268,5 +256,17 @@ components:
         name:
           type: string
           description: User name
-    api-v1-exams486549215:
+    api-v1-users-status615510992:
+      required:
+      - login
+      - user_name
+      type: object
+      properties:
+        user_name:
+          type: string
+          description: 사용자 이름
+        login:
+          type: boolean
+          description: 로그인 여부
+    api-v1-exams-examId486549215:
       type: object

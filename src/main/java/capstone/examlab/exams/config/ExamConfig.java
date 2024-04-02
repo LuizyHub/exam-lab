@@ -1,6 +1,5 @@
 package capstone.examlab.exams.config;
 
-import capstone.examlab.config.profile.ProfileJPA;
 import capstone.examlab.exams.domain.Exam;
 import capstone.examlab.exams.domain.ExamDoc;
 import capstone.examlab.exams.domain.ExamEntity;

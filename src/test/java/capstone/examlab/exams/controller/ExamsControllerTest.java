@@ -3,6 +3,7 @@ package capstone.examlab.exams.controller;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.users.argumentresolver.LoginUserArgumentResolver;
+import capstone.examlab.users.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -29,8 +30,11 @@ class ExamsControllerTest {
     @MockBean
     private ExamRepository examRepository;
 
-    @MockBean
+    @Autowired
     private LoginUserArgumentResolver loginUserArgumentResolver;
+
+    @MockBean
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {

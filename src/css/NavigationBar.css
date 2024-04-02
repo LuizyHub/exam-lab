@@ -1,0 +1,29 @@
+.navigation-bar {
+    position: fixed;
+    top: 0;
+    left: -200px; /* 초기에 왼쪽으로 숨겨진 상태 */
+    width: 200px;
+    height: 100%;
+    background-color: #f0f0f0;
+    transition: left 0.3s ease;
+}
+
+.navigation-bar.visible {
+    left: 0; /* 버튼 클릭시 왼쪽으로 나타남 */
+}
+
+.navigation-bar.hidden {
+    left: -200px; /* 버튼 클릭시 다시 왼쪽으로 숨김 */
+}
+
+.navigation-bar button {
+    position: absolute;
+    top: 20px;
+    left: 180px;
+}
+
+.navigation-content {
+    padding-top: 100px;
+    padding-left: 50px;
+
+}

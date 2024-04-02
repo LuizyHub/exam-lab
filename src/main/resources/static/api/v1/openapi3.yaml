@@ -47,7 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId486549215'
+                $ref: '#/components/schemas/api-v1-exams486549215'
               examples:
                 add-exams:
                   value: "3"
@@ -65,10 +65,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"47f9efa3-cf5b-4049-ae6a-2e98c8441a78!\",\"\
-                  password_confirm\":\"47f9efa3-cf5b-4049-ae6a-2e98c8441a78!\",\"\
-                  user_id\":\"47f9efa3-cf5b-4049-ae6a-2e98c8441a78@gmail.com\",\"\
-                  name\":\"47f9efa3-cf5b-4049-ae6a-2e98c8441a78\"}"
+                value: "{\"password\":\"9fc56033-a91c-4a2d-b484-feb1d5d5b652!\",\"\
+                  password_confirm\":\"9fc56033-a91c-4a2d-b484-feb1d5d5b652!\",\"\
+                  user_id\":\"9fc56033-a91c-4a2d-b484-feb1d5d5b652@gmail.com\",\"\
+                  name\":\"9fc56033-a91c-4a2d-b484-feb1d5d5b652\"}"
       responses:
         "200":
           description: "200"
@@ -99,26 +99,10 @@ paths:
                   value: "{\"tags\":[\"상황\",\"표지\",\"화물\",\"법\"]}"
         "400":
           description: "400"
-    delete:
+    put:
       tags:
       - exams
-      summary: Patch exams
-      description: 본인의 시험만 수정할 수 있습니다.시험 내용을 덮어쓰기 합니다.
-      operationId: delete-exams
-      parameters:
-      - name: examId
-        in: path
-        description: ""
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: "200"
-    patch:
-      tags:
-      - exams
-      summary: Delete exams
+      summary: patch exams
       description: 본인의 시험만 삭제할 수 있습니다
       operationId: patch-exams
       parameters:
@@ -133,11 +117,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-exams-examId486549215'
+              $ref: '#/components/schemas/api-v1-exams486549215'
             examples:
               patch-exams:
                 value: "{\"types\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"\
                   1\",\"2\",\"3\",\"4\",\"5\"]}}"
+      responses:
+        "200":
+          description: "200"
+    delete:
+      tags:
+      - exams
+      summary: delete exams
+      description: 본인의 시험만 수정할 수 있습니다.시험 내용을 덮어쓰기 합니다.
+      operationId: delete-exams
+      parameters:
+      - name: examId
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: "200"
@@ -236,8 +236,6 @@ components:
             - type: boolean
             - type: string
             - type: number
-    api-v1-exams-examId486549215:
-      type: object
     api-v1-users-status615510992:
       required:
       - login
@@ -270,3 +268,5 @@ components:
         name:
           type: string
           description: User name
+    api-v1-exams486549215:
+      type: object

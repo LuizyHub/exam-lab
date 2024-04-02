@@ -83,7 +83,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .description("본인의 시험만 수정할 수 있습니다." +
                                         "시험 내용을 덮어쓰기 합니다.")
                                 .tag("exams")
-                                .summary("Patch exams")
+                                .summary("delete exams")
                                 .build()
                         )
                 ));
@@ -98,7 +98,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
         map.put("types", type);
 
         this.mockMvc.perform(
-                        patch("/api/v1/exams/{examId}", addExamsAndGetId())
+                        put("/api/v1/exams/{examId}", addExamsAndGetId())
                                 .content(objectMapper.writeValueAsString(map))
                                 .contentType("application/json")
                                 .session(doLogin())
@@ -108,7 +108,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                         resource(ResourceSnippetParameters.builder()
                                 .description("본인의 시험만 삭제할 수 있습니다")
                                 .tag("exams")
-                                .summary("Delete exams")
+                                .summary("patch exams")
                                 .pathParameters(
                                         parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
                                 )
@@ -142,7 +142,8 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
     @Test
     void testGetExamType() throws Exception {
 
-        this.mockMvc.perform(get("/api/v1/exams/{examId}", existExamId))
+        this.mockMvc.perform(get("/api/v1/exams/{examId}", existExamId)
+                        .session(doLogin()))
                 .andExpect(status().isOk())
                 .andDo(document("exam-type",
                         resource(ResourceSnippetParameters.builder()

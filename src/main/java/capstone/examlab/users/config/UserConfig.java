@@ -1,7 +1,5 @@
 package capstone.examlab.users.config;
 
-import capstone.examlab.config.profile.ProfileJPA;
-import capstone.examlab.config.profile.ProfileMongo;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.users.domain.UserDoc;
 import capstone.examlab.users.domain.UserEntity;

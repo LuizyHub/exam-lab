@@ -159,7 +159,7 @@ return(
       <div>
         <h1 style={{ textAlign: 'center' }}>{examType}</h1>
           <div className="tags">
-             <span style={{ textAlign: 'center' }}>태그  </span>
+             <span >태그  </span>
               {tags && tags.map(tag => (
                   <button
                       key={tag}

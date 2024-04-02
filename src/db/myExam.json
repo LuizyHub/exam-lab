@@ -1,0 +1,249 @@
+{
+  "myExam": [
+    {
+      "exam_id": 1,
+      "exam_title": "시험지 제목 1",
+      "attributes": [
+        {
+          "attribute_id": 1,
+          "attribute_name": "속성 1",
+          "attribute_tags": [
+            "속성태그 1",
+            "속성태그 2"
+          ]
+        }
+      ],
+      "id": "a2a1"
+    },
+    {
+      "id": "b55e",
+      "myExam": [
+        {
+          "exam_id": "2u4ur3cp7",
+          "exam_title": "소공",
+          "attributes": [
+            {
+              "attribute_name": "주차",
+              "attribute_tags": []
+            },
+            {
+              "attribute_name": "주제",
+              "attribute_tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d6d1",
+      "myExam": [
+        {
+          "exam_id": "iww6fv24w",
+          "exam_title": "소공",
+          "attributes": [
+            {
+              "attribute_name": "주차",
+              "attribute_tags": []
+            },
+            {
+              "attribute_name": "김방",
+              "attribute_tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1a8e",
+      "myExam": [
+        {
+          "exam_id": "u4q79ataz",
+          "exam_title": "소공",
+          "attributes": [
+            {
+              "attribute_name": "주차",
+              "attribute_tags": []
+            },
+            {
+              "attribute_name": "종류",
+              "attribute_tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "86eb",
+      "myExam": [
+        {
+          "exam_id": "lbgm9ahmy",
+          "exam_title": "수학",
+          "attributes": [
+            {
+              "attribute_name": "주차",
+              "attribute_tags": [
+                "1",
+                "2"
+              ]
+            },
+            {
+              "attribute_name": "종류",
+              "attribute_tags": [
+                "미적분",
+                "기벡"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "e868",
+      "myExam": [
+        {
+          "exam_title": "영어",
+          "attributes": [
+            {
+              "attribute_name": "종류",
+              "attribute_tags": [
+                "문법",
+                "독해"
+              ]
+            },
+            {
+              "attribute_name": "난이도",
+              "attribute_tags": [
+                "1",
+                "2",
+                "3"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "f4a4",
+      "myExam": [
+        {
+          "exam_title": "수학",
+          "attributes": [
+            {
+              "attribute_name": "속성",
+              "attribute_tags": [
+                "기벡",
+                "확통"
+              ]
+            },
+            {
+              "attribute_name": "주차",
+              "attribute_tags": [
+                "1",
+                "2",
+                "3"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5b75",
+      "myExam": [
+        {
+          "exam_title": "수학",
+          "attributes": [
+            {
+              "attribute_name": "속성",
+              "attribute_tags": [
+                "기벡",
+                "확통"
+              ]
+            },
+            {
+              "attribute_name": "주차",
+              "attribute_tags": [
+                "1",
+                "2"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "46de",
+      "myExam": [
+        {
+          "exam_title": "과학",
+          "attributes": [
+            {
+              "attribute_name": "종류",
+              "attribute_tags": [
+                "물리",
+                "생명",
+                "화학"
+              ]
+            },
+            {
+              "attribute_name": "속성",
+              "attribute_tags": [
+                "중간",
+                "기말"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4849",
+      "myExam": [
+        {
+          "exam_title": "과학",
+          "attributes": [
+            {
+              "attribute_name": "종류",
+              "attribute_tags": [
+                "생명",
+                "화학"
+              ]
+            },
+            {
+              "attribute_name": "속성",
+              "attribute_tags": [
+                "중간",
+                "기말"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "49d2",
+      "myExam": [
+        {
+          "exam_title": "과학",
+          "attributes": [
+            {
+              "attribute_name": "종류",
+              "attribute_tags": [
+                "생명",
+                "화학"
+              ]
+            },
+            {
+              "attribute_name": "속성",
+              "attribute_tags": [
+                "중간",
+                "기말",
+                "이외"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

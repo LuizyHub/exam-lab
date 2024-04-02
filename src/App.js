@@ -4,7 +4,6 @@ import SelectQuestionPage from "./page/SelectQuestionPage";
 import LabExam from "./page/LabExam";
 import EditExam from "./page/EditExam";
 import EditTest from "./test/EditPage/EditTest";
-import AttributeManager from "./test/EditPage/AttributeManager";
 import AttributeManager from "./components/AttributeManager";
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 
@@ -15,6 +14,9 @@ function App() {
     <BrowserRouter>
       <div>
         <Routes>
+
+        <Route path="/" element={<MainPage />} />
+          <Route path="/select" element={<SelectExamPage />} />
           <Route path="/selectQuestion" element={<SelectQuestionPage />} />
           <Route path="/lab" element={<LabExam />} />
           <Route path="/edit" element={<EditExam />} />
@@ -28,3 +30,4 @@ function App() {
 }
 
 export default App;
+

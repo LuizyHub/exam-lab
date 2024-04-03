@@ -1,6 +1,7 @@
 import SelectExam from "./page/SelectExamPage";
 import LabExam from "./page/LabExam";
 import EditExam from "./test/EditPage/EditExam";
+import EditExamRefactory from "./test/EditPage/EditExamRefactory";
 import MainPage from "./page/MainPage"
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 import SelectQuestionPage from "./page/SelectQuestionPage"
@@ -18,6 +19,7 @@ function App() {
           <Route path="/selectQuestion" element={<SelectQuestionPage />} />
           <Route path="/lab" element={<LabExam />} />
           <Route path="/edit" element={<EditExam />} />
+          <Route path="/editR" element={<EditExamRefactory />} />
           <Route path="/htmlParse" element={<ParsingImageTest />} />
         </Routes>
       </div>

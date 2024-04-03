@@ -40,9 +40,6 @@ public class ExamServiceImpl implements ExamsService {
                 throw new UnauthorizedException();
             }
         }
-//        if (exam.getUser()!=null && !user.equals(exam.getUser())) {
-//            throw new UnauthorizedException();
-//        }
 
         Map<String, List<String>> types = exam.getTypes();
 
@@ -91,7 +88,7 @@ public class ExamServiceImpl implements ExamsService {
     }
 
     @Override
-    public void patchExam(Long id, ExamUpdateDto examUpdateDto, User user) {
+    public void updateExam(Long id, ExamUpdateDto examUpdateDto, User user) {
         // id 검증은 이미 controller에서 수행하므로 생략
         // get()으로 가져오는 것은 Optional이기 때문에 null이 아님을 보장
         Exam exam = (Exam) examRepository.findByExamId(id).get();

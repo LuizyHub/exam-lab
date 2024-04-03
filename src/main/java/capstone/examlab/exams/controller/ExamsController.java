@@ -84,6 +84,6 @@ public class ExamsController {
             return;
         }
 
-        examsService.patchExam(examId, examUpdateDto, user);
+        examsService.updateExam(examId, examUpdateDto, user);
     }
 }

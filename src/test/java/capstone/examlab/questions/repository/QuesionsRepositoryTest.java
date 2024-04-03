@@ -1,83 +1,63 @@
 package capstone.examlab.questions.repository;
 
-import capstone.examlab.questions.dto.Question;
-import capstone.examlab.questions.dto.QuestionsList;
-import capstone.examlab.questions.dto.search.QuestionsSearch;
-import capstone.examlab.questions.entity.QuestionEntity;
-import capstone.examlab.questions.service.QuestionsService;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import capstone.examlab.questions.service.QuestionsServiceImpl;
+
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.junit.jupiter.api.Test;
+import org.springframework.data.elasticsearch.client.ClientConfiguration;
+import org.springframework.util.Assert;
+import org.testcontainers.elasticsearch.ElasticsearchContainer;
+import org.testcontainers.utility.DockerImageName;
 
 @SpringBootTest
-@Transactional
 @Tag("db_test")
 public class QuesionsRepositoryTest {
+    @MockBean
+    private QuestionsServiceImpl questionsService;
 
-  /*  @Autowired
-    private QuestionsService questionsService;
+    // 컨테이너를 생성 변수를 통해 beforAll, configuration에서 사용가능
+    private static final ElasticsearchContainer container = new ElasticsearchContainer(
+            DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch:8.11.3"))
+            .withPassword("elastic123")
+            .withReuse(true);
 
-    @Autowired
-    private DriverLicenseQuestionsRepository driverLicenseQuestionsRepository;
+    // 구성된 컨테이너 시작
+    @BeforeAll
+    static void setup() {
+        container.start();
+    }
+
+    @Configuration
+    static class TestConfiguration {
+
+        @Bean
+        public ClientConfiguration clientConfiguration() {
+            Assert.notNull(container, "TestContainer is not initialized!");
+
+            String elasticsearchUrl = "http://" + container.getHost() + ":" + container.getMappedPort(9200);
+            // Elasticsearch 클라이언트 구성 생성
+            ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+                    .connectedTo(elasticsearchUrl)
+                    .withBasicAuth("elastic", "elastic123")
+                    .build();
+
+            return clientConfiguration;
+        }
+    }
+
+    @AfterAll
+    static void tearDown() {
+        //데이터 없애는 내용 추가해야할듯함
+
+        container.stop();
+    }
 
     @Test
-    @SuppressWarnings("unchecked")
-    public void testDriverLicenseQuestionsRepository() throws Exception{
-        QuestionEntity questionEntity = new QuestionEntity();
+    void testYourMethod() {
 
-        Page<QuestionEntity> mockPage = mock(Page.class);
-        when(mockPage.iterator()).thenReturn(List.of(questionEntity).iterator());
-
-        //테스트할 DTO값 설정
-        QuestionsSearch questionsSearch = QuestionsSearch.builder()
-                .tags(List.of("상황"))
-                .count(3)
-                .includes("고속도로")
-                .build();
-
-        QuestionsList questionsList = questionsService.findByDriverLicenseQuestions(1L, questionsSearch);
-
-        //결과 검증
-        assertThat(questionsList).isNotNull();
-        assertThat(questionsList.size() == 3);
-
-        for (Question question : questionsList) {
-            assertThat(question.getTags().contains("상황"));
-            assertThat(question.getQuestion().contains("고속도로"));
-        }
-
-        //Tags = null일시 테스트
-        questionsSearch.setTags(null);
-        questionsSearch.setIncludes("표지판");
-        questionsSearch.setCount(5);
-
-        questionsList = questionsService.findByDriverLicenseQuestions(1L, questionsSearch);
-
-        //결과 검증
-        assertThat(questionsList).isNotNull();
-        assertThat(questionsList.size() == 5);
-
-        for (Question question : questionsList) {
-            assertThat(question.getQuestion().contains("표지판"));
-        }
-
-        //count default값 테스트
-        questionsSearch.setTags(null);
-        questionsSearch.setIncludes(null);
-
-        questionsList = questionsService.findByDriverLicenseQuestions(1L, questionsSearch);
-
-        //결과 검증
-        assertThat(questionsList).isNotNull();
-        assertThat(questionsList.size() == 10);
-    }*/
+    }
 }

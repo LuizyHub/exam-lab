@@ -14,7 +14,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class QuestionsSearch {
     private  Map<String, List<String>> tagsMap;
-    @Builder.Default
-    private Integer count = 10;
+    private Integer count;
     private List<String> includes;
 }

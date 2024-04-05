@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { handleToolClick, handleImgToolClick } from '../../function/toolHandle';
 import { useImageSize } from '../../function/imageHandle';
 import { useDataHandle } from '../../function/dataHandle';
@@ -19,10 +19,6 @@ export default function EditExam() {
     isImageUrl: []
   });
   */
-
-  useEffect(() => {
-    handleContent(editorRef);//저장만 되게 해야하는데 여기서 계속해서 이미지의 url을 확인하고 저장하고 있음
-  }, [content, contentType]);
 
   return (
     <div>
@@ -52,15 +48,19 @@ export default function EditExam() {
         onChange={(e) => { handleImageSelect(e, editorRef) }}
       />
 
-      <div
-        className="editor"
-        contentEditable="true"
-        // dangerouslySetInnerHTML={{ __html: content }}
-        ref={editorRef}
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-      />
-      <button onClick={() => { handleContent(editorRef) }}>저장</button>
-
+      <form onSubmit={(e) => {
+        // e.preventDefault(); // 기본 동작 방지
+        handleContent(e, editorRef); // 저장 함수 호출
+      }}>
+        <div
+          className="editor"
+          contentEditable="true"
+          // dangerouslySetInnerHTML={{ __html: content }}
+          ref={editorRef}
+          style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+        />
+        <button type='submit'>저장</button>
+      </form>
       <div>
         <p>Content in useState(include HTML tag):</p>
         {content}

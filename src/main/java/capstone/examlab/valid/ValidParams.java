@@ -2,16 +2,14 @@ package capstone.examlab.valid;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import org.springframework.stereotype.Component;
 
 import java.lang.annotation.*;
 
-@Component
-@Constraint(validatedBy = TagsValidator.class)
-@Target({ElementType.FIELD})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidTags {
-    String message() default "Invalid tags";
+@Constraint(validatedBy = ParmasValidator.class)
+public @interface ValidParams {
+    String message() default "Invalid params";
 
     Class<?>[] groups() default {};
 

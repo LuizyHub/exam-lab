@@ -9,9 +9,86 @@ export const useDataHandle = () => {
   const [isImageUrl, setImageUrl] = useState([]); //이미지 url값을 저장.. 배열로
   const [isImageId, setImageId] = useState([]); // 이미지의 ID를 저장하는 상태 변수
 
-  // useEffect(() => {
-  //   handleContent();//저장만 되게 해야하는데 여기서 계속해서 이미지의 url을 확인하고 저장하고 있음
-  // }, [content, contentType]);
+  const data = {
+    id: "1",
+    type: "test",
+    question: "test다음 중 총중량 <img src=0> 1.5톤 피견인 승용자동차를 4.5톤 <img src=1>화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?",
+    question_images_in: [
+      {
+        url: "",
+        description: "",
+        attribute: ""
+      },
+      {
+        url: "",
+        description: "",
+        attribute: ""
+      }
+    ],
+    question_images_out: [
+      {
+        url: "",
+        description: "",
+        attribute: "examlab-image-right"
+      },
+      {
+        url: "",
+        description: "",
+        attribute: "examlab-image-right"
+      },
+      {
+        url: "",
+        description: "",
+        attribute: "examlab-image-right"
+      },
+      {
+        url: "",
+        description: "",
+        attribute: "examlab-image-right"
+      }
+    ],
+    options: [
+      "① test제1종 대형면허 및 소형견인차면허",
+      "② test제1종 보통면허 및 대형견인차면허",
+      "③ test제1종 보통면허 및 소형견인차면허",
+      "④ test제2종 보통면허 및 대형견인차면허"
+    ],
+    questionImageUrls: [],
+    questionImageDescriptions: [""],
+    answers: ["4"],
+    commentary: "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
+    commentary_images_in: [
+      {
+        url: "",
+        description: "",
+        attribute: ""
+      },
+      {
+        url: "",
+        description: "",
+        attribute: ""
+      }
+    ],
+    commentary_images_out: [
+      {
+        url: "",
+        description: "",
+        attribute: "examlab-image-right"
+      },
+      {
+        url: "",
+        description: "",
+        attribute: "examlab-image-right"
+      }
+    ],
+    tags: []
+  };
+
+  //이곳에서 data를 전송하고 전송하는 함수를 만들면된다.
+  useEffect(() => {
+    console.log(`Data push : ${contentType}, ${content}, ${isImageUrl}`);
+  }, [contentType, content, isImageUrl])
+
 
   //contentType
   const handleContentType = (e) => { //여기서 setContentType이 적용이 되기 때문에 
@@ -24,7 +101,8 @@ export const useDataHandle = () => {
 
   //---------------------------------------------------------------------- save data area
   // 이미지 추적 후 여기에 html로 저장이 될 수는 함수
-  const handleContent = (elementRef) => {
+  const handleContent = (e, elementRef) => {
+    e.preventDefault();
 
     if (!elementRef || !elementRef.current) {
       console.error("Editor ref is not initialized.");
@@ -34,7 +112,6 @@ export const useDataHandle = () => {
     // content를 저장하는 부분
     const inputContent = elementRef.current.innerHTML;
     setContent(inputContent);
-    console.log(`Data push : ${contentType}, ${content}, ${isImageUrl}`);
 
     // 이미지 추적
     const parsedContent = parse(inputContent);
@@ -111,11 +188,20 @@ export const useDataHandle = () => {
     setImageUrl(remainingImageUrls);
     console.log('이미지의 Url:', isImageUrl);
 
-    // if (hasImages) {
-    //   console.log('이미지가 포함되어 있습니다.');
-    // } else {
-    //   console.log('이미지가 포함되어 있지 않습니다.');
-    // }
+    fetch('http://localhost:3001/sample', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data
+      }),
+    }).then(res => {
+      if (res.ok) {
+        alert("저장");
+      }
+    })
+
   };
 
   return { content, contentType, handleContent, handleContentType }

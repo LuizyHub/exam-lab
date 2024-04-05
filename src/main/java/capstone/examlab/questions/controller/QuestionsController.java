@@ -6,8 +6,10 @@ import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.valid.ValidExamId;
+import capstone.examlab.valid.ValidParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +40,13 @@ public class QuestionsController {
 
     //Read API
     @GetMapping("{examId}/questions")
-    public QuestionsList selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam Map<String, String> params) {
+    public QuestionsList selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams Map<String, String> params) {
+        QuestionsSearch questionsSearch = buildQuestionsSearch(params);
+        log.info("questionOptionDto = {}", questionsSearch);
+        return questionsService.searchFromQuestions(examId, questionsSearch);
+    }
+    //Read 파라미터 처리 로직
+    private QuestionsSearch buildQuestionsSearch(Map<String, String> params){
         Map<String, List<String>> tagsMap = new HashMap<>();
         List<String> includes = new ArrayList<>();
         int count = 10;
@@ -54,6 +62,9 @@ public class QuestionsController {
             } else if (key.equals("includes")) {
                 includes.add(value);
             } else if (key.equals("count")) {
+                if (count < 1) {
+                    throw new IllegalArgumentException("Count 값은 1 이상의 양수여야 합니다.");
+                }
                 count = Integer.parseInt(value);
             }
         }
@@ -63,8 +74,7 @@ public class QuestionsController {
                 .count(count)
                 .includes(includes)
                 .build();
-        log.info("questionOptionDto = {}", questionsSearch);
-        return questionsService.searchFromQuestions(examId, questionsSearch);
+        return questionsSearch;
     }
 
     //Update API

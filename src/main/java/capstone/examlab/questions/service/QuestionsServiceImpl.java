@@ -82,6 +82,7 @@ public class QuestionsServiceImpl implements QuestionsService {
     public QuestionsList searchFromQuestions(Long examId, QuestionsSearch questionsSearch) {
         Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearch);
 
+        log.info("QuestionsSearch: "+questionsSearch.toString());
         //쿼리문 코드 적용 및 elasticSearch 통신 관련
         NativeQuery searchQuery = new NativeQuery(query);
         searchQuery.setPageable(PageRequest.of(0, questionsSearch.getCount()));
@@ -110,6 +111,7 @@ public class QuestionsServiceImpl implements QuestionsService {
             questionsList.add(question);
             count++;
         }
+        log.info("searchSize: "+questionsList.size());
         return questionsList;
     }
 

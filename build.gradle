@@ -64,6 +64,7 @@ dependencies {
     //Elasticsearch TestContainer
     testImplementation 'org.testcontainers:elasticsearch:1.19.3'
     testImplementation 'org.testcontainers:testcontainers:1.19.3'
+    testImplementation("org.testcontainers:junit-jupiter:1.12.0")
 }
 
 tasks.named('test') {

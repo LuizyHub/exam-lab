@@ -30,8 +30,8 @@ public class ExamDatabaseInitializer implements ApplicationRunner {
 
         // 시험 데이터 생성
         Exam drivingLicenseExam = examProvider.getObject();
-        drivingLicenseExam.setExamTitle("category");
-        drivingLicenseExam.setTypes(Map.of("tags", List.of("상황", "표지", "화물", "법")));
+        drivingLicenseExam.setExamTitle("운전면허 - 1,2종");
+        drivingLicenseExam.setTypes(Map.of("category", List.of("상황", "표지", "화물", "법")));
 
         try {
             drivingLicenseExam = examRepository.save(drivingLicenseExam);

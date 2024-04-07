@@ -98,7 +98,7 @@ task copyOasToStatic(type: Copy) {
 }
 
 openapi3 {
-    servers = [{ url = 'http://exam-lab.store/' }, { url = 'http://localhost:8080/' }]
+    servers = [{ url = 'https://exam-lab.store/' }, { url = 'http://localhost:8080/' }]
     title = 'Exam Lab API'
     description = 'API for Exam Lab'
     version = '0.1.0'

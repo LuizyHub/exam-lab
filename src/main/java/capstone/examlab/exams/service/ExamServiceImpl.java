@@ -28,8 +28,7 @@ public class ExamServiceImpl implements ExamsService {
         // id 검증은 이미 controller에서 수행하므로 생략
         // get()으로 가져오는 것은 Optional이기 때문에 null이 아님을 보장
         Exam exam = (Exam) examRepository.findByExamId(id).get();
-
-        log.error("exam.getUser() = {}", exam.getUser());
+        
         if (user == null) {
             if (exam.getUser() != null) {
                 throw new UnauthorizedException();

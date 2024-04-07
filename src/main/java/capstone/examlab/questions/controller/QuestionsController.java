@@ -55,7 +55,7 @@ public class QuestionsController {
             String key = entry.getKey();
             String value = entry.getValue();
             if (key.startsWith("tagsMap_")) {
-                String[] tokens = key.split("_");
+                String[] tokens = key.split("_",2);
                 String category = tokens[1];
                 //키가 맵에 없으면 새로 생성, value값이 list타입이므로 새로 생성
                 tagsMap.computeIfAbsent(category, k -> new ArrayList<String>()).add(value);

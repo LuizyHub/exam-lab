@@ -661,6 +661,209 @@
         ],
         "tags": []
       }
+    },
+    {
+      "id": "5fc5",
+      "data": {
+        "id": "1",
+        "type": "test",
+        "question": "test다음 중 총중량 <img src=0> 1.5톤 피견인 승용자동차를 4.5톤 <img src=1>화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?",
+        "question_images_in": [
+          {
+            "url": "",
+            "description": "",
+            "attribute": ""
+          },
+          {
+            "url": "",
+            "description": "",
+            "attribute": ""
+          }
+        ],
+        "question_images_out": [
+          {
+            "url": "",
+            "description": "",
+            "attribute": "examlab-image-right"
+          },
+          {
+            "url": "",
+            "description": "",
+            "attribute": "examlab-image-right"
+          },
+          {
+            "url": "",
+            "description": "",
+            "attribute": "examlab-image-right"
+          },
+          {
+            "url": "",
+            "description": "",
+            "attribute": "examlab-image-right"
+          }
+        ],
+        "options": [
+          "① test제1종 대형면허 및 소형견인차면허",
+          "② test제1종 보통면허 및 대형견인차면허",
+          "③ test제1종 보통면허 및 소형견인차면허",
+          "④ test제2종 보통면허 및 대형견인차면허"
+        ],
+        "questionImageUrls": [],
+        "questionImageDescriptions": [
+          ""
+        ],
+        "answers": [
+          "4"
+        ],
+        "commentary": "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
+        "commentary_images_in": [
+          {
+            "url": "",
+            "description": "",
+            "attribute": ""
+          },
+          {
+            "url": "",
+            "description": "",
+            "attribute": ""
+          }
+        ],
+        "commentary_images_out": [
+          {
+            "url": "",
+            "description": "",
+            "attribute": "examlab-image-right"
+          },
+          {
+            "url": "",
+            "description": "",
+            "attribute": "examlab-image-right"
+          }
+        ],
+        "tags": []
+      }
+    },
+    {
+      "id": "f907",
+      "data": {
+        "type": "객관식",
+        "question": "다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?",
+        "options": [
+          "① 제1종 대형면허 및 소형견인차면허",
+          "② 제1종 보통면허 및 대형견인차면허",
+          "③ 제1종 보통면허 및 소형견인차면허",
+          "④ 제2종 보통면허 및 대형견인차면허"
+        ],
+        "questionImagesTextIn": [
+          {
+            "url": "",
+            "description": "설명",
+            "attribute": "속성"
+          },
+          {
+            "url": "",
+            "description": "설명",
+            "attribute": "속성"
+          }
+        ],
+        "questionImagesTextOut": [
+          {
+            "url": "",
+            "description": "설명",
+            "attribute": "속성"
+          }
+        ],
+        "answers": [
+          "4"
+        ],
+        "tagsMap": {
+          "category": [
+            "화물"
+          ]
+        },
+        "commentary": "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
+        "commentaryImagesTextIn": [
+          {
+            "url": "",
+            "description": "설명",
+            "attribute": "속성"
+          }
+        ],
+        "commentaryImagesTextOut": [
+          {
+            "url": "",
+            "description": "설명",
+            "attribute": "속성"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2bbe",
+      "data": {
+        "type": "객관식",
+        "question": "다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?",
+        "options": [
+          "① 제1종 대형면허 및 소형견인차면허",
+          "② 제1종 보통면허 및 대형견인차면허",
+          "③ 제1종 보통면허 및 소형견인차면허",
+          "④ 제2종 보통면허 및 대형견인차면허"
+        ],
+        "questionImagesTextIn": [
+          {
+            "url": "T",
+            "description": "설명",
+            "attribute": "속성"
+          },
+          {
+            "url": "T",
+            "description": "설명",
+            "attribute": "속성"
+          }
+        ],
+        "questionImagesTextOut": [
+          {
+            "url": "",
+            "description": "설명",
+            "attribute": "속성"
+          }
+        ]
+      }
+    },
+    {
+      "id": "d266",
+      "data": {
+        "question": "다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?"
+      }
+    },
+    {
+      "id": "0e1d",
+      "data": {
+        "question": "다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?"
+      }
+    },
+    {
+      "id": "20b3",
+      "data": {
+        "questionImagesTextOut": [
+          {
+            "url": "",
+            "description": "설명",
+            "attribute": "속성"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b447",
+      "data": {
+        "options": [
+          "① 제1종 대형면허 및 소형견인차면허",
+          "② 제1종 보통면허 및 대형견인차면허",
+          "③ 제1종 보통면허 및 소형견인차면허",
+          "④ 제2종 보통면허 및 대형견인차면허"
+        ]
+      }
     }
   ]
 }

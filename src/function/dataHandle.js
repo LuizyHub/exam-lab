@@ -3,107 +3,73 @@ import parse from 'html-react-parser';
 
 export const useDataHandle = () => {
   const [content, setContent] = useState('');
-  const [contentType, setContentType] = useState('');
+  const [contentType, setContentType] = useState('type');
   // const [imageFiles, setImageFiles] = useState([]); // 이미지 파일들을 저장할 배열 상태-> 이부분 수정 필요 정확히 역할은?
 
   const [isImageUrl, setImageUrl] = useState([]); //이미지 url값을 저장.. 배열로
   const [isImageId, setImageId] = useState([]); // 이미지의 ID를 저장하는 상태 변수
 
   const data = {
-    id: "1",
-    type: "test",
-    question: "test다음 중 총중량 <img src=0> 1.5톤 피견인 승용자동차를 4.5톤 <img src=1>화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?",
-    question_images_in: [
-      {
-        url: "",
-        description: "",
-        attribute: ""
-      },
-      {
-        url: "",
-        description: "",
-        attribute: ""
-      }
-    ],
-    question_images_out: [
-      {
-        url: "",
-        description: "",
-        attribute: "examlab-image-right"
-      },
-      {
-        url: "",
-        description: "",
-        attribute: "examlab-image-right"
-      },
-      {
-        url: "",
-        description: "",
-        attribute: "examlab-image-right"
-      },
-      {
-        url: "",
-        description: "",
-        attribute: "examlab-image-right"
-      }
-    ],
-    options: [
-      "① test제1종 대형면허 및 소형견인차면허",
-      "② test제1종 보통면허 및 대형견인차면허",
-      "③ test제1종 보통면허 및 소형견인차면허",
-      "④ test제2종 보통면허 및 대형견인차면허"
-    ],
-    questionImageUrls: [],
-    questionImageDescriptions: [""],
-    answers: ["4"],
-    commentary: "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
-    commentary_images_in: [
-      {
-        url: "",
-        description: "",
-        attribute: ""
-      },
-      {
-        url: "",
-        description: "",
-        attribute: ""
-      }
-    ],
-    commentary_images_out: [
-      {
-        url: "",
-        description: "",
-        attribute: "examlab-image-right"
-      },
-      {
-        url: "",
-        description: "",
-        attribute: "examlab-image-right"
-      }
-    ],
-    tags: []
+    "type": "객관식",
+    "questionImagesTextIn": [
+      { "url": "T", "description": "설명", "attribute": "속성" },
+      { "url": "T", "description": "설명", "attribute": "속성" }
+    ]
   };
 
+  const dataQuestion = {
+    "question": "다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?"
+  }
+
+  const dataImage = {
+    "questionImagesTextOut": [
+      { "url": "", "description": "설명", "attribute": "속성" }
+    ]
+  }
+
+  const dataOption = {
+    "options": [
+      "① 제1종 대형면허 및 소형견인차면허",
+      "② 제1종 보통면허 및 대형견인차면허",
+      "③ 제1종 보통면허 및 소형견인차면허",
+      "④ 제2종 보통면허 및 대형견인차면허"
+    ]
+  }
+
+  // "answers": ["4"],
+  // "tagsMap": { "category": ["화물"] },
+  // "commentary": "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
+  // "commentaryImagesTextIn": [
+  //   { "url": "T", "description": "설명", "attribute": "속성" }
+  // ],
+  // "commentaryImagesTextOut": [
+  //   { "url": "T", "description": "설명", "attribute": "속성" }
+  // ]
+
   //이곳에서 data를 전송하고 전송하는 함수를 만들면된다.
+
   useEffect(() => {
     console.log(`Data push : ${contentType}, ${content}, ${isImageUrl}`);
   }, [contentType, content, isImageUrl])
 
+  // const handleContentType = () =>{
+  //   setContentType()
+  // }
 
   //contentType
   const handleContentType = (e) => { //여기서 setContentType이 적용이 되기 때문에 
-    //----------------------------------------------------------------------------------------------------------- content를 저장하는 부분
+    //content를 저장하는 부분
     const contentType = e.currentTarget.value;
     setContentType(contentType);
+    alert(contentType);
     // setEditorState({ ...editorState, type: contentType });
     // console.log(editorState);
   }
 
-  //---------------------------------------------------------------------- save data area
   // 이미지 추적 후 여기에 html로 저장이 될 수는 함수
   const handleContent = (e, elementRef) => {
     e.preventDefault();
-
+    // alert('check1');
     if (!elementRef || !elementRef.current) {
       console.error("Editor ref is not initialized.");
       return;
@@ -184,23 +150,38 @@ export const useDataHandle = () => {
     const remainingImageUrls = updatedImageUrls.filter(url => {
       return imageUrlsInContent.includes(url);
     });
-
     setImageUrl(remainingImageUrls);
     console.log('이미지의 Url:', isImageUrl);
 
-    fetch('http://localhost:3001/sample', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        data
-      }),
-    }).then(res => {
-      if (res.ok) {
-        alert("저장");
-      }
-    })
+    const URL = 'http://localhost:3001/sample'
+
+    const sendData = (URL, data) => {
+      alert('check');
+      fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data
+        }),
+      }).then(res => {
+        if (res.ok) {
+          alert("저장");
+        }
+      })
+    }
+    alert('check');
+    if (contentType === "type") {
+      alert("선택되지 않았습니다.");
+    } else if (contentType !== "type" && contentType === '문제') {
+      sendData(URL, dataQuestion);
+    } else if (contentType !== "type" && contentType === '이미지') {
+      sendData(URL, dataImage);
+    } else if (contentType !== "type" && contentType === '선택지') {
+      sendData(URL, dataOption);
+    }
+
 
   };
 

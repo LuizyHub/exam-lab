@@ -15,21 +15,9 @@ export default function Editor({ editorRef, imageSelectorRef, handleImageSelect,
         style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
       /> */}
       <form onSubmit={(e) => {
-        // e.preventDefault(); // 기본 동작 방지
+        e.preventDefault(); // 기본 동작 방지
         handleContent(e, editorRef); // 저장 함수 호출
       }}>
-        {/* <div
-          className="editor"
-          contentEditable="true"
-          ref={editorRef}
-          style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-        />
-        <div
-          className="editor"
-          contentEditable="true"
-          ref={editorRef}
-          style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-        /> */}
         <div
           className="editor"
           contentEditable="true"

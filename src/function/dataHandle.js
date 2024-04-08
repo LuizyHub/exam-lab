@@ -3,13 +3,11 @@ import parse from 'html-react-parser';
 
 export const useDataHandle = () => {
   const [content, setContent] = useState('');
-  const [contentType, setContentType] = useState('type');
-  // const [imageFiles, setImageFiles] = useState([]); // 이미지 파일들을 저장할 배열 상태-> 이부분 수정 필요 정확히 역할은?
 
   const [isImageUrl, setImageUrl] = useState([]); //이미지 url값을 저장.. 배열로
   const [isImageId, setImageId] = useState([]); // 이미지의 ID를 저장하는 상태 변수
 
-  const data = {
+  const dataImageIn = {
     "type": "객관식",
     "questionImagesTextIn": [
       { "url": "T", "description": "설명", "attribute": "속성" },
@@ -21,7 +19,7 @@ export const useDataHandle = () => {
     "question": "다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?"
   }
 
-  const dataImage = {
+  const dataImageOut = {
     "questionImagesTextOut": [
       { "url": "", "description": "설명", "attribute": "속성" }
     ]
@@ -36,38 +34,28 @@ export const useDataHandle = () => {
     ]
   }
 
-  // "answers": ["4"],
-  // "tagsMap": { "category": ["화물"] },
-  // "commentary": "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
-  // "commentaryImagesTextIn": [
-  //   { "url": "T", "description": "설명", "attribute": "속성" }
-  // ],
-  // "commentaryImagesTextOut": [
-  //   { "url": "T", "description": "설명", "attribute": "속성" }
-  // ]
+  const data = {
+    "answers": ["4"],
+    "tagsMap": { "category": ["화물"] },
+    "commentary": "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
+    "commentaryImagesTextIn": [
+      { "url": "T", "description": "설명", "attribute": "속성" }
+    ],
+    "commentaryImagesTextOut": [
+      { "url": "T", "description": "설명", "attribute": "속성" }
+    ]
+  }
+
 
   //이곳에서 data를 전송하고 전송하는 함수를 만들면된다.
 
   useEffect(() => {
-    console.log(`Data push : ${contentType}, ${content}, ${isImageUrl}`);
-  }, [contentType, content, isImageUrl])
+    console.log(`Data push :  ${content}, ${isImageUrl}`);//${contentType},
+  }, [content, isImageUrl])//contentType,
 
-  // const handleContentType = () =>{
-  //   setContentType()
-  // }
-
-  //contentType
-  const handleContentType = (e) => { //여기서 setContentType이 적용이 되기 때문에 
-    //content를 저장하는 부분
-    const contentType = e.currentTarget.value;
-    setContentType(contentType);
-    alert(contentType);
-    // setEditorState({ ...editorState, type: contentType });
-    // console.log(editorState);
-  }
 
   // 이미지 추적 후 여기에 html로 저장이 될 수는 함수
-  const handleContent = (e, elementRef) => {
+  const handleContent = (e, elementRef, elementType1, elementType2, elementType3) => {
     e.preventDefault();
     // alert('check1');
     if (!elementRef || !elementRef.current) {
@@ -171,19 +159,25 @@ export const useDataHandle = () => {
         }
       })
     }
-    alert('check');
-    if (contentType === "type") {
-      alert("선택되지 않았습니다.");
-    } else if (contentType !== "type" && contentType === '문제') {
-      sendData(URL, dataQuestion);
-    } else if (contentType !== "type" && contentType === '이미지') {
-      sendData(URL, dataImage);
-    } else if (contentType !== "type" && contentType === '선택지') {
-      sendData(URL, dataOption);
+    if (elementType1 !== "type" && elementType2 !== "type" && elementType3 !== "type") {
+      sendData(URL, data)
+    } else {
+      alert('아무 것도 선택 되지 않았습니다.')
     }
+
+    // alert('check');
+    // if (contentType === "type") {
+    //   alert("선택되지 않았습니다.");
+    // } else if (contentType !== "type" && contentType === '문제') {
+    //   sendData(URL, dataQuestion);
+    // } else if (contentType !== "type" && contentType === '이미지') {
+    //   sendData(URL, dataImage);
+    // } else if (contentType !== "type" && contentType === '선택지') {
+    //   sendData(URL, dataOption);
+    // }
 
 
   };
 
-  return { content, contentType, handleContent, handleContentType }
+  return { handleContent }//handleContentType, contentType, content
 }

@@ -855,34 +855,9 @@
       }
     },
     {
-      "id": "b447",
+      "id": "9f94",
       "data": {
-        "options": [
-          "① 제1종 대형면허 및 소형견인차면허",
-          "② 제1종 보통면허 및 대형견인차면허",
-          "③ 제1종 보통면허 및 소형견인차면허",
-          "④ 제2종 보통면허 및 대형견인차면허"
-        ]
-      }
-    },
-    {
-      "id": "6027",
-      "data": {
-        "question": "다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?"
-      }
-    },
-    {
-      "id": "5a2c",
-      "data": {
-        "answers": [
-          "4"
-        ],
-        "tagsMap": {
-          "category": [
-            "화물"
-          ]
-        },
-        "commentary": "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.",
+        "question": "",
         "commentaryImagesTextIn": [
           {
             "url": "T",
@@ -890,14 +865,57 @@
             "attribute": "속성"
           }
         ],
-        "commentaryImagesTextOut": [
+        "questionImagesTextOut": [
+          {
+            "url": "undefined",
+            "description": "",
+            "attribute": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "f415",
+      "data": {
+        "question": "",
+        "commentaryImagesTextIn": [
           {
             "url": "T",
             "description": "설명",
             "attribute": "속성"
           }
+        ],
+        "questionImagesTextOut": [
+          {
+            "url": "undefined",
+            "description": "",
+            "attribute": ""
+          }
         ]
       }
+    },
+    {
+      "id": "ccd8",
+      "data": {
+        "question": "선택지 저장",
+        "commentaryImagesTextIn": [
+          {
+            "url": "Null",
+            "description": "Null",
+            "attribute": "Null"
+          }
+        ],
+        "questionImagesTextOut": [
+          {
+            "description": "",
+            "attribute": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "24d8",
+      "data": "{\"question\":\"\",\"commentaryImagesTextIn\":[{\"url\":\"Null\",\"description\":\"Null\",\"attribute\":\"Null\"}],\"questionImagesTextOut\":[{\"description\":\"\",\"attribute\":\"\"}]}"
     }
   ]
 }

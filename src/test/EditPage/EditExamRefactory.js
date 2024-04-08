@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import EditorExam from "../../components/EditorExam"
-import { useDataHandle } from "../../function/dataHandle";
+// import { useDataHandle } from "../..//dataHandle";
 export default function EditExam() {
   return (
     <>

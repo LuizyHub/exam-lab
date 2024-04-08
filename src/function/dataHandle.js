@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import parse from 'html-react-parser';
 
-export const useDataHandle = () => {
-  const [content, setContent] = useState('');
+export const DataHandle = () => {
+  const [content, setContent] = useState(''); //question
+  const [isImageUrl, setImageUrl] = useState([]); //image-url
 
-  const [isImageUrl, setImageUrl] = useState([]); //이미지 url값을 저장.. 배열로
   const [isImageId, setImageId] = useState([]); // 이미지의 ID를 저장하는 상태 변수
-
+  // const [isData, setData] = useState();
+  const [isData, setData] = useState({
+    content: '',
+    imageUrl: [],
+    // isData: null
+  });
+  /*
+  //저장될때 잘 사펴 보고 이중으로 글자가 들어가는지도 확인 해야함
   const dataImageIn = {
     "type": "객관식",
     "questionImagesTextIn": [
@@ -45,18 +52,31 @@ export const useDataHandle = () => {
       { "url": "T", "description": "설명", "attribute": "속성" }
     ]
   }
+*/
+
+  // const data = {
+  //   question: content,
+  //   commentaryImagesTextIn: [
+  //     { url: "Null", description: "Null", attribute: "Null" }
+  //   ],
+  //   questionImagesTextOut: [
+  //     { url: isImageUrl[0], description: "", attribute: "" }
+  //   ]
+  // };
 
 
   //이곳에서 data를 전송하고 전송하는 함수를 만들면된다.
-
   useEffect(() => {
-    console.log(`Data push :  ${content}, ${isImageUrl}`);//${contentType},
-  }, [content, isImageUrl])//contentType,
+    sessionStorage.setItem('Data', JSON.stringify(isData));
+    // console.log(`Data push :  ${content}, ${isImageUrl}`);//${contentType},
+    console.log("Content:", isData.content);
+    console.log("Image URLs:", isData.imageUrl);
+    console.log(isData);
+  }, [isData])//contentType,isData, content, isImageUrl
 
 
   // 이미지 추적 후 여기에 html로 저장이 될 수는 함수
-  const handleContent = (e, elementRef, elementType1, elementType2, elementType3) => {
-    e.preventDefault();
+  const handleContent = (elementRef) => {
     // alert('check1');
     if (!elementRef || !elementRef.current) {
       console.error("Editor ref is not initialized.");
@@ -65,14 +85,18 @@ export const useDataHandle = () => {
 
     // content를 저장하는 부분
     const inputContent = elementRef.current.innerHTML;
-    setContent(inputContent);
+    // setContent(inputContent);
+    setData(prevState => ({
+      ...prevState,
+      content: inputContent
+    }));
 
     // 이미지 추적
     const parsedContent = parse(inputContent);
     let hasImages = false;
     const updatedImageIds = [...isImageId]; // 새로운 이미지 ID 배열
-    const updatedImageUrls = [...isImageUrl]; // 새로운 이미지 URL 배열
-
+    // const updatedImageUrls = [...isImageUrl]; // 새로운 이미지 URL 배열
+    const updatedImageUrls = [...isData.imageUrl];
     React.Children.forEach(parsedContent, child => {
       if (child.type === 'img') {
         hasImages = true;
@@ -92,13 +116,21 @@ export const useDataHandle = () => {
     });
 
     // 이미지가 포함되지 않은 경우에는 imageIds와 imageUrls를 비웁니다.
-    if (!hasImages && (isImageId.length > 0 || isImageUrl.length > 0)) {
+    if (!hasImages && (isImageId.length > 0 || isData.imageUrl.length > 0)) {
       console.log('이미지가 포함되지 않았습니다. 이미지 ID와 URL을 초기화합니다.');
       setImageId([]);
-      setImageUrl([]);
+      // setImageUrl([]);
+      setData(prevState => ({
+        ...prevState,
+        imageUrl: []
+      }));
     } else {
       setImageId(updatedImageIds); // 새로운 이미지 ID 배열로 업데이트합니다.
-      setImageUrl(updatedImageUrls); // 새로운 이미지 URL 배열로 업데이트합니다.
+      // setImageUrl(updatedImageUrls); // 새로운 이미지 URL 배열로 업데이트합니다.
+      setData(prevState => ({
+        ...prevState,
+        imageUrl: updatedImageUrls
+      }));
     }
 
     //이미지 정규식으로 추출 및 추적
@@ -138,32 +170,12 @@ export const useDataHandle = () => {
     const remainingImageUrls = updatedImageUrls.filter(url => {
       return imageUrlsInContent.includes(url);
     });
-    setImageUrl(remainingImageUrls);
+    // setImageUrl(remainingImageUrls);
+    setData(prevState => ({
+      ...prevState,
+      imageUrl: remainingImageUrls
+    }));
     console.log('이미지의 Url:', isImageUrl);
-
-    const URL = 'http://localhost:3001/sample'
-
-    const sendData = (URL, data) => {
-      alert('check');
-      fetch(URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          data
-        }),
-      }).then(res => {
-        if (res.ok) {
-          alert("저장");
-        }
-      })
-    }
-    if (elementType1 !== "type" && elementType2 !== "type" && elementType3 !== "type") {
-      sendData(URL, data)
-    } else {
-      alert('아무 것도 선택 되지 않았습니다.')
-    }
 
     // alert('check');
     // if (contentType === "type") {
@@ -175,9 +187,9 @@ export const useDataHandle = () => {
     // } else if (contentType !== "type" && contentType === '선택지') {
     //   sendData(URL, dataOption);
     // }
-
+    // setData(data);
 
   };
 
-  return { handleContent }//handleContentType, contentType, content
+  return { handleContent }//handleContentType, contentType, content, isImageUrl, 
 }

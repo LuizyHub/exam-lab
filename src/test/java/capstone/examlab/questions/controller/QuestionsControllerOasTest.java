@@ -10,22 +10,11 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.boot.test.context.SpringBootTest;
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
-
-
-import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
+import static com.epages.restdocs.apispec.ResourceDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -33,15 +22,10 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.request.RequestPartsSnippet;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -74,7 +58,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .tag("question")
                                 .summary("Search Questions")
                                 .pathParameters(
-                                        parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
+                                        parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
                                 )
                                 .queryParameters(
                                         parameterWithName("tagsMap_category").description("문제의 태그 카테고리").type(SimpleType.STRING),
@@ -137,6 +121,46 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                 )
                                 .build()
                         )
+                ));
+    }
+
+
+//    Objectmapper를 MockBean으로 안받고 Autowired함으로써 실제 데이터를 건드려버린다 -> 추후 수정 필요
+//    @Test
+//    void deleteQuestionsByExamID() throws Exception {
+//
+//        mockMvc.perform(
+//                        delete("/api/v1/exams/{examId}/questions", existExamId)
+//                )
+//                .andExpect(status().isOk())
+//                .andDo(document("delete-questions-by-examId",
+//                        resource(ResourceSnippetParameters.builder()
+//                                .description("해당되는 시험 ID Questions 삭제")
+//                                .tag("question")
+//                                .summary("DeleteQuestionsByExamID")
+//                                .pathParameters(
+//                                        parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
+//                                )
+//                                .build())
+//                ));
+//    }
+
+    @Test
+    void deleteQuestionsByQuestionID() throws Exception {
+        String existQuestionId = "fee4fd71-3780-4ad1-a76f-a9a0ca052081";
+        mockMvc.perform(
+                        delete("/api/v1/exams/questions/{questionId}", existQuestionId)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("delete-questions-by-questionId",
+                        resource(ResourceSnippetParameters.builder()
+                                .description("해당되는 문제 ID Question 삭제")
+                                .tag("question")
+                                .summary("DeleteQuestionsByQuestionId")
+                                .pathParameters(
+                                        parameterWithName("questionId").description("QuestionId").type(SimpleType.INTEGER)
+                                )
+                                .build())
                 ));
     }
 
@@ -218,15 +242,6 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
             }
         });
 
-        //resource에서는 requestparts를 처리할 방법이 없음, 미리 추가후 대입시켜주기
-        RequestPartsSnippet requestPartsSnippet = requestParts(
-                partWithName("questionUploadInfo").description("질문 업로드 정보"),
-                partWithName("questionImagesIn").description("질문 이미지 파일1"),
-                partWithName("questionImagesOut").description("질문 이미지 파일2"),
-                partWithName("commentaryImagesIn").description("해설 이미지 파일1"),
-                partWithName("commentaryImagesOut").description("해설 이미지 파일2")
-        );
-
         this.mockMvc.perform(
                         customRestDocumentationRequestBuilder
                                 .file(jsonPart)
@@ -237,81 +252,16 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 )
                 .andExpect(status().isOk())
-                .andDo(document("Add-questions",
-                        requestPartsSnippet,
+                .andDo(document("add-questions",
                         resource(ResourceSnippetParameters.builder()
                                 .description("문제 추가")
                                 .tag("question")
                                 .summary("Add Question")
                                 .requestHeaders(HeaderDocumentation.headerWithName(HttpHeaders.CONTENT_TYPE)
                                         .description(MediaType.MULTIPART_FORM_DATA_VALUE)
-                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
-                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
-                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
-                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
                                 )
                                 .build()
                         )
-//                        requestPartFields("questionUploadInfo",
-//                                        fieldWithPath("type").description("문제 유형").type(JsonFieldType.STRING),
-//                                        fieldWithPath("question").description("문제").type(JsonFieldType.STRING),
-//                                        fieldWithPath("options").description("보기 목록").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath("options[]").description("보기").type(JsonFieldType.STRING),
-//                                        fieldWithPath("questionImagesTextIn").description("문제 설명 이미지 목록").type(JsonFieldType.ARRAY),
-//                                        subsectionWithPath("questionImagesTextIn[].url").description("이미지 URL").type(JsonFieldType.STRING),
-//                                        subsectionWithPath("questionImagesTextIn[].description").description("설명").type(JsonFieldType.STRING),
-//                                        subsectionWithPath("questionImagesTextIn[].attribute").description("속성").type(JsonFieldType.STRING),
-//                                        fieldWithPath("questionImagesTextOut").description("문제 정답 이미지 목록").type(JsonFieldType.ARRAY),
-//                                        subsectionWithPath("questionImagesTextOut[].url").description("이미지 URL").type(JsonFieldType.STRING),
-//                                        subsectionWithPath("questionImagesTextOut[].description").description("설명").type(JsonFieldType.STRING),
-//                                        subsectionWithPath("questionImagesTextOut[].attribute").description("속성").type(JsonFieldType.STRING),
-//                                        fieldWithPath("answers").description("정답 목록").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath(".answers").description("정답").type(JsonFieldType.NUMBER),
-//                                        fieldWithPath("tagsMap").description("태그 맵 정보").type(JsonFieldType.OBJECT),
-//                                        subsectionWithPath("tagsMap.category").description("카테고리 태그 정보").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath("tagsMap.category[]").description("카테고리 태그").type(JsonFieldType.STRING),
-//                                        fieldWithPath("commentary").description("해설").type(JsonFieldType.STRING),
-//                                        fieldWithPath("commentaryImagesTextIn").description("해설 설명 이미지 목록").type(JsonFieldType.ARRAY),
-//                                        subsectionWithPath("commentaryImagesTextIn[].url").description("이미지 URL").type(JsonFieldType.STRING),
-//                                        subsectionWithPath("commentaryImagesTextIn[].description").description("설명").type(JsonFieldType.STRING),
-//                                        subsectionWithPath("commentaryImagesTextIn[].attribute").description("속성").type(JsonFieldType.STRING),
-//                                        fieldWithPath("commentaryImagesTextOut").description("해설 이미지 목록").type(JsonFieldType.ARRAY),
-//                                        subsectionWithPath("commentaryImagesTextOut[].url").description("이미지 URL").type(JsonFieldType.STRING),
-//                                        subsectionWithPath("commentaryImagesTextOut[].description").description("설명").type(JsonFieldType.STRING),
-//                                        subsectionWithPath("commentaryImagesTextOut[].attribute").description("속성").type(JsonFieldType.STRING)
-//                        )
                 ));
-//                                 resource(ResourceSnippetParameters.builder()
-//                                .description("시험에 문제 추가")
-//                                .tag("questions")
-//                                .summary("Add questions")
-//                                .requestFields(
-//                                        fieldWithPath("questionUploadInfo").description("질문 업로드 정보")
-//                                        fieldWithPath("type").description("문제 유형").type(JsonFieldType.STRING),
-//                                        fieldWithPath("question").description("문제").type(JsonFieldType.STRING),
-//                                        fieldWithPath("options").description("보기 목록").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath("options[]").description("보기").type(JsonFieldType.STRING),
-//                                        fieldWithPath("questionImagesTextIn").description("문제 설명 이미지 목록").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath("questionImagesTextIn[].url").description("이미지 URL").type(JsonFieldType.STRING),
-////                                        subsectionWithPath("questionImagesTextIn[].description").description("설명").type(JsonFieldType.STRING),
-////                                        subsectionWithPath("questionImagesTextIn[].attribute").description("속성").type(JsonFieldType.STRING),
-//                                        fieldWithPath("questionImagesTextOut").description("문제 정답 이미지 목록").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath("questionImagesTextOut[].url").description("이미지 URL").type(JsonFieldType.STRING),
-////                                        subsectionWithPath("questionImagesTextOut[].description").description("설명").type(JsonFieldType.STRING),
-////                                        subsectionWithPath("questionImagesTextOut[].attribute").description("속성").type(JsonFieldType.STRING),
-//                                        fieldWithPath("answers").description("정답 목록").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath(".answers").description("정답").type(JsonFieldType.NUMBER),
-//                                        fieldWithPath("tagsMap").description("태그 맵 정보").type(JsonFieldType.OBJECT),
-////                                        subsectionWithPath("tagsMap.category").description("카테고리 태그 정보").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath("tagsMap.category[]").description("카테고리 태그").type(JsonFieldType.STRING),
-//                                        fieldWithPath("commentary").description("해설").type(JsonFieldType.STRING),
-//                                        fieldWithPath("commentaryImagesTextIn").description("해설 설명 이미지 목록").type(JsonFieldType.ARRAY),
-////                                        subsectionWithPath("commentaryImagesTextIn[].url").description("이미지 URL").type(JsonFieldType.STRING),
-////                                        subsectionWithPath("commentaryImagesTextIn[].description").description("설명").type(JsonFieldType.STRING),
-////                                        subsectionWithPath("commentaryImagesTextIn[].attribute").description("속성").type(JsonFieldType.STRING),
-//                                        fieldWithPath("commentaryImagesTextOut").description("해설 이미지 목록").type(JsonFieldType.ARRAY)
-////                                        subsectionWithPath("commentaryImagesTextOut[].url").description("이미지 URL").type(JsonFieldType.STRING),
-////                                        subsectionWithPath("commentaryImagesTextOut[].description").description("설명").type(JsonFieldType.STRING),
-////                                        subsectionWithPath("commentaryImagesTextOut[].attribute").description("속성").type(JsonFieldType.STRING)
     }
 }

@@ -41,7 +41,7 @@ public class ExamDatabaseInitializer implements ApplicationRunner {
 
         Exam englishSATExam = examProvider.getObject();
         englishSATExam.setExamTitle("수능 - 영어");
-        englishSATExam.setTypes(Map.of("tags", List.of("문법", "독해", "어휘", "듣기")));
+        englishSATExam.setTypes(Map.of("category", List.of("문법", "독해", "어휘", "듣기")));
 
         try {
             englishSATExam = examRepository.save(englishSATExam);

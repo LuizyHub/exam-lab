@@ -33,6 +33,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.request.RequestPartsSnippet;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
@@ -44,6 +45,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@Transactional
 @Tag("openapi_test")
 class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     private final Long existExamId = 1L;
@@ -57,45 +59,82 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     }
 
     @Test
-    void searchQuestions() throws Exception{
+    void searchQuestions() throws Exception {
         String tagsMap1 = "상황";
         String tagsMap2 = "표지";
         String includes1 = "고속도로";
         int count = 1;
         mockMvc.perform(
-                get("/api/v1/exams/{examId}/questions?tagsMap_category={tagsMap}&tagsMap_category={tagsMap}&includes={includes}&count={count}", existExamId, tagsMap1, tagsMap2, includes1, count)
+                        get("/api/v1/exams/{examId}/questions?tagsMap_category={tagsMap}&tagsMap_category={tagsMap}&includes={includes}&count={count}", existExamId, tagsMap1, tagsMap2, includes1, count)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("Search-questions",
                         resource(ResourceSnippetParameters.builder()
                                 .description("Exam ID를 통한 Questions 조회")
-                                .tag("questions")
+                                .tag("question")
                                 .summary("Search Questions")
                                 .pathParameters(
-                                    parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
+                                        parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
                                 )
                                 .queryParameters(
-                                    parameterWithName("tagsMap_category").description("문제의 태그 카테고리").type(SimpleType.STRING),
-                                    parameterWithName("includes").description("문제에 포함된 키워드").type(SimpleType.STRING),
-                                    parameterWithName("count").description("검색된 문제의 개수").type(SimpleType.INTEGER)
+                                        parameterWithName("tagsMap_category").description("문제의 태그 카테고리").type(SimpleType.STRING),
+                                        parameterWithName("includes").description("문제에 포함된 키워드").type(SimpleType.STRING),
+                                        parameterWithName("count").description("검색된 문제의 개수").type(SimpleType.INTEGER)
                                 )
                                 .responseFields(
-                                    fieldWithPath("[].id").description("문제의 고유 식별자").type(JsonFieldType.STRING),
-                                    fieldWithPath("[].type").description("문제의 유형").type(JsonFieldType.STRING),
-                                    fieldWithPath("[].question").description("문제 내용").type(JsonFieldType.STRING),
-                                    fieldWithPath("[].question_images_in").description("문제 설명 이미지 목록").type(JsonFieldType.ARRAY),
-                                    fieldWithPath("[].question_images_out").description("문제 정답 이미지 목록").type(JsonFieldType.ARRAY),
-                                    subsectionWithPath("[]question_images_out[].url").description("이미지 URL").type(JsonFieldType.STRING),
-                                    subsectionWithPath("[]question_images_out[].description").description("이미지 설명").type(JsonFieldType.STRING),
-                                    subsectionWithPath("[]question_images_out[].attribute").description("이미지 속성").type(JsonFieldType.STRING),
-                                    fieldWithPath("[].options").description("보기 목록").type(JsonFieldType.ARRAY),
-                                    fieldWithPath("[].answers").description("정답 목록").type(JsonFieldType.ARRAY),
-                                    fieldWithPath("[].commentary").description("문제 해설").type(JsonFieldType.STRING),
-                                    fieldWithPath("[].commentary_images_in").description("해설 설명 이미지 목록").type(JsonFieldType.ARRAY),
-                                    fieldWithPath("[].commentary_images_out").description("해설 이미지 목록").type(JsonFieldType.ARRAY),
-                                    fieldWithPath("[].tags_map").description("문제의 태그 맵 정보").type(JsonFieldType.OBJECT),
-                                    subsectionWithPath("[].tags_map.*").description("문제의 카테고리 태그 정보").type(JsonFieldType.ARRAY)
-                                 )
+                                        fieldWithPath("[].id").description("문제의 고유 식별자").type(JsonFieldType.STRING),
+                                        fieldWithPath("[].type").description("문제의 유형").type(JsonFieldType.STRING),
+                                        fieldWithPath("[].question").description("문제 내용").type(JsonFieldType.STRING),
+                                        fieldWithPath("[].question_images_in").description("문제 설명 이미지 목록").type(JsonFieldType.ARRAY),
+                                        fieldWithPath("[].question_images_out").description("문제 정답 이미지 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("[]question_images_out[].url").description("이미지 URL").type(JsonFieldType.STRING),
+                                        subsectionWithPath("[]question_images_out[].description").description("이미지 설명").type(JsonFieldType.STRING),
+                                        subsectionWithPath("[]question_images_out[].attribute").description("이미지 속성").type(JsonFieldType.STRING),
+                                        fieldWithPath("[].options").description("보기 목록").type(JsonFieldType.ARRAY),
+                                        fieldWithPath("[].answers").description("정답 목록").type(JsonFieldType.ARRAY),
+                                        fieldWithPath("[].commentary").description("문제 해설").type(JsonFieldType.STRING),
+                                        fieldWithPath("[].commentary_images_in").description("해설 설명 이미지 목록").type(JsonFieldType.ARRAY),
+                                        fieldWithPath("[].commentary_images_out").description("해설 이미지 목록").type(JsonFieldType.ARRAY),
+                                        fieldWithPath("[].tags_map").description("문제의 태그 맵 정보").type(JsonFieldType.OBJECT),
+                                        subsectionWithPath("[].tags_map.*").description("문제의 카테고리 태그 정보").type(JsonFieldType.ARRAY)
+                                )
+                                .build()
+                        )
+                ));
+    }
+
+    @Test
+    public void updateQuestions() throws Exception {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", "fee4fd71-3780-4ad1-a76f-a9a0ca052081");
+        requestBody.put("question", "변경된 질문입니다.");
+        requestBody.put("options", List.of("변경된 보기1", "변경된 보기2", "변경된 보기3", "변경된 보기4"));
+        requestBody.put("answers", List.of(1, 3));
+        requestBody.put("commentary", "변경된 설명입니다.");
+        Map<String, Object> tagsMap = new HashMap<>();
+        tagsMap.put("category", List.of("상황"));
+        requestBody.put("tagsMap", tagsMap);
+
+        mockMvc.perform(
+                        put("/api/v1/exams/questions")
+                                .content(objectMapper.writeValueAsString(requestBody))
+                                .contentType("application/json")
+                )
+                .andExpect(status().isOk())
+                .andDo(document("update-question",
+                        resource(ResourceSnippetParameters.builder()
+                                .description("Question 내용 업데이트")
+                                .tag("question")
+                                .summary("Update Question")
+                                .requestFields(
+                                        fieldWithPath("id").description("문제 ID").type(JsonFieldType.STRING),
+                                        fieldWithPath("question").description("변경될 질문 내용").type(JsonFieldType.STRING),
+                                        fieldWithPath("options").description("변경될 보기 내용").type(JsonFieldType.ARRAY),
+                                        fieldWithPath("answers").description("변경될 정답").type(JsonFieldType.ARRAY),
+                                        fieldWithPath("commentary").description("변경될 해설").type(JsonFieldType.STRING),
+                                        fieldWithPath("tagsMap").description("변경될 문제 태그").type(JsonFieldType.OBJECT),
+                                        subsectionWithPath("tagsMap.*").description("변경될 문제 태그 value").type(JsonFieldType.ARRAY)
+                                )
                                 .build()
                         )
                 ));
@@ -179,6 +218,15 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
             }
         });
 
+        //resource에서는 requestparts를 처리할 방법이 없음, 미리 추가후 대입시켜주기
+        RequestPartsSnippet requestPartsSnippet = requestParts(
+                partWithName("questionUploadInfo").description("질문 업로드 정보"),
+                partWithName("questionImagesIn").description("질문 이미지 파일1"),
+                partWithName("questionImagesOut").description("질문 이미지 파일2"),
+                partWithName("commentaryImagesIn").description("해설 이미지 파일1"),
+                partWithName("commentaryImagesOut").description("해설 이미지 파일2")
+        );
+
         this.mockMvc.perform(
                         customRestDocumentationRequestBuilder
                                 .file(jsonPart)
@@ -190,15 +238,19 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                 )
                 .andExpect(status().isOk())
                 .andDo(document("Add-questions",
-                        requestHeaders(
-                                HeaderDocumentation.headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.MULTIPART_FORM_DATA_VALUE)
-                        ),
-                        requestParts(
-                                partWithName("questionUploadInfo").description("설명"),
-                                partWithName("questionImagesIn").description("리뷰 이미지 파일1"),
-                                partWithName("questionImagesOut").description("리뷰 이미지 파일2"),
-                                partWithName("commentaryImagesIn").description("리뷰 이미지 파일3"),
-                                partWithName("commentaryImagesOut").description("리뷰 이미지 파일4")
+                        requestPartsSnippet,
+                        resource(ResourceSnippetParameters.builder()
+                                .description("문제 추가")
+                                .tag("question")
+                                .summary("Add Question")
+                                .requestHeaders(HeaderDocumentation.headerWithName(HttpHeaders.CONTENT_TYPE)
+                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
+                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
+                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
+                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
+                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
+                                )
+                                .build()
                         )
 //                        requestPartFields("questionUploadInfo",
 //                                        fieldWithPath("type").description("문제 유형").type(JsonFieldType.STRING),

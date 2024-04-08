@@ -11,12 +11,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-import java.util.*;
-
 import org.springframework.boot.test.context.SpringBootTest;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+
+
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -24,16 +34,11 @@ import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
-
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestPartFields;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,7 +57,52 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     }
 
     @Test
-    void addQuestionsByExamId() throws Exception {
+    void searchQuestions() throws Exception{
+        String tagsMap1 = "상황";
+        String tagsMap2 = "표지";
+        String includes1 = "고속도로";
+        int count = 1;
+        mockMvc.perform(
+                get("/api/v1/exams/{examId}/questions?tagsMap_category={tagsMap}&tagsMap_category={tagsMap}&includes={includes}&count={count}", existExamId, tagsMap1, tagsMap2, includes1, count)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("Search-questions",
+                        resource(ResourceSnippetParameters.builder()
+                                .description("Exam ID를 통한 Questions 조회")
+                                .tag("questions")
+                                .summary("Search Questions")
+                                .pathParameters(
+                                    parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
+                                )
+                                .queryParameters(
+                                    parameterWithName("tagsMap_category").description("문제의 태그 카테고리").type(SimpleType.STRING),
+                                    parameterWithName("includes").description("문제에 포함된 키워드").type(SimpleType.STRING),
+                                    parameterWithName("count").description("검색된 문제의 개수").type(SimpleType.INTEGER)
+                                )
+                                .responseFields(
+                                    fieldWithPath("[].id").description("문제의 고유 식별자").type(JsonFieldType.STRING),
+                                    fieldWithPath("[].type").description("문제의 유형").type(JsonFieldType.STRING),
+                                    fieldWithPath("[].question").description("문제 내용").type(JsonFieldType.STRING),
+                                    fieldWithPath("[].question_images_in").description("문제 설명 이미지 목록").type(JsonFieldType.ARRAY),
+                                    fieldWithPath("[].question_images_out").description("문제 정답 이미지 목록").type(JsonFieldType.ARRAY),
+                                    subsectionWithPath("[]question_images_out[].url").description("이미지 URL").type(JsonFieldType.STRING),
+                                    subsectionWithPath("[]question_images_out[].description").description("이미지 설명").type(JsonFieldType.STRING),
+                                    subsectionWithPath("[]question_images_out[].attribute").description("이미지 속성").type(JsonFieldType.STRING),
+                                    fieldWithPath("[].options").description("보기 목록").type(JsonFieldType.ARRAY),
+                                    fieldWithPath("[].answers").description("정답 목록").type(JsonFieldType.ARRAY),
+                                    fieldWithPath("[].commentary").description("문제 해설").type(JsonFieldType.STRING),
+                                    fieldWithPath("[].commentary_images_in").description("해설 설명 이미지 목록").type(JsonFieldType.ARRAY),
+                                    fieldWithPath("[].commentary_images_out").description("해설 이미지 목록").type(JsonFieldType.ARRAY),
+                                    fieldWithPath("[].tags_map").description("문제의 태그 맵 정보").type(JsonFieldType.OBJECT),
+                                    subsectionWithPath("[].tags_map.*").description("문제의 카테고리 태그 정보").type(JsonFieldType.ARRAY)
+                                 )
+                                .build()
+                        )
+                ));
+    }
+
+    @Test
+    void addQuestions() throws Exception {
         Map<String, Object> questionUploadInfo = new HashMap<>();
         questionUploadInfo.put("type", "객관식");
         questionUploadInfo.put("question", "다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?");

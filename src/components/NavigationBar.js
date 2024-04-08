@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Navigate from './Navigate';
-import '../css/NavigationBar.css'; // 스타일 파일 import
+import '../css/NavigationBar.css'; 
+
+const domain = "https://exam-lab.store";
 
 export default function NavigationBar(){
 
@@ -12,12 +15,19 @@ export default function NavigationBar(){
 
     return(
         <div className={`navigation-bar ${isVisible ? 'visible' : 'hidden'}`}>
-            <button onClick={toggleVisibility}>{isVisible ? 'X' : '=>'}</button>
+            <img src="/img/examLab_logo.png" alt="logo" style={{width:"60%", padding:"30px"}}/>
+            <button className="close-button" onClick={toggleVisibility}>{isVisible ? 'X' : '=>'}</button>
             <div className="navigation-content">
-                {/* <button>로그인</button>
-                <button>회원가입</button> */}
                 <Navigate />
             </div>
+            <nav>
+            <button className="login-button">
+                    <a href={`${domain}/users/login`} style={{ textDecoration: 'none', color: 'inherit' }}>로그인</a>
+                </button>
+                <button className="signup-button">
+                    <a href={`${domain}/users/add`} style={{ textDecoration: 'none', color: 'inherit' }}>회원가입</a>
+                </button>
+            </nav>
         </div>
     );
 }

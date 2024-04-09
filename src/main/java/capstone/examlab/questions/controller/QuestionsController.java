@@ -1,19 +1,15 @@
 package capstone.examlab.questions.controller;
 
-import capstone.examlab.questions.dto.QuestionsList;
+import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.dto.search.QuestionsSearch;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.valid.ValidExamId;
 import capstone.examlab.valid.ValidParams;
-import com.sun.jdi.InternalException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
-import org.springframework.data.elasticsearch.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,12 +21,12 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/exams/")
+@RequestMapping("api/v1/")
 public class QuestionsController {
     private final QuestionsService questionsService;
 
     //Create API
-    @PostMapping("{examId}/questions")
+    @PostMapping("exams/{examId}/questions")
     public void addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
                                                        @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
                                                        @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut, HttpServletResponse response)  {
@@ -45,26 +41,36 @@ public class QuestionsController {
     }
 
     //Read API
-    @GetMapping("{examId}/questions")
-    public QuestionsList selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams Map<String, String> params) {
-        QuestionsSearch questionsSearch = buildQuestionsSearch(params);
-        log.info("questionOptionDto = {}", questionsSearch);
-        return questionsService.searchFromQuestions(examId, questionsSearch);
+    @GetMapping("exams/{examId}/questions")
+    public QuestionsListDto selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams Map<String, String> params, HttpServletResponse response) {
+        try {
+            QuestionsSearch questionsSearch = buildQuestionsSearch(params);
+            QuestionsListDto questionsListDto = questionsService.searchFromQuestions(examId, questionsSearch);
+            if (questionsListDto.getSize() == 0) {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return null;
+            } else {
+                return questionsListDto;
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
     }
     //Read 파라미터 처리 로직
     private QuestionsSearch buildQuestionsSearch(Map<String, String> params){
-        Map<String, List<String>> tagsMap = new HashMap<>();
+        Map<String, List<String>> tags = new HashMap<>();
         List<String> includes = new ArrayList<>();
         int count = 10;
 
         for (Map.Entry<String, String> entry : params.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            if (key.startsWith("tagsMap_")) {
+            if (key.startsWith("tags_")) {
                 String[] tokens = key.split("_",2);
                 String category = tokens[1];
                 //키가 맵에 없으면 새로 생성, value값이 list타입이므로 새로 생성
-                tagsMap.computeIfAbsent(category, k -> new ArrayList<String>()).add(value);
+                tags.computeIfAbsent(category, k -> new ArrayList<String>()).add(value);
             } else if (key.equals("includes")) {
                 includes.add(value);
             } else if (key.equals("count")) {
@@ -75,44 +81,49 @@ public class QuestionsController {
             }
         }
 
-        QuestionsSearch questionsSearch = QuestionsSearch.builder()
-                .tagsMap(tagsMap)
+        return QuestionsSearch.builder()
+                .tags(tags)
                 .count(count)
                 .includes(includes)
                 .build();
-        return questionsSearch;
     }
 
     //Update API
-    @PutMapping("/questions")
-    public ResponseEntity<String> updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto) {
-        boolean updated = questionsService.updateQuestionsByQuestionId(questionUpdateDto);
-        if (updated) {
-            return ResponseEntity.ok("data update success");
-        } else {
-            return ResponseEntity.badRequest().body("data update error");
+    @PutMapping("questions")
+    public void updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto, HttpServletResponse response) {
+        try {
+            boolean updated = questionsService.updateQuestionsByQuestionId(questionUpdateDto);
+            if(!updated){
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
     //Delete API with examId
-    @DeleteMapping("{examId}/questions")
-    public ResponseEntity<String> deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId) {
-        boolean deleted = questionsService.deleteQuestionsByExamId(examId);
-        if (deleted) {
-            return ResponseEntity.ok("data delete success");
-        } else {
-            return ResponseEntity.badRequest().body("data delete error");
+    @DeleteMapping("exams/{examId}/questions")
+    public void deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId, HttpServletResponse response) {
+        try {
+            boolean deleted = questionsService.deleteQuestionsByExamId(examId);
+            if(!deleted){
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
     //Delete Api with questionId
     @DeleteMapping("questions/{questionId}")
-    public ResponseEntity<String> deleteQuestionsByQuestionId(@PathVariable String questionId) {
-        boolean deleted = questionsService.deleteQuestionsByQuestionId(questionId);
-        if (deleted) {
-            return ResponseEntity.ok("data delete success");
-        } else {
-            return ResponseEntity.badRequest().body("data delete error");
+    public void deleteQuestionsByQuestionId(@PathVariable String questionId, HttpServletResponse response) {
+        try {
+            boolean deleted = questionsService.deleteQuestionsByQuestionId(questionId);
+            if(!deleted){
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 }

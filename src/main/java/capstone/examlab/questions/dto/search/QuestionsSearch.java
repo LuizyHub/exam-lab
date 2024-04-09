@@ -13,7 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionsSearch {
-    private  Map<String, List<String>> tagsMap;
+    private  Map<String, List<String>> tags;
     private Integer count;
     private List<String> includes;
 }

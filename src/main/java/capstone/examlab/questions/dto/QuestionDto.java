@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Data
 @Builder
-public class Question {
+public class QuestionDto {
     private String id;
     private String type;
     private String question;
@@ -19,6 +19,6 @@ public class Question {
     private String commentary;
     private List<ImageDto> commentaryImagesIn;
     private List<ImageDto> commentaryImagesOut;
-    private Map<String, List<String>> tagsMap;
+    private Map<String, List<String>> tags;
 }
 

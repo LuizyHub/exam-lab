@@ -7,9 +7,12 @@ import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.valid.ValidExamId;
 import capstone.examlab.valid.ValidParams;
+import com.sun.jdi.InternalException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.elasticsearch.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,13 +31,16 @@ public class QuestionsController {
 
     //Create API
     @PostMapping("{examId}/questions")
-    public ResponseEntity<String> addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
-                                                       @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn, @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut) {
-        boolean saved = questionsService.addQuestionsByExamId(examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
-        if (saved) {
-            return ResponseEntity.ok("question add suucess");
-        } else {
-            return ResponseEntity.badRequest().body("question add error");
+    public void addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
+                                                       @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
+                                                       @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut, HttpServletResponse response)  {
+        try {
+            boolean saved = questionsService.addQuestionsByExamId(examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
+            if(!saved){
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } catch (Exception e) { //불필요 하다고 판단될시에 제외
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

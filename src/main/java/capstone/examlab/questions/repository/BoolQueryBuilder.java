@@ -16,7 +16,7 @@ public class BoolQueryBuilder {
 
         // "must" 조건(examId, tagsMap)에 해당하는 Term 쿼리들 추가
         mustQueries.add(new TermQuery.Builder().field("examId").value(examId).build()._toQuery());
-        Map<String, List<String>> tagsMap = questionsSearch.getTagsMap();
+        Map<String, List<String>> tagsMap = questionsSearch.getTags();
         if (tagsMap != null) {
             for (Map.Entry<String, List<String>> entry : tagsMap.entrySet()) {
                 String key = "tagsMap."+entry.getKey();
@@ -37,7 +37,7 @@ public class BoolQueryBuilder {
                         .field("question")
                         .query(include)
                         .build()._toQuery());
-            }
+              }
         }
 
         BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();

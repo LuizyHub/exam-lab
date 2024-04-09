@@ -71,7 +71,7 @@ public class QuestionsServiceImpl implements QuestionsService {
                 .commentary(questionUploadInfo.getCommentary())
                 .commentaryImagesIn(questionUploadInfo.getCommentaryImagesTextIn())
                 .commentaryImagesOut(questionUploadInfo.getCommentaryImagesTextOut())
-                .tagsMap(questionUploadInfo.getTagsMap())
+                .tagsMap(questionUploadInfo.getTags())
                 .build();
         questionsRepository.save(question);
         return questionsRepository.existsById(uuid);
@@ -79,23 +79,23 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Read 로직
     @Override
-    public QuestionsList searchFromQuestions(Long examId, QuestionsSearch questionsSearch) {
+    public QuestionsListDto searchFromQuestions(Long examId, QuestionsSearch questionsSearch) {
         Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearch);
 
-        log.info("QuestionsSearch: "+questionsSearch.toString());
+        log.info("QuestionsSearch: " + questionsSearch.toString());
         //쿼리문 코드 적용 및 elasticSearch 통신 관련
         NativeQuery searchQuery = new NativeQuery(query);
         searchQuery.setPageable(PageRequest.of(0, questionsSearch.getCount()));
         SearchHits<QuestionEntity> searchHits = elasticsearchTemplate.search(searchQuery, QuestionEntity.class);
 
-        QuestionsList questionsList = new QuestionsList();
+        List<QuestionDto> questionsList = new ArrayList<>();
         int count = 0;
         for (SearchHit<QuestionEntity> hit : searchHits) {
             if (count >= questionsSearch.getCount()) {
                 break;
             }
             QuestionEntity entity = hit.getContent();
-            Question question = Question.builder()
+            QuestionDto questionDto = QuestionDto.builder()
                     .id(entity.getId())
                     .type(entity.getType())
                     .question(entity.getQuestion())
@@ -106,13 +106,14 @@ public class QuestionsServiceImpl implements QuestionsService {
                     .commentary(entity.getCommentary())
                     .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
                     .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
-                    .tagsMap(new HashMap<>(entity.getTagsMap()))
+                    .tags(new HashMap<>(entity.getTagsMap()))
                     .build();
-            questionsList.add(question);
+            questionsList.add(questionDto);
             count++;
         }
-        log.info("searchSize: "+questionsList.size());
-        return questionsList;
+        log.info("searchSize: " + questionsList.size());
+
+        return new QuestionsListDto(questionsList);
     }
 
     //Update 로직
@@ -126,7 +127,7 @@ public class QuestionsServiceImpl implements QuestionsService {
             question.setOptions(questionUpdateDto.getOptions());
             question.setAnswers(questionUpdateDto.getAnswers());
             question.setCommentary(questionUpdateDto.getCommentary());
-            question.setTagsMap(questionUpdateDto.getTagsMap());
+            question.setTagsMap(questionUpdateDto.getTags());
             questionsRepository.save(question);
             return true;
         } else {

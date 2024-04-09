@@ -90,7 +90,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     @Test
     public void updateQuestions() throws Exception {
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("id", "fee4fd71-3780-4ad1-a76f-a9a0ca052081");
+        requestBody.put("id", "f7cc865e-f5b0-4974-9f3d-a86d782b1cb5");
         requestBody.put("question", "변경된 질문입니다.");
         requestBody.put("options", List.of("변경된 보기1", "변경된 보기2", "변경된 보기3", "변경된 보기4"));
         requestBody.put("answers", List.of(1, 3));
@@ -243,7 +243,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
         });
 
         this.mockMvc.perform(
-                        customRestDocumentationRequestBuilder
+                customRestDocumentationRequestBuilder
                                 .file(jsonPart)
                                 .file(questionImagesIn)
                                 .file(questionImagesOut)
@@ -258,7 +258,11 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .tag("question")
                                 .summary("Add Question")
                                 .requestHeaders(HeaderDocumentation.headerWithName(HttpHeaders.CONTENT_TYPE)
-                                        .description(MediaType.MULTIPART_FORM_DATA_VALUE)
+                                        .description("questionUploadInfo-ContentType: application/json" +
+                                                "questionImagesIn-ContentType:image.png\n" +
+                                                "questionImagesOut-ContentType:image.png\n" +
+                                                "commentaryImagesOut-ContentType:image.png\n" +
+                                                "commentaryImagesOut-ContentType:image.png\n"+MediaType.MULTIPART_FORM_DATA_VALUE)
                                 )
                                 .build()
                         )

@@ -14,5 +14,5 @@ public class QuestionUpdateDto {
     private List<String> options;
     private List<Integer> answers;
     private String commentary;
-    private Map<String, List<String>> tagsMap;
+    private Map<String, List<String>> tags;
 }

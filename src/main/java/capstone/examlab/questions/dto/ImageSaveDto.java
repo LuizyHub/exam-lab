@@ -8,6 +8,6 @@ import java.util.List;
 
 @Data
 @Builder
-public class ImageSave {
+public class ImageSaveDto {
     private List<MultipartFile> images;
 }

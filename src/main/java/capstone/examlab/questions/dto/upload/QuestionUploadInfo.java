@@ -19,5 +19,5 @@ public class QuestionUploadInfo {
     private String commentary;
     private List<ImageDto> commentaryImagesTextIn;
     private List<ImageDto> commentaryImagesTextOut;
-    private Map<String, List<String>> tagsMap;
+    private Map<String, List<String>> tags;
 }

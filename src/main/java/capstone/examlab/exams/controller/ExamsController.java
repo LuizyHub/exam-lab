@@ -1,5 +1,6 @@
 package capstone.examlab.exams.controller;
 
+import capstone.examlab.ResponseDto;
 import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.users.argumentresolver.Login;
@@ -39,7 +40,7 @@ public class ExamsController {
     }
 
     @PostMapping
-    public Long createExam(
+    public ResponseDto createExam(
             @Login User user,
             @Validated @RequestBody ExamAddDto examAddDto,
             HttpServletResponse response) {
@@ -50,7 +51,9 @@ public class ExamsController {
             return null;
         }
 
-        return examsService.createExam(examAddDto, user);
+        Long createdExamId = examsService.createExam(examAddDto, user);
+        response.setStatus(HttpServletResponse.SC_CREATED);
+        return ResponseDto.of(HttpServletResponse.SC_CREATED, createdExamId.toString());
     }
 
     @DeleteMapping("/{examId}")

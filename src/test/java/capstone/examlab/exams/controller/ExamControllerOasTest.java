@@ -51,10 +51,10 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
     void addExams() throws Exception {
         Map<String, Object> map = new HashMap<>();
         map.put("exam_title", "소웨공");
-        Map<String, List<String>> type = new HashMap<>();
-        type.put("단원", List.of("1", "2", "3"));
-        type.put("난이도", List.of("상", "중", "하"));
-        map.put("types", type);
+        Map<String, List<String>> tags = new HashMap<>();
+        tags.put("단원", List.of("1", "2", "3"));
+        tags.put("난이도", List.of("상", "중", "하"));
+        map.put("tags", tags);
         this.mockMvc.perform(
                         post("/api/v1/exams")
                                 .content(objectMapper.writeValueAsString(map))
@@ -67,6 +67,12 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .description("회원만이 시험을 추가할 수 있습니다.")
                                 .tag("exams")
                                 .summary("Add exams")
+                                .requestFields(
+                                        fieldWithPath("exam_title").description("시험지 이름"),
+                                        fieldWithPath("tags").description("tag 정보들"),
+                                        subsectionWithPath("tags").type(JsonFieldType.OBJECT)
+                                                .description("tag 정보들")
+                                )
                                 .requestSchema(Schema.schema("ExamAdd"))
                                 .build()
                         )
@@ -201,10 +207,10 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
     Long addExamsAndGetId() throws Exception {
         Map<String, Object> map = new HashMap<>();
         map.put("exam_title", "소웨공");
-        Map<String, List<String>> type = new HashMap<>();
-        type.put("단원", List.of("1", "2", "3"));
-        type.put("난이도", List.of("상", "중", "하"));
-        map.put("types", type);
+        Map<String, List<String>> tags = new HashMap<>();
+        tags.put("단원", List.of("1", "2", "3"));
+        tags.put("난이도", List.of("상", "중", "하"));
+        map.put("tags", tags);
         return Long.parseLong(this.mockMvc.perform(
                         post("/api/v1/exams")
                                 .content(objectMapper.writeValueAsString(map))

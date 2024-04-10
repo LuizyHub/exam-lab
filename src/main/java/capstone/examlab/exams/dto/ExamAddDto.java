@@ -14,5 +14,5 @@ public class ExamAddDto {
     private String examTitle;
 
     @NotNull
-    private Map<String, List<String>> types;
+    private Map<String, List<String>> tags;
 }

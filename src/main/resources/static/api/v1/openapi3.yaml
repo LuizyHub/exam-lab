@@ -4,7 +4,7 @@ info:
   description: API for Exam Lab
   version: 0.1.0
 servers:
-- url: http://exam-lab.store/
+- url: https://exam-lab.store/
 - url: http://localhost:8080/
 tags: []
 paths:
@@ -24,8 +24,8 @@ paths:
                 $ref: '#/components/schemas/ExamList'
               examples:
                 exams:
-                  value: "[{\"exam_title\":\"운전면허 - 1,2종\",\"exam_id\":1},{\"exam_title\"\
-                    :\"수능 - 영어\",\"exam_id\":2}]"
+                  value: "{\"exams\":[{\"exam_title\":\"운전면허 - 1,2종\",\"exam_id\"\
+                    :1},{\"exam_title\":\"수능 - 영어\",\"exam_id\":2}]}"
     post:
       tags:
       - exams
@@ -65,10 +65,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"d7059d65-0342-4cb2-84a1-b99bc901bd5a!\",\"\
-                  password_confirm\":\"d7059d65-0342-4cb2-84a1-b99bc901bd5a!\",\"\
-                  user_id\":\"d7059d65-0342-4cb2-84a1-b99bc901bd5a@gmail.com\",\"\
-                  name\":\"d7059d65-0342-4cb2-84a1-b99bc901bd5a\"}"
+                value: "{\"password\":\"f90fd9f9-5e30-4d2c-b563-d3208e584cc3!\",\"\
+                  password_confirm\":\"f90fd9f9-5e30-4d2c-b563-d3208e584cc3!\",\"\
+                  user_id\":\"f90fd9f9-5e30-4d2c-b563-d3208e584cc3@gmail.com\",\"\
+                  name\":\"f90fd9f9-5e30-4d2c-b563-d3208e584cc3\"}"
       responses:
         "200":
           description: "200"
@@ -96,7 +96,7 @@ paths:
                 $ref: '#/components/schemas/ExamType'
               examples:
                 exam-type:
-                  value: "{\"tags\":[\"상황\",\"표지\",\"화물\",\"법\"]}"
+                  value: "{\"category\":[\"상황\",\"표지\",\"화물\",\"법\"]}"
         "400":
           description: "400"
     put:
@@ -189,26 +189,45 @@ paths:
                   value: "{\"user_name\":\"lab1\",\"login\":true}"
 components:
   schemas:
+    ExamType:
+      title: ExamType
+      required:
+      - category
+      type: object
+      properties:
+        category:
+          type: array
+          description: List of tags
+          items:
+            oneOf:
+            - type: object
+            - type: boolean
+            - type: string
+            - type: number
+    ExamList:
+      title: ExamList
+      required:
+      - exams
+      type: object
+      properties:
+        exams:
+          type: array
+          description: Exam
+          items:
+            required:
+            - exam_id
+            - exam_title
+            type: object
+            properties:
+              exam_id:
+                type: number
+                description: Exam id
+              exam_title:
+                type: string
+                description: Exam title
     ExamAdd:
       title: ExamAdd
       type: object
-    ExamList:
-      title: ExamList
-      type: array
-      description: List of exams
-      items:
-        required:
-        - exam_id
-        - exam_title
-        type: object
-        properties:
-          exam_id:
-            type: number
-            description: Exam id
-          exam_title:
-            type: string
-            description: Exam title
-        description: List of exams
     api-v1-users-login1770795545:
       required:
       - password
@@ -221,21 +240,20 @@ components:
         user_id:
           type: string
           description: User id
-    ExamType:
-      title: ExamType
+    api-v1-users-status615510992:
       required:
-      - tags
+      - login
+      - user_name
       type: object
       properties:
-        tags:
-          type: array
-          description: List of tags
-          items:
-            oneOf:
-            - type: object
-            - type: boolean
-            - type: string
-            - type: number
+        user_name:
+          type: string
+          description: 사용자 이름
+        login:
+          type: boolean
+          description: 로그인 여부
+    api-v1-exams-examId486549215:
+      type: object
     api-v1-users-963924044:
       required:
       - name
@@ -256,17 +274,3 @@ components:
         name:
           type: string
           description: User name
-    api-v1-users-status615510992:
-      required:
-      - login
-      - user_name
-      type: object
-      properties:
-        user_name:
-          type: string
-          description: 사용자 이름
-        login:
-          type: boolean
-          description: 로그인 여부
-    api-v1-exams-examId486549215:
-      type: object

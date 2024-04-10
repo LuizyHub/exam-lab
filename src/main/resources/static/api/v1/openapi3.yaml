@@ -42,15 +42,15 @@ paths:
                 value: "{\"exam_title\":\"소웨공\",\"tags\":{\"난이도\":[\"상\",\"중\",\"하\
                   \"],\"단원\":[\"1\",\"2\",\"3\"]}}"
       responses:
-        "200":
-          description: "200"
+        "201":
+          description: "201"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams486549215'
+                $ref: '#/components/schemas/api-v1-exams1523854693'
               examples:
                 add-exams:
-                  value: "3"
+                  value: "{\"code\":201,\"message\":\"3\"}"
   /api/v1/users:
     post:
       tags:
@@ -65,10 +65,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"8a9a0a01-df77-4fd9-8b41-fc45b9112a45!\",\"\
-                  password_confirm\":\"8a9a0a01-df77-4fd9-8b41-fc45b9112a45!\",\"\
-                  user_id\":\"8a9a0a01-df77-4fd9-8b41-fc45b9112a45@gmail.com\",\"\
-                  name\":\"8a9a0a01-df77-4fd9-8b41-fc45b9112a45\"}"
+                value: "{\"password\":\"90b43f80-d6a5-42ab-94b6-1fea9309aabe!\",\"\
+                  password_confirm\":\"90b43f80-d6a5-42ab-94b6-1fea9309aabe!\",\"\
+                  user_id\":\"90b43f80-d6a5-42ab-94b6-1fea9309aabe@gmail.com\",\"\
+                  name\":\"90b43f80-d6a5-42ab-94b6-1fea9309aabe\"}"
       responses:
         "200":
           description: "200"
@@ -117,7 +117,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-exams486549215'
+              $ref: '#/components/schemas/api-v1-exams-examId486549215'
             examples:
               patch-exams:
                 value: "{\"types\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"\
@@ -204,6 +204,18 @@ components:
             - type: boolean
             - type: string
             - type: number
+    api-v1-exams1523854693:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: number
+          description: 응답 코드
+        message:
+          type: string
+          description: 생성된 시험지 ID
     ExamList:
       title: ExamList
       required:
@@ -282,5 +294,5 @@ components:
         login:
           type: boolean
           description: 로그인 여부
-    api-v1-exams486549215:
+    api-v1-exams-examId486549215:
       type: object

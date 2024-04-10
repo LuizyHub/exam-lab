@@ -1,10 +1,7 @@
 package capstone.examlab.exams.controller;
 
-import capstone.examlab.exams.dto.ExamAddDto;
-import capstone.examlab.exams.dto.ExamDto;
-import capstone.examlab.exams.dto.ExamUpdateDto;
+import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.service.ExamsService;
-import capstone.examlab.exams.dto.ExamTypeDto;
 import capstone.examlab.users.argumentresolver.Login;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
@@ -14,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @Slf4j
@@ -26,9 +22,10 @@ public class ExamsController {
     private final ExamsService examsService;
 
     @GetMapping
-    public List<ExamDto> getExams(@Login User user) {
-        List<ExamDto> examList = examsService.getExamList(user);
-        return examList;
+    public GetExamsResponseDto getExams(@Login User user) {
+        GetExamsResponseDto response = new GetExamsResponseDto();
+        response.setExams(examsService.getExamList(user));
+        return response;
     }
 
     @GetMapping("/{examId}")

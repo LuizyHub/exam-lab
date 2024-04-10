@@ -170,9 +170,6 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .pathParameters(
                                         parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
                                 )
-                                .responseFields(
-                                        fieldWithPath("category").description("List of tags").type(JsonFieldType.ARRAY)
-                                )
                                 .responseSchema(Schema.schema("ExamType"))
                                 .build()
                         )

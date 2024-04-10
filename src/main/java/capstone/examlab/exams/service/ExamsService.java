@@ -2,7 +2,7 @@ package capstone.examlab.exams.service;
 
 import capstone.examlab.exams.dto.ExamAddDto;
 import capstone.examlab.exams.dto.ExamUpdateDto;
-import capstone.examlab.exams.dto.ExamTypeDto;
+import capstone.examlab.exams.dto.ExamDetailDto;
 import capstone.examlab.exams.dto.ExamDto;
 import capstone.examlab.users.domain.User;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ExamsService {
 
-    public ExamTypeDto getExamType(Long id, User user);
+    public ExamDetailDto getExamType(Long id, User user);
 
     public List<ExamDto> getExamList(User user);
 

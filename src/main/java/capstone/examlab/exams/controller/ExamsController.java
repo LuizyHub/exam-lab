@@ -30,11 +30,11 @@ public class ExamsController {
     }
 
     @GetMapping("/{examId}")
-    public ExamTypeDto getExamType(
+    public ExamDetailDto getExamType(
             @Login User user,
             @PathVariable @ValidExamId Long examId) {
 
-        ExamTypeDto examType = examsService.getExamType(examId, user);
+        ExamDetailDto examType = examsService.getExamType(examId, user);
 
         return examType;
     }

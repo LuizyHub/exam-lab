@@ -64,7 +64,7 @@ public class ExamServiceImpl implements ExamsService {
         Exam exam = examProvider.getObject();
 
         exam.setExamTitle(examAddDto.getExamTitle());
-        exam.setTypes(examAddDto.getTypes());
+        exam.setTypes(examAddDto.getTags());
         exam.setUser(user);
 
         exam = examRepository.save(exam);

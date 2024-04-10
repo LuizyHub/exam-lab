@@ -39,15 +39,15 @@ paths:
               $ref: '#/components/schemas/ExamAdd'
             examples:
               add-exams:
-                value: "{\"types\":{\"난이도\":[\"상\",\"중\",\"하\"],\"단원\":[\"1\",\"2\"\
-                  ,\"3\"]},\"exam_title\":\"소웨공\"}"
+                value: "{\"exam_title\":\"소웨공\",\"tags\":{\"난이도\":[\"상\",\"중\",\"하\
+                  \"],\"단원\":[\"1\",\"2\",\"3\"]}}"
       responses:
         "200":
           description: "200"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId486549215'
+                $ref: '#/components/schemas/api-v1-exams486549215'
               examples:
                 add-exams:
                   value: "3"
@@ -65,10 +65,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"f90fd9f9-5e30-4d2c-b563-d3208e584cc3!\",\"\
-                  password_confirm\":\"f90fd9f9-5e30-4d2c-b563-d3208e584cc3!\",\"\
-                  user_id\":\"f90fd9f9-5e30-4d2c-b563-d3208e584cc3@gmail.com\",\"\
-                  name\":\"f90fd9f9-5e30-4d2c-b563-d3208e584cc3\"}"
+                value: "{\"password\":\"8a9a0a01-df77-4fd9-8b41-fc45b9112a45!\",\"\
+                  password_confirm\":\"8a9a0a01-df77-4fd9-8b41-fc45b9112a45!\",\"\
+                  user_id\":\"8a9a0a01-df77-4fd9-8b41-fc45b9112a45@gmail.com\",\"\
+                  name\":\"8a9a0a01-df77-4fd9-8b41-fc45b9112a45\"}"
       responses:
         "200":
           description: "200"
@@ -117,7 +117,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-exams-examId486549215'
+              $ref: '#/components/schemas/api-v1-exams486549215'
             examples:
               patch-exams:
                 value: "{\"types\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"\
@@ -225,9 +225,6 @@ components:
               exam_title:
                 type: string
                 description: Exam title
-    ExamAdd:
-      title: ExamAdd
-      type: object
     api-v1-users-login1770795545:
       required:
       - password
@@ -240,20 +237,19 @@ components:
         user_id:
           type: string
           description: User id
-    api-v1-users-status615510992:
+    ExamAdd:
+      title: ExamAdd
       required:
-      - login
-      - user_name
+      - exam_title
+      - tags
       type: object
       properties:
-        user_name:
+        tags:
+          type: object
+          description: tag 정보들
+        exam_title:
           type: string
-          description: 사용자 이름
-        login:
-          type: boolean
-          description: 로그인 여부
-    api-v1-exams-examId486549215:
-      type: object
+          description: 시험지 이름
     api-v1-users-963924044:
       required:
       - name
@@ -274,3 +270,17 @@ components:
         name:
           type: string
           description: User name
+    api-v1-users-status615510992:
+      required:
+      - login
+      - user_name
+      type: object
+      properties:
+        user_name:
+          type: string
+          description: 사용자 이름
+        login:
+          type: boolean
+          description: 로그인 여부
+    api-v1-exams486549215:
+      type: object

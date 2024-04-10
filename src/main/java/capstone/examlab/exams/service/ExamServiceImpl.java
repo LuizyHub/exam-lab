@@ -24,7 +24,7 @@ public class ExamServiceImpl implements ExamsService {
     private final ExamRepository examRepository;
 
     @Override
-    public ExamTypeDto getExamType(@ValidExamId Long id, User user) {
+    public ExamDetailDto getExamType(@ValidExamId Long id, User user) {
         // id 검증은 이미 controller에서 수행하므로 생략
         // get()으로 가져오는 것은 Optional이기 때문에 null이 아님을 보장
         Exam exam = (Exam) examRepository.findByExamId(id).get();
@@ -42,7 +42,9 @@ public class ExamServiceImpl implements ExamsService {
 
         Map<String, List<String>> types = exam.getTypes();
 
-        return new ExamTypeDto(types);
+        ExamDetailDto examDetailDto = new ExamDetailDto(types);
+        examDetailDto.setExamTitle(exam.getExamTitle());
+        return examDetailDto;
     }
 
     @Override

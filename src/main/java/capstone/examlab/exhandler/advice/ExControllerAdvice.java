@@ -1,5 +1,6 @@
 package capstone.examlab.exhandler.advice;
 
+import capstone.examlab.ResponseDto;
 import capstone.examlab.exhandler.ErrorResult;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExControllerAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthorizedException.class)
-    public ErrorResult unauthorizedExHandler(UnauthorizedException e) {
-        return new ErrorResult("BAD", e.getMessage());
+    public ResponseDto unauthorizedExHandler(UnauthorizedException e) {
+        return ResponseDto.UNAUTHORIZED;
     }
 }

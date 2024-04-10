@@ -65,10 +65,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"c0311ec1-6de8-4422-91ca-5784bb729b17!\",\"\
-                  password_confirm\":\"c0311ec1-6de8-4422-91ca-5784bb729b17!\",\"\
-                  user_id\":\"c0311ec1-6de8-4422-91ca-5784bb729b17@gmail.com\",\"\
-                  name\":\"c0311ec1-6de8-4422-91ca-5784bb729b17\"}"
+                value: "{\"password\":\"dc8ef2e0-c12a-4b4b-98d5-1a464e99a300!\",\"\
+                  password_confirm\":\"dc8ef2e0-c12a-4b4b-98d5-1a464e99a300!\",\"\
+                  user_id\":\"dc8ef2e0-c12a-4b4b-98d5-1a464e99a300@gmail.com\",\"\
+                  name\":\"dc8ef2e0-c12a-4b4b-98d5-1a464e99a300\"}"
       responses:
         "200":
           description: "200"
@@ -121,11 +121,18 @@ paths:
               $ref: '#/components/schemas/api-v1-exams-examId486549215'
             examples:
               patch-exams:
-                value: "{\"types\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"\
-                  1\",\"2\",\"3\",\"4\",\"5\"]}}"
+                value: "{\"tags\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"1\"\
+                  ,\"2\",\"3\",\"4\",\"5\"]},\"exam_title\":\"소프트웨어공학\"}"
       responses:
         "200":
           description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-exams-examId486549215'
+              examples:
+                patch-exams:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
     delete:
       tags:
       - exams
@@ -263,8 +270,6 @@ components:
         login:
           type: boolean
           description: 로그인 여부
-    api-v1-exams-examId486549215:
-      type: object
     api-v1-users-963924044:
       required:
       - name
@@ -285,3 +290,5 @@ components:
         name:
           type: string
           description: User name
+    api-v1-exams-examId486549215:
+      type: object

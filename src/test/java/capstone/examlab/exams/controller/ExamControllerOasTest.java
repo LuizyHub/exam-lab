@@ -61,10 +61,11 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .contentType("application/json")
                                 .session(doLogin())
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(document("add-exams",
                         resource(ResourceSnippetParameters.builder()
-                                .description("회원만이 시험을 추가할 수 있습니다.")
+                                .description("회원만이 시험을 추가할 수 있습니다." +
+                                        "응답 message로 생성된 시험지 ID를 반환합니다.")
                                 .tag("exams")
                                 .summary("Add exams")
                                 .requestFields(
@@ -72,6 +73,10 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                         fieldWithPath("tags").description("tag 정보들"),
                                         subsectionWithPath("tags").type(JsonFieldType.OBJECT)
                                                 .description("tag 정보들")
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").description("응답 코드").type(JsonFieldType.NUMBER),
+                                        fieldWithPath("message").description("생성된 시험지 ID").type(JsonFieldType.STRING)
                                 )
                                 .requestSchema(Schema.schema("ExamAdd"))
                                 .build()
@@ -211,12 +216,15 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
         tags.put("단원", List.of("1", "2", "3"));
         tags.put("난이도", List.of("상", "중", "하"));
         map.put("tags", tags);
-        return Long.parseLong(this.mockMvc.perform(
+        String data = this.mockMvc.perform(
                         post("/api/v1/exams")
                                 .content(objectMapper.writeValueAsString(map))
                                 .contentType("application/json")
                                 .session(doLogin())
                 )
-                .andReturn().getResponse().getContentAsString());
+                .andReturn().getResponse().getContentAsString();
+        HashMap<String, Object> content = objectMapper.readValue(data, HashMap.class);
+
+        return Long.parseLong(content.get("message").toString());
     }
 }

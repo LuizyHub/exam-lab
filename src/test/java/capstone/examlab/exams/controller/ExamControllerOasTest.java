@@ -6,7 +6,6 @@ import com.epages.restdocs.apispec.Schema;
 import com.epages.restdocs.apispec.SimpleType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import jakarta.validation.OverridesAttribute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -102,12 +101,13 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
     }
 
     @Test
-    void patchExam() throws Exception {
+    void putExam() throws Exception {
         Map<String, Object> map = new HashMap<>();
-        Map<String, List<String>> type = new HashMap<>();
-        type.put("단원", List.of("1", "2", "3", "4", "5"));
-        type.put("난이도", List.of("상", "중", "하", "최하"));
-        map.put("types", type);
+        Map<String, List<String>> tags = new HashMap<>();
+        tags.put("단원", List.of("1", "2", "3", "4", "5"));
+        tags.put("난이도", List.of("상", "중", "하", "최하"));
+        map.put("tags", tags);
+        map.put("exam_title", "소프트웨어공학");
 
         this.mockMvc.perform(
                         put("/api/v1/exams/{examId}", addExamsAndGetId())

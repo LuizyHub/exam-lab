@@ -98,7 +98,7 @@ public class ExamServiceImpl implements ExamsService {
             throw new UnauthorizedException();
         }
 
-        exam.setTypes(examUpdateDto.getTypes());
+        exam.setTypes(examUpdateDto.getTags());
 
         examRepository.save(exam);
     }

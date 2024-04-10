@@ -6,6 +6,7 @@ import com.epages.restdocs.apispec.Schema;
 import com.epages.restdocs.apispec.SimpleType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import jakarta.validation.OverridesAttribute;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.snippet.Attributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -129,9 +131,13 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .tag("exams")
                                 .summary("Get all exams")
                                 .responseFields(
-                                        fieldWithPath("[]").description("List of exams").type(JsonFieldType.ARRAY),
-                                        subsectionWithPath("[].exam_title").description("Exam title").type(JsonFieldType.STRING),
-                                        fieldWithPath("[].exam_id").description("Exam id").type(JsonFieldType.NUMBER)
+                                        fieldWithPath("exams").description("List of exams").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("exams").type(JsonFieldType.ARRAY)
+                                                .description("Exam")
+                                                .attributes(Attributes.key("exam_title").value(String.class),
+                                                        Attributes.key("exam_id").value(Long.class)),
+                                        fieldWithPath("exams[].exam_title").description("Exam title").type(JsonFieldType.STRING),
+                                        fieldWithPath("exams[].exam_id").description("Exam id").type(JsonFieldType.NUMBER)
                                 )
                                 .responseSchema(Schema.schema("ExamList"))
                                 .build()
@@ -154,7 +160,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                         parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
                                 )
                                 .responseFields(
-                                        fieldWithPath("tags").description("List of tags").type(JsonFieldType.ARRAY)
+                                        fieldWithPath("category").description("List of tags").type(JsonFieldType.ARRAY)
                                 )
                                 .responseSchema(Schema.schema("ExamType"))
                                 .build()

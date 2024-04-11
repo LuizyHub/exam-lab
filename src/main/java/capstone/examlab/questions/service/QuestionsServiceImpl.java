@@ -2,7 +2,7 @@ package capstone.examlab.questions.service;
 
 import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.*;
-import capstone.examlab.questions.dto.search.QuestionsSearch;
+import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.entity.QuestionEntity;
@@ -79,19 +79,19 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Read 로직
     @Override
-    public QuestionsListDto searchFromQuestions(Long examId, QuestionsSearch questionsSearch) {
-        Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearch);
+    public QuestionsListDto searchFromQuestions(Long examId, QuestionsSearchDto questionsSearchDto) {
+        Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
 
-        log.info("QuestionsSearch: " + questionsSearch.toString());
+        log.info("QuestionsSearch: " + questionsSearchDto.toString());
         //쿼리문 코드 적용 및 elasticSearch 통신 관련
         NativeQuery searchQuery = new NativeQuery(query);
-        searchQuery.setPageable(PageRequest.of(0, questionsSearch.getCount()));
+        searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
         SearchHits<QuestionEntity> searchHits = elasticsearchTemplate.search(searchQuery, QuestionEntity.class);
 
         List<QuestionDto> questionsList = new ArrayList<>();
         int count = 0;
         for (SearchHit<QuestionEntity> hit : searchHits) {
-            if (count >= questionsSearch.getCount()) {
+            if (count >= questionsSearchDto.getCount()) {
                 break;
             }
             QuestionEntity entity = hit.getContent();

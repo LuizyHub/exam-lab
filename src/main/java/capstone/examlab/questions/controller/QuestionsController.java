@@ -1,7 +1,9 @@
 package capstone.examlab.questions.controller;
 
+import capstone.examlab.ResponseDto;
+import capstone.examlab.exhandler.exception.NotFoundQuestionException;
 import capstone.examlab.questions.dto.QuestionsListDto;
-import capstone.examlab.questions.dto.search.QuestionsSearch;
+import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.service.QuestionsService;
@@ -10,6 +12,7 @@ import capstone.examlab.valid.ValidParams;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,39 +29,33 @@ public class QuestionsController {
     private final QuestionsService questionsService;
 
     //Create API
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("exams/{examId}/questions")
-    public void addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
-                                                       @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
-                                                       @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut, HttpServletResponse response)  {
-        try {
-            boolean saved = questionsService.addQuestionsByExamId(examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
-            if(!saved){
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
-        } catch (Exception e) { //불필요 하다고 판단될시에 제외
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    public ResponseDto addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
+                                            @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
+                                            @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut) {
+
+        boolean saved = questionsService.addQuestionsByExamId(examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
+        if (!saved) {
+            return ResponseDto.BAD_REQUEST;
         }
+        return ResponseDto.CREATED;
     }
 
     //Read API
     @GetMapping("exams/{examId}/questions")
     public QuestionsListDto selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams Map<String, String> params, HttpServletResponse response) {
-        try {
-            QuestionsSearch questionsSearch = buildQuestionsSearch(params);
-            QuestionsListDto questionsListDto = questionsService.searchFromQuestions(examId, questionsSearch);
-            if (questionsListDto.getSize() == 0) {
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return null;
-            } else {
-                return questionsListDto;
-            }
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
+        QuestionsSearchDto questionsSearchDto = buildQuestionsSearch(params);
+        QuestionsListDto questionsListDto = questionsService.searchFromQuestions(examId, questionsSearchDto);
+        if (questionsListDto.getSize() == 0) {
+            throw new NotFoundQuestionException();
+        } else {
+            return questionsListDto;
         }
     }
+
     //Read 파라미터 처리 로직
-    private QuestionsSearch buildQuestionsSearch(Map<String, String> params){
+    private QuestionsSearchDto buildQuestionsSearch(Map<String, String> params) {
         Map<String, List<String>> tags = new HashMap<>();
         List<String> includes = new ArrayList<>();
         int count = 10;
@@ -67,7 +64,7 @@ public class QuestionsController {
             String key = entry.getKey();
             String value = entry.getValue();
             if (key.startsWith("tags_")) {
-                String[] tokens = key.split("_",2);
+                String[] tokens = key.split("_", 2);
                 String category = tokens[1];
                 //키가 맵에 없으면 새로 생성, value값이 list타입이므로 새로 생성
                 tags.computeIfAbsent(category, k -> new ArrayList<String>()).add(value);
@@ -81,7 +78,7 @@ public class QuestionsController {
             }
         }
 
-        return QuestionsSearch.builder()
+        return QuestionsSearchDto.builder()
                 .tags(tags)
                 .count(count)
                 .includes(includes)
@@ -90,40 +87,31 @@ public class QuestionsController {
 
     //Update API
     @PutMapping("questions")
-    public void updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto, HttpServletResponse response) {
-        try {
-            boolean updated = questionsService.updateQuestionsByQuestionId(questionUpdateDto);
-            if(!updated){
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    public ResponseDto updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto) {
+        boolean updated = questionsService.updateQuestionsByQuestionId(questionUpdateDto);
+        if (!updated) {
+            return ResponseDto.BAD_REQUEST;
         }
+        return ResponseDto.OK;
     }
 
     //Delete API with examId
     @DeleteMapping("exams/{examId}/questions")
-    public void deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId, HttpServletResponse response) {
-        try {
-            boolean deleted = questionsService.deleteQuestionsByExamId(examId);
-            if(!deleted){
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    public ResponseDto deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId, HttpServletResponse response) {
+        boolean deleted = questionsService.deleteQuestionsByExamId(examId);
+        if (!deleted) {
+            return ResponseDto.BAD_REQUEST;
         }
+        return ResponseDto.OK;
     }
 
     //Delete Api with questionId
     @DeleteMapping("questions/{questionId}")
-    public void deleteQuestionsByQuestionId(@PathVariable String questionId, HttpServletResponse response) {
-        try {
-            boolean deleted = questionsService.deleteQuestionsByQuestionId(questionId);
-            if(!deleted){
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    public ResponseDto deleteQuestionsByQuestionId(@PathVariable String questionId, HttpServletResponse response) {
+        boolean deleted = questionsService.deleteQuestionsByQuestionId(questionId);
+        if(!deleted) {
+            return ResponseDto.BAD_REQUEST;
         }
+        return ResponseDto.OK;
     }
 }

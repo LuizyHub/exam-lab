@@ -20,4 +20,5 @@ public class ResponseDto {
     public static final ResponseDto BAD_REQUEST = new ResponseDto(400, "BAD_REQUEST");
     public static final ResponseDto UNAUTHORIZED = new ResponseDto(401, "UNAUTHORIZED");
     public static final ResponseDto NOT_FOUND = new ResponseDto(404, "NOT_FOUND");
+    public static final ResponseDto SERVER_ERROR = new ResponseDto(500, "SERVER_ERROR");
 }

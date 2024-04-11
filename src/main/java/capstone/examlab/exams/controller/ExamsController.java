@@ -25,8 +25,8 @@ public class ExamsController {
     private final ExamsService examsService;
 
     @GetMapping
-    public GetExamsResponseDto getExams(@Login User user) {
-        GetExamsResponseDto response = new GetExamsResponseDto();
+    public ExamsResponseGetDto getExams(@Login User user) {
+        ExamsResponseGetDto response = new ExamsResponseGetDto();
         response.setExams(examsService.getExamList(user));
         return response;
     }

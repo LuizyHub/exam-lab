@@ -3,7 +3,7 @@ package capstone.examlab.exhandler.advice;
 import capstone.examlab.ResponseDto;
 import capstone.examlab.exhandler.exception.NotFoundQuestionException;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
-import com.amazonaws.services.kms.model.NotFoundException;
+import jdk.jshell.spi.ExecutionControl;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

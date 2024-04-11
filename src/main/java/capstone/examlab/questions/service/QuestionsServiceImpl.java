@@ -32,7 +32,7 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Create 로직
     @Override
-    public boolean addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
+    public String addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
         log.info(questionUploadInfo.toString());
         if (questionImagesIn != null) {
             for (int i = 0; i < questionImagesIn.size(); i++) {
@@ -74,7 +74,11 @@ public class QuestionsServiceImpl implements QuestionsService {
                 .tagsMap(questionUploadInfo.getTags())
                 .build();
         questionsRepository.save(question);
-        return questionsRepository.existsById(uuid);
+        if(questionsRepository.existsById(uuid)){
+            return uuid;
+        } else {
+            return null;
+        }
     }
 
     //Read 로직

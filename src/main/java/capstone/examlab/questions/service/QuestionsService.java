@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public interface QuestionsService {
-    boolean addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut );
+    String addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut );
 
     QuestionsListDto searchFromQuestions(Long examId, QuestionsSearchDto questionsSearchDto);
 

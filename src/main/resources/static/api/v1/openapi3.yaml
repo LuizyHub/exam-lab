@@ -74,7 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-questions486549215'
+                $ref: '#/components/schemas/api-v1-exams-examId486549215'
               examples:
                 update-question:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -92,10 +92,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"ca3db859-b559-4d93-8c21-5af790478f37!\",\"\
-                  password_confirm\":\"ca3db859-b559-4d93-8c21-5af790478f37!\",\"\
-                  user_id\":\"ca3db859-b559-4d93-8c21-5af790478f37@gmail.com\",\"\
-                  name\":\"ca3db859-b559-4d93-8c21-5af790478f37\"}"
+                value: "{\"password\":\"7e8d62eb-309d-4c1d-a14b-0b8c61c52913!\",\"\
+                  password_confirm\":\"7e8d62eb-309d-4c1d-a14b-0b8c61c52913!\",\"\
+                  user_id\":\"7e8d62eb-309d-4c1d-a14b-0b8c61c52913@gmail.com\",\"\
+                  name\":\"7e8d62eb-309d-4c1d-a14b-0b8c61c52913\"}"
       responses:
         "200":
           description: "200"
@@ -145,7 +145,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-exams-examId-questions486549215'
+              $ref: '#/components/schemas/api-v1-exams-examId486549215'
             examples:
               patch-exams:
                 value: "{\"tags\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"1\"\
@@ -156,7 +156,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-questions486549215'
+                $ref: '#/components/schemas/api-v1-exams-examId486549215'
               examples:
                 patch-exams:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -196,7 +196,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-questions486549215'
+                $ref: '#/components/schemas/api-v1-exams-examId486549215'
               examples:
                 delete-questions-by-questionId:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -264,19 +264,19 @@ paths:
       - name: tags_category
         in: query
         description: 문제의 태그 카테고리
-        required: true
+        required: false
         schema:
           type: string
       - name: includes
         in: query
         description: 문제에 포함된 키워드
-        required: true
+        required: false
         schema:
           type: string
       - name: count
         in: query
         description: 검색된 문제의 개수
-        required: true
+        required: false
         schema:
           type: integer
           format: int32
@@ -334,10 +334,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-questions486549215'
+                $ref: '#/components/schemas/api-v1-exams-examId486549215'
               examples:
                 add-questions:
-                  value: "{\"code\":201,\"message\":\"CREATED\"}"
+                  value: "{\"code\":201,\"message\":\"3ecbe193-580e-4c8a-b40a-4850e756938e\"\
+                    }"
 components:
   schemas:
     api-v1-exams1523854693:
@@ -571,8 +572,6 @@ components:
         exam_title:
           type: string
           description: 시험지 이름
-    api-v1-exams-examId-questions486549215:
-      type: object
     api-v1-users-status615510992:
       required:
       - login
@@ -585,6 +584,8 @@ components:
         login:
           type: boolean
           description: 로그인 여부
+    api-v1-exams-examId486549215:
+      type: object
     api-v1-users-963924044:
       required:
       - name

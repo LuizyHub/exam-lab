@@ -166,9 +166,9 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                         parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
                                 )
                                 .queryParameters(
-                                        parameterWithName("tags_category").description("문제의 태그 카테고리").type(SimpleType.STRING),
-                                        parameterWithName("includes").description("문제에 포함된 키워드").type(SimpleType.STRING),
-                                        parameterWithName("count").description("검색된 문제의 개수").type(SimpleType.INTEGER)
+                                        parameterWithName("tags_category").description("문제의 태그 카테고리").type(SimpleType.STRING).optional(),
+                                        parameterWithName("includes").description("문제에 포함된 키워드").type(SimpleType.STRING).optional(),
+                                        parameterWithName("count").description("검색된 문제의 개수").type(SimpleType.INTEGER).optional()
                                 )
                                 .responseFields(
                                         fieldWithPath("questions").description("문제 목록").type(JsonFieldType.ARRAY),

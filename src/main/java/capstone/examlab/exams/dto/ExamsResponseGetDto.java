@@ -6,6 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class GetExamsResponseDto {
+public class ExamsResponseGetDto {
     private List<ExamDto> exams = new ArrayList<>();
 }

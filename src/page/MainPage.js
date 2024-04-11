@@ -5,12 +5,14 @@ import Navigate from '../components/Navigate';
 import Bottom from '../components/Bottom';
 import axios from 'axios';
 import './MainPage.css'
+import api from '../axiosInstance'; // axios 인스턴스를 불러옵니다.
 
 const usersDomain = "https://exam-lab.store/api/v1/users";
 
 export default function MainPage(){
 
     const [userData, setUserData] = useState(null);
+    const [loginUser, setLoginUser] = useState(false);
 
     // useEffect(() => {
     //     axios.get(`${usersDomain}/status`)
@@ -25,22 +27,63 @@ export default function MainPage(){
 
     // 클릭시 자동 로그인
     // 개발을 위한 목적, 추후 삭제
-    // const handleAutoLogin = () => {
+
+    const handleTakeLoginData= () => {
+    axios.get('/')
+    .then(response => {
+        // 요청이 성공하고 200 OK 응답을 받았을 때
+        if (response.status === 200) {
+            console.log('로그인되었습니다.');
+            // 여기서 로그인 상태를 업데이트하거나 적절한 작업을 수행할 수 있습니다.
+        } else {
+            console.log('요청은 성공했지만 로그인되지 않았습니다.');
+        }
+    })
+    .catch(error => {
+        // 요청이 실패했을 때
+        console.error('요청 실패:', error);
+    });
+}
+
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post(`/api/v1/users/login`, {  
+                "password": "lab111!",
+                "user_id": "lab1@gmail.com"
+            });
+            
+            console.log('Login successful', response);    
+        } catch(error) {
+            console.error('Login failed', error);
+        }
+    };
     
-    //     axios.get('https://exam-lab.store/api/v1/users/status')
-    //     .then(response => {
-    //         // 성공 시 처리할 내용 작성
-    //         console.log('Login successful', response.data);
-    //         // 받은 데이터에서 필요한 정보를 추출하여 처리
-    //         const { user_name, login } = response.data;
-    //         console.log('User name:', user_name);
-    //         console.log('Login status:', login);
-    //     })
-    //     .catch(error => {
-    //         // 실패 시 처리할 내용 작성
-    //         console.error('Login failed', error);
-    //     });
-    // }
+    const handleAutoLogin = async () => {
+        try {
+            const response = await axios.get(`${usersDomain}/status`);
+            console.log('Login successful', response);
+            const { user_name, login } = response.data; 
+            console.log('User name:', user_name);
+            console.log('Login status:', login);
+        } catch(error){
+            console.error('Login failed', error);
+        }
+    };
+    
+    
+    
+    
+
+    const login = () => {
+        setLoginUser(true);
+        console.log(loginUser);
+    }
+
+    const logout = () => {
+        setLoginUser(false);
+        console.log(loginUser);
+    }
     
 
     return(
@@ -60,7 +103,13 @@ export default function MainPage(){
                     </button>
                 </nav>
 
-                {/* <button onClick={handleAutoLogin}>자동 로그인</button> */}
+                <button onClick={handleLogin}>자동 로그인</button>  
+                 <button onClick={handleAutoLogin}>로그인정보 받아오기</button>
+                {/* <button onClick={handleTakeLoginData}>도메인에서 로그인정보 받아오기</button> */}
+
+                {/* useState로 상태 받아오기 */}
+                {/* <button onClick={login}>로그인</button>
+                <button onClick={logout}>로그인아웃</button> */}
 
                 {userData && userData.login ? <p>Welcome, {userData.user_name}!</p> : null}
             </div>

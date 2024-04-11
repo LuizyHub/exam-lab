@@ -4,6 +4,7 @@ import EditExam from "./test/EditPage/EditExam";
 import MainPage from "./page/MainPage"
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 import SelectQuestionPage from "./page/SelectQuestionPage"
+import EnglishExam from "./test/english/englishExam";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
@@ -19,6 +20,8 @@ function App() {
           <Route path="/lab" element={<LabExam />} />
           <Route path="/edit" element={<EditExam />} />
           <Route path="/htmlParse" element={<ParsingImageTest />} />
+          <Route path="/english" element={<EnglishExam />} /> 
+          {/* 영어문제 테스트를 위한 페이지 */}
         </Routes>
       </div>
     </BrowserRouter>

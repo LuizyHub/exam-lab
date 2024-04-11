@@ -1,7 +1,6 @@
 package capstone.examlab.exhandler.advice;
 
 import capstone.examlab.ResponseDto;
-import capstone.examlab.exhandler.ErrorResult;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

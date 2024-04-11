@@ -44,43 +44,45 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Test
     void searchQuestions() throws Exception {
-        String tagsMap1 = "상황";
-        String tagsMap2 = "표지";
+        String tags1 = "상황";
+        String tags2 = "표지";
         String includes1 = "고속도로";
         int count = 1;
         mockMvc.perform(
-                        get("/api/v1/exams/{examId}/questions?tagsMap_category={tagsMap}&tagsMap_category={tagsMap}&includes={includes}&count={count}", existExamId, tagsMap1, tagsMap2, includes1, count)
+                        get("/api/v1/exams/{examId}/questions?tags_category={tags}&tags_category={tags}&includes={includes}&count={count}", existExamId, tags1, tags2, includes1, count)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("Search-questions",
                         resource(ResourceSnippetParameters.builder()
                                 .description("Exam ID를 통한 Questions 조회")
                                 .tag("question")
-                                .summary("Search Questions")
+                                .summary("Search questions")
                                 .pathParameters(
                                         parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
                                 )
                                 .queryParameters(
-                                        parameterWithName("tagsMap_category").description("문제의 태그 카테고리").type(SimpleType.STRING),
+                                        parameterWithName("tags_category").description("문제의 태그 카테고리").type(SimpleType.STRING),
                                         parameterWithName("includes").description("문제에 포함된 키워드").type(SimpleType.STRING),
                                         parameterWithName("count").description("검색된 문제의 개수").type(SimpleType.INTEGER)
                                 )
                                 .responseFields(
-                                        fieldWithPath("[].id").description("문제의 고유 식별자").type(JsonFieldType.STRING),
-                                        fieldWithPath("[].type").description("문제의 유형").type(JsonFieldType.STRING),
-                                        fieldWithPath("[].question").description("문제 내용").type(JsonFieldType.STRING),
-                                        fieldWithPath("[].question_images_in").description("문제 설명 이미지 목록").type(JsonFieldType.ARRAY),
-                                        fieldWithPath("[].question_images_out").description("문제 정답 이미지 목록").type(JsonFieldType.ARRAY),
-                                        subsectionWithPath("[]question_images_out[].url").description("이미지 URL").type(JsonFieldType.STRING),
-                                        subsectionWithPath("[]question_images_out[].description").description("이미지 설명").type(JsonFieldType.STRING),
-                                        subsectionWithPath("[]question_images_out[].attribute").description("이미지 속성").type(JsonFieldType.STRING),
-                                        fieldWithPath("[].options").description("보기 목록").type(JsonFieldType.ARRAY),
-                                        fieldWithPath("[].answers").description("정답 목록").type(JsonFieldType.ARRAY),
-                                        fieldWithPath("[].commentary").description("문제 해설").type(JsonFieldType.STRING),
-                                        fieldWithPath("[].commentary_images_in").description("해설 설명 이미지 목록").type(JsonFieldType.ARRAY),
-                                        fieldWithPath("[].commentary_images_out").description("해설 이미지 목록").type(JsonFieldType.ARRAY),
-                                        fieldWithPath("[].tags_map").description("문제의 태그 맵 정보").type(JsonFieldType.OBJECT),
-                                        subsectionWithPath("[].tags_map.*").description("문제의 카테고리 태그 정보").type(JsonFieldType.ARRAY)
+                                        fieldWithPath("questions").description("문제 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].id").description("문제의 고유 식별자").type(JsonFieldType.STRING),
+                                        subsectionWithPath("questions[].type").description("문제의 유형").type(JsonFieldType.STRING),
+                                        subsectionWithPath("questions[].question").description("문제 내용").type(JsonFieldType.STRING),
+                                        subsectionWithPath("questions[].question_images_in").description("문제 설명 이미지 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].question_images_out").description("문제 정답 이미지 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].question_images_out[].url").description("이미지 URL").type(JsonFieldType.STRING),
+                                        subsectionWithPath("questions[].question_images_out[].description").description("이미지 설명").type(JsonFieldType.STRING),
+                                        subsectionWithPath("questions[].question_images_out[].attribute").description("이미지 속성").type(JsonFieldType.STRING),
+                                        subsectionWithPath("questions[].options").description("보기 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].answers").description("정답 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].commentary").description("문제 해설").type(JsonFieldType.STRING),
+                                        subsectionWithPath("questions[].commentary_images_in").description("해설 설명 이미지 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].commentary_images_out").description("해설 이미지 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].tags").description("문제의 태그 맵 정보").type(JsonFieldType.OBJECT),
+                                        subsectionWithPath("questions[].tags.*").description("문제의 카테고리 태그 정보").type(JsonFieldType.ARRAY),
+                                        fieldWithPath("size").description("문제의 개수").type(JsonFieldType.NUMBER)
                                 )
                                 .build()
                         )
@@ -95,12 +97,12 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
         requestBody.put("options", List.of("변경된 보기1", "변경된 보기2", "변경된 보기3", "변경된 보기4"));
         requestBody.put("answers", List.of(1, 3));
         requestBody.put("commentary", "변경된 설명입니다.");
-        Map<String, Object> tagsMap = new HashMap<>();
-        tagsMap.put("category", List.of("상황"));
-        requestBody.put("tagsMap", tagsMap);
+        Map<String, Object> tag = new HashMap<>();
+        tag.put("category", List.of("상황"));
+        requestBody.put("tag", tag);
 
         mockMvc.perform(
-                        put("/api/v1/exams/questions")
+                        put("/api/v1/questions")
                                 .content(objectMapper.writeValueAsString(requestBody))
                                 .contentType("application/json")
                 )
@@ -109,15 +111,15 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                         resource(ResourceSnippetParameters.builder()
                                 .description("Question 내용 업데이트")
                                 .tag("question")
-                                .summary("Update Question")
+                                .summary("Update question")
                                 .requestFields(
                                         fieldWithPath("id").description("문제 ID").type(JsonFieldType.STRING),
                                         fieldWithPath("question").description("변경될 질문 내용").type(JsonFieldType.STRING),
                                         fieldWithPath("options").description("변경될 보기 내용").type(JsonFieldType.ARRAY),
                                         fieldWithPath("answers").description("변경될 정답").type(JsonFieldType.ARRAY),
                                         fieldWithPath("commentary").description("변경될 해설").type(JsonFieldType.STRING),
-                                        fieldWithPath("tagsMap").description("변경될 문제 태그").type(JsonFieldType.OBJECT),
-                                        subsectionWithPath("tagsMap.*").description("변경될 문제 태그 value").type(JsonFieldType.ARRAY)
+                                        fieldWithPath("tag").description("변경될 문제 태그").type(JsonFieldType.OBJECT),
+                                        subsectionWithPath("tag.*").description("변경될 문제 태그 value").type(JsonFieldType.ARRAY)
                                 )
                                 .build()
                         )
@@ -137,7 +139,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
 //                        resource(ResourceSnippetParameters.builder()
 //                                .description("해당되는 시험 ID Questions 삭제")
 //                                .tag("question")
-//                                .summary("DeleteQuestionsByExamID")
+//                                .summary("Delete questions by examId")
 //                                .pathParameters(
 //                                        parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
 //                                )
@@ -149,14 +151,14 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     void deleteQuestionsByQuestionID() throws Exception {
         String existQuestionId = "fee4fd71-3780-4ad1-a76f-a9a0ca052081";
         mockMvc.perform(
-                        delete("/api/v1/exams/questions/{questionId}", existQuestionId)
+                        delete("/api/v1/questions/{questionId}", existQuestionId)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("delete-questions-by-questionId",
                         resource(ResourceSnippetParameters.builder()
                                 .description("해당되는 문제 ID Question 삭제")
                                 .tag("question")
-                                .summary("DeleteQuestionsByQuestionId")
+                                .summary("Delete questions by questionId")
                                 .pathParameters(
                                         parameterWithName("questionId").description("QuestionId").type(SimpleType.INTEGER)
                                 )
@@ -190,9 +192,9 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
         questionUploadInfo.put("questionImagesTextOut", questionImagesTextOut);
 
         questionUploadInfo.put("answers", List.of("4"));
-        Map<String, List<String>> tagsMap = new HashMap<>();
-        tagsMap.put("category", List.of("화물"));
-        questionUploadInfo.put("tagsMap", tagsMap);
+        Map<String, List<String>> tag = new HashMap<>();
+        tag.put("category", List.of("화물"));
+        questionUploadInfo.put("tag", tag);
         questionUploadInfo.put("commentary", "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.");
 
         List<ImageDto> commentaryImagesTextIn = new ArrayList<>();
@@ -256,7 +258,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                         resource(ResourceSnippetParameters.builder()
                                 .description("문제 추가")
                                 .tag("question")
-                                .summary("Add Question")
+                                .summary("Add question")
                                 .requestHeaders(HeaderDocumentation.headerWithName(HttpHeaders.CONTENT_TYPE)
                                         .description("questionUploadInfo-ContentType: application/json" +
                                                 "questionImagesIn-ContentType:image.png\n" +

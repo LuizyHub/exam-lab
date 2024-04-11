@@ -12,6 +12,7 @@ import capstone.examlab.valid.ValidParams;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,16 +36,16 @@ public class QuestionsController {
                                             @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
                                             @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut) {
 
-        boolean saved = questionsService.addQuestionsByExamId(examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
-        if (!saved) {
+        String questionId = questionsService.addQuestionsByExamId(examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
+        if (questionId == null) {
             return ResponseDto.BAD_REQUEST;
         }
-        return ResponseDto.CREATED;
+        return new ResponseDto(201,questionId);
     }
 
     //Read API
     @GetMapping("exams/{examId}/questions")
-    public QuestionsListDto selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams Map<String, String> params, HttpServletResponse response) {
+    public QuestionsListDto selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams Map<String, String> params) {
         QuestionsSearchDto questionsSearchDto = buildQuestionsSearch(params);
         QuestionsListDto questionsListDto = questionsService.searchFromQuestions(examId, questionsSearchDto);
         if (questionsListDto.getSize() == 0) {

@@ -12,7 +12,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionsSearch {
+public class QuestionsSearchDto {
     private  Map<String, List<String>> tags;
     private Integer count;
     private List<String> includes;

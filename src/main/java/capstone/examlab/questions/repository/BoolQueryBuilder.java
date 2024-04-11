@@ -1,6 +1,6 @@
 package capstone.examlab.questions.repository;
 
-import capstone.examlab.questions.dto.search.QuestionsSearch;
+import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import org.springframework.stereotype.Component;
 
@@ -10,13 +10,13 @@ import java.util.Map;
 
 @Component
 public class BoolQueryBuilder {
-    public Query searchQuestionsQuery(Long examId, QuestionsSearch questionsSearch) {
+    public Query searchQuestionsQuery(Long examId, QuestionsSearchDto questionsSearchDto) {
         // "must" 조건을 추가할 리스트 생성
         List<Query> mustQueries = new ArrayList<>();
 
         // "must" 조건(examId, tagsMap)에 해당하는 Term 쿼리들 추가
         mustQueries.add(new TermQuery.Builder().field("examId").value(examId).build()._toQuery());
-        Map<String, List<String>> tagsMap = questionsSearch.getTags();
+        Map<String, List<String>> tagsMap = questionsSearchDto.getTags();
         if (tagsMap != null) {
             for (Map.Entry<String, List<String>> entry : tagsMap.entrySet()) {
                 String key = "tagsMap."+entry.getKey();
@@ -29,7 +29,7 @@ public class BoolQueryBuilder {
             }
         }
 
-        List<String> includes = questionsSearch.getIncludes();
+        List<String> includes = questionsSearchDto.getIncludes();
         //검색어 포함 여부를 위한 MatchPhrasePrefix 쿼리 추가
         if(includes!=null){
             for (String include : includes) {

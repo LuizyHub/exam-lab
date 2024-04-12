@@ -73,12 +73,7 @@ public class QuestionsServiceImpl implements QuestionsService {
                 .commentaryImagesOut(questionUploadInfo.getCommentaryImagesTextOut())
                 .tagsMap(questionUploadInfo.getTags())
                 .build();
-        questionsRepository.save(question);
-        if(questionsRepository.existsById(uuid)){
-            return uuid;
-        } else {
-            return null;
-        }
+        return questionsRepository.save(question).getId();
     }
 
     //Read 로직

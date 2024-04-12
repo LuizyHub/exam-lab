@@ -48,7 +48,7 @@ export default function MainPage(){
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post(`/api/v1/users/login`, {  
+            const response = await api.post(`/api/v1/users/login`, {
                 "password": "lab111!",
                 "user_id": "lab1@gmail.com"
             });
@@ -61,7 +61,7 @@ export default function MainPage(){
     
     const handleAutoLogin = async () => {
         try {
-            const response = await axios.get(`${usersDomain}/status`);
+            const response = await api.get(`/api/v1/users/status`);
             console.log('Login successful', response);
             const { user_name, login } = response.data; 
             console.log('User name:', user_name);

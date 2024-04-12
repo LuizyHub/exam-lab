@@ -1,3 +1,14 @@
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function(app) {
+    app.use(
+        '/api',
+        createProxyMiddleware({
+            target: 'https://exam-lab.store',
+            changeOrigin: true,
+        })
+    );
+};
 // // src/setupProxy.js
 // const { createProxyMiddleware } = require('http-proxy-middleware');
 
@@ -14,14 +25,14 @@
 //     })
 //   );
 // };
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
-module.exports = function(app) {
-  app.use(
-    '/api',
-    createProxyMiddleware({
-      target: 'https://exam-lab.store',
-      changeOrigin: true,
-    })
-  );
-};
+// const { createProxyMiddleware } = require('http-proxy-middleware');
+//
+// module.exports = function(app) {
+//   app.use(
+//     '/api',
+//     createProxyMiddleware({
+//       target: 'https://www.exam-lab.store',
+//       changeOrigin: true,
+//     })
+//   );
+// };

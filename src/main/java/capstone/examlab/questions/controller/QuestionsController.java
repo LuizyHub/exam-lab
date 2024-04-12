@@ -25,13 +25,13 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/")
+@RequestMapping("api/v1")
 public class QuestionsController {
     private final QuestionsService questionsService;
 
     //Create API
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("exams/{examId}/questions")
+    @PostMapping("/exams/{examId}/questions")
     public ResponseDto addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
                                             @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
                                             @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut) {
@@ -44,7 +44,7 @@ public class QuestionsController {
     }
 
     //Read API
-    @GetMapping("exams/{examId}/questions")
+    @GetMapping("/exams/{examId}/questions")
     public QuestionsListDto selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams Map<String, String> params) {
         QuestionsSearchDto questionsSearchDto = buildQuestionsSearch(params);
         QuestionsListDto questionsListDto = questionsService.searchFromQuestions(examId, questionsSearchDto);
@@ -87,7 +87,7 @@ public class QuestionsController {
     }
 
     //Update API
-    @PutMapping("questions")
+    @PutMapping("/questions")
     public ResponseDto updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto) {
         boolean updated = questionsService.updateQuestionsByQuestionId(questionUpdateDto);
         if (!updated) {
@@ -97,7 +97,7 @@ public class QuestionsController {
     }
 
     //Delete API with examId
-    @DeleteMapping("exams/{examId}/questions")
+    @DeleteMapping("/exams/{examId}/questions")
     public ResponseDto deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId, HttpServletResponse response) {
         boolean deleted = questionsService.deleteQuestionsByExamId(examId);
         if (!deleted) {
@@ -107,7 +107,7 @@ public class QuestionsController {
     }
 
     //Delete Api with questionId
-    @DeleteMapping("questions/{questionId}")
+    @DeleteMapping("/questions/{questionId}")
     public ResponseDto deleteQuestionsByQuestionId(@PathVariable String questionId, HttpServletResponse response) {
         boolean deleted = questionsService.deleteQuestionsByQuestionId(questionId);
         if(!deleted) {

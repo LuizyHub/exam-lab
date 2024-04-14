@@ -4,16 +4,14 @@ import axios from 'axios';
 import ShowQuestionList from "./ShowQuestionList";
 import "../css/SelectQuestion.css";
 
-const domain ="https://exam-lab.store/api/v1";
 
 export default function SelectQuestion() {
   
-    const location = useLocation(); // SelectExamPage.js에서 데이터 받아오기
+    const location = useLocation(); // SelectExamPage.js에서 선택된 시험 받아오기
     const { examId, examTitle } = location.state;
 
-    console.log(examId, examTitle);
+    // console.log(examId, examTitle);
 
-    const [examType, setExamType] = useState([]); // 시험 종류
     const [tags, setTags] = useState([]); // 태그 종류
     const [selectedTags, setSelectedTags] = useState([]); // 선택된 태그 종류
     const [search, setSearch] = useState(""); // 검색어
@@ -22,16 +20,6 @@ export default function SelectQuestion() {
     const [questions, setQuestions] = useState([]);
     const [showCustomCountInput, setShowCustomCountInput] = useState(false); // "기타" 버튼을 클릭했는지 여부
 
-     // 시험 종류 가져오기
-     useEffect(() => {
-        axios.get(`${domain}/exams`)
-            .then(response => {
-                setExamType(response.data);
-            })
-            .catch(error => {
-                console.error('ExamType Error fetching data:', error);
-            });
-    }, []);
 
     // 태그 가져오기
     useEffect(() => {
@@ -39,7 +27,7 @@ export default function SelectQuestion() {
         const fetchTag = async () => {
           try {
             console.log(examId)
-            const response = await axios.get(`${domain}/exams/${Number(examId)}`);
+            const response = await axios.get(`/api/v1/exams/${Number(examId)}`);
             setTags(response.data.tags);
           } catch(error) {
             console.error('Tags Error fetching data:', error);
@@ -68,11 +56,12 @@ export default function SelectQuestion() {
     }
 
     // 태그 선택
-    const handleTagClick = (tag) => {
-        if (selectedTags.includes(tag)) {
-            setSelectedTags(selectedTags.filter(selectedTag => selectedTag !== tag));
+    const handleTagClick = (tagGroup, tag) => {
+        const tagIndex = selectedTags.findIndex(item => item.tagGroup === tagGroup && item.tag === tag);
+        if (tagIndex !== -1) {
+            setSelectedTags(prevTags => prevTags.filter((item, index) => index !== tagIndex));
         } else {
-            setSelectedTags([...selectedTags, tag]);
+            setSelectedTags(prevTags => [...prevTags, { tagGroup, tag }]);
         }
     }
 
@@ -91,43 +80,42 @@ export default function SelectQuestion() {
         setSelectedQuestionCount(parseInt(e.target.value));
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+   
+    // 유형 정보 API 전달
+const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        let URL = `${domain}/exams/${Number(examId)}/questions?count=${Number(selectedQuestionCount)}`;
+    let URL = `/api/v1/exams/${Number(examId)}/questions?count=${Number(selectedQuestionCount)}`;
 
-        // 태그 추가
-        if (selectedTags.length > 0) {
-            selectedTags.forEach(tag => {
-                URL += `&tags=${tag}`;
-            });
-        }
+    // 태그 추가
+    selectedTags.forEach(({ tagGroup, tag }) => {
+        URL += `&tags_${tagGroup}=${tag}`;
+    });
 
-        // 포함어 추가
-        if (keywords.length > 0) {
-            keywords.forEach(include => {
-                URL += `&includes=${include}`;
-            });
-        }
-        
-        console.log(URL);
-
-        // 유형 정보 API 전달
-        axios.get(URL)
-            .then((response) => {
-                console.log(response.data);
-                setQuestions(response.data); // API로부터 받은 데이터를 상태로 저장
-
-                if (response.data.length === 0) {
-                alert("해당 문제가 없습니다.");
-                }
-
-            })
-            .catch((error) => {
-                console.log(error);
-            }, []);
+    // 검색어 추가
+    if (keywords.length > 0) {
+        keywords.forEach(include => {
+            URL += `&includes=${include}`;
+        });
     }
 
+    console.log(URL);
+
+    // API 호출
+    try {
+        const response = await axios.get(URL);
+        console.log(response.data.questions);
+        setQuestions(response.data.questions);
+
+        if (response.data.questions.length === 0) {
+            alert("해당 문제가 없습니다.");
+        }
+    } catch (error) {
+        console.error("Error fetching questions:", error);
+    }
+}
+    
+    
     
     
     
@@ -138,17 +126,22 @@ export default function SelectQuestion() {
             <div>
                 <h1 style={{ textAlign: 'center' }}>{examTitle}</h1>
                 <div className="tags">
-                    <span >태그  </span>
-                    {tags && tags.map(tag => (
-                        <button
-                            key={tag}
-                            type="button"
-                            onClick={() => handleTagClick(tag)}
-                            className={selectedTags.includes(tag) ? "selected-tag" : ""}
-                        >
-                            #{tag}
-                        </button>
-                    ))}
+                {Object.keys(tags).map(tagGroup => (
+                    <div key={tagGroup}>
+                        <span>{tagGroup} </span>
+                        {tags[tagGroup].map(tag => (
+                            <button
+                                key={tag}
+                                type="button"
+                                onClick={() => handleTagClick(tagGroup, tag)} // 수정된 부분
+                                className={selectedTags.some(item => item.tagGroup === tagGroup && item.tag === tag) ? "selected-tag" : ""}
+                            >
+                                {tag}
+                            </button>
+                        ))}
+                    </div>
+                ))}
+
                 </div>
                 <div className="selectWord-container">
                     <span>검색어  </span>

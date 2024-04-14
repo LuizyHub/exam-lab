@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Navigate from './Navigate';
 import '../css/NavigationBar.css'; 
 
-const domain = "https://exam-lab.store";
 
-export default function NavigationBar(){
+export default function NavigationBar({ userName, login }){
 
     const [isVisible, setIsVisible] = useState(true);
 
@@ -20,13 +18,28 @@ export default function NavigationBar(){
             <div className="navigation-content">
                 <Navigate />
             </div>
+            {/* 로그인 상태에 따른 조건부 렌더링 */}
+            {login ? (
+                <>
+                    <button className='user-lab'>
+                      <p>{userName}님의 연구소</p>
+                    </button>
+                    <button className="login-button">
+                        <a href={`/users/logout`} style={{ textDecoration: 'none', color: 'inherit' }}>로그아웃</a>
+                    </button>
+                </>
+            ) : (
+                <>
+                    <button className="login-button">
+                        <a href={`/users/login`} style={{ textDecoration: 'none', color: 'inherit' }}>로그인</a>
+                    </button>
+                    <button className="signup-button">
+                        <a href={`/users/add`} style={{ textDecoration: 'none', color: 'inherit' }}>회원가입</a>
+                    </button>
+                </>
+            )}
             <nav>
-            <button className="login-button">
-                    <a href={`${domain}/users/login`} style={{ textDecoration: 'none', color: 'inherit' }}>로그인</a>
-                </button>
-                <button className="signup-button">
-                    <a href={`${domain}/users/add`} style={{ textDecoration: 'none', color: 'inherit' }}>회원가입</a>
-                </button>
+                
             </nav>
         </div>
     );

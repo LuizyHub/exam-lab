@@ -3,18 +3,17 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import './SelectExamPage.css';
 
-const domain ="https://exam-lab.store/api/v1";
 
 export default function SelectExamPage() {
   const navigate = useNavigate();
-  const [examType, setExamType] = useState([]);
+  const [exams, setExams] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false); // 데이터 로딩 완료 플래그
 
   useEffect(() => {
-    axios.get(`${domain}/exams`)
+    axios.get(`/api/v1/exams`)
     .then (response => {
       console.log(response.data);
-      setExamType(response.data);
+      setExams(response.data.exams); // exams 배열만 저장
       setIsDataLoaded(true); 
     })
     .catch(error => {
@@ -33,7 +32,7 @@ export default function SelectExamPage() {
   return (
     <div>
       <div className="examList">
-        {examType.map(exam => (
+        {exams.map(exam => (
           <button key={exam.exam_id} onClick={() => handleExamTypeClick(exam.exam_id, exam.exam_title)}>
             {exam.exam_title}
           </button>

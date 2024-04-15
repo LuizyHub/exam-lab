@@ -65,6 +65,7 @@ dependencies {
     //Elasticsearch TestContainer
     testImplementation 'org.testcontainers:elasticsearch:1.19.3'
     testImplementation 'org.testcontainers:testcontainers:1.19.3'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation("org.testcontainers:junit-jupiter:1.12.0")
 }
 

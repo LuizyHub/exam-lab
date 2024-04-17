@@ -1,5 +1,7 @@
 package capstone.examlab.questions.service;
 
+import capstone.examlab.exams.service.ExamsService;
+import capstone.examlab.exhandler.exception.UnauthorizedException;
 import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.*;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;
@@ -8,6 +10,7 @@ import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.repository.BoolQueryBuilder;
 import capstone.examlab.questions.repository.QuestionsRepository;
+import capstone.examlab.users.domain.User;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,7 @@ import java.util.*;
 public class QuestionsServiceImpl implements QuestionsService {
     private final QuestionsRepository questionsRepository;
     private final ImageService imageService;
+    private final ExamsService examsService;
     private final BoolQueryBuilder boolQueryBuilder;
     private final ElasticsearchTemplate elasticsearchTemplate;
 
@@ -117,11 +121,14 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Update 로직
     @Override
-    public boolean updateQuestionsByQuestionId(QuestionUpdateDto questionUpdateDto) {
+    public boolean updateQuestionsByQuestionId(User user, QuestionUpdateDto questionUpdateDto) {
         //Optional 통한 데이터 존재 검증
         Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
         if (optionalQuestion.isPresent()) {
             QuestionEntity question = optionalQuestion.get();
+            if(!examsService.isExamOwner(question.getExamId(),user)){
+                throw new UnauthorizedException();
+            }
             question.setQuestion(questionUpdateDto.getQuestion());
             question.setOptions(questionUpdateDto.getOptions());
             question.setAnswers(questionUpdateDto.getAnswers());

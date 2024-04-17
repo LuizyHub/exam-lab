@@ -102,4 +102,11 @@ public class ExamServiceImpl implements ExamsService {
 
         examRepository.save(exam);
     }
+
+    @Override
+    public boolean isExamOwner(Long examId, User user) {
+        Exam exam = (Exam) examRepository.findByExamId(examId).get();
+        if(exam.getUser() == null) return false;
+        return exam.getUser().getUserId().equals(user.getUserId());
+    }
 }

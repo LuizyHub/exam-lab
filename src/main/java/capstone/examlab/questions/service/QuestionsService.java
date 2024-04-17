@@ -4,6 +4,7 @@ import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
+import capstone.examlab.users.domain.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface QuestionsService {
 
     QuestionsListDto searchFromQuestions(Long examId, QuestionsSearchDto questionsSearchDto);
 
-    boolean updateQuestionsByQuestionId(QuestionUpdateDto questionsUpdateDto);
+    boolean updateQuestionsByQuestionId(User user, QuestionUpdateDto questionsUpdateDto);
 
     boolean deleteQuestionsByExamId(Long examId);
 

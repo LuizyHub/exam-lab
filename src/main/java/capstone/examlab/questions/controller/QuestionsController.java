@@ -7,6 +7,8 @@ import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.questions.service.QuestionsService;
+import capstone.examlab.users.argumentresolver.Login;
+import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
 import capstone.examlab.valid.ValidParams;
 import jakarta.servlet.http.HttpServletResponse;
@@ -88,8 +90,8 @@ public class QuestionsController {
 
     //Update API
     @PutMapping("/questions")
-    public ResponseDto updateQuestions(@RequestBody QuestionUpdateDto questionUpdateDto) {
-        boolean updated = questionsService.updateQuestionsByQuestionId(questionUpdateDto);
+    public ResponseDto updateQuestions(@Login User user, @RequestBody QuestionUpdateDto questionUpdateDto) {
+        boolean updated = questionsService.updateQuestionsByQuestionId(user, questionUpdateDto);
         if (!updated) {
             return ResponseDto.BAD_REQUEST;
         }

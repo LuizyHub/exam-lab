@@ -1,22 +1,25 @@
 package capstone.examlab.questions.repository;
 
 import capstone.examlab.questions.dto.ImageDto;
-import capstone.examlab.questions.dto.QuestionsListDto;
-import capstone.examlab.questions.dto.search.QuestionsSearchDto;
-import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
-
+import org.junit.jupiter.api.Test;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.service.QuestionsService;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.data.elasticsearch.DataElasticsearchTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.shaded.org.awaitility.Awaitility;
 
+import java.time.Duration;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +48,7 @@ public class QuestionsRepositoryTest {
     private final String questionUuid = "f8bd102d-c20a-4385-94f1-a4078843bg28";
 
     @BeforeEach
-    public void setup(){
+    public void setup() throws InterruptedException {
         QuestionEntity question = QuestionEntity.builder()
                 .id(questionUuid)
                 .examId(existExamId)
@@ -69,12 +72,34 @@ public class QuestionsRepositoryTest {
                 .tagsMap(Map.of("category", List.of("화물")))
                 .build();
 
-        System.out.println(questionsRepository.save(question).getId());
+        questionsRepository.save(question);
     }
 
     @Test
     void testDatabaseIsRunning() {
         assertThat(ES_CONTAINER.isRunning()).isTrue();
-
+        Optional<QuestionEntity> savedQuestion = questionsRepository.findById(questionUuid);
+        if (savedQuestion.isPresent()) {
+            QuestionEntity retrievedQuestion = savedQuestion.get();
+            System.out.println("retri questiosn: "+retrievedQuestion.getQuestion());
+        } else {
+            System.out.println("Question with UUID " + questionUuid + " not found.");
+        }
     }
+
+
+//    @Test
+//    void testDatabaseIsRunning() {
+//        assertThat(ES_CONTAINER.isRunning()).isTrue();
+//        assertThat(ES_CONTAINER.isRunning()).isTrue();
+//        // 페이지네이션 없이 모든 데이터를 조회하려면 PageRequest.of(0, Integer.MAX_VALUE)를 사용합니다.
+//        Page<QuestionEntity> allQuestions = questionsRepository.findAll(PageRequest.of(0, Integer.MAX_VALUE));
+//
+//        // 조회된 데이터 확인
+//        List<QuestionEntity> questionList = allQuestions.getContent();
+//        System.out.println(allQuestions.getSize());
+//        for (QuestionEntity question : questionList) {
+//            System.out.println(question.toString());
+//        }
+//    }
 }

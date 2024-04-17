@@ -36,9 +36,8 @@ public class QuestionsController {
     @PostMapping("/exams/{examId}/questions")
     public ResponseDto addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
                                             @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
-                                            @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut) {
-
-        String questionId = questionsService.addQuestionsByExamId(examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
+                                            @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut, @Login User user) {
+        String questionId = questionsService.addQuestionsByExamId(user, examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
         if (questionId == null) {
             return ResponseDto.BAD_REQUEST;
         }
@@ -100,7 +99,7 @@ public class QuestionsController {
 
     //Delete API with examId
     @DeleteMapping("/exams/{examId}/questions")
-    public ResponseDto deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId, HttpServletResponse response) {
+    public ResponseDto deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId) {
         boolean deleted = questionsService.deleteQuestionsByExamId(examId);
         if (!deleted) {
             return ResponseDto.BAD_REQUEST;
@@ -110,7 +109,7 @@ public class QuestionsController {
 
     //Delete Api with questionId
     @DeleteMapping("/questions/{questionId}")
-    public ResponseDto deleteQuestionsByQuestionId(@PathVariable String questionId, HttpServletResponse response) {
+    public ResponseDto deleteQuestionsByQuestionId(@PathVariable String questionId) {
         boolean deleted = questionsService.deleteQuestionsByQuestionId(questionId);
         if(!deleted) {
             return ResponseDto.BAD_REQUEST;

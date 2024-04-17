@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public interface QuestionsService {
-    String addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut );
+    String addQuestionsByExamId(User user, Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut );
 
     QuestionsListDto searchFromQuestions(Long examId, QuestionsSearchDto questionsSearchDto);
 

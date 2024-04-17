@@ -2,6 +2,7 @@ package capstone.examlab.questions.controller;
 
 import capstone.examlab.RestDocsOpenApiSpecTest;
 import capstone.examlab.questions.dto.ImageDto;
+import capstone.examlab.questions.entity.QuestionEntity;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.SimpleType;
 import jakarta.transaction.Transactional;
@@ -18,6 +19,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -33,13 +35,43 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Tag("openapi_test")
 class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     private final Long existExamId = 1L;
+    private final Long userAddExamId = 3L;
+    private final String userId = "lab1@gmail.com";
+    private final String userPw = "lab111!";
+    private final String questionId = "examlab1-9bb1-4aaa-bbef-cc473cc20285";
 
     @Autowired
     ObjectMapper objectMapper;
 
     @BeforeEach
-    public void beforeTest() {
-
+    public void beforeTest() throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("exam_title", "소웨공");
+        Map<String, List<String>> tags = new HashMap<>();
+        tags.put("단원", List.of("1", "2", "3"));
+        tags.put("난이도", List.of("상", "중", "하"));
+        map.put("tags", tags);
+        this.mockMvc.perform(
+                post("/api/v1/exams")
+                        .content(objectMapper.writeValueAsString(map))
+                        .contentType("application/json")
+                        .session(doLogin()
+                    )
+        );
+        QuestionEntity questionEntity = QuestionEntity.builder()
+                .id(questionId)
+                .examId(userAddExamId)
+                .type("객관식")
+                .question("소웨공 테스트 문제?")
+                .options(List.of("① 답 예시 1", "② 답 예시 2", "③ 답 예시 3", "④ 답 예시 4"))
+                .questionImagesIn(List.of())
+                .questionImagesOut(List.of())
+                .answers(List.of(3))
+                .commentary("30이 가장 큰 수입니다.")
+                .commentaryImagesIn(List.of())
+                .commentaryImagesOut(List.of())
+                .tagsMap(Map.of("단원", List.of("1"), "난이도", List.of("하")))
+                .build();
     }
 
     @Test
@@ -69,7 +101,8 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
 
         questionUploadInfo.put("answers", List.of("4"));
         Map<String, List<String>> tag = new HashMap<>();
-        tag.put("category", List.of("화물"));
+        tag.put("단원", List.of("2"));
+        tag.put("난이도", List.of("중"));
         questionUploadInfo.put("tag", tag);
         questionUploadInfo.put("commentary", "도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.");
 
@@ -109,7 +142,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
 
         //존재하지않는 RequestBuilder를 생성하기 위한 과정
         MockMultipartHttpServletRequestBuilder customRestDocumentationRequestBuilder =
-                RestDocumentationRequestBuilders.multipart("/api/v1/exams/{examId}/questions", existExamId);
+                RestDocumentationRequestBuilders.multipart("/api/v1/exams/{examId}/questions", userAddExamId);
 
         //RestDocumentationRequestBuilders.multipart(post,"/api/v1/exams/{examId}/questions", 1L)의 역할 수행
         customRestDocumentationRequestBuilder.with(new RequestPostProcessor() {
@@ -127,6 +160,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .file(questionImagesOut)
                                 .file(commentaryImagesIn)
                                 .file(commentaryImagesOut)
+                                .session(doLogin())
                                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 )
                 .andExpect(status().isCreated())
@@ -197,19 +231,21 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     @Test
     public void updateQuestions() throws Exception {
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("id", "f7cc865e-f5b0-4974-9f3d-a86d782b1cb5");
+        requestBody.put("id", questionId);
         requestBody.put("question", "변경된 질문입니다.");
         requestBody.put("options", List.of("변경된 보기1", "변경된 보기2", "변경된 보기3", "변경된 보기4"));
         requestBody.put("answers", List.of(1, 3));
         requestBody.put("commentary", "변경된 설명입니다.");
         Map<String, Object> tag = new HashMap<>();
-        tag.put("category", List.of("상황"));
+        tag.put("단원", List.of("2"));
+        tag.put("난이도", List.of("중"));
         requestBody.put("tag", tag);
 
         mockMvc.perform(
                         put("/api/v1/questions")
                                 .content(objectMapper.writeValueAsString(requestBody))
                                 .contentType("application/json")
+                                .session(doLogin())
                 )
                 .andExpect(status().isOk())
                 .andDo(document("update-question",
@@ -269,5 +305,17 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                 )
                                 .build())
                 ));
+    }
+
+    MockHttpSession doLogin() throws Exception {
+        Map<String, String> request = new HashMap<>() {{
+            put("user_id", userId);
+            put("password", userPw);
+        }};
+        return (MockHttpSession) mockMvc.perform(post("/api/v1/users/login")
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andReturn().getRequest().getSession();
     }
 }

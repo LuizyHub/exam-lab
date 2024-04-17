@@ -3,6 +3,10 @@ import React, { useState } from 'react';
 export const useImageSize = () => {
   const [selectedImage, setSelectedImage] = useState(null); // 클릭된 이미지 정보를 저장할 상태 변수
   const [isImageSize, setImageSize] = useState(50); //이미지 크기 값 저장
+  const [isUrl, setUrl] = useState();
+  const exportUrl = () => {
+    return isUrl;
+  }
   const handleImgSize = (e) => {
     const value = parseInt(e.currentTarget.value); //이벤트로 가져온 value
     if (selectedImage) {
@@ -14,7 +18,7 @@ export const useImageSize = () => {
     console.log(value);
   }
 
-  // 로컬 이미지 선택 및 규격 설정 핸들러
+  // 로컬 이미지 선택 및 규격 설정 핸들러, 이미지 파일명 확인이 가능하다.
   const handleImageSelect = (e, elementRef) => {
     const files = e.target.files;
     if (!!files && files.length > 0) {
@@ -34,16 +38,20 @@ export const useImageSize = () => {
     }
   };
 
-  // 이미지를 렌더링하는 함수
+  // 이미지를 렌더링하는 함수, 여기서 이미지 url을 알 수 있다.
   const readImageData = (file, elementRef) => {
     // 이미지 파일을 읽어들임
     const reader = new FileReader();
     reader.onload = function (e) {
-      const imageDataUrl = e.target.result;
+      const imageDataUrl = e.target.result; //여기서 const여야 하는 이유는?우선 한번 이미지를렌더링 할 때 변경할 필요가 없기 때문이다.
+      setUrl(imageDataUrl);
+
       // 이미지 삽입
-      insertImageConfig(imageDataUrl, elementRef);
+      insertImageConfig(imageDataUrl, elementRef);//어떤 영역에 읽어 드릴지 정해야 해서 elementRef를 인자로 두어야 한다.
+      console.log(`url : ${exportUrl}`)
     };
     reader.readAsDataURL(file, elementRef);
+
   }
 
   //나중에 export
@@ -82,7 +90,7 @@ export const useImageSize = () => {
 
   }
 
-  return { isImageSize, handleImgSize, handleImageSelect };
+  return { isImageSize, handleImgSize, handleImageSelect, exportUrl };
 }
 
 

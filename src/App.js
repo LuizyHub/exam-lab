@@ -13,7 +13,6 @@ function App() {
     <BrowserRouter>
       <div>
         <Routes>
-
           <Route path="/" element={<MainPage />} />
           <Route path="/select" element={<SelectExam />} />
           <Route path="/selectQuestion" element={<SelectQuestionPage />} />

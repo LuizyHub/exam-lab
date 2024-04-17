@@ -29,7 +29,7 @@ export default function EditorTool({ editorRef, contentType, handleContentType, 
             <button name='strikeThrough' onClick={(e) => { handleToolClick(e, editorRef) }} style={{ marginRight: '5px' }}><s>S</s></button>
             <button onClick={() => { handleImgToolClick(imageSelectorRef) }} style={{ marginRight: '5px' }}>IMG</button>
             <input type='number' value={isImageSize} onChange={(e) => { handleImgSize(e) }} style={{ width: '60px' }} />
-            <button onClick={() => { handleContent(editorRef) }}>저장</button>
+            {/* <button onClick={() => { handleContent(editorRef) }}>저장</button> */}
 
           </>
         ) : contentType === "이미지" ? (
@@ -37,7 +37,7 @@ export default function EditorTool({ editorRef, contentType, handleContentType, 
 
             <button onClick={() => { handleImgToolClick(imageSelectorRef) }} style={{ marginRight: '5px' }}>IMG</button>
             <input type='number' value={isImageSize} onChange={(e) => { handleImgSize(e) }} style={{ width: '60px' }} />
-            <button onClick={() => { handleContent() }}>저장</button>
+            {/* <button onClick={() => { handleContent() }}>저장</button> */}
 
           </>
         ) : null

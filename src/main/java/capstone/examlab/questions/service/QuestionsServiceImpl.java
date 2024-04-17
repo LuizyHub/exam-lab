@@ -36,8 +36,12 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Create 로직
     @Override
-    public String addQuestionsByExamId(Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
-        log.info(questionUploadInfo.toString());
+    public String addQuestionsByExamId(User user, Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
+        //문제 생성 권한이 있는 유저 체크
+        if(!examsService.isExamOwner(examId,user)){
+            throw new UnauthorizedException();
+        }
+
         if (questionImagesIn != null) {
             for (int i = 0; i < questionImagesIn.size(); i++) {
                 String imageUrl = imageService.saveImageInS3(questionImagesIn.get(i));
@@ -126,6 +130,7 @@ public class QuestionsServiceImpl implements QuestionsService {
         Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
         if (optionalQuestion.isPresent()) {
             QuestionEntity question = optionalQuestion.get();
+            //문제 수정 권한이 있는 유저 체크
             if(!examsService.isExamOwner(question.getExamId(),user)){
                 throw new UnauthorizedException();
             }

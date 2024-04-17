@@ -19,4 +19,6 @@ public interface ExamsService {
     public void deleteExam(Long id, User user);
 
     public void updateExam(Long id, ExamUpdateDto examUpdateDto, User user);
+
+    public boolean isExamOwner(Long examId, User user);
 }

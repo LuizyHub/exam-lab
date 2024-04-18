@@ -73,7 +73,7 @@ tasks.named('test') {
     useJUnitPlatform() {
         includeTags 'basic_test'
         includeTags 'openapi_test'
-        excludeTags 'db_test'
+        includeTags 'db_test'
     }
 }
 

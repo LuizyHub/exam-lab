@@ -1,6 +1,9 @@
 package capstone.examlab.questions.repository;
 
 import capstone.examlab.questions.dto.ImageDto;
+import capstone.examlab.questions.dto.QuestionDto;
+import capstone.examlab.questions.dto.QuestionsListDto;
+import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import org.junit.jupiter.api.Test;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.service.QuestionsService;
@@ -14,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,6 +27,8 @@ import java.time.Duration;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.when;
 
 @DataElasticsearchTest
 @Tag("db_test")
@@ -37,18 +43,16 @@ public class QuestionsRepositoryTest {
     @Autowired
     private QuestionsRepository questionsRepository;
 
-    @MockBean
-    private QuestionsService questionsService;
-
-    @MockBean
-    private BoolQueryBuilder boolQueryBuilder;
-
-    private final Long existExamId = 1L;
+    private final Long existExamId = 0L;
 
     private final String questionUuid = "f8bd102d-c20a-4385-94f1-a4078843bg28";
 
     @BeforeEach
     public void setup() throws InterruptedException {
+        await()
+                .untilAsserted(() -> {
+                    assertThat(ES_CONTAINER.isRunning()).isTrue();
+                });
         QuestionEntity question = QuestionEntity.builder()
                 .id(questionUuid)
                 .examId(existExamId)
@@ -72,34 +76,40 @@ public class QuestionsRepositoryTest {
                 .tagsMap(Map.of("category", List.of("화물")))
                 .build();
 
-        questionsRepository.save(question);
+        String questionID = questionsRepository.save(question).getId();
+        System.out.println("questionID" + questionID);
+    }
+
+    //    @Test
+//    void testSearchFromQuestions() {
+//        QuestionsSearchDto questionsSearchDto = QuestionsSearchDto.builder()
+////                .tags(Map.of("category", List.of("화물")))
+////                .includes(List.of("화물자동차"))
+//                .count(1)
+//                .build();
+//
+//        // Service & QueryDsl test
+//        QuestionsListDto result = questionsService.searchFromQuestions(1L, questionsSearchDto);
+//
+//        // Assert
+//        assertThat(result).isNotNull();
+//        for (QuestionDto questionDto : result.getQuestions()) {
+//            System.out.println(questionDto.toString());
+//            assertThat(questionDto.getQuestion()).contains("화물자동차");
+//            assertThat(questionDto.getTags()).containsEntry("category", Collections.singletonList("화물"));
+//        }
+//    }
+    @Test
+    void testDeleteQuestionsByExamId(){
+        assertThat(questionsRepository.findByExamId(existExamId).isEmpty()).isFalse();
+        questionsRepository.deleteByExamId(existExamId);
+        assertThat(questionsRepository.findByExamId(existExamId).isEmpty()).isTrue();
     }
 
     @Test
-    void testDatabaseIsRunning() {
-        assertThat(ES_CONTAINER.isRunning()).isTrue();
-        Optional<QuestionEntity> savedQuestion = questionsRepository.findById(questionUuid);
-        if (savedQuestion.isPresent()) {
-            QuestionEntity retrievedQuestion = savedQuestion.get();
-            System.out.println("retri questiosn: "+retrievedQuestion.getQuestion());
-        } else {
-            System.out.println("Question with UUID " + questionUuid + " not found.");
-        }
+    void testDeleteQuestionsByQuestionId() {
+        assertThat(questionsRepository.existsById(questionUuid)).isTrue();
+        questionsRepository.deleteById(questionUuid);
+        assertThat(questionsRepository.existsById(questionUuid)).isFalse();
     }
-
-
-//    @Test
-//    void testDatabaseIsRunning() {
-//        assertThat(ES_CONTAINER.isRunning()).isTrue();
-//        assertThat(ES_CONTAINER.isRunning()).isTrue();
-//        // 페이지네이션 없이 모든 데이터를 조회하려면 PageRequest.of(0, Integer.MAX_VALUE)를 사용합니다.
-//        Page<QuestionEntity> allQuestions = questionsRepository.findAll(PageRequest.of(0, Integer.MAX_VALUE));
-//
-//        // 조회된 데이터 확인
-//        List<QuestionEntity> questionList = allQuestions.getContent();
-//        System.out.println(allQuestions.getSize());
-//        for (QuestionEntity question : questionList) {
-//            System.out.println(question.toString());
-//        }
-//    }
 }

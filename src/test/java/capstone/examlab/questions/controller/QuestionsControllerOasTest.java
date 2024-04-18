@@ -112,7 +112,6 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
         String responseContent = result.getResponse().getContentAsString();
         JsonNode jsonResponse = objectMapper.readTree(responseContent);
         questionId = jsonResponse.get("message").asText();
-        System.out.println("데이터 삽입: " + questionId);
     }
 
     @AfterEach
@@ -184,7 +183,6 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                 questionUploadInfoJson.getBytes()      // 파일 내용
         );
 
-        System.out.println("QuestionUploadInfo: " + objectMapper.writeValueAsString(questionUploadInfo));
         MockMultipartFile questionImagesIn = new MockMultipartFile("questionImagesIn", "image1.png", "image/png", "image1".getBytes());
         MockMultipartFile questionImagesOut = new MockMultipartFile("questionImagesOut", "image2.png", "image/png", "image2".getBytes());
         MockMultipartFile commentaryImagesIn = new MockMultipartFile("commentaryImagesIn", "image3.png", "image/png", "image3".getBytes());
@@ -202,26 +200,6 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                 return request;
             }
         });
-
-//        //test
-//        MvcResult result = this.mockMvc.perform(
-//                        multipart("/api/v1/exams/{examId}/questions", userAddExamId)
-//                                .file(jsonPart)
-//                                .session(doLogin())
-//                )
-//                .andExpect(status().isCreated())
-//                .andDo(document("add-questions",
-//                        resource(ResourceSnippetParameters.builder()
-//                                .description("문제 추가")
-//                                .tag("question")
-//                                .summary("Add question")
-//                                .pathParameters(
-//                                        parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
-//                                )
-//                                .build()
-//                        )))
-//
-//                .andReturn();
 
         this.mockMvc.perform(
                         customRestDocumentationRequestBuilder

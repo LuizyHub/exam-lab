@@ -1,9 +1,15 @@
 package capstone.examlab.questions.repository;
 
+import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.ImageDto;
 import capstone.examlab.questions.dto.QuestionDto;
 import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;
+import capstone.examlab.questions.dto.update.QuestionUpdateDto;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchPhrasePrefixQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import org.junit.jupiter.api.Test;
 import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.service.QuestionsService;
@@ -18,6 +24,9 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -28,6 +37,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @DataElasticsearchTest
@@ -43,12 +53,18 @@ public class QuestionsRepositoryTest {
     @Autowired
     private QuestionsRepository questionsRepository;
 
+    @MockBean
+    private BoolQueryBuilder boolQueryBuilder;
+
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
+
     private final Long existExamId = 0L;
 
     private final String questionUuid = "f8bd102d-c20a-4385-94f1-a4078843bg28";
 
     @BeforeEach
-    public void setup() throws InterruptedException {
+    public void setup() {
         await()
                 .untilAsserted(() -> {
                     assertThat(ES_CONTAINER.isRunning()).isTrue();
@@ -76,31 +92,58 @@ public class QuestionsRepositoryTest {
                 .tagsMap(Map.of("category", List.of("화물")))
                 .build();
 
-        String questionID = questionsRepository.save(question).getId();
-        System.out.println("questionID" + questionID);
+        questionsRepository.save(question);
     }
 
-    //    @Test
-//    void testSearchFromQuestions() {
-//        QuestionsSearchDto questionsSearchDto = QuestionsSearchDto.builder()
-////                .tags(Map.of("category", List.of("화물")))
-////                .includes(List.of("화물자동차"))
-//                .count(1)
-//                .build();
-//
-//        // Service & QueryDsl test
-//        QuestionsListDto result = questionsService.searchFromQuestions(1L, questionsSearchDto);
-//
-//        // Assert
-//        assertThat(result).isNotNull();
-//        for (QuestionDto questionDto : result.getQuestions()) {
-//            System.out.println(questionDto.toString());
-//            assertThat(questionDto.getQuestion()).contains("화물자동차");
-//            assertThat(questionDto.getTags()).containsEntry("category", Collections.singletonList("화물"));
-//        }
-//    }
     @Test
-    void testDeleteQuestionsByExamId(){
+    void testSearchFromQuestions() {
+        QuestionsSearchDto questionsSearchDto = QuestionsSearchDto.builder()
+                .tags(Map.of("category", List.of("화물")))
+                .includes(List.of("화물자동차"))
+                .count(1)
+                .build();
+
+        Query query = boolQueryBuilder.searchQuestionsQuery(existExamId, questionsSearchDto);
+
+        NativeQuery searchQuery = new NativeQuery(query);
+        searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
+        SearchHits<QuestionEntity> searchHits = elasticsearchTemplate.search(searchQuery, QuestionEntity.class);
+
+        List<QuestionDto> questionsList = new ArrayList<>();
+        int count = 0;
+        for (SearchHit<QuestionEntity> hit : searchHits) {
+            if (count >= questionsSearchDto.getCount()) {
+                break;
+            }
+            QuestionEntity entity = hit.getContent();
+            QuestionDto questionDto = QuestionDto.builder()
+                    .id(entity.getId())
+                    .type(entity.getType())
+                    .question(entity.getQuestion())
+                    .questionImagesIn(new ArrayList<>(entity.getQuestionImagesIn()))
+                    .questionImagesOut(new ArrayList<>(entity.getQuestionImagesOut()))
+                    .options(new ArrayList<>(entity.getOptions()))
+                    .answers(new ArrayList<>(entity.getAnswers()))
+                    .commentary(entity.getCommentary())
+                    .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
+                    .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
+                    .tags(new HashMap<>(entity.getTagsMap()))
+                    .build();
+            questionsList.add(questionDto);
+            count++;
+        }
+
+        assertThat(questionsList).isNotNull();
+        for (QuestionDto questionDto : questionsList) {
+            System.out.println(questionDto.toString());
+            assertThat(questionDto.getQuestion()).contains("화물자동차");
+            assertThat(questionDto.getTags()).containsEntry("category", Collections.singletonList("화물"));
+        }
+    }
+
+
+    @Test
+    void testDeleteQuestionsByExamId() {
         assertThat(questionsRepository.findByExamId(existExamId).isEmpty()).isFalse();
         questionsRepository.deleteByExamId(existExamId);
         assertThat(questionsRepository.findByExamId(existExamId).isEmpty()).isTrue();

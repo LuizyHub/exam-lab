@@ -1,21 +1,31 @@
 package capstone.examlab.questions.controller;
 
 import capstone.examlab.RestDocsOpenApiSpecTest;
+import capstone.examlab.exams.repository.ExamRepository;
+import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.questions.dto.ImageDto;
-import capstone.examlab.questions.entity.QuestionEntity;
+import capstone.examlab.users.domain.User;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.SimpleType;
-import jakarta.transaction.Transactional;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.*;
+
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
 import static com.epages.restdocs.apispec.ResourceDocumentation.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -24,8 +34,10 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.headers.HeaderDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,44 +46,82 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @Tag("openapi_test")
 class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
-    private final Long existExamId = 1L;
-    private final Long userAddExamId = 3L;
+    private final Long userAddExamId = 0L;
     private final String userId = "lab1@gmail.com";
     private final String userPw = "lab111!";
-    private final String questionId = "examlab1-9bb1-4aaa-bbef-cc473cc20285";
+    private String questionId = "";
 
     @Autowired
     ObjectMapper objectMapper;
 
+    @MockBean
+    private ExamsService examsService;
+
+    @MockBean
+    private ExamRepository examRepository;
+
     @BeforeEach
-    public void beforeTest() throws Exception {
+    void setup() throws Exception {
+        //실제 존재하는 데이터가 아니기 때문에 유효성 검사 통과 로직 필요
+        when(examRepository.existsByExamId(userAddExamId)).thenReturn(true);
+        when(examsService.isExamOwner(eq(userAddExamId), any(User.class))).thenReturn(true);
+
+        //테스트용 '시험' 생성
         Map<String, Object> map = new HashMap<>();
         map.put("exam_title", "소웨공");
         Map<String, List<String>> tags = new HashMap<>();
         tags.put("단원", List.of("1", "2", "3"));
         tags.put("난이도", List.of("상", "중", "하"));
         map.put("tags", tags);
+
         this.mockMvc.perform(
-                post("/api/v1/exams")
-                        .content(objectMapper.writeValueAsString(map))
-                        .contentType("application/json")
-                        .session(doLogin()
-                    )
+                        post("/api/v1/exams")
+                                .content(objectMapper.writeValueAsString(map))
+                                .contentType("application/json")
+                                .session(doLogin()
+                                )
+                )
+                .andExpect(status().isCreated());
+
+        //테스트용 '문제' 생성
+        Map<String, Object> questionUploadInfo = new HashMap<>();
+        questionUploadInfo.put("type", "객관식");
+        questionUploadInfo.put("question", "소웨공 테스트 문제?");
+        questionUploadInfo.put("options", List.of("① 답 예시 1", "② 답 예시 2", "③ 답 예시 3", "④ 답 예시 4"));
+        questionUploadInfo.put("answers", List.of(3));
+        questionUploadInfo.put("commentary", "30이 가장 큰 수입니다.");
+        questionUploadInfo.put("tags", Map.of("단원", List.of("1"), "난이도", List.of("하")));
+
+        String questionUploadInfoJson = objectMapper.writeValueAsString(questionUploadInfo);
+
+        MockMultipartFile jsonPart = new MockMultipartFile(
+                "questionUploadInfo",
+                "questionUploadInfo.json",
+                MediaType.APPLICATION_JSON_VALUE,
+                questionUploadInfoJson.getBytes()
         );
-        QuestionEntity questionEntity = QuestionEntity.builder()
-                .id(questionId)
-                .examId(userAddExamId)
-                .type("객관식")
-                .question("소웨공 테스트 문제?")
-                .options(List.of("① 답 예시 1", "② 답 예시 2", "③ 답 예시 3", "④ 답 예시 4"))
-                .questionImagesIn(List.of())
-                .questionImagesOut(List.of())
-                .answers(List.of(3))
-                .commentary("30이 가장 큰 수입니다.")
-                .commentaryImagesIn(List.of())
-                .commentaryImagesOut(List.of())
-                .tagsMap(Map.of("단원", List.of("1"), "난이도", List.of("하")))
-                .build();
+
+        MvcResult result = this.mockMvc.perform(
+                        multipart("/api/v1/exams/{examId}/questions", userAddExamId)
+                                .file(jsonPart)
+                                .session(doLogin())
+                )
+                .andExpect(status().isCreated())
+                .andReturn();
+        questionId = result.getResponse().getContentAsString();
+        String responseContent = result.getResponse().getContentAsString();
+        JsonNode jsonResponse = objectMapper.readTree(responseContent);
+        questionId = jsonResponse.get("message").asText();
+        System.out.println("데이터 삽입: " + questionId);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        this.mockMvc.perform(
+                        delete("/api/v1/exams/{examId}/questions", userAddExamId)
+                                .session(doLogin())
+                )
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -153,6 +203,26 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
             }
         });
 
+//        //test
+//        MvcResult result = this.mockMvc.perform(
+//                        multipart("/api/v1/exams/{examId}/questions", userAddExamId)
+//                                .file(jsonPart)
+//                                .session(doLogin())
+//                )
+//                .andExpect(status().isCreated())
+//                .andDo(document("add-questions",
+//                        resource(ResourceSnippetParameters.builder()
+//                                .description("문제 추가")
+//                                .tag("question")
+//                                .summary("Add question")
+//                                .pathParameters(
+//                                        parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
+//                                )
+//                                .build()
+//                        )))
+//
+//                .andReturn();
+
         this.mockMvc.perform(
                         customRestDocumentationRequestBuilder
                                 .file(jsonPart)
@@ -174,7 +244,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                                 "questionImagesIn-ContentType:image.png\n" +
                                                 "questionImagesOut-ContentType:image.png\n" +
                                                 "commentaryImagesOut-ContentType:image.png\n" +
-                                                "commentaryImagesOut-ContentType:image.png\n"+MediaType.MULTIPART_FORM_DATA_VALUE)
+                                                "commentaryImagesOut-ContentType:image.png\n" + MediaType.MULTIPART_FORM_DATA_VALUE)
                                 )
                                 .build()
                         )
@@ -183,12 +253,12 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Test
     void searchQuestions() throws Exception {
-        String tags1 = "상황";
-        String tags2 = "표지";
-        String includes1 = "고속도로";
+        String tags1 = "1";
+        String tags2 = "하";
+        String includes1 = "소웨공";
         int count = 1;
         mockMvc.perform(
-                        get("/api/v1/exams/{examId}/questions?tags_category={tags}&tags_category={tags}&includes={includes}&count={count}", existExamId, tags1, tags2, includes1, count)
+                        get("/api/v1/exams/{examId}/questions?tags_단원={tags}&tags_난이도={tags}&includes={includes}&count={count}", userAddExamId, tags1, tags2, includes1, count)
                 )
                 .andExpect(status().isOk())
                 .andDo(document("Search-questions",
@@ -200,7 +270,8 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                         parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
                                 )
                                 .queryParameters(
-                                        parameterWithName("tags_category").description("문제의 태그 카테고리").type(SimpleType.STRING).optional(),
+                                        parameterWithName("tags_단원").description("문제의 태그 - 단원").type(SimpleType.STRING).optional(),
+                                        parameterWithName("tags_난이도").description("문제의 태그 - 난이도").type(SimpleType.STRING).optional(),
                                         parameterWithName("includes").description("문제에 포함된 키워드").type(SimpleType.STRING).optional(),
                                         parameterWithName("count").description("검색된 문제의 개수").type(SimpleType.INTEGER).optional()
                                 )
@@ -210,17 +281,26 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                         subsectionWithPath("questions[].type").description("문제의 유형").type(JsonFieldType.STRING),
                                         subsectionWithPath("questions[].question").description("문제 내용").type(JsonFieldType.STRING),
                                         subsectionWithPath("questions[].question_images_in").description("문제 설명 이미지 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].question_images_in[].url").description("이미지 URL").type(JsonFieldType.STRING).optional(),
+                                        subsectionWithPath("questions[].question_images_in[].description").description("이미지 설명").type(JsonFieldType.STRING).optional(),
+                                        subsectionWithPath("questions[].question_images_in[].attribute").description("이미지 속성").type(JsonFieldType.STRING).optional(),
                                         subsectionWithPath("questions[].question_images_out").description("문제 정답 이미지 목록").type(JsonFieldType.ARRAY),
-                                        subsectionWithPath("questions[].question_images_out[].url").description("이미지 URL").type(JsonFieldType.STRING),
-                                        subsectionWithPath("questions[].question_images_out[].description").description("이미지 설명").type(JsonFieldType.STRING),
-                                        subsectionWithPath("questions[].question_images_out[].attribute").description("이미지 속성").type(JsonFieldType.STRING),
+                                        subsectionWithPath("questions[].question_images_out[].url").description("이미지 URL").type(JsonFieldType.STRING).optional(),
+                                        subsectionWithPath("questions[].question_images_out[].description").description("이미지 설명").type(JsonFieldType.STRING).optional(),
+                                        subsectionWithPath("questions[].question_images_out[].attribute").description("이미지 속성").type(JsonFieldType.STRING).optional(),
                                         subsectionWithPath("questions[].options").description("보기 목록").type(JsonFieldType.ARRAY),
                                         subsectionWithPath("questions[].answers").description("정답 목록").type(JsonFieldType.ARRAY),
                                         subsectionWithPath("questions[].commentary").description("문제 해설").type(JsonFieldType.STRING),
                                         subsectionWithPath("questions[].commentary_images_in").description("해설 설명 이미지 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].commentary_images_in[].url").description("이미지 URL").type(JsonFieldType.STRING).optional(),
+                                        subsectionWithPath("questions[].commentary_images_in[].description").description("이미지 설명").type(JsonFieldType.STRING).optional(),
+                                        subsectionWithPath("questions[].commentary_images_in[].attribute").description("이미지 속성").type(JsonFieldType.STRING).optional(),
                                         subsectionWithPath("questions[].commentary_images_out").description("해설 이미지 목록").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].commentary_images_out[].url").description("이미지 URL").type(JsonFieldType.STRING).optional(),
+                                        subsectionWithPath("questions[].commentary_images_out[].description").description("이미지 설명").type(JsonFieldType.STRING).optional(),
+                                        subsectionWithPath("questions[].commentary_images_out[].attribute").description("이미지 속성").type(JsonFieldType.STRING).optional(),
                                         subsectionWithPath("questions[].tags").description("문제의 태그 맵 정보").type(JsonFieldType.OBJECT),
-                                        subsectionWithPath("questions[].tags.*").description("문제의 카테고리 태그 정보").type(JsonFieldType.ARRAY),
+                                        subsectionWithPath("questions[].tags.*").description("문제의 카테고리 태그 정보").type(JsonFieldType.ARRAY).optional(),
                                         fieldWithPath("size").description("문제의 개수").type(JsonFieldType.NUMBER)
                                 )
                                 .build()
@@ -236,10 +316,10 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
         requestBody.put("options", List.of("변경된 보기1", "변경된 보기2", "변경된 보기3", "변경된 보기4"));
         requestBody.put("answers", List.of(1, 3));
         requestBody.put("commentary", "변경된 설명입니다.");
-        Map<String, Object> tag = new HashMap<>();
-        tag.put("단원", List.of("2"));
-        tag.put("난이도", List.of("중"));
-        requestBody.put("tag", tag);
+        Map<String, Object> tags = new HashMap<>();
+        tags.put("단원", List.of("2"));
+        tags.put("난이도", List.of("중"));
+        requestBody.put("tags", tags);
 
         mockMvc.perform(
                         put("/api/v1/questions")
@@ -259,8 +339,8 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                         fieldWithPath("options").description("변경될 보기 내용").type(JsonFieldType.ARRAY),
                                         fieldWithPath("answers").description("변경될 정답").type(JsonFieldType.ARRAY),
                                         fieldWithPath("commentary").description("변경될 해설").type(JsonFieldType.STRING),
-                                        fieldWithPath("tag").description("변경될 문제 태그").type(JsonFieldType.OBJECT),
-                                        subsectionWithPath("tag.*").description("변경될 문제 태그 value").type(JsonFieldType.ARRAY)
+                                        fieldWithPath("tags").description("변경될 문제 태그").type(JsonFieldType.OBJECT),
+                                        subsectionWithPath("tags.*").description("변경될 문제 태그 value").type(JsonFieldType.ARRAY).optional()
                                 )
                                 .build()
                         )
@@ -290,9 +370,9 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Test
     void deleteQuestionsByQuestionID() throws Exception {
-        String existQuestionId = "fee4fd71-3780-4ad1-a76f-a9a0ca052081";
         mockMvc.perform(
-                        delete("/api/v1/questions/{questionId}", existQuestionId)
+                        delete("/api/v1/questions/{questionId}", questionId)
+                                .session(doLogin())
                 )
                 .andExpect(status().isOk())
                 .andDo(document("delete-questions-by-questionId",

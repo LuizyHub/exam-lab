@@ -11,10 +11,8 @@ import capstone.examlab.users.argumentresolver.Login;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
 import capstone.examlab.valid.ValidParams;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -109,8 +107,8 @@ public class QuestionsController {
 
     //Delete Api with questionId
     @DeleteMapping("/questions/{questionId}")
-    public ResponseDto deleteQuestionsByQuestionId(@PathVariable String questionId) {
-        boolean deleted = questionsService.deleteQuestionsByQuestionId(questionId);
+    public ResponseDto deleteQuestionsByQuestionId(@Login User user, @PathVariable String questionId) {
+        boolean deleted = questionsService.deleteQuestionsByQuestionId(user, questionId);
         if(!deleted) {
             return ResponseDto.BAD_REQUEST;
         }

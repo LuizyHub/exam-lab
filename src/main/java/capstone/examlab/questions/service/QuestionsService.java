@@ -19,5 +19,5 @@ public interface QuestionsService {
 
     boolean deleteQuestionsByExamId(Long examId);
 
-    boolean deleteQuestionsByQuestionId(String questionId);
+    boolean deleteQuestionsByQuestionId(User user, String questionId);
 }

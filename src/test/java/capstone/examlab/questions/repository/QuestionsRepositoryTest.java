@@ -1,44 +1,31 @@
 package capstone.examlab.questions.repository;
 
-import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.ImageDto;
 import capstone.examlab.questions.dto.QuestionDto;
-import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchPhrasePrefixQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.TermQuery;
 import org.junit.jupiter.api.Test;
 import capstone.examlab.questions.entity.QuestionEntity;
-import capstone.examlab.questions.service.QuestionsService;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.data.elasticsearch.DataElasticsearchTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
+
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.awaitility.Awaitility;
 
-import java.time.Duration;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @DataElasticsearchTest
 @Tag("db_test")
@@ -141,6 +128,37 @@ public class QuestionsRepositoryTest {
         }
     }
 
+    @Test
+    void testUpdateQuestionsByQuestionId() {
+        QuestionUpdateDto questionUpdateDto = QuestionUpdateDto.builder()
+                .id(questionUuid)
+                .question("변경된 질문입니다.")
+                .options(List.of("변경된 보기1", "변경된 보기2", "변경된 보기3", "변경된 보기4"))
+                .answers(List.of(1, 3))
+                .commentary("변경된 설명입니다.")
+                .tags(Map.of("category", List.of("법"), "년도", List.of("20년")))
+                .build();
+
+        Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUuid);
+        if (optionalQuestion.isPresent()) {
+            QuestionEntity question = optionalQuestion.get();
+            question.setQuestion(questionUpdateDto.getQuestion());
+            question.setOptions(questionUpdateDto.getOptions());
+            question.setAnswers(questionUpdateDto.getAnswers());
+            question.setCommentary(questionUpdateDto.getCommentary());
+            question.setTagsMap(questionUpdateDto.getTags());
+            questionsRepository.save(question);
+        } else {
+            throw new AssertionError("질문이 존재 하지않음");
+        }
+
+        Optional<QuestionEntity> questionDto = questionsRepository.findById(questionUuid);
+        questionDto.ifPresent(questionEntity -> {
+            assertThat(questionEntity.getQuestion()).contains("변경된");
+            assertThat(questionEntity.getTagsMap()).containsEntry("category", Collections.singletonList("법"));
+            assertThat(questionEntity.getTagsMap()).containsEntry("년도", Collections.singletonList("20년"));
+        });
+    }
 
     @Test
     void testDeleteQuestionsByExamId() {

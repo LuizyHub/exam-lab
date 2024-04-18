@@ -66,6 +66,23 @@ public class QuestionsServiceImpl implements QuestionsService {
                 questionUploadInfo.getCommentaryImagesTextOut().get(i).setUrl(imageUrl);
             }
         }
+        
+        if (questionUploadInfo.getQuestionImagesTextIn() == null) {
+            questionUploadInfo.setQuestionImagesTextIn(new ArrayList<>());
+        }
+        if (questionUploadInfo.getQuestionImagesTextOut() == null) {
+            questionUploadInfo.setQuestionImagesTextOut(new ArrayList<>());
+        }
+        if (questionUploadInfo.getCommentaryImagesTextIn() == null) {
+            questionUploadInfo.setCommentaryImagesTextIn(new ArrayList<>());
+        }
+        if (questionUploadInfo.getCommentaryImagesTextOut() == null) {
+            questionUploadInfo.setCommentaryImagesTextOut(new ArrayList<>());
+        }
+        if (questionUploadInfo.getTags() == null){
+            questionUploadInfo.setTags(new HashMap<>());
+        }
+
         String uuid = UUID.randomUUID().toString();
         QuestionEntity question = QuestionEntity.builder()
                 .id(uuid)
@@ -89,7 +106,6 @@ public class QuestionsServiceImpl implements QuestionsService {
     public QuestionsListDto searchFromQuestions(Long examId, QuestionsSearchDto questionsSearchDto) {
         Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
 
-        log.info("QuestionsSearch: " + questionsSearchDto.toString());
         //쿼리문 코드 적용 및 elasticSearch 통신 관련
         NativeQuery searchQuery = new NativeQuery(query);
         searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
@@ -118,7 +134,6 @@ public class QuestionsServiceImpl implements QuestionsService {
             questionsList.add(questionDto);
             count++;
         }
-        log.info("searchSize: " + questionsList.size());
 
         return new QuestionsListDto(questionsList);
     }
@@ -153,14 +168,23 @@ public class QuestionsServiceImpl implements QuestionsService {
 
         List<QuestionEntity> questions = questionsRepository.findByExamId(examId);
 
-        // 삭제 검증
         return questions.isEmpty();
     }
 
     @Override
-    public boolean deleteQuestionsByQuestionId(String questionId) {
-        questionsRepository.deleteById(questionId);
-
+    public boolean deleteQuestionsByQuestionId(User user, String questionId) {
+        Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionId);
+        if (optionalQuestion.isPresent()) {
+            QuestionEntity question = optionalQuestion.get();
+            //문제 수정 권한이 있는 유저 체크
+            if (!examsService.isExamOwner(question.getExamId(), user)) {
+                throw new UnauthorizedException();
+            }
+            questionsRepository.deleteById(questionId);
+        }
+        else {
+            return false;
+        }
         //삭제 검증
         return !questionsRepository.existsById(questionId);
     }

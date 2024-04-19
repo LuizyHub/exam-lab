@@ -31,7 +31,9 @@ import static org.awaitility.Awaitility.await;
 @Tag("db_test")
 @Testcontainers
 public class QuestionsRepositoryTest {
+    // 8.x SSL HTTPS ERROR -> 7.x HTTP
     private final static String IMAGE_NAME = "docker.elastic.co/elasticsearch/elasticsearch:7.17.5";
+    //private final static String IMAGE_NAME = "docker.elastic.co/elasticsearch/elasticsearch:8.11.3";
 
     @Container
     @ServiceConnection

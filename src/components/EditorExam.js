@@ -9,8 +9,8 @@ import EditorTool from '../components/EditorTool';
 
 export default function EditorExam({ type }) {
   //from import
-  const { isImageSize, handleImgSize, handleImageSelect, exportUrl } = useImageSize();
-  const { handleContent } = DataHandle();
+  const { isImageSize, handleImgSize, handleImageSelect } = useImageSize();
+  const { handleContent, imageReplace } = DataHandle();
   const [contentType1, setContentType1] = useState('type');
   const [contentType2, setContentType2] = useState('type');
   const [contentType3, setContentType3] = useState('type');
@@ -24,20 +24,27 @@ export default function EditorExam({ type }) {
   const editorRef2 = useRef(null);
   const editorRef3 = useRef(null);
 
+  const [isUrlOut, setUrlOut] = useState([]);
+  const [isUrlIn, setUrlIn] = useState([]);
   const [isData, setData] = useState({
     question: '',
-    imageUrl: [],
-    options: ''
-  });
+    options: '',
+    imageUrlOut: [
+      {
+        url: '',
+        description: '',
+        attribute: ''
+      },
+    ],
+    imageUrlIn: [
+      {
+        url: '',
+        description: '',
+        attribute: ''
+      },
+    ],
 
-  /** 
-  // 객체로 저장
-  const [editorState, setEditorState] = useState({
-    type: '',
-    content: '',
-    isImageUrl: []
   });
-  */
 
   const handleContentType1 = (e) => {
     const contentType = e.currentTarget.value;
@@ -53,7 +60,7 @@ export default function EditorExam({ type }) {
     const contentType = e.currentTarget.value;
     setContentType3(contentType);
   }
-  //imageSelectorRef를 하나로 통합하면 마직 imageSelectorRef를 참조해서 해당 블록에만 이미지가 렌더링 된다. 즉, 이미지 영역에 렌더링이 되는 것이 아니다.
+
   return (
     <div>
       <select value={contentType1} onChange={handleContentType1}>
@@ -72,15 +79,33 @@ export default function EditorExam({ type }) {
         handleImgToolClick={handleImgToolClick}
         isImageSize={isImageSize}
         handleImgSize={handleImgSize}
-      // handleContent={() => { handleContent(editorRef1) }}
       />
+
       {/* 이미지 파일 load */}
       <input
         type="file"
         accept="image/*"
-        style={{ display: 'none' }}
+        // style={{ display: 'none' }}
         ref={imageSelectorRef1}
-        onChange={(e) => { handleImageSelect(e, editorRef1); }}
+        onChange={(e) => {
+          //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
+          const result = handleImageSelect(e, editorRef1);
+          setUrlIn(prevState => [...prevState, result]);
+
+          //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
+          //-> 초기값ㄴ
+          const isQuestion = editorRef1.current.innerHTML;//insertImageConfig(editorRef1, result)
+          // const imgRegex = /<img.*?src="(.*?)".*?>/g;
+          // const replacementHTML = isQuestion.replace(imgRegex, '[blank]');
+
+          const imageReplaceResult = imageReplace(isQuestion);
+          console.log(imageReplaceResult);
+          setData(
+            prevState => ({
+              ...prevState,
+              question: imageReplaceResult
+            }));
+        }}
       />
 
       {/* contentEditable */}
@@ -89,16 +114,27 @@ export default function EditorExam({ type }) {
         contentEditable="true"
         ref={editorRef1}
 
-        // input값
         onInput={() => { //이곳에서 type이 변경되면 변경된다는 것이 나와야함
-          // console.log(e.target.textContent);
-          const isQuestion = editorRef1.current.innerHTML;//e.target.textContent;
-          // const isQuestion = e.target.textContent; //일반 HTML문이 문자열로 전환된 값
+
+          //여기서 isQuestion과 resultEdit 부분 정리 / input type file 정리
+          //==================================== setData
+          const isQuestion = editorRef1.current.innerHTML;
+          const imgRegex = /<img.*?src="(.*?)".*?>/g;
+          const replacementHTML = isQuestion.replace(imgRegex, '[blank]');
+          console.log(replacementHTML);
+          //해당 setData는 이미지가 업로드
+          //isQuestion 부분이 한번 가공되고 저장이 되어야 함
           setData(
             prevState => ({
               ...prevState,
-              question: isQuestion
+              question: replacementHTML
             }));
+
+          //==================================== setUrlIn
+          //왜 계속 존재하는것인가.. 초기화 했는데
+          const resultEdit = handleContent(editorRef1, isUrlIn);
+          setUrlIn(resultEdit);
+
         }}
 
         style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
@@ -122,16 +158,19 @@ export default function EditorExam({ type }) {
         handleImgToolClick={handleImgToolClick}
         isImageSize={isImageSize}
         handleImgSize={handleImgSize}
-      // handleContent={() => { handleContent(editorRef2) }}
       />
+
       <input
         type="file"
         accept="image/*"
         // style={{ display: 'none' }}
         ref={imageSelectorRef2}
         onChange={(e) => {
-          handleImageSelect(e, editorRef2)
-          // const file = e.target.files[0];
+          handleImageSelect(e, editorRef2);
+          const file = e.target.files[0];
+          const fileUrl = URL.createObjectURL(file);
+          setUrlOut(prevState => [...prevState, fileUrl]);
+          console.log(file.name);
         }}
       />
       <div
@@ -140,12 +179,30 @@ export default function EditorExam({ type }) {
         ref={editorRef2}
 
         onInput={() => {
-          const result = handleContent(editorRef2, isData.imageUrl);
-          setData(
-            prevState => ({
-              ...prevState,
-              imageUrl: result
-            }));
+          const result = handleContent(editorRef2, isUrlOut);
+          setUrlOut(result);
+          console.log(result);
+
+          // return (<img src={isData.imageUrlOut} />)
+          // const test = "test"
+          // setData(
+          //   prevState => ({
+          //     ...prevState,
+          //     imageUrlOut: [
+          //       {
+          //         // ...prevState.imageUrlOut[0], // 이전 상태의 imageUrlOut 배열의 첫 번째 요소를 복제
+          //         url: 'test' // 새로운 URL 값으로 업데이트
+          //       },
+          //       // ...prevState.imageUrlOut.slice(1) // 나머지 요소는 이전 상태에서 그대로 유지
+          //     ]
+          //   }));
+          // console.log(result);
+          // const result = handleContent(editorRef2, isData.imageUrlOut);
+          // setData(
+          //   prevState => ({
+          //     ...prevState,
+          //     imageUrlOut: result
+          //   }));
           // console.log(result);
         }}
 
@@ -200,13 +257,21 @@ export default function EditorExam({ type }) {
       />
 
       <button type='submit' onClick={() => {
+        // imgButtonRef.current.click();
         console.log(
-          "저장된 question 값 : " + isData.question
-          + "\n저장된 image 값 : " + isData.imageUrl
-          + "\n저장된 options 값 : " + isData.options
+          "저장된 API question 값 : " + isData.question
+          + "\n저장된 imageIn 값 : " + isUrlIn
+          + "\n저장된 imageOut 값 : " + isUrlOut
+          + "\n저장된 API options 값 : " + isData.options
         );
         // formData(contentType1, contentType2, contentType3); 
-
+        // const result = handleContent(editorRef2, isData.imageUrlOut);
+        // setData(
+        //   prevState => ({
+        //     ...prevState,
+        //     imageUrlOut: result
+        //   }));
+        // console.log(result);
       }}>생성</button>
     </div>
   );

@@ -3,10 +3,6 @@ import React, { useState } from 'react';
 export const useImageSize = () => {
   const [selectedImage, setSelectedImage] = useState(null); // 클릭된 이미지 정보를 저장할 상태 변수
   const [isImageSize, setImageSize] = useState(50); //이미지 크기 값 저장
-  const [isUrl, setUrl] = useState();
-  const exportUrl = () => {
-    return isUrl;
-  }
   const handleImgSize = (e) => {
     const value = parseInt(e.currentTarget.value); //이벤트로 가져온 value
     if (selectedImage) {
@@ -21,6 +17,7 @@ export const useImageSize = () => {
   // 로컬 이미지 선택 및 규격 설정 핸들러, 이미지 파일명 확인이 가능하다.
   const handleImageSelect = (e, elementRef) => {
     const files = e.target.files;
+    console.log(files);
     if (!!files && files.length > 0) {
       const file = files[0];
       // 이미지 크기 제한
@@ -34,25 +31,36 @@ export const useImageSize = () => {
         alert('이미지 형식은 PNG만 지원합니다.');
         return;
       }
-      readImageData(file, elementRef);
+      // readImageData(file, elementRef);
+      // insertImageConfig()
     }
+
+    //=================================================수정
+    const fileUrl = URL.createObjectURL(files[0]);
+    // const imgTag = `<img src="${fileUrl}" alt="Uploaded Image" />`;
+    // const result = elementRef.current.innerHTML += imgTag;
+    insertImageConfig(elementRef, fileUrl)
+
+    //=================================================수정
+
+    return fileUrl;
   };
 
-  // 이미지를 렌더링하는 함수, 여기서 이미지 url을 알 수 있다.
-  const readImageData = (file, elementRef) => {
-    // 이미지 파일을 읽어들임
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const imageDataUrl = e.target.result; //여기서 const여야 하는 이유는?우선 한번 이미지를렌더링 할 때 변경할 필요가 없기 때문이다.
-      setUrl(imageDataUrl);
+  // // 이미지를 렌더링하는 함수, 여기서 이미지 url을 알 수 있다.
+  // const readImageData = (file, elementRef) => {
+  //   // 이미지 파일을 읽어들임
+  //   const reader = new FileReader();
+  //   reader.onload = function (e) {
+  //     const imageDataUrl = e.target.result; //여기서 const여야 하는 이유는?우선 한번 이미지를렌더링 할 때 변경할 필요가 없기 때문이다.
+  //     setUrl(imageDataUrl);
 
-      // 이미지 삽입
-      insertImageConfig(imageDataUrl, elementRef);//어떤 영역에 읽어 드릴지 정해야 해서 elementRef를 인자로 두어야 한다.
-      console.log(`url : ${exportUrl}`)
-    };
-    reader.readAsDataURL(file, elementRef);
+  //     // 이미지 삽입
+  //     insertImageConfig(imageDataUrl, elementRef);//어떤 영역에 읽어 드릴지 정해야 해서 elementRef를 인자로 두어야 한다.
+  //     console.log(`url : ${exportUrl}`)
+  //   };
+  //   reader.readAsDataURL(file, elementRef);
 
-  }
+  // }
 
   //나중에 export
   // 고유한 아이디 생성 함수
@@ -61,7 +69,7 @@ export const useImageSize = () => {
   };
 
   // 이미지 삽입, 이미지 설정 함수
-  const insertImageConfig = (imageDataUrl, elementRef) => {
+  const insertImageConfig = (elementRef, imageDataUrl) => {
 
     const imgElement = document.createElement('img');
     const imageId = generateUniqueId(); // 고유한 아이디 생성
@@ -81,16 +89,16 @@ export const useImageSize = () => {
       // console.log(e.target);
     };
 
-    // 에디터에 이미지 DOM에 삽입
+    // 에디터에 이미지 DOM에 삽입 -> 여기를 해결...
     if (elementRef.current) {
       elementRef.current.appendChild(imgElement);
     } else {
       console.error("Editor reference is null.");
     }
-
+    return imgElement
   }
 
-  return { isImageSize, handleImgSize, handleImageSelect, exportUrl };
+  return { isImageSize, handleImgSize, handleImageSelect, insertImageConfig };//insertImageConfig사용하세요
 }
 
 

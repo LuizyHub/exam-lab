@@ -20,8 +20,12 @@ export default function formData({ elementType1, elementType2, elementType3 }) {
 
   const URL = 'http://localhost:3001/sample'
 
-  const sendData = (URL, data) => {
+  const sendData = (URL, data, fileName, url) => {
     // alert('check');
+    const formData = new formData("file",)
+    formData.append(fileName); //<- blob name
+    formData.append(url);
+    //이;거 안해봄.,...
     fetch(URL, {
       method: "POST",
       headers: {

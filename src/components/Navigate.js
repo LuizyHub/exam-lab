@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
+import '../css/Navigate.css'; 
 
 export default function Navigate() {
     return (
         <div>
-            <nav>
-                <div>
-                    <Link to='/select' style={{ textDecoration: 'none', color: 'inherit' }}>기출문제</Link>
+            <nav className="navigation">
+                <div className="nav-item">
+                    <img src="/img/시험지샘플.png" alt="Main Image" className="nav-icon" />
+                    <Link to='/exams' className="nav-link">시험지 제작하기</Link>
                 </div>
-                <div>
-                    <Link to='/add' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지</Link>
+                <div className="nav-item">
+                    <img src="/img/시험지제작.png" alt="Main Image" className="nav-icon" />
+                    <Link to='/add' className="nav-link">나만의 시험지</Link>
                 </div>
             </nav>
         </div>

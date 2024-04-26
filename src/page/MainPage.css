@@ -1,0 +1,32 @@
+.sample-navigate-button {
+    background-color: #29B8B5;
+    color: #fff;
+    border: none;
+    
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sample-navigate-button:hover {
+    background-color: #238C8A;
+}
+
+.myExam-navigate-button {
+    background-color: #EBF0F6;
+    color: #A2ACB9;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.myExam-navigate-button:hover {
+    background-color: #D3DCE6;
+}

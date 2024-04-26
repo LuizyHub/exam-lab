@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Navigate from './Navigate';
-import '../css/NavigationBar.css'; // 스타일 파일 import
+import '../css/NavigationBar.css'; 
 
-export default function NavigationBar(){
+
+export default function NavigationBar({ userName, login }){
 
     const [isVisible, setIsVisible] = useState(true);
 
@@ -12,12 +13,34 @@ export default function NavigationBar(){
 
     return(
         <div className={`navigation-bar ${isVisible ? 'visible' : 'hidden'}`}>
-            <button onClick={toggleVisibility}>{isVisible ? 'X' : '=>'}</button>
+            <img src="/img/examLab_logo.png" alt="logo" style={{width:"60%", padding:"30px"}}/>
+            <button className="close-button" onClick={toggleVisibility}>{isVisible ? 'X' : '=>'}</button>
             <div className="navigation-content">
-                {/* <button>로그인</button>
-                <button>회원가입</button> */}
                 <Navigate />
             </div>
+            {/* 로그인 상태에 따른 조건부 렌더링 */}
+            {login == true ? (
+                <>
+                    <button className='user-lab'>
+                      <p>{userName}님의 연구소</p>
+                    </button>
+                    <button className="login-button">
+                        <a href={`/users/logout`} style={{ textDecoration: 'none', color: 'inherit' }}>로그아웃</a>
+                    </button>
+                </>
+            ) : (
+                <>
+                    <button className="login-button">
+                        <a href={`/users/login`} style={{ textDecoration: 'none', color: 'inherit' }}>로그인</a>
+                    </button>
+                    <button className="signup-button">
+                        <a href={`/users/add`} style={{ textDecoration: 'none', color: 'inherit' }}>회원가입</a>
+                    </button>
+                </>
+            )}
+            <nav>
+                
+            </nav>
         </div>
     );
 }

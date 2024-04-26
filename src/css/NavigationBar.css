@@ -1,11 +1,23 @@
+body {
+    background-color: #F9F9F9; /* 페이지 내 전체 화면 색상지정*/
+}
+
+
 .navigation-bar {
     position: fixed;
     top: 0;
     left: -200px; /* 초기에 왼쪽으로 숨겨진 상태 */
     width: 200px;
     height: 100%;
-    background-color: #f0f0f0;
+    background-color: #fff;
     transition: left 0.3s ease;
+    display: flex; /* 수직으로 배치하기 위해 flexbox를 사용 */
+    flex-direction: column; /* 아이템을 수직으로 배치 */
+    justify-content: flex-start; /* 아이템을 컨테이너의 시작 부분에 배치 */
+}
+
+.navigation-bar nav {
+    text-align: center; /* 버튼을 중앙 정렬 */
 }
 
 .navigation-bar.visible {
@@ -13,17 +25,74 @@
 }
 
 .navigation-bar.hidden {
-    left: -200px; /* 버튼 클릭시 다시 왼쪽으로 숨김 */
+    width: 0; /* 숨겨진 상태일 때 너비를 0으로 설정하여 완전히 숨김 */
 }
 
-.navigation-bar button {
+.navigation-bar.hidden .login-button,
+.navigation-bar.hidden .signup-button {
+    display: none; /* 숨기기 */
+}
+
+.close-button {
     position: absolute;
     top: 20px;
     left: 180px;
 }
 
 .navigation-content {
-    padding-top: 100px;
-    padding-left: 50px;
+    padding-top: 50px; /* 네비게이션 콘텐츠의 상단 패딩을 조정 */
+    margin-bottom: 220px;
+    display: flex; /* 하이퍼링크를 수직으로 배치하기 위해 추가 */
+    flex-direction: column; /* 하이퍼링크를 수직으로 배치 */
 
 }
+
+
+
+.login-button{
+    background-color: #29B8B5;
+    display: inline-block;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 16px;
+    margin-top: 50px;
+}
+
+.signup-button {
+    background-color: #EBF0F6;
+    display: inline-block;
+    color: #A2ACB9;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 16px;
+    
+}
+
+
+.login-button:hover,
+.signup-button:hover {
+    background-color: #238C8A;
+}
+
+.user-lab {
+    background-color: #ffffff; /* 하얀색 배경색 */
+    border: 1px solid #808080; /* 회색 테두리 */
+    border-radius: 5px; /* 테두리의 꼭지점을 둥글게 만듭니다. */
+    padding: 5px 5px; /* 버튼 내부의 내용과 테두리 사이의 간격을 조정합니다. */
+    width: 90%;
+    margin-left: 10px;
+  }
+  
+  /* 버튼 내부 텍스트 스타일링 */
+  .user-lab p {
+    margin: 15; /* 내부 텍스트의 위아래 여백을 제거합니다. */
+    font-size: 15px; /* 텍스트 크기를 조정합니다. */
+  }
+  

@@ -5,6 +5,7 @@ export const DataHandle = () => {
   // 이미지 추적 후 여기에 html로 저장이 될 수는 함수
 
   //이미지의 url만 저장되는 코드
+  //여기에 매개변수로 setData를 가지고 와서 추가 삭제하는 방식?
   const handleContent = (elementRef, elementImage) => {
     //에러처리
     // if (!elementRef || !elementRef.current) {
@@ -43,8 +44,24 @@ export const DataHandle = () => {
 
   const imageReplace = (element) => {
     const imgRegex = /<img.*?src="(.*?)".*?>/g;
-    const replaceElement = element.replace(imgRegex, '[blank]');
+    let i = 1;
+    const replaceElement = element.replace(imgRegex, () => {
+      const imgTagWithNumber = `<img${i}>`;
+      i++;
+      return imgTagWithNumber;
+    });
     return replaceElement
+  }
+
+  const imageObject = () => {
+    //useState를 사용해야하나? 사용해야한다면
+    const newImageObject = {
+      url: '',
+      description: '', // 이미지 설명
+      attribute: '' // 이미지 속성
+    };
+
+    return newImageObject;
   }
 
   return { handleContent, imageReplace }

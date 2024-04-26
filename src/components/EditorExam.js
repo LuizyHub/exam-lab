@@ -11,6 +11,7 @@ export default function EditorExam({ type }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImageSize();
   const { handleContent, imageReplace } = DataHandle();
+  const { sendData } = formData();
   const [contentType1, setContentType1] = useState('type');
   const [contentType2, setContentType2] = useState('type');
   const [contentType3, setContentType3] = useState('type');
@@ -29,20 +30,8 @@ export default function EditorExam({ type }) {
   const [isData, setData] = useState({
     question: '',
     options: '',
-    imageUrlOut: [
-      {
-        url: '',
-        description: '',
-        attribute: ''
-      },
-    ],
-    imageUrlIn: [
-      {
-        url: '',
-        description: '',
-        attribute: ''
-      },
-    ],
+    imageUrlOut: [],
+    imageUrlIn: [],
 
   });
 
@@ -85,19 +74,17 @@ export default function EditorExam({ type }) {
       <input
         type="file"
         accept="image/*"
-        // style={{ display: 'none' }}
+        style={{ display: 'none' }}
         ref={imageSelectorRef1}
         onChange={(e) => {
+
           //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
           const result = handleImageSelect(e, editorRef1);
           setUrlIn(prevState => [...prevState, result]);
 
           //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
           //-> 초기값ㄴ
-          const isQuestion = editorRef1.current.innerHTML;//insertImageConfig(editorRef1, result)
-          // const imgRegex = /<img.*?src="(.*?)".*?>/g;
-          // const replacementHTML = isQuestion.replace(imgRegex, '[blank]');
-
+          const isQuestion = editorRef1.current.innerHTML;//
           const imageReplaceResult = imageReplace(isQuestion);
           console.log(imageReplaceResult);
           setData(
@@ -105,6 +92,19 @@ export default function EditorExam({ type }) {
               ...prevState,
               question: imageReplaceResult
             }));
+
+          // 새로운 이미지 객체 생성
+          const newImageObject = {
+            url: '',
+            description: '', // 이미지 설명
+            attribute: '' // 이미지 속성
+          };
+
+          setData(prevState => ({
+            ...prevState,
+            imageUrlIn: [...prevState.imageUrlIn, newImageObject]
+          }));
+
         }}
       />
 
@@ -113,21 +113,50 @@ export default function EditorExam({ type }) {
         className="editor"
         contentEditable="true"
         ref={editorRef1}
+        onDragOver={(e) => e.preventDefault()}
+        onCopy={(e) => {
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+        }} // 이미지 복사 동작 막기
+        onCut={(e) => {
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+        }} // 이미지 잘라내기 동작 막기
+        onPaste={(e) => {
+          // 에디터 내에서 이미지 잘라내기 동작 막기
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+          //외부 이미지 붙혀넣기 동작 막기
+          const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+          let hasImage = false;
+          for (let index in items) {
+            const item = items[index];
+            if (item.kind === 'file' && item.type.includes('image')) {
+              hasImage = true;
+              break;
+            }
+          }
+          if (hasImage) {
+            e.preventDefault();
+          }
+        }} // 이미지 붙여넣기 동작 막기
+
 
         onInput={() => { //이곳에서 type이 변경되면 변경된다는 것이 나와야함
-
-          //여기서 isQuestion과 resultEdit 부분 정리 / input type file 정리
           //==================================== setData
           const isQuestion = editorRef1.current.innerHTML;
-          const imgRegex = /<img.*?src="(.*?)".*?>/g;
-          const replacementHTML = isQuestion.replace(imgRegex, '[blank]');
-          console.log(replacementHTML);
+
           //해당 setData는 이미지가 업로드
           //isQuestion 부분이 한번 가공되고 저장이 되어야 함
+          const imageReplaceResult = imageReplace(isQuestion);
+          console.log(imageReplaceResult);
           setData(
             prevState => ({
               ...prevState,
-              question: replacementHTML
+              question: imageReplaceResult
             }));
 
           //==================================== setUrlIn
@@ -163,7 +192,7 @@ export default function EditorExam({ type }) {
       <input
         type="file"
         accept="image/*"
-        // style={{ display: 'none' }}
+        style={{ display: 'none' }}
         ref={imageSelectorRef2}
         onChange={(e) => {
           handleImageSelect(e, editorRef2);
@@ -264,7 +293,12 @@ export default function EditorExam({ type }) {
           + "\n저장된 imageOut 값 : " + isUrlOut
           + "\n저장된 API options 값 : " + isData.options
         );
-        // formData(contentType1, contentType2, contentType3); 
+        console.log("저장된 imageUrlIn 객체 값 : ", isData.imageUrlIn);
+        // const URL = 'http://localhost:3001/sample'
+        const URL = 'exam-lab.store/api/v1/3/question'
+        sendData(URL, isData, "TestImage", isUrlIn)
+
+        // formData(question, imageIn, imageOut, option);//contentType1, contentType2, contentType3
         // const result = handleContent(editorRef2, isData.imageUrlOut);
         // setData(
         //   prevState => ({

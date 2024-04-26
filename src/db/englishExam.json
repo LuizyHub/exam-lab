@@ -1,0 +1,262 @@
+{
+    "english": [
+        {
+            "id": "1",
+            "type": "객관식",
+            "question": "여자가 하는 말의 주제로 가장 적절한 것은?",
+            "question_images_in": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "question_images_out": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "options": [
+                "① various natural materials as a source of building supplies",
+                "② how upcycling is used in architecture across the globe",
+                "③ strategic use of upcycled plastics in different countries",
+                "④ impact of architectural waste on the global environment",
+                "⑤ why nations should employ eco-friendly shipping methods"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "4"
+            ],
+            "commentary": "",
+            "commentary_images_in": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "commentary_images_out": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "tags": []
+        },
+        {
+            "id": "2",
+            "type": "객관식",
+            "question_images_in": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "question_images_out": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "question": "언급된 나라가 <u>아닌</u> 것은?",
+            "options": [
+                "① Singapore",
+                "② Mexico",
+                "③ Australia",
+                "④ Indonesia",
+                "⑤ France "
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "2"
+            ],
+            "commentary": "",
+            "commentary_images_in": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "commentary_images_out": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "tags": []
+        },
+        {
+            "id": "3",
+            "question": "다음 글의 목적으로 가장 적절한 것은? <content> I’m Charlie Reeves, manager of Toon Skills Company. If you’re interested in new webtoon-making skills and techniques, this post is for you. This year, we’ve launched special online courses, which contain a variety of contents about webtoon production. Each course consists of ten units that help improve your drawing and story-telling skills. Moreover, these courses are designed to suit any level, from beginner to advanced. It costs $45 for one course, and you can watch your course as many times as you want for six months. Our courses with talented and experienced instructors will open up a new world of creativity for you. It’s time to start creating your webtoon world at https://webtoonskills.com.</content>",
+            "question_images_in": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "question_images_out": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "options": [
+                "① 웹툰 제작 온라인 강좌를 홍보하려고",
+                "② 웹툰 작가 채용 정보를 제공하려고",
+                "③ 신작 웹툰 공개 일정을 공지하려고",
+                "④ 웹툰 창작 대회에 출품을 권유하려고",
+                "⑤ 기초적인 웹툰 제작 방법을 설명하려고"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "commentary": "",
+            "commentary_images_in": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "commentary_images_out": [
+                {
+                    "url": "",
+                    "description": "",
+                    "attribute": ""
+                }
+            ],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "4",
+            "question": "다음 글에 드러난 David의 심경 변화로 가장 적절한 것은? <content> David was starting a new job in Vancouver, and he was waiting for his bus. He kept looking back and forth between his watch and the direction the bus would come from. He thought, \"My bus isn't here yet. I can't be late on my first day.\" David couldn't feel at ease. When he looked up again, he saw a different bus coming that was going right to his work. The bus stopped in front of him and opened its door. He got on the bus thinking, \"Phew! Luckily, this bus came just in time so I won't be late.\" He leaned back on an unoccupied seat in the bus and took a deep breath, finally able to relax.</content>",
+            "options": [
+                "① nervous → relieved",
+                "② lonely → hopeful",
+                "③ pleased → confused",
+                "④ indifferent → delighted",
+                "⑤ bored → thrilled"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "5",
+            "question": "밑줄 친 <u>a nonstick frying pan</u>이 다음 글에서 의미하는 바로 가장 적절한 것은? <content>How you focus your attention plays a critical role in how you deal with stress. Scattered attention harms your ability to let go of stress, because even though your attention is scattered, it is narrowly focused, for you are able to fixate only on the stressful parts of your experience. When your attentional spotlight is widened, you can more easily let go of stress. You can put in perspective many more aspects of any situation and not get locked into one part that ties you down to superficial and anxiety-provoking levels of attention. A narrow focus heightens the stress level of each experience, but a widened focus turns down the stress level because you’re better able to put each situation into a broader perspective. One anxiety-provoking detail is less important than the bigger picture. It’s like transforming yourself into <u>a nonstick frying pan.</u> You can still fry an egg, but the egg won’t stick to the pan.</content> * provoke: 유발시키다",
+            "options": [
+                "① never being confronted with any stressful experiences in daily life",
+                "② broadening one’s perspective to identify the cause of stress",
+                "③ rarely confining one’s attention to positive aspects of an experience",
+                "④ having a larger view of an experience beyond its stressful aspects",
+                "⑤ taking stress into account as the source of developing a wide view"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "6",
+            "question": "다음 표를 보면서 대화를 듣고, 남자가 주문할 접이식 카트를 고르시오.",
+            "options": [
+                "<h3>Foldable Carts</h3><table><thead><tr><th>Model</th><th>Price</th><th>Weight Limit</th><th>Color</th><th>Handle Material</th></tr></thead><tbody><tr><td>① A</td><td>$38</td><td>30kg</td><td>Black</td><td>Silicone</td></tr><tr><td>② B</td><td>$42</td><td>40kg</td><td>Green</td><td>Silicone</td></tr><tr><td>③ C</td><td>$44</td><td>45kg</td><td>Blue</td><td>Metal</td></tr><tr><td>④ D</td><td>$48</td><td>50kg</td><td>White</td><td>Metal</td></tr><tr><td>⑤ E</td><td>$53</td><td>45kg</td><td>Red</td><td>Rubber</td></tr></tbody></table>"
+              ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "7",
+            "question": "다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오. <content>Over the last decade the attention given to how children learn to read has foregrounded the nature of textuality, and of the different, interrelated ways in which readers of all ages make texts mean. ‘Reading’ now applies to a greater number of representational forms than at any time in the past: pictures, maps, screens, design graphics and photographs are all regarded as <longlongLine>. In addition to the innovations made possible in picture books by new printing processes, design features also predominate in other kinds, such as books of poetry and information texts. Thus, reading becomes a more complicated kind of interpretation than it was when children’s attention was focused on the printed text, with sketches or pictures as an adjunct. Children now learn from a picture book that words and illustrations complement and enhance each other. Reading is not simply <longLine>. Even in the easiest texts, what a sentence ‘says’ is often not what it means.</content> * adjunct: 부속물",
+            "options": [
+                "① word recognition",
+                "② imaginative play",
+                "③ knowledge acquisition",
+                "④ image mapping",
+                "⑤ subjective interpretation"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        },
+        {
+            "id": "8",
+            "question": "주어진 글 다음에 이어질 글의 순서로 가장 적절한 것을 고르시오. <content>Negotiation can be defined as an attempt to explore and reconcile conflicting positions in order to reach an acceptable outcome.</content> <br> (A) Areas of difference can and do frequently remain, and will perhaps be the subject of future negotiations, or indeed remain irreconcilable. In those instances in which the parties have highly antagonistic or polarised relations, the process is likely to be dominated by the exposition, very often in public, of the areas of conflict. <br> (B) In these and sometimes other forms of negotiation, negotiation serves functions other than reconciling conflicting interests. These will include delay, publicity, diverting attention or seeking intelligence about the other party and its negotiating position.<br>(C) Whatever the nature of the outcome, which may actually favour one party more than another, the purpose of negotiation is the identification of areas of common interest and conflict. In this sense, depending on the intentions of the parties, the areas of common interest may be clarified, refined and given negotiated form and substance.",
+            "options": [
+                "① (A) - (C) - (B)",
+                "② (B) - (A) - (C)",
+                "③ (B) - (C) - (A)",
+                "④ (C) - (A) - (B)",
+                "⑤ (C) - (B) - (A)"
+            ],
+            "questionImageUrls": [],
+            "questionImageDescriptions": [
+                ""
+            ],
+            "answers": [
+                "1"
+            ],
+            "explanation": "",
+            "explanationImageUrls": [],
+            "explanationImageDescriptions": [],
+            "tags": [],
+            "type": "객관식"
+        }
+    ]
+}

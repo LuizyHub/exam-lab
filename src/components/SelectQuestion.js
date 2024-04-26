@@ -117,10 +117,6 @@ const handleSubmit = async (e) => {
     
     
     
-    
-    
-    
-
     return(
         <div className="select-question-container">
             <div>

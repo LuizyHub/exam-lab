@@ -19,7 +19,7 @@ export default function NavigationBar({ userName, login }){
                 <Navigate />
             </div>
             {/* 로그인 상태에 따른 조건부 렌더링 */}
-            {login ? (
+            {login == true ? (
                 <>
                     <button className='user-lab'>
                       <p>{userName}님의 연구소</p>

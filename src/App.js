@@ -15,9 +15,9 @@ function App() {
         <Routes>
 
           <Route path="/" element={<MainPage />} />
-          <Route path="/select" element={<SelectExam />} />
+          <Route path="/exams" element={<SelectExam />} />
           <Route path="/selectQuestion" element={<SelectQuestionPage />} />
-          <Route path="/lab" element={<LabExam />} />
+          <Route path="/workbooks/create" element={<LabExam />} />
           <Route path="/edit" element={<EditExam />} />
           <Route path="/htmlParse" element={<ParsingImageTest />} />
           <Route path="/english" element={<EnglishExam />} /> 

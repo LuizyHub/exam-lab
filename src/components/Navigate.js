@@ -7,7 +7,7 @@ export default function Navigate() {
             <nav className="navigation">
                 <div className="nav-item">
                     <img src="/img/시험지샘플.png" alt="Main Image" className="nav-icon" />
-                    <Link to='/select' className="nav-link">기출문제</Link>
+                    <Link to='/exams' className="nav-link">시험지 제작하기</Link>
                 </div>
                 <div className="nav-item">
                     <img src="/img/시험지제작.png" alt="Main Image" className="nav-icon" />

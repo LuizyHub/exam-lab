@@ -13,7 +13,7 @@ export default function SelectExamPage() {
     axios.get(`/api/v1/exams`)
     .then (response => {
       console.log(response.data);
-      setExams(response.data.exams); // exams 배열만 저장
+      setExams(response.data.exams); 
       setIsDataLoaded(true); 
     })
     .catch(error => {

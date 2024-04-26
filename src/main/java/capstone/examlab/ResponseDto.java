@@ -7,9 +7,9 @@ import lombok.ToString;
 @ToString
 @Getter
 @RequiredArgsConstructor
-public class ResponseDto {
-    private final Integer code;
-    private final String message;
+public class ResponseDto<T> {
+    private final int code;
+    private final T message;
 
     public static ResponseDto of(Integer code, String message) {
         return new ResponseDto(code, message);

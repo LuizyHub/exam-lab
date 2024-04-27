@@ -11,7 +11,7 @@ export default function EditorExam({ type }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImageSize();
   const { handleContent, imageReplace } = DataHandle();
-  const { sendData } = formData();
+  // const { sendData } = formData();
   // const [contentType1, setContentType1] = useState('type');
   // const [contentType2, setContentType2] = useState('type');
   // const [contentType3, setContentType3] = useState('type');
@@ -32,8 +32,69 @@ export default function EditorExam({ type }) {
     options: [],
     imageUrlOut: [],
     imageUrlIn: [],
-
   });
+
+  const sendData = async () => {
+    // const URL = 'http://localhost:3001/sample'
+    // const URL = 'exam-lab.store/api/v1/4/question'
+    const URL = '/api/v1/exams/3/questions'
+    const formData = new FormData();
+    formData.append(`type`, '객관식');
+    // formData.append('question', isData.question); // 질문
+    // isData.options.forEach((option, index) => {
+    //   formData.append(`options[${index}]`, option); // 선택지
+    // });
+    // isUrlIn.forEach((url, index) => {
+    //   const imageData = {
+    //     url: url,
+    //     description: "",
+    //     attribute: ""
+    //   };
+    //   // FormData에 해당 객체를 추가합니다.
+    //   formData.append(`questionImagesTextIn[${index}]`, JSON.stringify(imageData));
+    // });
+    // isUrlOut.forEach((url, index) => {
+    //   const imageData = {
+    //     url: url,
+    //     description: "",
+    //     attribute: ""
+    //   };
+    //   // FormData에 해당 객체를 추가합니다.
+    //   formData.append(`questionImagesTextIn[${index}]`, JSON.stringify(imageData));
+    // });
+    // formData.append(`answers[]`, '');
+
+    // // tags 객체에 빈 배열 추가
+    // formData.append(`tags[category][]`, '');
+
+    // // commentary에 빈 문자열 추가
+    // formData.append(`commentary`, '');
+
+    // // commentaryImagesTextIn 배열에 빈 객체 추가
+    // formData.append(`commentaryImagesTextIn[][url]`, '');
+    // formData.append(`commentaryImagesTextIn[][description]`, '');
+    // formData.append(`commentaryImagesTextIn[][attribute]`, '');
+
+    // // commentaryImagesTextOut 배열에 빈 객체 추가
+    // formData.append(`commentaryImagesTextOut[][url]`, '');
+    // formData.append(`commentaryImagesTextOut[][description]`, '');
+    // formData.append(`commentaryImagesTextOut[][attribute]`, '');
+    try {
+      // axios를 사용하여 FormData를 서버로 전송
+      const response = await axios.post(URL, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      console.log(response.data); // 서버에서 받은 응답 데이터
+      alert("저장");
+    } catch (error) {
+      // 요청이 실패했을 때 실행되는 코드
+      console.error('에러 발생:', error);
+      // 오류 처리 추가 가능
+    }
+  }
 
   // const handleContentType1 = (e) => {
   //   const contentType = e.currentTarget.value;
@@ -201,11 +262,6 @@ export default function EditorExam({ type }) {
         style={{ display: 'none' }}
         ref={imageSelectorRef2}
         onChange={(e) => {
-          // handleImageSelect(e, editorRef2);
-          // const file = e.target.files[0];
-          // const fileUrl = URL.createObjectURL(file);
-          // setUrlOut(prevState => [...prevState, fileUrl]);
-          // console.log(file.name);
 
           const result = handleImageSelect(e, editorRef2);
           setUrlOut(prevState => [...prevState, result]);
@@ -373,38 +429,7 @@ export default function EditorExam({ type }) {
         );
         console.log("저장된 imageUrlIn 객체 값 : ", isData.imageUrlIn);
         console.log("저장된 imageUrlOut 객체 값 : ", isData.imageUrlOut);
-
-        // const URL = 'http://localhost:3001/sample'
-        const URL = 'http://exam-lab.store/api/v1/4/question'
-
-        const formData = new FormData();
-        formData.append('question', isData.question); // 질문
-        isData.options.forEach((option, index) => {
-          formData.append(`options[${index}]`, option); // 선택지
-        });
-        isUrlOut.forEach((url, index) => {
-          formData.append(`imageUrlOut[${index}]`, url);
-        });
-        isUrlIn.forEach((url, index) => {
-          formData.append(`imageUrlIn[${index}]`, url);
-        });
-
-        // axios를 사용하여 FormData를 서버로 전송
-        axios.post(URL, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-          .then(response => {
-            // 요청이 성공했을 때 실행되는 코드
-            console.log(response.data); // 서버에서 받은 응답 데이터
-            alert("저장");
-          })
-          .catch(error => {
-            // 요청이 실패했을 때 실행되는 코드
-            console.error('에러 발생:', error);
-          });
-
+        sendData();
       }}>생성</button>
     </div>
   );

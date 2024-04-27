@@ -18,10 +18,10 @@ function App() {
           <Route path="/exams" element={<SelectExam />} />
           <Route path="/selectQuestion" element={<SelectQuestionPage />} />
           <Route path="/workbooks/create" element={<LabExam />} />
-          <Route path="/edit" element={<EditExam />} />
+          {/* <Route path="/edit" element={<EditExam />} /> */}
           <Route path="/editR" element={<EditExamRefactory />} />
           <Route path="/htmlParse" element={<ParsingImageTest />} />
-          <Route path="/english" element={<EnglishExam />} /> 
+          <Route path="/english" element={<EnglishExam />} />
           {/* 영어문제 테스트를 위한 페이지 */}
         </Routes>
       </div>

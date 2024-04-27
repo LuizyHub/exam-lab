@@ -3,18 +3,18 @@ import { handleToolClick, handleImgToolClick } from '../function/toolHandle';
 import { useImageSize } from '../function/imageHandle';
 import { DataHandle } from '../function/dataHandle';
 import formData from "../function/formData"
-
 import EditorTool from '../components/EditorTool';
-// import Editor from '../components/Editor';
+
+import axios from 'axios';
 
 export default function EditorExam({ type }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImageSize();
   const { handleContent, imageReplace } = DataHandle();
   const { sendData } = formData();
-  const [contentType1, setContentType1] = useState('type');
-  const [contentType2, setContentType2] = useState('type');
-  const [contentType3, setContentType3] = useState('type');
+  // const [contentType1, setContentType1] = useState('type');
+  // const [contentType2, setContentType2] = useState('type');
+  // const [contentType3, setContentType3] = useState('type');
 
   const imageSelectorRef1 = useRef(null); // 파일 선택 input 요소에 접근에 대한 참조
   const imageSelectorRef2 = useRef(null); // 파일 선택 input 요소에 접근에 대한 참조
@@ -29,40 +29,40 @@ export default function EditorExam({ type }) {
   const [isUrlIn, setUrlIn] = useState([]);
   const [isData, setData] = useState({
     question: '',
-    options: '',
+    options: [],
     imageUrlOut: [],
     imageUrlIn: [],
 
   });
 
-  const handleContentType1 = (e) => {
-    const contentType = e.currentTarget.value;
-    setContentType1(contentType);
-  }
+  // const handleContentType1 = (e) => {
+  //   const contentType = e.currentTarget.value;
+  //   setContentType1(contentType);
+  // }
 
-  const handleContentType2 = (e) => {
-    const contentType = e.currentTarget.value;
-    setContentType2(contentType);
-  }
+  // const handleContentType2 = (e) => {
+  //   const contentType = e.currentTarget.value;
+  //   setContentType2(contentType);
+  // }
 
-  const handleContentType3 = (e) => {
-    const contentType = e.currentTarget.value;
-    setContentType3(contentType);
-  }
+  // const handleContentType3 = (e) => {
+  //   const contentType = e.currentTarget.value;
+  //   setContentType3(contentType);
+  // }
 
   return (
     <div>
-      <select value={contentType1} onChange={handleContentType1}>
+      {/* <select value={contentType1} onChange={handleContentType1}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
         <option value="이미지">이미지</option>
         <option value="선택지">선택지</option>
-      </select>
+      </select> */}
 
       <EditorTool
         editorRef={editorRef1}
-        contentType={contentType1}
-        handleContentType={handleContentType1}
+        contentType={'문제'}
+        // handleContentType={handleContentType1}
         handleToolClick={handleToolClick}
         imageSelectorRef={imageSelectorRef1}
         handleImgToolClick={handleImgToolClick}
@@ -81,7 +81,6 @@ export default function EditorExam({ type }) {
           //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
           const result = handleImageSelect(e, editorRef1);
           setUrlIn(prevState => [...prevState, result]);
-
           //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
           //-> 초기값ㄴ
           const isQuestion = editorRef1.current.innerHTML;//
@@ -93,7 +92,7 @@ export default function EditorExam({ type }) {
               question: imageReplaceResult
             }));
 
-          // 새로운 이미지 객체 생성
+          // 새로운 이미지 업로드가 되면 객체 생성
           const newImageObject = {
             url: '',
             description: '', // 이미지 설명
@@ -160,9 +159,16 @@ export default function EditorExam({ type }) {
             }));
 
           //==================================== setUrlIn
-          //왜 계속 존재하는것인가.. 초기화 했는데
           const resultEdit = handleContent(editorRef1, isUrlIn);
           setUrlIn(resultEdit);
+
+          const imageUrlInLength = resultEdit.length;
+
+          // imageUrlIn의 길이만큼 객체가 존재하지 않을 경우 새로운 객체를 추가
+          setData(prevState => ({
+            ...prevState,
+            imageUrlIn: imageUrlInLength > 0 ? prevState.imageUrlIn : Array.from({ length: imageUrlInLength }, () => ({}))
+          }));
 
         }}
 
@@ -171,17 +177,17 @@ export default function EditorExam({ type }) {
 
       {/* ------------------------------------------------------------------------ */}
 
-      <select value={contentType2} onChange={handleContentType2}>
+      {/* <select value={contentType2} onChange={handleContentType2}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
         <option value="이미지">이미지</option>
         <option value="선택지">선택지</option>
-      </select>
+      </select> */}
 
       <EditorTool
         editorRef={editorRef2}
-        contentType={contentType2}
-        handleContentType={handleContentType2}
+        contentType={'이미지'}
+        // handleContentType={handleContentType2}
         handleToolClick={handleToolClick}
         imageSelectorRef={imageSelectorRef2}
         handleImgToolClick={handleImgToolClick}
@@ -195,44 +201,77 @@ export default function EditorExam({ type }) {
         style={{ display: 'none' }}
         ref={imageSelectorRef2}
         onChange={(e) => {
-          handleImageSelect(e, editorRef2);
-          const file = e.target.files[0];
-          const fileUrl = URL.createObjectURL(file);
-          setUrlOut(prevState => [...prevState, fileUrl]);
-          console.log(file.name);
+          // handleImageSelect(e, editorRef2);
+          // const file = e.target.files[0];
+          // const fileUrl = URL.createObjectURL(file);
+          // setUrlOut(prevState => [...prevState, fileUrl]);
+          // console.log(file.name);
+
+          const result = handleImageSelect(e, editorRef2);
+          setUrlOut(prevState => [...prevState, result]);
+
+          const newImageObject = {
+            url: '',
+            description: '', // 이미지 설명
+            attribute: '' // 이미지 속성
+          };
+
+          setData(prevState => ({
+            ...prevState,
+            imageUrlOut: [...prevState.imageUrlOut, newImageObject]
+          }));
         }}
       />
       <div
         className="editor"
         contentEditable="true"
         ref={editorRef2}
+        onDragOver={(e) => e.preventDefault()}
+        onCopy={(e) => {
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+        }} // 이미지 복사 동작 막기
+        onCut={(e) => {
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+        }} // 이미지 잘라내기 동작 막기
+        onPaste={(e) => {
+          // 에디터 내에서 이미지 잘라내기 동작 막기
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+          //외부 이미지 붙혀넣기 동작 막기
+          const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+          let hasImage = false;
+          for (let index in items) {
+            const item = items[index];
+            if (item.kind === 'file' && item.type.includes('image')) {
+              hasImage = true;
+              break;
+            }
+          }
+          if (hasImage) {
+            e.preventDefault();
+          }
+        }} // 이미지 붙여넣기 동작 막기
 
         onInput={() => {
           const result = handleContent(editorRef2, isUrlOut);
           setUrlOut(result);
           console.log(result);
 
-          // return (<img src={isData.imageUrlOut} />)
-          // const test = "test"
-          // setData(
-          //   prevState => ({
-          //     ...prevState,
-          //     imageUrlOut: [
-          //       {
-          //         // ...prevState.imageUrlOut[0], // 이전 상태의 imageUrlOut 배열의 첫 번째 요소를 복제
-          //         url: 'test' // 새로운 URL 값으로 업데이트
-          //       },
-          //       // ...prevState.imageUrlOut.slice(1) // 나머지 요소는 이전 상태에서 그대로 유지
-          //     ]
-          //   }));
-          // console.log(result);
-          // const result = handleContent(editorRef2, isData.imageUrlOut);
-          // setData(
-          //   prevState => ({
-          //     ...prevState,
-          //     imageUrlOut: result
-          //   }));
-          // console.log(result);
+          const resultEdit = handleContent(editorRef2, isUrlOut);
+          setUrlIn(resultEdit);
+
+          const imageUrlOutLength = resultEdit.length;
+
+          // imageUrlIn의 길이만큼 객체가 존재하지 않을 경우 새로운 객체를 추가
+          setData(prevState => ({
+            ...prevState,
+            imageUrlOut: imageUrlOutLength > 0 ? prevState.imageUrlOut : Array.from({ length: imageUrlOutLength }, () => ({}))
+          }));
         }}
 
         style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
@@ -240,17 +279,17 @@ export default function EditorExam({ type }) {
 
       {/* ------------------------------------------------------------------------ */}
 
-      <select value={contentType3} onChange={handleContentType3}>
+      {/* <select value={contentType3} onChange={handleContentType3}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
         <option value="이미지">이미지</option>
         <option value="선택지">선택지</option>
-      </select>
+      </select> */}
 
       <EditorTool
         editorRef={editorRef3}
-        contentType={contentType3}
-        handleContentType={handleContentType3}
+        contentType={'선택지'}
+        // handleContentType={handleContentType3}
         handleToolClick={handleToolClick}
         imageSelectorRef={imageSelectorRef3}
         handleImgToolClick={handleImgToolClick}
@@ -265,24 +304,63 @@ export default function EditorExam({ type }) {
         ref={imageSelectorRef3}
         onChange={(e) => { handleImageSelect(e, editorRef3) }}
       />
+
       <div
         className="editor"
         contentEditable="true"
         ref={editorRef3}
+        onDragOver={(e) => e.preventDefault()}
+        onCopy={(e) => {
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+        }} // 이미지 복사 동작 막기
+        onCut={(e) => {
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+        }} // 이미지 잘라내기 동작 막기
+        onPaste={(e) => {
+          // 에디터 내에서 이미지 잘라내기 동작 막기
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+          //외부 이미지 붙혀넣기 동작 막기
+          const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+          let hasImage = false;
+          for (let index in items) {
+            const item = items[index];
+            if (item.kind === 'file' && item.type.includes('image')) {
+              hasImage = true;
+              break;
+            }
+          }
+          if (hasImage) {
+            e.preventDefault();
+          }
+        }} // 이미지 붙여넣기 동작 막기
 
 
         onInput={() => {
-          // console.log(e.target.textContent);
           const isOptions = editorRef3.current.innerHTML;
-          setData(
-            prevState => ({
-              ...prevState,
-              options: isOptions
-            }));
+
+          // 줄 바꿈을 기준으로 배열을 분할하고, 필터링하여 빈 문자열을 제거합니다.
+          const optionsArray = isOptions.split('\n').filter(option => option.trim() !== '');
+
+          // <div>을 기준으로 분할하고, 각 요소를 trim하여 새로운 배열을 생성합니다.
+          const splitOptionsArray = optionsArray.flatMap(option => option.split('<div>').map(text => text.trim()));
+          const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
+
+          setData(prevState => ({ ...prevState, options: isOptionsArray }));
         }}
 
+        style={{
+          padding: '16px 24px',
+          border: '1px solid #D6D6D6',
+          borderRadius: '4px',
+          width: '600px',
 
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+        }}
       />
 
       <button type='submit' onClick={() => {
@@ -294,18 +372,39 @@ export default function EditorExam({ type }) {
           + "\n저장된 API options 값 : " + isData.options
         );
         console.log("저장된 imageUrlIn 객체 값 : ", isData.imageUrlIn);
-        // const URL = 'http://localhost:3001/sample'
-        const URL = 'exam-lab.store/api/v1/3/question'
-        sendData(URL, isData, "TestImage", isUrlIn)
+        console.log("저장된 imageUrlOut 객체 값 : ", isData.imageUrlOut);
 
-        // formData(question, imageIn, imageOut, option);//contentType1, contentType2, contentType3
-        // const result = handleContent(editorRef2, isData.imageUrlOut);
-        // setData(
-        //   prevState => ({
-        //     ...prevState,
-        //     imageUrlOut: result
-        //   }));
-        // console.log(result);
+        // const URL = 'http://localhost:3001/sample'
+        const URL = 'http://exam-lab.store/api/v1/4/question'
+
+        const formData = new FormData();
+        formData.append('question', isData.question); // 질문
+        isData.options.forEach((option, index) => {
+          formData.append(`options[${index}]`, option); // 선택지
+        });
+        isUrlOut.forEach((url, index) => {
+          formData.append(`imageUrlOut[${index}]`, url);
+        });
+        isUrlIn.forEach((url, index) => {
+          formData.append(`imageUrlIn[${index}]`, url);
+        });
+
+        // axios를 사용하여 FormData를 서버로 전송
+        axios.post(URL, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+          .then(response => {
+            // 요청이 성공했을 때 실행되는 코드
+            console.log(response.data); // 서버에서 받은 응답 데이터
+            alert("저장");
+          })
+          .catch(error => {
+            // 요청이 실패했을 때 실행되는 코드
+            console.error('에러 발생:', error);
+          });
+
       }}>생성</button>
     </div>
   );

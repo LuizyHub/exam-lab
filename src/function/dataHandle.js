@@ -53,16 +53,5 @@ export const DataHandle = () => {
     return replaceElement
   }
 
-  const imageObject = () => {
-    //useState를 사용해야하나? 사용해야한다면
-    const newImageObject = {
-      url: '',
-      description: '', // 이미지 설명
-      attribute: '' // 이미지 속성
-    };
-
-    return newImageObject;
-  }
-
   return { handleContent, imageReplace }
 }

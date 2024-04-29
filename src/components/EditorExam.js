@@ -34,24 +34,45 @@ export default function EditorExam({ type }) {
     imageUrlIn: [],
   });
 
-  const sendData = async () => {
+  // const [isCurrentId, setCurrentId] = useState();
+  let ID = "";
+
+  const sendData = () => {
     // const URL = 'http://localhost:3001/sample'
     // const URL = 'exam-lab.store/api/v1/4/question'
     const URL = '/api/v1/exams/3/questions'
     const formData = new FormData();
-    formData.append(`type`, '객관식');
+
+    const questionUploadInfo = new Blob([JSON.stringify({
+      type: "객관식",
+      question: isData.question,
+      options: isData.options,
+      questionImagesTextIn: [{ url: "", description: "설명", attribute: "속성" }],
+      // questionImagesTextOut: [{ url: "", description: "설명", attribute: "속성" }],
+      answers: ["0"],
+      tags: { "category": ["test"] },
+      commentary: ""
+      // commentaryImagesTextIn: [{ url: "", description: "설명", attribute: "속성" }],
+      // commentaryImagesTextOut: [{ url: "", description: "설명", attribute: "속성" }]
+    })], {
+      type: 'application/json'
+    });
+    formData.append('questionUploadInfo', questionUploadInfo);
+    // formData.append(`type`, '객관식');
     // formData.append('question', isData.question); // 질문
     // isData.options.forEach((option, index) => {
     //   formData.append(`options[${index}]`, option); // 선택지
     // });
-    // isUrlIn.forEach((url, index) => {
-    //   const imageData = {
-    //     url: url,
-    //     description: "",
-    //     attribute: ""
-    //   };
-    //   // FormData에 해당 객체를 추가합니다.
-    //   formData.append(`questionImagesTextIn[${index}]`, JSON.stringify(imageData));
+    formData.append(`questionImagesTextIn`, isUrlIn[0]);
+    // isUrlIn.forEach((url) => {
+    //   // const imageData = {
+    //   //   url: "",
+    //   //   description: "설명",
+    //   //   attribute: "속성"
+    //   // };
+    //   //   // FormData에 해당 객체를 추가합니다.
+    //   //   formData.append(`questionImagesTextIn`, JSON.stringify(imageData));
+    //   formData.append(`questionImagesTextIn`, url);
     // });
     // isUrlOut.forEach((url, index) => {
     //   const imageData = {
@@ -79,22 +100,39 @@ export default function EditorExam({ type }) {
     // formData.append(`commentaryImagesTextOut[][url]`, '');
     // formData.append(`commentaryImagesTextOut[][description]`, '');
     // formData.append(`commentaryImagesTextOut[][attribute]`, '');
-    try {
-      // axios를 사용하여 FormData를 서버로 전송
-      const response = await axios.post(URL, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+    // try {
+    //   // axios를 사용하여 FormData를 서버로 전송
+    //   const response = await axios.post(URL, formData, {
+    //     headers: {
+    //     }
+    //   });
 
-      console.log(response.data); // 서버에서 받은 응답 데이터
-      alert("저장");
-    } catch (error) {
-      // 요청이 실패했을 때 실행되는 코드
-      console.error('에러 발생:', error);
-      // 오류 처리 추가 가능
-    }
-  }
+    //   console.log(response.data); // 서버에서 받은 응답 데이터
+    //   alert("저장");
+    // } catch (error) {
+    //   // 요청이 실패했을 때 실행되는 코드
+    //   console.error('에러 발생:', error);
+    //   // 오류 처리 추가 가능
+    // }
+    console.log([...formData.entries()]);
+    axios.post(URL, formData, {
+      headers: {
+      }
+    })
+      .then((response) => {
+        // 응답 받은 메시지 상태 업데이트
+        console.error(response.data.message);
+        // setCurrentId(response.data.message);
+        console.log(typeof (response.data.message));
+        const message = response.data.message;
+        ID = message;
+        // console.log(response.data.question);
+      })
+      .catch((error) => {
+        // 오류 처리
+        console.log(error);
+      });
+  };
 
   // const handleContentType1 = (e) => {
   //   const contentType = e.currentTarget.value;
@@ -429,8 +467,26 @@ export default function EditorExam({ type }) {
         );
         console.log("저장된 imageUrlIn 객체 값 : ", isData.imageUrlIn);
         console.log("저장된 imageUrlOut 객체 값 : ", isData.imageUrlOut);
+        console.log(ID);
         sendData();
       }}>생성</button>
+      <button onClick={() => {
+        console.log("삭제");
+        console.log(ID);
+        const URL = `/api/v1/questions/${ID}`
+        axios.delete(URL, {
+          // 필요한 경우 헤더를 설정할 수 있습니다.
+        })
+          .then((response) => {
+            // 응답 받은 메시지 상태 업데이트
+            console.log(response.data.message);
+          })
+          .catch((error) => {
+            // 오류 처리
+            console.log(error);
+          });
+      }
+      }>삭제</button>
     </div>
   );
 }

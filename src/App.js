@@ -1,10 +1,12 @@
-import SelectExamPage from "./page/SelectExamPage";
-import SelectQuestionPage from "./page/SelectQuestionPage";
+import SelectExam from "./page/SelectExamPage";
+import SelectExamCreate from "./page/SelectExamCreatePage";
 import LabExam from "./page/LabExam";
-import EditExam from "./test/EditPage/EditTest"
-import EditTest from "./test/EditPage/EditTestQuill";
-import EditReactQuill from "./test/EditPage/EditTestReactQuill"
+import EditExam from "./test/EditPage/EditExam";
+import MainPage from "./page/MainPage"
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
+import SelectQuestionPage from "./page/SelectQuestionPage"
+import WorkBooks from "./page/WorkBooks";
+import EnglishExam from "./test/english/englishExam";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
@@ -13,13 +15,17 @@ function App() {
     <BrowserRouter>
       <div>
         <Routes>
-          <Route path="/" element={<SelectExamPage />} />
+
+          <Route path="/" element={<MainPage />} />
+          <Route path="/exams" element={<SelectExam />} />
+          <Route path="/exams?create" element={<SelectExamCreate />} />
           <Route path="/selectQuestion" element={<SelectQuestionPage />} />
-          <Route path="/lab" element={<LabExam />} />
+          <Route path="/workbooks/create" element={<LabExam />} />
           <Route path="/edit" element={<EditExam />} />
-          <Route path="/editTest" element={<EditTest />} />
-          <Route path="/editReactQuill" element={<EditReactQuill />} />
           <Route path="/htmlParse" element={<ParsingImageTest />} />
+          <Route path="/workbooks" element={<WorkBooks />} /> 
+          <Route path="/english" element={<EnglishExam />} /> 
+          {/* 영어문제 테스트를 위한 페이지 */}
         </Routes>
       </div>
     </BrowserRouter>
@@ -27,3 +33,5 @@ function App() {
 }
 
 export default App;
+
+

@@ -1,6 +1,7 @@
 package capstone.examlab.questions.dto.upload;
 
 import capstone.examlab.questions.dto.ImageDto;
+import capstone.examlab.questions.entity.QuestionEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -20,4 +21,21 @@ public class QuestionUploadInfo {
     private List<ImageDto> commentaryImagesTextIn;
     private List<ImageDto> commentaryImagesTextOut;
     private Map<String, List<String>> tags;
+
+    public QuestionEntity toEntity( Long examId, String uuid) {
+        return QuestionEntity.builder()
+                .id(uuid)
+                .examId(examId)
+                .type(this.type)
+                .question(this.question)
+                .questionImagesIn(this.questionImagesTextIn)
+                .questionImagesOut(this.questionImagesTextOut)
+                .options(this.options)
+                .answers(this.answers)
+                .commentary(this.commentary)
+                .commentaryImagesIn(this.commentaryImagesTextIn)
+                .commentaryImagesOut(this.commentaryImagesTextOut)
+                .tagsMap(this.tags)
+                .build();
+    }
 }

@@ -1,5 +1,6 @@
 package capstone.examlab.questions.dto;
 
+import capstone.examlab.questions.dto.image.ImageDto;
 import lombok.Builder;
 import lombok.Data;
 

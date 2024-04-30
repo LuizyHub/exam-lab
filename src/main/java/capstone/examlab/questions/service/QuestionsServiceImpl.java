@@ -116,20 +116,7 @@ public class QuestionsServiceImpl implements QuestionsService {
         }
 
         String uuid = UUID.randomUUID().toString();
-        QuestionEntity question = QuestionEntity.builder()
-                .id(uuid)
-                .examId(examId)
-                .type(questionUploadInfo.getType())
-                .question(questionUploadInfo.getQuestion())
-                .options(questionUploadInfo.getOptions())
-                .questionImagesIn(questionUploadInfo.getQuestionImagesTextIn())
-                .questionImagesOut(questionUploadInfo.getQuestionImagesTextOut())
-                .answers(questionUploadInfo.getAnswers())
-                .commentary(questionUploadInfo.getCommentary())
-                .commentaryImagesIn(questionUploadInfo.getCommentaryImagesTextIn())
-                .commentaryImagesOut(questionUploadInfo.getCommentaryImagesTextOut())
-                .tagsMap(questionUploadInfo.getTags())
-                .build();
+        QuestionEntity question = questionUploadInfo.toEntity(examId, uuid);
         return questionsRepository.save(question).getId();
     }
 
@@ -142,8 +129,8 @@ public class QuestionsServiceImpl implements QuestionsService {
         if(questionsSearchDto.getCount() == 0){
             List<QuestionEntity> questionEntities = questionsRepository.findByExamId(examId);
             if(questionEntities.isEmpty()) return new QuestionsListDto(questionsList);
-            for (QuestionEntity entity : questionEntities) {
-                QuestionDto questionDto = makeQuestionEntityToQuestionDTO(entity);
+            for (QuestionEntity questionEntity : questionEntities) {
+                QuestionDto questionDto = questionEntity.toDto();
                 questionsList.add(questionDto);
             }
             return new QuestionsListDto(questionsList);
@@ -159,29 +146,13 @@ public class QuestionsServiceImpl implements QuestionsService {
                 if (count >= questionsSearchDto.getCount()) {
                     break;
                 }
-                QuestionEntity entity = hit.getContent();
-                QuestionDto questionDto = makeQuestionEntityToQuestionDTO(entity);
+                QuestionEntity questionEntity = hit.getContent();
+                QuestionDto questionDto = questionEntity.toDto();
                 questionsList.add(questionDto);
                 count++;
             }
             return new QuestionsListDto(questionsList);
         }
-    }
-
-    private QuestionDto makeQuestionEntityToQuestionDTO(QuestionEntity questionEntity){
-        return QuestionDto.builder()
-                .id(questionEntity.getId())
-                .type(questionEntity.getType())
-                .question(questionEntity.getQuestion())
-                .questionImagesIn(new ArrayList<>(questionEntity.getQuestionImagesIn()))
-                .questionImagesOut(new ArrayList<>(questionEntity.getQuestionImagesOut()))
-                .options(new ArrayList<>(questionEntity.getOptions()))
-                .answers(new ArrayList<>(questionEntity.getAnswers()))
-                .commentary(questionEntity.getCommentary())
-                .commentaryImagesIn(new ArrayList<>(questionEntity.getCommentaryImagesIn()))
-                .commentaryImagesOut(new ArrayList<>(questionEntity.getCommentaryImagesOut()))
-                .tags(new HashMap<>(questionEntity.getTagsMap()))
-                .build();
     }
 
     //Update 로직

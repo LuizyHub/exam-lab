@@ -1,19 +1,25 @@
 package capstone.examlab.exams.service;
 
 import capstone.examlab.exams.domain.Exam;
+import capstone.examlab.exams.domain.ExamEntity;
 import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
+import capstone.examlab.image.service.ImageService;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,6 +28,7 @@ public class ExamServiceImpl implements ExamsService {
 
     private final ObjectProvider<Exam> examProvider;
     private final ExamRepository examRepository;
+    private final ImageService imageService;
 
     @Override
     public ExamDetailDto getExamType(@ValidExamId Long id, User user) {
@@ -108,5 +115,22 @@ public class ExamServiceImpl implements ExamsService {
         Exam exam = (Exam) examRepository.findByExamId(examId).get();
         if(exam.getUser() == null) return false;
         return exam.getUser().getUserId().equals(user.getUserId());
+    }
+
+    @Override
+    public String savePDFAndSetUrl(Long examId, MultipartFile multipartPDF) {
+        String pdfUrl = imageService.saveImageInS3(multipartPDF);
+        Exam exam = (Exam) examRepository.findByExamId(examId).get();
+        exam.setPdfUrl(pdfUrl);
+        examRepository.save(exam);
+        return pdfUrl;
+    }
+
+    @Override
+    public String getPDFUrl(Long examId){
+        Exam exam = (Exam)examRepository.findByExamId(examId).get();
+        log.info(exam.getPdfUrl());
+        return exam.getPdfUrl();
+
     }
 }

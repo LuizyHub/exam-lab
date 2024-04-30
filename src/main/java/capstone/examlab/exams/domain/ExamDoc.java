@@ -31,6 +31,8 @@ public class ExamDoc extends Exam {
     @DBRef
     private UserDoc userDoc;
 
+    private String pdfUrl;
+
     public User getUser() {
         return this.userDoc;
     }

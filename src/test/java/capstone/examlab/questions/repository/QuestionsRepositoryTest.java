@@ -1,6 +1,6 @@
 package capstone.examlab.questions.repository;
 
-import capstone.examlab.questions.dto.ImageDto;
+import capstone.examlab.questions.dto.image.ImageDto;
 import capstone.examlab.questions.dto.QuestionDto;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;

@@ -1,5 +1,6 @@
 package capstone.examlab.questions.dto.upload;
 
+import capstone.examlab.questions.entity.QuestionEntity;
 import capstone.examlab.questions.dto.ImageDto;
 import capstone.examlab.questions.entity.QuestionEntity;
 import lombok.Builder;

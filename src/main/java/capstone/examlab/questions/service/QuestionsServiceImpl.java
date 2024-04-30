@@ -136,38 +136,62 @@ public class QuestionsServiceImpl implements QuestionsService {
     //Read 로직
     @Override
     public QuestionsListDto searchFromQuestions(Long examId, QuestionsSearchDto questionsSearchDto) {
-        Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
-
-        //쿼리문 코드 적용 및 elasticSearch 통신 관련
-        NativeQuery searchQuery = new NativeQuery(query);
-        searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
-        SearchHits<QuestionEntity> searchHits = elasticsearchTemplate.search(searchQuery, QuestionEntity.class);
-
         List<QuestionDto> questionsList = new ArrayList<>();
         int count = 0;
-        for (SearchHit<QuestionEntity> hit : searchHits) {
-            if (count >= questionsSearchDto.getCount()) {
-                break;
+        //전체 조회
+        if(questionsSearchDto.getCount() == 0){
+            List<QuestionEntity> questionEntities = questionsRepository.findByExamId(examId);
+            if(questionEntities.size() == 0) return new QuestionsListDto(questionsList);
+            for (QuestionEntity entity : questionEntities) {
+                QuestionDto questionDto = QuestionDto.builder()
+                        .id(entity.getId())
+                        .type(entity.getType())
+                        .question(entity.getQuestion())
+                        .questionImagesIn(new ArrayList<>(entity.getQuestionImagesIn()))
+                        .questionImagesOut(new ArrayList<>(entity.getQuestionImagesOut()))
+                        .options(new ArrayList<>(entity.getOptions()))
+                        .answers(new ArrayList<>(entity.getAnswers()))
+                        .commentary(entity.getCommentary())
+                        .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
+                        .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
+                        .tags(new HashMap<>(entity.getTagsMap()))
+                        .build();
+                questionsList.add(questionDto);
             }
-            QuestionEntity entity = hit.getContent();
-            QuestionDto questionDto = QuestionDto.builder()
-                    .id(entity.getId())
-                    .type(entity.getType())
-                    .question(entity.getQuestion())
-                    .questionImagesIn(new ArrayList<>(entity.getQuestionImagesIn()))
-                    .questionImagesOut(new ArrayList<>(entity.getQuestionImagesOut()))
-                    .options(new ArrayList<>(entity.getOptions()))
-                    .answers(new ArrayList<>(entity.getAnswers()))
-                    .commentary(entity.getCommentary())
-                    .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
-                    .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
-                    .tags(new HashMap<>(entity.getTagsMap()))
-                    .build();
-            questionsList.add(questionDto);
-            count++;
+            return new QuestionsListDto(questionsList);
         }
+        else{
+            Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
 
-        return new QuestionsListDto(questionsList);
+            //쿼리문 코드 적용 및 elasticSearch 통신 관련
+            NativeQuery searchQuery = new NativeQuery(query);
+            searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
+            SearchHits<QuestionEntity> searchHits = elasticsearchTemplate.search(searchQuery, QuestionEntity.class);
+
+            for (SearchHit<QuestionEntity> hit : searchHits) {
+                if (count >= questionsSearchDto.getCount()) {
+                    break;
+                }
+                QuestionEntity entity = hit.getContent();
+                QuestionDto questionDto = QuestionDto.builder()
+                        .id(entity.getId())
+                        .type(entity.getType())
+                        .question(entity.getQuestion())
+                        .questionImagesIn(new ArrayList<>(entity.getQuestionImagesIn()))
+                        .questionImagesOut(new ArrayList<>(entity.getQuestionImagesOut()))
+                        .options(new ArrayList<>(entity.getOptions()))
+                        .answers(new ArrayList<>(entity.getAnswers()))
+                        .commentary(entity.getCommentary())
+                        .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
+                        .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
+                        .tags(new HashMap<>(entity.getTagsMap()))
+                        .build();
+                questionsList.add(questionDto);
+                count++;
+            }
+
+            return new QuestionsListDto(questionsList);
+        }
     }
 
     //Update 로직

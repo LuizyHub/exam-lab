@@ -17,7 +17,8 @@ export const useImageSize = () => {
   // 로컬 이미지 선택 및 규격 설정 핸들러, 이미지 파일명 확인이 가능하다.
   const handleImageSelect = (e, elementRef) => {
     const files = e.target.files;
-    console.log(files);
+    console.log(files[0].name);
+    // console.log(typeof (files));
     if (!!files && files.length > 0) {
       const file = files[0];
       // 이미지 크기 제한
@@ -37,13 +38,14 @@ export const useImageSize = () => {
 
     //=================================================수정
     const fileUrl = URL.createObjectURL(files[0]);
+    const fileName = files[0].name;
     // const imgTag = `<img src="${fileUrl}" alt="Uploaded Image" />`;
     // const result = elementRef.current.innerHTML += imgTag;
-    insertImageConfig(elementRef, fileUrl)
+    insertImageConfig(elementRef, fileUrl, fileName)
 
     //=================================================수정
 
-    return fileUrl;
+    return files[0]; //항상 배열로 넘겨줘야함
   };
 
   // // 이미지를 렌더링하는 함수, 여기서 이미지 url을 알 수 있다.
@@ -69,12 +71,12 @@ export const useImageSize = () => {
   };
 
   // 이미지 삽입, 이미지 설정 함수
-  const insertImageConfig = (elementRef, imageDataUrl) => {
+  const insertImageConfig = (elementRef, imageDataUrl, elementName) => {
 
     const imgElement = document.createElement('img');
     const imageId = generateUniqueId(); // 고유한 아이디 생성
 
-    imgElement.setAttribute('id', imageId); // 이미지에 아이디 설정
+    imgElement.setAttribute('id', elementName); // 이미지에 아이디 설정
     imgElement.src = imageDataUrl;
 
     // 초기 이미지 크기 값 설정
@@ -88,7 +90,7 @@ export const useImageSize = () => {
       setSelectedImage(e.target); // 클릭된 이미지 정보 저장
       // console.log(e.target);
     };
-
+    console.log(imgElement);
     // 에디터에 이미지 DOM에 삽입 -> 여기를 해결...
     if (elementRef.current) {
       elementRef.current.appendChild(imgElement);

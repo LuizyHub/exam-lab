@@ -98,7 +98,7 @@ public class QuestionsServiceImpl implements QuestionsService {
                 questionUploadInfo.getCommentaryImagesTextOut().get(i).setUrl(imageUrl);
             }
         }
-        
+
         if (questionUploadInfo.getQuestionImagesTextIn() == null) {
             questionUploadInfo.setQuestionImagesTextIn(new ArrayList<>());
         }
@@ -111,7 +111,7 @@ public class QuestionsServiceImpl implements QuestionsService {
         if (questionUploadInfo.getCommentaryImagesTextOut() == null) {
             questionUploadInfo.setCommentaryImagesTextOut(new ArrayList<>());
         }
-        if (questionUploadInfo.getTags() == null){
+        if (questionUploadInfo.getTags() == null) {
             questionUploadInfo.setTags(new HashMap<>());
         }
 
@@ -141,28 +141,15 @@ public class QuestionsServiceImpl implements QuestionsService {
         //전체 조회
         if(questionsSearchDto.getCount() == 0){
             List<QuestionEntity> questionEntities = questionsRepository.findByExamId(examId);
-            if(questionEntities.size() == 0) return new QuestionsListDto(questionsList);
+            if(questionEntities.isEmpty()) return new QuestionsListDto(questionsList);
             for (QuestionEntity entity : questionEntities) {
-                QuestionDto questionDto = QuestionDto.builder()
-                        .id(entity.getId())
-                        .type(entity.getType())
-                        .question(entity.getQuestion())
-                        .questionImagesIn(new ArrayList<>(entity.getQuestionImagesIn()))
-                        .questionImagesOut(new ArrayList<>(entity.getQuestionImagesOut()))
-                        .options(new ArrayList<>(entity.getOptions()))
-                        .answers(new ArrayList<>(entity.getAnswers()))
-                        .commentary(entity.getCommentary())
-                        .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
-                        .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
-                        .tags(new HashMap<>(entity.getTagsMap()))
-                        .build();
+                QuestionDto questionDto = makeQuestionEntityToQuestionDTO(entity);
                 questionsList.add(questionDto);
             }
             return new QuestionsListDto(questionsList);
         }
         else{
             Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
-
             //쿼리문 코드 적용 및 elasticSearch 통신 관련
             NativeQuery searchQuery = new NativeQuery(query);
             searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
@@ -173,25 +160,28 @@ public class QuestionsServiceImpl implements QuestionsService {
                     break;
                 }
                 QuestionEntity entity = hit.getContent();
-                QuestionDto questionDto = QuestionDto.builder()
-                        .id(entity.getId())
-                        .type(entity.getType())
-                        .question(entity.getQuestion())
-                        .questionImagesIn(new ArrayList<>(entity.getQuestionImagesIn()))
-                        .questionImagesOut(new ArrayList<>(entity.getQuestionImagesOut()))
-                        .options(new ArrayList<>(entity.getOptions()))
-                        .answers(new ArrayList<>(entity.getAnswers()))
-                        .commentary(entity.getCommentary())
-                        .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
-                        .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
-                        .tags(new HashMap<>(entity.getTagsMap()))
-                        .build();
+                QuestionDto questionDto = makeQuestionEntityToQuestionDTO(entity);
                 questionsList.add(questionDto);
                 count++;
             }
-
             return new QuestionsListDto(questionsList);
         }
+    }
+
+    private QuestionDto makeQuestionEntityToQuestionDTO(QuestionEntity questionEntity){
+        return QuestionDto.builder()
+                .id(questionEntity.getId())
+                .type(questionEntity.getType())
+                .question(questionEntity.getQuestion())
+                .questionImagesIn(new ArrayList<>(questionEntity.getQuestionImagesIn()))
+                .questionImagesOut(new ArrayList<>(questionEntity.getQuestionImagesOut()))
+                .options(new ArrayList<>(questionEntity.getOptions()))
+                .answers(new ArrayList<>(questionEntity.getAnswers()))
+                .commentary(questionEntity.getCommentary())
+                .commentaryImagesIn(new ArrayList<>(questionEntity.getCommentaryImagesIn()))
+                .commentaryImagesOut(new ArrayList<>(questionEntity.getCommentaryImagesOut()))
+                .tags(new HashMap<>(questionEntity.getTagsMap()))
+                .build();
     }
 
     //Update 로직
@@ -202,7 +192,7 @@ public class QuestionsServiceImpl implements QuestionsService {
         if (optionalQuestion.isPresent()) {
             QuestionEntity question = optionalQuestion.get();
             //문제 수정 권한이 있는 유저 체크
-            if(!examsService.isExamOwner(question.getExamId(),user)){
+            if (!examsService.isExamOwner(question.getExamId(), user)) {
                 throw new UnauthorizedException();
             }
             question.setQuestion(questionUpdateDto.getQuestion());
@@ -237,8 +227,7 @@ public class QuestionsServiceImpl implements QuestionsService {
                 throw new UnauthorizedException();
             }
             questionsRepository.deleteById(questionId);
-        }
-        else {
+        } else {
             return false;
         }
         //삭제 검증

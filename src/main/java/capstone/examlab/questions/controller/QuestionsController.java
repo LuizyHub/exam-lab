@@ -71,10 +71,14 @@ public class QuestionsController {
             } else if (key.equals("includes")) {
                 includes.add(value);
             } else if (key.equals("count")) {
-                if (count < 1) {
-                    throw new IllegalArgumentException("Count 값은 1 이상의 양수여야 합니다.");
+                try {
+                    count = Integer.parseInt(value);
+                    if (count < 0) {
+                        throw new IllegalArgumentException("Count 값은 0 이상이어야 합니다.");
+                    }
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Count 값은 정수형이어야 합니다.");
                 }
-                count = Integer.parseInt(value);
             }
         }
 

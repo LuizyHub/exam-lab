@@ -20,4 +20,6 @@ public interface QuestionsService {
     boolean deleteQuestionsByExamId(Long examId);
 
     boolean deleteQuestionsByQuestionId(User user, String questionId);
+
+    QuestionsListDto addAIQuestionsByExamId(Long examId, List<QuestionUpdateDto> questionsUpdateListDto);
 }

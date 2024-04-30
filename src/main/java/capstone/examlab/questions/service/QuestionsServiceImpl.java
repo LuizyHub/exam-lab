@@ -1,6 +1,7 @@
 package capstone.examlab.questions.service;
 
 import capstone.examlab.exams.service.ExamsService;
+import capstone.examlab.exhandler.exception.NotFoundQuestionException;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
 import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.*;
@@ -14,6 +15,7 @@ import capstone.examlab.users.domain.User;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -33,6 +35,36 @@ public class QuestionsServiceImpl implements QuestionsService {
     private final ExamsService examsService;
     private final BoolQueryBuilder boolQueryBuilder;
     private final ElasticsearchTemplate elasticsearchTemplate;
+
+    //AI 문제 Create 로직
+    public QuestionsListDto addAIQuestionsByExamId(Long examId, List<QuestionUpdateDto> questionsUpdateListDto){
+        List<QuestionDto> questionsList = new ArrayList<>();
+        for (QuestionUpdateDto questionUpdateDto : questionsUpdateListDto) {
+            String uuid = UUID.randomUUID().toString();
+            QuestionEntity question = QuestionEntity.builder()
+                    .id(uuid)
+                    .examId(examId)
+                    .type("객관식")
+                    .question(questionUpdateDto.getQuestion())
+                    .options(questionUpdateDto.getOptions())
+                    .questionImagesIn(new ArrayList<>())
+                    .questionImagesOut(new ArrayList<>())
+                    .answers(questionUpdateDto.getAnswers())
+                    .commentary(questionUpdateDto.getCommentary())
+                    .commentaryImagesIn(new ArrayList<>())
+                    .commentaryImagesOut(new ArrayList<>())
+                    .tagsMap(questionUpdateDto.getTags())
+                    .build();
+            questionsRepository.save(question);
+            Optional<QuestionEntity> questionEntity = questionsRepository.findById(uuid);
+            if(questionEntity.isPresent()){
+                QuestionDto questionDto = questionEntity.get().toDto();
+                questionsList.add(questionDto);
+            }
+            else throw new NotFoundQuestionException();
+        }
+        return new QuestionsListDto(questionsList);
+    }
 
     //Create 로직
     @Override
@@ -188,4 +220,6 @@ public class QuestionsServiceImpl implements QuestionsService {
         //삭제 검증
         return !questionsRepository.existsById(questionId);
     }
+
+
 }

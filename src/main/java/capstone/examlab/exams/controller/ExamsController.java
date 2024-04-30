@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ExamsController {
 
     private final ExamsService examsService;
-    private final ImageService imageService;
 
     @GetMapping
     public ExamsResponseGetDto getExams(@Login User user) {
@@ -88,9 +87,18 @@ public class ExamsController {
         return ResponseDto.OK;
     }
 
-    @PutMapping("/pdf")
-    public ResponseDto addPDFTest(@RequestParam("file") MultipartFile multipartPDF) {
-        String url = imageService.savePDFInS3(multipartPDF);
-        return ResponseDto.of(HttpStatus.CREATED.value(), url);
+    @PutMapping("/{examId}/pdf")
+    public ResponseDto updateExamPDF(@PathVariable Long examId, @RequestParam("pdfFile") MultipartFile multipartPDF) {
+        String pdfUrl = examsService.savePDFAndSetUrl(examId, multipartPDF);
+        return ResponseDto.of(HttpStatus.CREATED.value(), pdfUrl);
+    }
+
+    @GetMapping("/{examId}/pdf")
+    public ResponseDto readExamPDF(@PathVariable Long examId) {
+        String pdfUrl = examsService.getPDFUrl(examId);
+        if(pdfUrl == null) {
+            return ResponseDto.BAD_REQUEST;
+        }
+        return ResponseDto.of(HttpStatus.CREATED.value(), pdfUrl);
     }
 }

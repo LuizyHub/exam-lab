@@ -3,7 +3,7 @@ package capstone.examlab.questions.controller;
 import capstone.examlab.RestDocsOpenApiSpecTest;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exams.service.ExamsService;
-import capstone.examlab.questions.dto.ImageDto;
+import capstone.examlab.questions.dto.image.ImageDto;
 import capstone.examlab.users.domain.User;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.SimpleType;

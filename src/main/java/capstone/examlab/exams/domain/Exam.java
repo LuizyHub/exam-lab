@@ -25,4 +25,8 @@ public abstract class Exam {
     abstract public User getUser();
 
     abstract public void setUser(User user);
+
+    abstract public String getPdfUrl();
+
+    abstract public void setPdfUrl(String pdfUrl);
 }

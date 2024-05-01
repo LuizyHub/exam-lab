@@ -41,7 +41,7 @@ export default function Navigate() {
           내 시험지 관리하기
         </button>
       </div>
-      {showModal && <LoginModal onClose={() => setShowModal(false)} />}
+      {showModal && <LoginModal onClose={() => setShowModal(showModal)} />}
     </nav>
   );
 }

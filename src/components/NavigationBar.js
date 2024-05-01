@@ -94,12 +94,12 @@ export default function NavigationBar() {
             <button className='user-lab'>
               <p>{userInfo.userName}님의 연구소</p>
             </button>
-            <Link to='/users/logout' className="login-button">로그아웃</Link>
+            <a href='/users/logout' className="login-button"로그아웃></a>
           </>
         ) : (
           <>
-            <Link to='/users/login' className="login-button">로그인</Link>
-            <Link to='/users/add' className="signup-button">회원가입</Link>
+            <a href='/users/login' className="login-button">로그인</a>
+            <a href='/users/add' className="signup-button">회원가입</a>
           </>
         )}
 

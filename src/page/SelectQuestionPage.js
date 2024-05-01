@@ -1,21 +1,13 @@
 import SelectQuestion from "../components/SelectQuestion";
-import ShowQuestionList from "../components/ShowQuestionList";
-import SelectedQuestionList from "../components/SelectedQuestionList";
+import NavigationBar from "../components/NavigationBar";
 
 export default function SelectQuestionPage() {
     return (
         <div>
             <div>
                 <SelectQuestion />
+                <NavigationBar />
             </div>
-            {/* <div>
-                <div>
-                    <ShowQuestionList />
-                </div>
-                <div>
-                    <SelectedQuestionList />
-                </div>
-            </div> */}
         </div>
     );
 }

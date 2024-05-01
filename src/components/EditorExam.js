@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { handleToolClick, handleImgToolClick } from '../function/toolHandle';
 import { useImage } from '../function/useImage';
-import { dataHandle } from '../function/dataHandle';
+import { handleData } from '../function/handleData';
 import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
@@ -9,7 +9,7 @@ import axios from 'axios';
 export default function EditorExam() {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImage();
-  const { handleFileObject, handleIdContent, imageReplace } = dataHandle();
+  const { handleFileObject, handleIdContent, imageReplace } = handleData();
   // const { sendPostData } = formData();
 
   const imageSelectorRef1 = useRef(null); // 파일 선택 input 요소에 접근에 대한 참조

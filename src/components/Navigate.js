@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import '../css/Navigate.css'; 
+import '../css/Navigate.css';
 
 export default function Navigate() {
     return (
@@ -11,7 +11,7 @@ export default function Navigate() {
                 </div>
                 <div className="nav-item">
                     <img src="/img/시험지제작.png" alt="Main Image" className="nav-icon" />
-                    <Link to='/add' className="nav-link">나만의 시험지</Link>
+                    <Link to='/editR' className="nav-link">나만의 시험지</Link>
                 </div>
             </nav>
         </div>

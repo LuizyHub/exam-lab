@@ -1,15 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { handleToolClick, handleImgToolClick } from '../function/toolHandle';
-import { useImage } from '../function/useImage';
-import { dataHandle } from '../function/dataHandle';
+import { useImageSize } from '../function/imageHandle';
+import { DataHandle } from '../function/dataHandle';
+import formData from "../function/formData"
 import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
 
-export default function EditorExam() {
+export default function EditorExam({ type }) {
   //from import
-  const { isImageSize, handleImgSize, handleImageSelect } = useImage();
-  const { handleContent, handleFileObject, handleIdContent, imageReplace } = dataHandle();
+  const { isImageSize, handleImgSize, handleImageSelect } = useImageSize();
+  const { handleContent, handleFileObject, handleIdContent, imageReplace } = DataHandle();
   // const { sendData } = formData();
   // const [contentType1, setContentType1] = useState('type');
   // const [contentType2, setContentType2] = useState('type');
@@ -27,7 +28,6 @@ export default function EditorExam() {
   const [isUrlOut, setUrlOut] = useState([]);
   const [isUrlIn, setUrlIn] = useState([]);
   const [isUrlInId, setUrlInId] = useState([]);
-  //단일로 수정
   const [isData, setData] = useState({
     question: '',
     options: [],
@@ -35,8 +35,7 @@ export default function EditorExam() {
     imageUrlIn: [],
   });
 
-  // let ID = "";
-  const [ID, setID] = useState("");
+  let ID = "";
 
   const sendData = () => {
 
@@ -130,27 +129,23 @@ export default function EditorExam() {
     // const file = new File([isUrlIn[0]], 'image.png', { type: 'image/png' });
     // formData.append('questionImagesIn', file);
     console.log([...formData.entries()]);
-
-    axios.post(URL, formData)
+    axios.post(URL, formData, {
+      headers: {
+      }
+    })
       .then((response) => {
         // 응답 받은 메시지 상태 업데이트
         console.log(response.data.message);
-        console.log(response.data);
-        //id
+        console.log(response.data.question);
+        // setCurrentId(response.data.message);
         const message = response.data.message;
-        setID(message);
+        ID = message;
       })
       .catch((error) => {
         // 오류 처리
         console.log(error);
       });
   };
-
-  // useEffect(() => {
-  //   if (ID) {
-  //     sendData();
-  //   }
-  // }, [ID]);
 
   // const handleContentType1 = (e) => {
   //   const contentType = e.currentTarget.value;
@@ -212,16 +207,16 @@ export default function EditorExam() {
             }));
 
           // 새로운 이미지 업로드가 되면 객체 생성
-          // const newImageObject = {
-          //   url: '',
-          //   description: '', // 이미지 설명
-          //   attribute: '' // 이미지 속성
-          // };
+          const newImageObject = {
+            url: '',
+            description: '', // 이미지 설명
+            attribute: '' // 이미지 속성
+          };
 
-          // setData(prevState => ({
-          //   ...prevState,
-          //   imageUrlIn: [...prevState.imageUrlIn, newImageObject]
-          // }));
+          setData(prevState => ({
+            ...prevState,
+            imageUrlIn: [...prevState.imageUrlIn, newImageObject]
+          }));
 
         }}
       />
@@ -327,16 +322,16 @@ export default function EditorExam() {
           const result = handleImageSelect(e, editorRef2);
           setUrlOut(prevState => [...prevState, result]);
 
-          // const newImageObject = {
-          //   url: '',
-          //   description: '', // 이미지 설명
-          //   attribute: '' // 이미지 속성
-          // };
+          const newImageObject = {
+            url: '',
+            description: '', // 이미지 설명
+            attribute: '' // 이미지 속성
+          };
 
-          // setData(prevState => ({
-          //   ...prevState,
-          //   imageUrlOut: [...prevState.imageUrlOut, newImageObject]
-          // }));
+          setData(prevState => ({
+            ...prevState,
+            imageUrlOut: [...prevState.imageUrlOut, newImageObject]
+          }));
         }}
       />
       <div
@@ -488,120 +483,22 @@ export default function EditorExam() {
         console.log(isUrlIn);
         console.log(ID);
         const URL = `/api/v1/questions/${ID}`
-        // const URL = `/api/v1/questions/671eb7d7-2cc6-446d-8790-83cb0bd8cddc`
         axios.delete(URL, {
+          // 필요한 경우 헤더를 설정할 수 있습니다.
         })
-          .then((response) => {
-            console.log(response.data.message);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      }>삭제</button>
-
-      <button onClick={() => {
-        console.log("수정");
-        const URL = `/api/v1/questions`
-        // const formData = new FormData();
-        console.log(ID)
-        // const questionImagesTextIn = [];
-        // isUrlIn.forEach(image => {
-        //   const questionImage = { url: "", description: "설명", attribute: "속성" };
-        //   questionImagesTextIn.push(questionImage);
-        // });
-
-        const requestData = {
-          id: ID,
-          question: isData.question,
-          options: isData.options,
-          answers: ["0"],
-          commentary: "",
-          tags: { "category": ["test"] },
-        };
-        // formData.append('questionUploadInfo', questionUploadInfo);
-        // // formData.append('questionImagesIn', isUrlIn[0]);
-        // isUrlIn.forEach((image) => {
-        //   console.log(image.name);
-        //   formData.append('questionImagesIn', image);
-        // });
-        // formData.append(`type`, '객관식');
-        // formData.append('question', isData.question); // 질문
-        // isData.options.forEach((option, index) => {
-        //   formData.append(`options[${index}]`, option); // 선택지
-        // });
-        // formData.append(`questionImagesIn`, isUrlIn[0]);
-        // isUrlIn.forEach((url) => {
-        //   // const imageData = {
-        //   //   url: "",
-        //   //   description: "설명",
-        //   //   attribute: "속성"
-        //   // };
-        //   //   // FormData에 해당 객체를 추가합니다.
-        //   //   formData.append(`questionImagesIn`, JSON.stringify(imageData));
-        //   formData.append(`questionImagesIn`, url);
-        // });
-        // isUrlOut.forEach((url, index) => {
-        //   const imageData = {
-        //     url: url,
-        //     description: "",
-        //     attribute: ""
-        //   };
-        //   // FormData에 해당 객체를 추가합니다.
-        //   formData.append(`questionImagesIn[${index}]`, JSON.stringify(imageData));
-        // });
-        // formData.append(`answers[]`, '');
-
-        // // tags 객체에 빈 배열 추가
-        // formData.append(`tags[category][]`, '');
-
-        // // commentary에 빈 문자열 추가
-        // formData.append(`commentary`, '');
-
-        // // commentaryImagesTextIn 배열에 빈 객체 추가
-        // formData.append(`commentaryImagesTextIn[][url]`, '');
-        // formData.append(`commentaryImagesTextIn[][description]`, '');
-        // formData.append(`commentaryImagesTextIn[][attribute]`, '');
-
-        // // commentaryImagesTextOut 배열에 빈 객체 추가
-        // formData.append(`commentaryImagesTextOut[][url]`, '');
-        // formData.append(`commentaryImagesTextOut[][description]`, '');
-        // formData.append(`commentaryImagesTextOut[][attribute]`, '');
-        // try {
-        //   // axios를 사용하여 FormData를 서버로 전송
-        //   const response = await axios.post(URL, formData, {
-        //     headers: {
-        //     }
-        //   });
-
-        //   console.log(response.data); // 서버에서 받은 응답 데이터
-        //   alert("저장");
-        // } catch (error) {
-        //   // 요청이 실패했을 때 실행되는 코드
-        //   console.error('에러 발생:', error);
-        //   // 오류 처리 추가 가능
-        // }
-
-
-        // const file = new File([isUrlIn[0]], 'image.png', { type: 'image/png' });
-        // formData.append('questionImagesIn', file);
-        // console.log([...formData.entries()]);
-
-        axios.put(URL, requestData)
           .then((response) => {
             // 응답 받은 메시지 상태 업데이트
             console.log(response.data.message);
-            console.log(response.data);
-            //id
-            // const message = response.data.message;
-            // ID = message;
           })
           .catch((error) => {
             // 오류 처리
             console.log(error);
           });
+      }
+      }>삭제</button>
+      <button onClick={() => {
+        console.log("수정");
       }}>수정</button>
-
       <button onClick={() => {
         console.log(isUrlIn);
         console.log(
@@ -616,6 +513,7 @@ export default function EditorExam() {
         console.log("저장된 imageUrlIn 객체 값 : ", isData.imageUrlIn);
         console.log("저장된 imageUrlOut 객체 값 : ", isData.imageUrlOut);
         isUrlInId.forEach((imageId) => { console.log(imageId) })
+
         console.log(ID);
       }}>확인</button>
     </div >

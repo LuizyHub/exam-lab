@@ -1,0 +1,110 @@
+/* NavigationBar.css */
+
+.navigation-container {
+    position: fixed;
+    top: 0;
+    left: -250px; /* 왼쪽으로 이동 */
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease-in-out; /* left 속성에 대한 트랜지션 추가 */
+  }
+  
+  .navigation-container.open {
+    left: 0px; /* open 클래스가 추가되면 왼쪽으로 이동 */
+  }
+  
+  .navigation-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding-top: 20px;
+  }
+  
+  .navigation-content {
+    flex: 1;
+    width: 100%;
+  }
+  
+  .logo {
+    width: 140px;
+    margin-bottom: 20px;
+  }
+  
+  .user-lab {
+    color: black; 
+    background-color: #fff;
+    width: 180px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .login-button{
+    width: 150px;
+    text-align: center;
+    background-color: #29B8B5;
+    display: inline-block;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 16px;
+    text-decoration-line: none;
+}
+
+.signup-button {
+    width: 150px;
+    text-align: center;
+    background-color: #EBF0F6;
+    display: inline-block;
+    color: #A2ACB9;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 16px;
+    text-decoration-line: none;
+    margin-bottom: 50px;
+}
+  
+  .close-button-container {
+    position: absolute;
+    top: 20px;
+    right: -30%;
+  }
+  
+  .close-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .navigation-icon-left {
+    width: 20px;
+    margin-left: 170px;
+
+  }
+
+  .navigation-icon-right {
+    width: 20px;
+    margin-left: 10px;
+  }
+  
+  
+  
+  /* Media Query for smaller screens */
+  @media (max-width: 768px) {
+    .navigation-container {
+      width: 220px;
+    }
+  }
+  

@@ -1,0 +1,37 @@
+.navigation {
+    padding: 10px 20px;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .nav-item:last-child {
+    margin-right: 0;
+  }
+  
+  .nav-item:hover {
+    background-color: #ECF7F7;
+  }
+  
+  .nav-icon {
+    width: 20px;
+    margin-right: 5px;
+  }
+  
+  .nav-link {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  
+  
+  
+  

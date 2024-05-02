@@ -38,4 +38,25 @@ public class ExamDoc extends Exam {
     public void setUser(User user) {
         this.userDoc = (UserDoc) user;
     }
+
+    private String fileTitle;
+
+    private String fileText;
+
+    @Override
+    public boolean isFileExist() {
+        return (this.fileTitle != null && this.fileText != null);
+    }
+
+    @Override
+    public void setFile(String fileTitle, String fileText) {
+        this.fileTitle = fileTitle;
+        this.fileText = fileText;
+    }
+
+    @Override
+    public void deleteFile() {
+        this.fileTitle = null;
+        this.fileText = null;
+    }
 }

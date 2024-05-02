@@ -13,7 +13,6 @@ public class ExamDocListener extends AbstractMongoEventListener<ExamDoc> {
 
     @Override
     public void onBeforeConvert(BeforeConvertEvent<ExamDoc> event) {
-        log.error("onBeforeConvert");
         ExamDoc examDoc = event.getSource();
         if (examDoc.getExamId() == null) {
             examDoc.setExamId(ExamDoc.sequence++);

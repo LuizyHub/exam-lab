@@ -36,25 +36,12 @@ public class QuestionsServiceImpl implements QuestionsService {
     private final ElasticsearchTemplate elasticsearchTemplate;
 
     //AI 문제 Create 로직
-    @SuppressWarnings("unchecked")
     public QuestionsListDto addAIQuestionsByExamId(Long examId, List<QuestionUpdateDto> questionsUpdateListDto){
         List<QuestionDto> questionsList = new ArrayList<>();
         for (QuestionUpdateDto questionUpdateDto : questionsUpdateListDto) {
             String uuid = UUID.randomUUID().toString();
-            QuestionEntity question = QuestionEntity.builder()
-                    .id(uuid)
-                    .examId(examId)
-                    .type("객관식")
-                    .question(questionUpdateDto.getQuestion())
-                    .options(questionUpdateDto.getOptions())
-                    .questionImagesIn(new ArrayList<>())
-                    .questionImagesOut(new ArrayList<>())
-                    .answers(questionUpdateDto.getAnswers())
-                    .commentary(questionUpdateDto.getCommentary())
-                    .commentaryImagesIn(new ArrayList<>())
-                    .commentaryImagesOut(new ArrayList<>())
-                    .tagsMap(questionUpdateDto.getTags())
-                    .build();
+            String questionType = "객관식";
+            QuestionEntity question = questionUpdateDto.toDocument(examId, uuid, questionType);
             questionsRepository.save(question);
             Optional<QuestionEntity> questionEntity = questionsRepository.findById(uuid);
             if(questionEntity.isPresent()){
@@ -74,6 +61,8 @@ public class QuestionsServiceImpl implements QuestionsService {
         if(!examsService.isExamOwner(examId,user)){
             throw new UnauthorizedException();
         }
+
+       questionUploadInfo.initializeCollections();
 
         if (questionImagesIn != null) {
             for (int i = 0; i < questionImagesIn.size(); i++) {
@@ -100,24 +89,8 @@ public class QuestionsServiceImpl implements QuestionsService {
             }
         }
 
-        if (questionUploadInfo.getQuestionImagesTextIn() == null) {
-            questionUploadInfo.setQuestionImagesTextIn(new ArrayList<>());
-        }
-        if (questionUploadInfo.getQuestionImagesTextOut() == null) {
-            questionUploadInfo.setQuestionImagesTextOut(new ArrayList<>());
-        }
-        if (questionUploadInfo.getCommentaryImagesTextIn() == null) {
-            questionUploadInfo.setCommentaryImagesTextIn(new ArrayList<>());
-        }
-        if (questionUploadInfo.getCommentaryImagesTextOut() == null) {
-            questionUploadInfo.setCommentaryImagesTextOut(new ArrayList<>());
-        }
-        if (questionUploadInfo.getTags() == null) {
-            questionUploadInfo.setTags(new HashMap<>());
-        }
-
         String uuid = UUID.randomUUID().toString();
-        QuestionEntity question = questionUploadInfo.toEntity(examId, uuid);
+        QuestionEntity question = questionUploadInfo.toDocument(examId, uuid);
         return questionsRepository.save(question).getId();
     }
 
@@ -135,7 +108,7 @@ public class QuestionsServiceImpl implements QuestionsService {
             }
             return new QuestionsListDto(questionsList);
         }
-        else{
+        else{ //일부 조회
             Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
             //쿼리문 코드 적용 및 elasticSearch 통신 관련
             NativeQuery searchQuery = new NativeQuery(query);
@@ -161,16 +134,10 @@ public class QuestionsServiceImpl implements QuestionsService {
         Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
         if (optionalQuestion.isPresent()) {
             QuestionEntity question = optionalQuestion.get();
-            //문제 수정 권한이 있는 유저 체크
             if (!examsService.isExamOwner(question.getExamId(), user)) {
                 throw new UnauthorizedException();
             }
-            question.setQuestion(questionUpdateDto.getQuestion());
-            question.setOptions(questionUpdateDto.getOptions());
-            question.setAnswers(questionUpdateDto.getAnswers());
-            question.setCommentary(questionUpdateDto.getCommentary());
-            question.setTagsMap(questionUpdateDto.getTags());
-            questionsRepository.save(question);
+            questionsRepository.save(questionUpdateDto.updateDocument(question));
             return true;
         } else {
             return false;

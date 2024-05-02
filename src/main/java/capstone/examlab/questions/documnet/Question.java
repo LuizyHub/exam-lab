@@ -1,4 +1,4 @@
-package capstone.examlab.questions.entity;
+package capstone.examlab.questions.documnet;
 import capstone.examlab.questions.dto.image.ImageDto;
 import jakarta.persistence.Id;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Data
 @Builder
 @Document(indexName = "questions")
-public class QuestionEntity {
+public class Question {
     @Id
     private String id;
     @Field(type = FieldType.Text)

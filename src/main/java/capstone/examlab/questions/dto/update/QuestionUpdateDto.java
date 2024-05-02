@@ -1,6 +1,6 @@
 package capstone.examlab.questions.dto.update;
 
-import capstone.examlab.questions.entity.QuestionEntity;
+import capstone.examlab.questions.documnet.Question;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,8 +19,8 @@ public class QuestionUpdateDto {
     private Map<String, List<String>> tags;
 
     //AI문제 QuestionUpadteDto -> Question
-    public QuestionEntity toDocument(Long examId, String uuid, String type) {
-        return QuestionEntity.builder()
+    public Question toDocument(Long examId, String uuid, String type) {
+        return Question.builder()
                 .id(uuid)
                 .examId(examId)
                 .type(type)
@@ -37,7 +37,7 @@ public class QuestionUpdateDto {
     }
 
     //Question 덮어쓰기
-    public QuestionEntity updateDocument(QuestionEntity question) {
+    public Question updateDocument(Question question) {
         question.setQuestion(this.question);
         question.setOptions(this.options);
         question.setAnswers(this.answers);

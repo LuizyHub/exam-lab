@@ -36,13 +36,15 @@ public class QuestionUpdateDto {
                 .build();
     }
 
-    //Question내용 덮어쓰기
+    //Question 덮어쓰기
     public QuestionEntity updateDocument(QuestionEntity question) {
         question.setQuestion(this.question);
         question.setOptions(this.options);
         question.setAnswers(this.answers);
         question.setCommentary(this.commentary);
-        question.setTagsMap(this.tags);
+        if (this.tags != null) {
+            question.setTagsMap(this.tags);
+        }
         return question;
     }
 }

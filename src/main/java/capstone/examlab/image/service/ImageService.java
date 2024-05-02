@@ -4,6 +4,4 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageService {
     String saveImageInS3(MultipartFile imageFile);
-
-    String savePDFInS3(MultipartFile multipartPDF);
 }

@@ -4,7 +4,6 @@ import capstone.examlab.ResponseDto;
 import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
-import capstone.examlab.image.service.ImageService;
 import capstone.examlab.users.argumentresolver.Login;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
@@ -87,18 +86,18 @@ public class ExamsController {
         return ResponseDto.OK;
     }
 
-    @PutMapping("/{examId}/pdf")
-    public ResponseDto updateExamPDF(@PathVariable Long examId, @RequestParam("pdfFile") MultipartFile multipartPDF) {
-        String pdfUrl = examsService.savePDFAndSetUrl(examId, multipartPDF);
-        return ResponseDto.of(HttpStatus.CREATED.value(), pdfUrl);
-    }
-
-    @GetMapping("/{examId}/pdf")
-    public ResponseDto readExamPDF(@PathVariable Long examId) {
-        String pdfUrl = examsService.getPDFUrl(examId);
-        if(pdfUrl == null) {
-            return ResponseDto.BAD_REQUEST;
-        }
-        return ResponseDto.of(HttpStatus.CREATED.value(), pdfUrl);
-    }
+//    @PutMapping("/{examId}/pdf")
+//    public ResponseDto updateExamPDF(@PathVariable Long examId, @RequestParam("pdfFile") MultipartFile multipartPDF) {
+//        String pdfUrl = examsService.savePDFAndSetUrl(examId, multipartPDF);
+//        return ResponseDto.of(HttpStatus.CREATED.value(), pdfUrl);
+//    }
+//
+//    @GetMapping("/{examId}/pdf")
+//    public ResponseDto readExamPDF(@PathVariable Long examId) {
+//        String pdfUrl = examsService.getPDFUrl(examId);
+//        if(pdfUrl == null) {
+//            return ResponseDto.BAD_REQUEST;
+//        }
+//        return ResponseDto.of(HttpStatus.CREATED.value(), pdfUrl);
+//    }
 }

@@ -113,15 +113,6 @@ public class ExamsController {
             return ResponseDto.of(HttpServletResponse.SC_BAD_REQUEST, "파일이 비어있습니다.");
         }
 
-        log.info("파일 이름: {}", file.getOriginalFilename());
-        log.info("파일 크기: {}", file.getSize());
-        log.info("파일 타입: {}", file.getContentType());
-        try {
-            log.info("파일 내용: {}", file.getInputStream());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         examsService.saveExamFile(examId, file, user);
 
         return ResponseDto.OK;

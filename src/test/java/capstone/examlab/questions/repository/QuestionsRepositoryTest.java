@@ -85,7 +85,7 @@ public class QuestionsRepositoryTest {
     }
 
     @Test
-    void testSearchFromQuestions() {
+    void searchFromQuestionsTest() {
         QuestionsSearchDto questionsSearchDto = QuestionsSearchDto.builder()
                 .tags(Map.of("category", List.of("화물")))
                 .includes(List.of("화물자동차"))
@@ -131,7 +131,7 @@ public class QuestionsRepositoryTest {
     }
 
     @Test
-    void testUpdateQuestionsByQuestionId() {
+    void updateQuestionsByQuestionIdTest() {
         QuestionUpdateDto questionUpdateDto = QuestionUpdateDto.builder()
                 .id(questionUuid)
                 .question("변경된 질문입니다.")
@@ -163,14 +163,14 @@ public class QuestionsRepositoryTest {
     }
 
     @Test
-    void testDeleteQuestionsByExamId() {
+    void deleteQuestionsByExamIdTest() {
         assertThat(questionsRepository.findByExamId(existExamId).isEmpty()).isFalse();
         questionsRepository.deleteByExamId(existExamId);
         assertThat(questionsRepository.findByExamId(existExamId).isEmpty()).isTrue();
     }
 
     @Test
-    void testDeleteQuestionsByQuestionId() {
+    void deleteQuestionsByQuestionIdTest() {
         assertThat(questionsRepository.existsById(questionUuid)).isTrue();
         questionsRepository.deleteById(questionUuid);
         assertThat(questionsRepository.existsById(questionUuid)).isFalse();

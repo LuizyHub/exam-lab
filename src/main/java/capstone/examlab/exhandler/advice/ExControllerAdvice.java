@@ -21,8 +21,8 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
-    public ResponseDto badRequestExHandler(BadRequestException e) {
-            return ResponseDto.BAD_REQUEST;
+    public ResponseDto<String> badRequestExHandler(BadRequestException e) {
+            return new ResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

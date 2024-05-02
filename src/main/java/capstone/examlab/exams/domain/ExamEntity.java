@@ -72,6 +72,4 @@ public class ExamEntity extends Exam {
             log.error("Map을 JSON 문자열로 변환하는 중 에러가 발생했습니다. = {}", e.getMessage());
         }
     }
-
-    private String pdfUrl;
 }

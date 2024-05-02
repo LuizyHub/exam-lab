@@ -12,7 +12,7 @@ import java.util.List;
 public class QuestionsDataServiceImpl implements QuestionsDataService{
     private final QuestionsRepository questionsRepository;
     @Override
-    public void saveQuestions(List<Question> questionEntities) {
-        questionsRepository.saveAll(questionEntities);
+    public void saveQuestions(List<Question> questions) {
+        questionsRepository.saveAll(questions);
     }
 }

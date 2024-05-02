@@ -22,9 +22,6 @@ public class ImageServiceImpl implements ImageService{
     @Value("${spring.s3.profile.active}")
     private String folderName;
 
-    @Value("${spring.pdf.profile.active}")
-    private String pdfFolderName;
-
     @Transactional
     public String saveImageInS3(MultipartFile multipartImage){
         String originalName = multipartImage.getOriginalFilename();
@@ -40,25 +37,6 @@ public class ImageServiceImpl implements ImageService{
             accessUrl = amazonS3.getUrl(BUCKET_NAME, filename).toString();
         } catch(IOException e) {
             log.error("saveImageInS3 error = {}", e);
-        }
-        return accessUrl;
-    }
-
-    @Transactional
-    public String savePDFInS3(MultipartFile multipartPDF) {
-        String originalName = multipartPDF.getOriginalFilename();
-        String accessUrl = ""; // 반환 URL 저장
-        String filename = pdfFolderName + originalName;
-        try {
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType("application/pdf");
-            objectMetadata.setContentLength(multipartPDF.getSize());
-
-            amazonS3.putObject(BUCKET_NAME, filename, multipartPDF.getInputStream(), objectMetadata);
-
-            accessUrl = amazonS3.getUrl(BUCKET_NAME, filename).toString();
-        } catch (IOException e) {
-            log.error("savePDFInS3 error = {}", e);
         }
         return accessUrl;
     }

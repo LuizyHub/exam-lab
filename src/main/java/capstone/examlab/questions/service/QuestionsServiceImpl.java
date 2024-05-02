@@ -36,7 +36,7 @@ public class QuestionsServiceImpl implements QuestionsService {
     private final ElasticsearchTemplate elasticsearchTemplate;
 
     //AI 문제 Create 로직
-    public QuestionsListDto addAIQuestionsByExamId(Long examId, List<QuestionUpdateDto> questionsUpdateListDto){
+    public QuestionsListDto addAIQuestionsByExamId(Long examId, List<QuestionUpdateDto> questionsUpdateListDto) {
         List<QuestionDto> questionsList = new ArrayList<>();
         for (QuestionUpdateDto questionUpdateDto : questionsUpdateListDto) {
             String uuid = UUID.randomUUID().toString();
@@ -44,10 +44,9 @@ public class QuestionsServiceImpl implements QuestionsService {
             QuestionEntity question = questionUpdateDto.toDocument(examId, uuid, questionType);
             questionsRepository.save(question);
             Optional<QuestionEntity> questionEntity = questionsRepository.findById(uuid);
-            if(questionEntity.isPresent()){
+            if (questionEntity.isPresent()) {
                 questionsList.add(QuestionDto.fromEntity(questionEntity.get()));
-            }
-            else {
+            } else {
                 throw new NotFoundQuestionException();
             }
         }
@@ -56,13 +55,13 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Create 로직
     @Override
-    public String addQuestionsByExamId(User user, Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
+    public QuestionDto addQuestionsByExamId(User user, Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
         //문제 생성 권한이 있는 유저 체크
-        if(!examsService.isExamOwner(examId,user)){
+        if (!examsService.isExamOwner(examId, user)) {
             throw new UnauthorizedException();
         }
 
-       questionUploadInfo.initializeCollections();
+        questionUploadInfo.initializeCollections();
 
         if (questionImagesIn != null) {
             for (int i = 0; i < questionImagesIn.size(); i++) {
@@ -91,7 +90,13 @@ public class QuestionsServiceImpl implements QuestionsService {
 
         String uuid = UUID.randomUUID().toString();
         QuestionEntity question = questionUploadInfo.toDocument(examId, uuid);
-        return questionsRepository.save(question).getId();
+        uuid = questionsRepository.save(question).getId();
+        Optional<QuestionEntity> createdQuestion = questionsRepository.findById(uuid);
+        if (createdQuestion.isPresent()) {
+            return QuestionDto.fromEntity(createdQuestion.get());
+        } else {
+            throw new NotFoundQuestionException();
+        }
     }
 
     //Read 로직
@@ -100,15 +105,14 @@ public class QuestionsServiceImpl implements QuestionsService {
         List<QuestionDto> questionsList = new ArrayList<>();
         int count = 0;
         //전체 조회
-        if(questionsSearchDto.getCount() == 0){
+        if (questionsSearchDto.getCount() == 0) {
             List<QuestionEntity> questionEntities = questionsRepository.findByExamId(examId);
-            if(questionEntities.isEmpty()) return new QuestionsListDto(questionsList);
+            if (questionEntities.isEmpty()) return new QuestionsListDto(questionsList);
             for (QuestionEntity questionEntity : questionEntities) {
                 questionsList.add(QuestionDto.fromEntity(questionEntity));
             }
             return new QuestionsListDto(questionsList);
-        }
-        else{ //일부 조회
+        } else { //일부 조회
             Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
             //쿼리문 코드 적용 및 elasticSearch 통신 관련
             NativeQuery searchQuery = new NativeQuery(query);

@@ -1,20 +1,35 @@
 package capstone.examlab.exams.controller;
 
 import capstone.examlab.RestDocsOpenApiSpecTest;
+import capstone.examlab.exams.domain.Exam;
+import capstone.examlab.exams.repository.ExamRepository;
+import capstone.examlab.questions.dto.image.ImageDto;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.Schema;
 import com.epages.restdocs.apispec.SimpleType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.headers.HeaderDocumentation;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Attributes;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import org.springframework.util.PatternMatchUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +55,12 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    ExamRepository examRepository;
+
+    @Autowired
+    ObjectProvider<Exam> examProvider;
 
     @BeforeEach
     public void beforeTest() {
@@ -193,6 +214,115 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                 ));
     }
 
+    @Test
+    void testGetExamFile() throws Exception {
+        this.mockMvc.perform(get("/api/v1/exams/{examId}/file", addExamsAndSetFileAndGetId())
+                        .session(doLogin()))
+                .andExpect(status().isOk())
+                .andDo(document("exam-file",
+                        resource(ResourceSnippetParameters.builder()
+                                .description("## Get exam file \n" +
+                                        "## 조건 \n" +
+                                        "- 본인의 시험만 파일 조회 가능합니다.\n" +
+                                        "- 파일이 없을 경우 파일 존재 여부를 false로 반환합니다.")
+                                .tag("exams")
+                                .summary("Get exam file")
+                                .pathParameters(
+                                        parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
+                                )
+                                .responseFields(
+                                        fieldWithPath("code").description("응답 코드").type(JsonFieldType.NUMBER),
+                                        fieldWithPath("message.exist").description("파일 존재 여부").type(JsonFieldType.BOOLEAN),
+                                        fieldWithPath("message.file_title").description("File title").type(JsonFieldType.STRING)
+                                )
+                                .responseSchema(Schema.schema("ExamFile"))
+                                .build()
+                        )
+                ));
+    }
+
+    @Test
+    void testDeleteExamFile() throws Exception {
+        this.mockMvc.perform(delete("/api/v1/exams/{examId}/file", addExamsAndSetFileAndGetId())
+                        .session(doLogin()))
+                .andExpect(status().isOk())
+                .andDo(document("delete-exam-file",
+                        resource(ResourceSnippetParameters.builder()
+                                .description("## Delete exam file\n" +
+                                        "조건 : 본인의 시험만 파일 삭제 가능합니다")
+                                .tag("exams")
+                                .summary("Delete exam file")
+                                .pathParameters(
+                                        parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
+                                )
+                                .build()
+                        )
+                ));
+    }
+
+    @Test
+    void testAiQuestions() throws Exception {
+        this.mockMvc.perform(post("/api/v1/exams/{examId}/ai", addExamsAndSetFileAndGetId())
+                        .session(doLogin()))
+                .andExpect(status().isOk())
+                .andDo(document("ai-questions",
+                        resource(ResourceSnippetParameters.builder()
+                                .description("## 조건 \n" +
+                                        "- 로그인 되어있어야합니다\n" +
+                                        "- 본인으 시험이여야합니다\n" +
+                                        "- 시험 자료 파일이 있어야합니다")
+                                .tag("exams")
+                                .summary("Get ai questions")
+                                .pathParameters(
+                                        parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
+                                )
+                                .responseSchema(Schema.schema("AiQuestions"))
+                                .build()
+                        )
+                ));
+    }
+
+    @Test
+    void testPostFile() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", "강의자료.txt", "text/plain", "강의자료 내용입니다.".getBytes());
+        //존재하지않는 RequestBuilder를 생성하기 위한 과정
+        MockMultipartHttpServletRequestBuilder customRestDocumentationRequestBuilder =
+                RestDocumentationRequestBuilders.multipart("/api/v1/exams/{examId}/file", addExamsAndGetId());
+
+        //RestDocumentationRequestBuilders.multipart(post,"/api/v1/exams/{examId}/questions", 1L)의 역할 수행
+        customRestDocumentationRequestBuilder.with(new RequestPostProcessor() {
+            @Override
+            public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+                request.setMethod("POST");
+                return request;
+            }
+        });
+
+        this.mockMvc.perform(
+                        customRestDocumentationRequestBuilder
+                                .file(file)
+                                .session(doLogin())
+                                .contentType(MediaType.MULTIPART_FORM_DATA)
+                )
+                .andExpect(status().isOk())
+                .andDo(document("post-file",
+                        resource(ResourceSnippetParameters.builder()
+                                .description("## 강의자료 추가  " +
+                                        "Form-data로 파일을 전송합니다.\n" +
+                                        "### 조건 \n" +
+                                        "- 본인의 시험만 파일 추가 가능합니다.\n" +
+                                        "- 파일이 이미 존재하면 안됩니다.")
+                                .tag("exams")
+                                .summary("Add file")
+                                .pathParameters(
+                                        parameterWithName("examId").description("Exam id").type(SimpleType.INTEGER)
+                                )
+                                .build()
+                        )
+                ));
+    }
+
+
     MockHttpSession doLogin() throws Exception {
         Map<String, String> request = new HashMap<>() {{
             put("user_id", userId);
@@ -222,5 +352,19 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
         HashMap<String, Object> content = objectMapper.readValue(data, HashMap.class);
 
         return Long.parseLong(content.get("message").toString());
+    }
+
+    Long addExamsAndSetFileAndGetId() throws Exception {
+        Long examId = addExamsAndGetId();
+
+        Exam exam = (Exam) examRepository.findByExamId(examId).get();
+
+        String fileTitle = "강의자료.txt";
+        String fileText = "강의자료 내용입니다.";
+
+        exam.setFile(fileTitle, fileText);
+        examRepository.save(exam);
+
+        return examId;
     }
 }

@@ -5,13 +5,18 @@ import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
 import capstone.examlab.image.service.ImageService;
+import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.util.PatternMatchUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +28,9 @@ public class ExamServiceImpl implements ExamsService {
 
     private final ObjectProvider<Exam> examProvider;
     private final ExamRepository examRepository;
+
+    private static final String[] fileTypeList = {"text/plain", "text/markdown", "application/pdf"};
+
 
     @Override
     public ExamDetailDto getExamType(@ValidExamId Long id, User user) {
@@ -109,5 +117,92 @@ public class ExamServiceImpl implements ExamsService {
         Exam exam = (Exam) examRepository.findByExamId(examId).get();
         if(exam.getUser() == null) return false;
         return exam.getUser().getUserId().equals(user.getUserId());
+    }
+
+    @Override
+    public FileGetResponseDto getExamFileTitle(Long examId, User user) {
+
+        if (!isExamOwner(examId, user)) {
+            throw new UnauthorizedException();
+        }
+
+        Exam exam = (Exam) examRepository.findByExamId(examId).get();
+
+        if (!exam.isFileExist()) {
+            return FileGetResponseDto.EMPTY;
+        }
+
+        return FileGetResponseDto.builder()
+                .isExist(exam.getFileTitle() != null)
+                .fileTitle(exam.getFileTitle())
+                .build();
+    }
+
+    @Override
+    public void saveExamFile(Long examId, MultipartFile file, User user) throws BadRequestException {
+        if (!isExamOwner(examId, user)) {
+            throw new UnauthorizedException();
+        }
+
+        Exam exam = (Exam) examRepository.findByExamId(examId).get();
+
+        if (exam.isFileExist()) {
+            throw new BadRequestException("이미 파일이 존재합니다.");
+        }
+
+        String fileType = file.getContentType();
+
+        if (!PatternMatchUtils.simpleMatch(fileTypeList, fileType)) {
+            throw new BadRequestException("지원하지 않는 파일 형식입니다.");
+        }
+
+        String fileTitle = file.getOriginalFilename();
+        String fileText = getFieldText(file, fileType);
+
+        exam.setFile(fileTitle, fileText);
+        examRepository.save(exam);
+    }
+
+    @Override
+    public void deleteExamFile(Long examId, User user) {
+        if (!isExamOwner(examId, user)) {
+            throw new UnauthorizedException();
+        }
+
+        Exam exam = (Exam) examRepository.findByExamId(examId).get();
+        exam.deleteFile();
+        examRepository.save(exam);
+    }
+
+    @Override
+    public QuestionsListDto getAiQuestions(Long examId, User user) throws BadRequestException {
+        if (!isExamOwner(examId, user)) {
+            throw new UnauthorizedException();
+        }
+
+        Exam exam = (Exam) examRepository.findByExamId(examId).get();
+
+        if (!exam.isFileExist()) {
+            throw new BadRequestException("파일이 존재하지 않습니다.");
+        }
+
+        // TODO: AI 서비스 연동
+
+        return null;
+    }
+
+    private String getFieldText(MultipartFile file, String fileType) {
+        if (fileType.equals("text/plain") || fileType.equals("text/markdown")) {
+            try {
+                return new String(file.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else if (fileType.equals("application/pdf")) {
+            // TODO: pdf 파일을 text로 변환하는 로직
+
+        }
+        return null;
     }
 }

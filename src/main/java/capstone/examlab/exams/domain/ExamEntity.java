@@ -72,4 +72,29 @@ public class ExamEntity extends Exam {
             log.error("Map을 JSON 문자열로 변환하는 중 에러가 발생했습니다. = {}", e.getMessage());
         }
     }
+
+    @Setter(AccessLevel.NONE) // 이 필드에 대한 setter는 생성하지 않음
+    private String fileTitle;
+
+    @Getter(AccessLevel.NONE) // 이 필드에 대한 getter는 생성하지 않음
+    @Setter(AccessLevel.NONE) // 이 필드에 대한 setter는 생성하지 않음
+    private String fileText;
+
+
+    @Override
+    public boolean isFileExist() {
+        return (this.fileTitle != null && this.fileText != null);
+    }
+
+    @Override
+    public void setFile(String fileTitle, String fileText) {
+        this.fileTitle = fileTitle;
+        this.fileText = fileText;
+    }
+
+    @Override
+    public void deleteFile() {
+        this.fileTitle = null;
+        this.fileText = null;
+    }
 }

@@ -25,4 +25,12 @@ public abstract class Exam {
     abstract public User getUser();
 
     abstract public void setUser(User user);
+
+    abstract public boolean isFileExist();
+
+    abstract public String getFileTitle();
+
+    abstract public void setFile(String fileTitle, String fileText);
+
+    abstract public void deleteFile();
 }

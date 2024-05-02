@@ -1,6 +1,7 @@
 package capstone.examlab.questions.dto;
 
 import capstone.examlab.questions.dto.image.ImageDto;
+import capstone.examlab.questions.entity.QuestionEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,5 +22,20 @@ public class QuestionDto {
     private List<ImageDto> commentaryImagesIn;
     private List<ImageDto> commentaryImagesOut;
     private Map<String, List<String>> tags;
-}
 
+    public static QuestionDto fromEntity(QuestionEntity entity) {
+        return QuestionDto.builder()
+                .id(entity.getId())
+                .type(entity.getType())
+                .question(entity.getQuestion())
+                .questionImagesIn(entity.getQuestionImagesIn())
+                .questionImagesOut(entity.getQuestionImagesOut())
+                .options(entity.getOptions())
+                .answers(entity.getAnswers())
+                .commentary(entity.getCommentary())
+                .commentaryImagesIn(entity.getCommentaryImagesIn())
+                .commentaryImagesOut(entity.getCommentaryImagesOut())
+                .tags(entity.getTagsMap())
+                .build();
+    }
+}

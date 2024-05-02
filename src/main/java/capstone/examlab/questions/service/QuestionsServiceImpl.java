@@ -15,7 +15,6 @@ import capstone.examlab.users.domain.User;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -37,6 +36,7 @@ public class QuestionsServiceImpl implements QuestionsService {
     private final ElasticsearchTemplate elasticsearchTemplate;
 
     //AI 문제 Create 로직
+    @SuppressWarnings("unchecked")
     public QuestionsListDto addAIQuestionsByExamId(Long examId, List<QuestionUpdateDto> questionsUpdateListDto){
         List<QuestionDto> questionsList = new ArrayList<>();
         for (QuestionUpdateDto questionUpdateDto : questionsUpdateListDto) {
@@ -58,10 +58,11 @@ public class QuestionsServiceImpl implements QuestionsService {
             questionsRepository.save(question);
             Optional<QuestionEntity> questionEntity = questionsRepository.findById(uuid);
             if(questionEntity.isPresent()){
-                QuestionDto questionDto = questionEntity.get().toDto();
-                questionsList.add(questionDto);
+                questionsList.add(QuestionDto.fromEntity(questionEntity.get()));
             }
-            else throw new NotFoundQuestionException();
+            else {
+                throw new NotFoundQuestionException();
+            }
         }
         return new QuestionsListDto(questionsList);
     }
@@ -130,8 +131,7 @@ public class QuestionsServiceImpl implements QuestionsService {
             List<QuestionEntity> questionEntities = questionsRepository.findByExamId(examId);
             if(questionEntities.isEmpty()) return new QuestionsListDto(questionsList);
             for (QuestionEntity questionEntity : questionEntities) {
-                QuestionDto questionDto = questionEntity.toDto();
-                questionsList.add(questionDto);
+                questionsList.add(QuestionDto.fromEntity(questionEntity));
             }
             return new QuestionsListDto(questionsList);
         }
@@ -147,8 +147,7 @@ public class QuestionsServiceImpl implements QuestionsService {
                     break;
                 }
                 QuestionEntity questionEntity = hit.getContent();
-                QuestionDto questionDto = questionEntity.toDto();
-                questionsList.add(questionDto);
+                questionsList.add(QuestionDto.fromEntity(questionEntity));
                 count++;
             }
             return new QuestionsListDto(questionsList);
@@ -204,6 +203,4 @@ public class QuestionsServiceImpl implements QuestionsService {
         //삭제 검증
         return !questionsRepository.existsById(questionId);
     }
-
-
 }

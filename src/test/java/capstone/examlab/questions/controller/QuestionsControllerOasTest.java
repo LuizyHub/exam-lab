@@ -111,7 +111,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
         questionId = result.getResponse().getContentAsString();
         String responseContent = result.getResponse().getContentAsString();
         JsonNode jsonResponse = objectMapper.readTree(responseContent);
-        questionId = jsonResponse.get("message").asText();
+        questionId = jsonResponse.get("message").get("id").asText();
     }
 
     @AfterEach

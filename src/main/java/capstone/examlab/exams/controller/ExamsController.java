@@ -4,16 +4,22 @@ import capstone.examlab.ResponseDto;
 import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
+import capstone.examlab.questions.dto.QuestionsListDto;
+import capstone.examlab.questions.dto.search.QuestionsSearchDto;
+import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.users.argumentresolver.Login;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Slf4j
@@ -23,6 +29,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class ExamsController {
 
     private final ExamsService examsService;
+
+    // 임시로 활용
+    private final QuestionsService questionsService;
 
     @GetMapping
     public ExamsResponseGetDto getExams(@Login User user) {
@@ -86,18 +95,61 @@ public class ExamsController {
         return ResponseDto.OK;
     }
 
-//    @PutMapping("/{examId}/pdf")
-//    public ResponseDto updateExamPDF(@PathVariable Long examId, @RequestParam("pdfFile") MultipartFile multipartPDF) {
-//        String pdfUrl = examsService.savePDFAndSetUrl(examId, multipartPDF);
-//        return ResponseDto.of(HttpStatus.CREATED.value(), pdfUrl);
-//    }
-//
-//    @GetMapping("/{examId}/pdf")
-//    public ResponseDto readExamPDF(@PathVariable Long examId) {
-//        String pdfUrl = examsService.getPDFUrl(examId);
-//        if(pdfUrl == null) {
-//            return ResponseDto.BAD_REQUEST;
-//        }
-//        return ResponseDto.of(HttpStatus.CREATED.value(), pdfUrl);
-//    }
+    @GetMapping("/{examId}/file")
+    public ResponseDto<FileGetResponseDto> readExamFile(
+            @Login User user,
+            @PathVariable @ValidExamId Long examId) {
+        FileGetResponseDto responseDto = examsService.getExamFileTitle(examId, user);
+        return new ResponseDto<>(HttpStatus.OK.value(), responseDto);
+    }
+
+    @PostMapping("/{examId}/file")
+    public ResponseDto uploadExamFile(
+            @Login User user,
+            @PathVariable @ValidExamId Long examId,
+            @RequestParam("file") MultipartFile file) throws BadRequestException {
+
+        if (file.isEmpty()) {
+            return ResponseDto.of(HttpServletResponse.SC_BAD_REQUEST, "파일이 비어있습니다.");
+        }
+
+        log.info("파일 이름: {}", file.getOriginalFilename());
+        log.info("파일 크기: {}", file.getSize());
+        log.info("파일 타입: {}", file.getContentType());
+        try {
+            log.info("파일 내용: {}", file.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        examsService.saveExamFile(examId, file, user);
+
+        return ResponseDto.OK;
+    }
+
+    @DeleteMapping("/{examId}/file")
+    public ResponseDto deleteExamFile(
+            @Login User user,
+            @PathVariable @ValidExamId Long examId) {
+
+        examsService.deleteExamFile(examId, user);
+
+        return ResponseDto.OK;
+    }
+
+    @PostMapping("/{examId}/ai")
+    public QuestionsListDto addAIQuestionsByExamId(
+            @Login User user,
+            @PathVariable @ValidExamId Long examId) throws BadRequestException {
+
+        // TODO: AI 서비스 연동
+        QuestionsListDto questionsListDto = examsService.getAiQuestions(examId, user);
+
+        // 임시로 활용
+        QuestionsSearchDto questionsSearchDto = QuestionsSearchDto.builder().count(5).build();
+        questionsListDto = questionsService.searchFromQuestions(1L, questionsSearchDto);
+
+
+        return questionsListDto;
+    }
 }

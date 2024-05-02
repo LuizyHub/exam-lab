@@ -2,6 +2,7 @@ package capstone.examlab.questions.controller;
 
 import capstone.examlab.ResponseDto;
 import capstone.examlab.exhandler.exception.NotFoundQuestionException;
+import capstone.examlab.questions.dto.QuestionDto;
 import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
@@ -35,11 +36,8 @@ public class QuestionsController {
     public ResponseDto addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
                                             @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
                                             @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut, @Login User user) {
-        String questionId = questionsService.addQuestionsByExamId(user, examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
-        if (questionId == null) {
-            return ResponseDto.BAD_REQUEST;
-        }
-        return new ResponseDto(201,questionId);
+        QuestionDto question = questionsService.addQuestionsByExamId(user, examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
+        return new ResponseDto(201,question);
     }
 
     //Read API

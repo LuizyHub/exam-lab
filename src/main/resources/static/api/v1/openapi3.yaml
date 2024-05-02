@@ -66,7 +66,7 @@ paths:
             examples:
               update-question:
                 value: "{\"question\":\"변경된 질문입니다.\",\"options\":[\"변경된 보기1\",\"변경\
-                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"88f85e8d-f59b-4e39-a5a1-fed0006e467c\"\
+                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"98a6a8b3-3b64-4d53-999a-003b86aeb0af\"\
                   ,\"commentary\":\"변경된 설명입니다.\",\"tags\":{\"난이도\":[\"중\"],\"단원\"\
                   :[\"2\"]}}"
       responses:
@@ -75,7 +75,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 update-question:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -93,10 +93,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"86826d6b-69f7-4e60-aa02-1edf9d703d4b!\",\"\
-                  password_confirm\":\"86826d6b-69f7-4e60-aa02-1edf9d703d4b!\",\"\
-                  user_id\":\"86826d6b-69f7-4e60-aa02-1edf9d703d4b@gmail.com\",\"\
-                  name\":\"86826d6b-69f7-4e60-aa02-1edf9d703d4b\"}"
+                value: "{\"password\":\"44262025-f315-4117-9caa-06877640ea20!\",\"\
+                  password_confirm\":\"44262025-f315-4117-9caa-06877640ea20!\",\"\
+                  user_id\":\"44262025-f315-4117-9caa-06877640ea20@gmail.com\",\"\
+                  name\":\"44262025-f315-4117-9caa-06877640ea20\"}"
       responses:
         "200":
           description: "200"
@@ -146,7 +146,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-exams-examId486549215'
+              $ref: '#/components/schemas/api-v1-questions486549215'
             examples:
               patch-exams:
                 value: "{\"tags\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"1\"\
@@ -157,7 +157,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 patch-exams:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -197,7 +197,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 delete-questions-by-questionId:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -296,12 +296,12 @@ paths:
                 $ref: '#/components/schemas/api-v1-exams-examId-questions-1876066633'
               examples:
                 Search-questions:
-                  value: "{\"questions\":[{\"id\":\"a241111e-23b6-4c2f-911b-008a60294b5c\"\
+                  value: "{\"questions\":[{\"id\":\"3aab0f4a-5d26-4bca-b680-2ad3ec1cdbb6\"\
                     ,\"type\":\"객관식\",\"question\":\"소웨공 테스트 문제?\",\"question_images_in\"\
                     :[],\"question_images_out\":[],\"options\":[\"① 답 예시 1\",\"② 답\
                     \ 예시 2\",\"③ 답 예시 3\",\"④ 답 예시 4\"],\"answers\":[3],\"commentary\"\
                     :\"30이 가장 큰 수입니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
-                    :[],\"tags\":{\"단원\":[\"1\"],\"난이도\":[\"하\"]}}],\"size\":1}"
+                    :[],\"tags\":{\"난이도\":[\"하\"],\"단원\":[\"1\"]}}],\"size\":1}"
     post:
       tags:
       - question
@@ -333,11 +333,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 add-questions:
-                  value: "{\"code\":201,\"message\":\"7f71e7e5-96ab-4ad1-8fa7-fe1ec77d62e0\"\
-                    }"
+                  value: "{\"code\":201,\"message\":{\"id\":\"41706e43-60fb-4a9e-9781-dba92c56d145\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤\
+                    \ 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?\",\"question_images_in\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/image1.png\"\
+                    ,\"description\":\"설명1\",\"attribute\":\"속성1\"}],\"question_images_out\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/image2.png\"\
+                    ,\"description\":\"설명2\",\"attribute\":\"속성2\"}],\"options\":[\"\
+                    ① 제1종 대형면허 및 소형견인차면허\",\"② 제1종 보통면허 및 대형견인차면허\",\"③ 제1종 보통면허 및\
+                    \ 소형견인차면허\",\"④ 제2종 보통면허 및 대형견인차면허\"],\"answers\":[4],\"commentary\"\
+                    :\"도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는\
+                    \ 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.\",\"\
+                    commentary_images_in\":[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/image3.png\"\
+                    ,\"description\":\"설명3\",\"attribute\":\"속성3\"}],\"commentary_images_out\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/image4.png\"\
+                    ,\"description\":\"설명4\",\"attribute\":\"속성4\"}],\"tags\":{}}}"
 components:
   schemas:
     api-v1-exams1523854693:
@@ -595,6 +608,8 @@ components:
         exam_title:
           type: string
           description: 시험지 이름
+    api-v1-questions486549215:
+      type: object
     api-v1-users-status615510992:
       required:
       - login
@@ -607,8 +622,6 @@ components:
         login:
           type: boolean
           description: 로그인 여부
-    api-v1-exams-examId486549215:
-      type: object
     api-v1-users-963924044:
       required:
       - name

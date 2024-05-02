@@ -17,11 +17,11 @@ public class QuestionsDataController {
     private final QuestionsDataService questionsDataService;
     //'기존 문제' 저장 로직
     @PostMapping("{examId}/questions")
-    public ResponseEntity<String> addOriginalQuestions(@PathVariable Long examId, @RequestBody List<Question> questionEntities) {
-        for (Question question : questionEntities) {
+    public ResponseEntity<String> addOriginalQuestions(@PathVariable Long examId, @RequestBody List<Question> questions) {
+        for (Question question : questions) {
             question.setExamId(examId);
         }
-        questionsDataService.saveQuestions(questionEntities);
+        questionsDataService.saveQuestions(questions);
         return ResponseEntity.ok("data add success");
     }
 }

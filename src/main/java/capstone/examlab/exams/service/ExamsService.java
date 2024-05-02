@@ -5,7 +5,6 @@ import capstone.examlab.exams.dto.ExamUpdateDto;
 import capstone.examlab.exams.dto.ExamDetailDto;
 import capstone.examlab.exams.dto.ExamDto;
 import capstone.examlab.users.domain.User;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,8 +21,4 @@ public interface ExamsService {
     public void updateExam(Long id, ExamUpdateDto examUpdateDto, User user);
 
     public boolean isExamOwner(Long examId, User user);
-
-    public String savePDFAndSetUrl(Long examId, MultipartFile multipartPDF);
-
-    public String getPDFUrl(Long examId);
 }

@@ -8,7 +8,7 @@ import capstone.examlab.questions.dto.*;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
-import capstone.examlab.questions.entity.QuestionEntity;
+import capstone.examlab.questions.documnet.Question;
 import capstone.examlab.questions.repository.BoolQueryBuilder;
 import capstone.examlab.questions.repository.QuestionsRepository;
 import capstone.examlab.users.domain.User;
@@ -41,11 +41,12 @@ public class QuestionsServiceImpl implements QuestionsService {
         for (QuestionUpdateDto questionUpdateDto : questionsUpdateListDto) {
             String uuid = UUID.randomUUID().toString();
             String questionType = "객관식";
-            QuestionEntity question = questionUpdateDto.toDocument(examId, uuid, questionType);
+            Question question = questionUpdateDto.toDocument(examId, uuid, questionType);
             questionsRepository.save(question);
-            Optional<QuestionEntity> questionEntity = questionsRepository.findById(uuid);
-            if (questionEntity.isPresent()) {
-                questionsList.add(QuestionDto.fromEntity(questionEntity.get()));
+            //생성 및 조회 검증
+            Optional<Question> createdQuestion = questionsRepository.findById(uuid);
+            if (createdQuestion.isPresent()) {
+                questionsList.add(QuestionDto.fromDocument(createdQuestion.get()));
             } else {
                 throw new NotFoundQuestionException();
             }
@@ -56,13 +57,11 @@ public class QuestionsServiceImpl implements QuestionsService {
     //Create 로직
     @Override
     public QuestionDto addQuestionsByExamId(User user, Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
-        //문제 생성 권한이 있는 유저 체크
         if (!examsService.isExamOwner(examId, user)) {
             throw new UnauthorizedException();
         }
 
         questionUploadInfo.initializeCollections();
-
         if (questionImagesIn != null) {
             for (int i = 0; i < questionImagesIn.size(); i++) {
                 String imageUrl = imageService.saveImageInS3(questionImagesIn.get(i));
@@ -89,11 +88,11 @@ public class QuestionsServiceImpl implements QuestionsService {
         }
 
         String uuid = UUID.randomUUID().toString();
-        QuestionEntity question = questionUploadInfo.toDocument(examId, uuid);
+        Question question = questionUploadInfo.toDocument(examId, uuid);
         uuid = questionsRepository.save(question).getId();
-        Optional<QuestionEntity> createdQuestion = questionsRepository.findById(uuid);
+        Optional<Question> createdQuestion = questionsRepository.findById(uuid);
         if (createdQuestion.isPresent()) {
-            return QuestionDto.fromEntity(createdQuestion.get());
+            return QuestionDto.fromDocument(createdQuestion.get());
         } else {
             throw new NotFoundQuestionException();
         }
@@ -106,10 +105,10 @@ public class QuestionsServiceImpl implements QuestionsService {
         int count = 0;
         //전체 조회
         if (questionsSearchDto.getCount() == 0) {
-            List<QuestionEntity> questionEntities = questionsRepository.findByExamId(examId);
+            List<Question> questionEntities = questionsRepository.findByExamId(examId);
             if (questionEntities.isEmpty()) return new QuestionsListDto(questionsList);
-            for (QuestionEntity questionEntity : questionEntities) {
-                questionsList.add(QuestionDto.fromEntity(questionEntity));
+            for (Question question : questionEntities) {
+                questionsList.add(QuestionDto.fromDocument(question));
             }
             return new QuestionsListDto(questionsList);
         } else { //일부 조회
@@ -117,14 +116,14 @@ public class QuestionsServiceImpl implements QuestionsService {
             //쿼리문 코드 적용 및 elasticSearch 통신 관련
             NativeQuery searchQuery = new NativeQuery(query);
             searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
-            SearchHits<QuestionEntity> searchHits = elasticsearchTemplate.search(searchQuery, QuestionEntity.class);
+            SearchHits<Question> searchHits = elasticsearchTemplate.search(searchQuery, Question.class);
 
-            for (SearchHit<QuestionEntity> hit : searchHits) {
+            for (SearchHit<Question> hit : searchHits) {
                 if (count >= questionsSearchDto.getCount()) {
                     break;
                 }
-                QuestionEntity questionEntity = hit.getContent();
-                questionsList.add(QuestionDto.fromEntity(questionEntity));
+                Question question = hit.getContent();
+                questionsList.add(QuestionDto.fromDocument(question));
                 count++;
             }
             return new QuestionsListDto(questionsList);
@@ -135,9 +134,9 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public boolean updateQuestionsByQuestionId(User user, QuestionUpdateDto questionUpdateDto) {
         //Optional 통한 데이터 존재 검증
-        Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
+        Optional<Question> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
         if (optionalQuestion.isPresent()) {
-            QuestionEntity question = optionalQuestion.get();
+            Question question = optionalQuestion.get();
             if (!examsService.isExamOwner(question.getExamId(), user)) {
                 throw new UnauthorizedException();
             }
@@ -153,16 +152,16 @@ public class QuestionsServiceImpl implements QuestionsService {
     public boolean deleteQuestionsByExamId(Long examId) {
         questionsRepository.deleteByExamId(examId);
 
-        List<QuestionEntity> questions = questionsRepository.findByExamId(examId);
+        List<Question> questions = questionsRepository.findByExamId(examId);
 
         return questions.isEmpty();
     }
 
     @Override
     public boolean deleteQuestionsByQuestionId(User user, String questionId) {
-        Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionId);
+        Optional<Question> optionalQuestion = questionsRepository.findById(questionId);
         if (optionalQuestion.isPresent()) {
-            QuestionEntity question = optionalQuestion.get();
+            Question question = optionalQuestion.get();
             //문제 수정 권한이 있는 유저 체크
             if (!examsService.isExamOwner(question.getExamId(), user)) {
                 throw new UnauthorizedException();

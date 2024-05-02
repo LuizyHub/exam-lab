@@ -1,7 +1,7 @@
 package capstone.examlab.questions.dto;
 
 import capstone.examlab.questions.dto.image.ImageDto;
-import capstone.examlab.questions.entity.QuestionEntity;
+import capstone.examlab.questions.documnet.Question;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,19 +23,19 @@ public class QuestionDto {
     private List<ImageDto> commentaryImagesOut;
     private Map<String, List<String>> tags;
 
-    public static QuestionDto fromEntity(QuestionEntity entity) {
+    public static QuestionDto fromDocument(Question question) {
         return QuestionDto.builder()
-                .id(entity.getId())
-                .type(entity.getType())
-                .question(entity.getQuestion())
-                .questionImagesIn(entity.getQuestionImagesIn())
-                .questionImagesOut(entity.getQuestionImagesOut())
-                .options(entity.getOptions())
-                .answers(entity.getAnswers())
-                .commentary(entity.getCommentary())
-                .commentaryImagesIn(entity.getCommentaryImagesIn())
-                .commentaryImagesOut(entity.getCommentaryImagesOut())
-                .tags(entity.getTagsMap())
+                .id(question.getId())
+                .type(question.getType())
+                .question(question.getQuestion())
+                .questionImagesIn(question.getQuestionImagesIn())
+                .questionImagesOut(question.getQuestionImagesOut())
+                .options(question.getOptions())
+                .answers(question.getAnswers())
+                .commentary(question.getCommentary())
+                .commentaryImagesIn(question.getCommentaryImagesIn())
+                .commentaryImagesOut(question.getCommentaryImagesOut())
+                .tags(question.getTagsMap())
                 .build();
     }
 }

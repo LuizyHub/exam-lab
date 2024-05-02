@@ -1,7 +1,7 @@
 package capstone.examlab.questions.dto.upload;
 
 import capstone.examlab.questions.dto.image.ImageDto;
-import capstone.examlab.questions.entity.QuestionEntity;
+import capstone.examlab.questions.documnet.Question;
 import lombok.Builder;
 import lombok.Data;
 
@@ -42,8 +42,8 @@ public class QuestionUploadInfo {
         }
     }
 
-    public QuestionEntity toDocument( Long examId, String uuid) {
-        return QuestionEntity.builder()
+    public Question toDocument(Long examId, String uuid) {
+        return Question.builder()
                 .id(uuid)
                 .examId(examId)
                 .type(this.type)

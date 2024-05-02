@@ -6,7 +6,7 @@ import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import org.junit.jupiter.api.Test;
-import capstone.examlab.questions.entity.QuestionEntity;
+import capstone.examlab.questions.documnet.Question;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.elasticsearch.DataElasticsearchTest;
@@ -58,7 +58,7 @@ public class QuestionsRepositoryTest {
                 .untilAsserted(() -> {
                     assertThat(ES_CONTAINER.isRunning()).isTrue();
                 });
-        QuestionEntity question = QuestionEntity.builder()
+        Question question = Question.builder()
                 .id(questionUuid)
                 .examId(existExamId)
                 .type("객관식")
@@ -96,27 +96,27 @@ public class QuestionsRepositoryTest {
 
         NativeQuery searchQuery = new NativeQuery(query);
         searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
-        SearchHits<QuestionEntity> searchHits = elasticsearchTemplate.search(searchQuery, QuestionEntity.class);
+        SearchHits<Question> searchHits = elasticsearchTemplate.search(searchQuery, Question.class);
 
         List<QuestionDto> questionsList = new ArrayList<>();
         int count = 0;
-        for (SearchHit<QuestionEntity> hit : searchHits) {
+        for (SearchHit<Question> hit : searchHits) {
             if (count >= questionsSearchDto.getCount()) {
                 break;
             }
-            QuestionEntity entity = hit.getContent();
+            Question question = hit.getContent();
             QuestionDto questionDto = QuestionDto.builder()
-                    .id(entity.getId())
-                    .type(entity.getType())
-                    .question(entity.getQuestion())
-                    .questionImagesIn(new ArrayList<>(entity.getQuestionImagesIn()))
-                    .questionImagesOut(new ArrayList<>(entity.getQuestionImagesOut()))
-                    .options(new ArrayList<>(entity.getOptions()))
-                    .answers(new ArrayList<>(entity.getAnswers()))
-                    .commentary(entity.getCommentary())
-                    .commentaryImagesIn(new ArrayList<>(entity.getCommentaryImagesIn()))
-                    .commentaryImagesOut(new ArrayList<>(entity.getCommentaryImagesOut()))
-                    .tags(new HashMap<>(entity.getTagsMap()))
+                    .id(question.getId())
+                    .type(question.getType())
+                    .question(question.getQuestion())
+                    .questionImagesIn(new ArrayList<>(question.getQuestionImagesIn()))
+                    .questionImagesOut(new ArrayList<>(question.getQuestionImagesOut()))
+                    .options(new ArrayList<>(question.getOptions()))
+                    .answers(new ArrayList<>(question.getAnswers()))
+                    .commentary(question.getCommentary())
+                    .commentaryImagesIn(new ArrayList<>(question.getCommentaryImagesIn()))
+                    .commentaryImagesOut(new ArrayList<>(question.getCommentaryImagesOut()))
+                    .tags(new HashMap<>(question.getTagsMap()))
                     .build();
             questionsList.add(questionDto);
             count++;
@@ -141,9 +141,9 @@ public class QuestionsRepositoryTest {
                 .tags(Map.of("category", List.of("법"), "년도", List.of("20년")))
                 .build();
 
-        Optional<QuestionEntity> optionalQuestion = questionsRepository.findById(questionUuid);
+        Optional<Question> optionalQuestion = questionsRepository.findById(questionUuid);
         if (optionalQuestion.isPresent()) {
-            QuestionEntity question = optionalQuestion.get();
+            Question question = optionalQuestion.get();
             question.setQuestion(questionUpdateDto.getQuestion());
             question.setOptions(questionUpdateDto.getOptions());
             question.setAnswers(questionUpdateDto.getAnswers());
@@ -154,11 +154,11 @@ public class QuestionsRepositoryTest {
             throw new AssertionError("질문이 존재 하지않음");
         }
 
-        Optional<QuestionEntity> questionDto = questionsRepository.findById(questionUuid);
-        questionDto.ifPresent(questionEntity -> {
-            assertThat(questionEntity.getQuestion()).contains("변경된");
-            assertThat(questionEntity.getTagsMap()).containsEntry("category", Collections.singletonList("법"));
-            assertThat(questionEntity.getTagsMap()).containsEntry("년도", Collections.singletonList("20년"));
+        Optional<Question> questionDto = questionsRepository.findById(questionUuid);
+        questionDto.ifPresent(questionquestion -> {
+            assertThat(questionquestion.getQuestion()).contains("변경된");
+            assertThat(questionquestion.getTagsMap()).containsEntry("category", Collections.singletonList("법"));
+            assertThat(questionquestion.getTagsMap()).containsEntry("년도", Collections.singletonList("20년"));
         });
     }
 

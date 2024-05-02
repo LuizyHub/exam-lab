@@ -5,6 +5,8 @@ import capstone.examlab.questions.entity.QuestionEntity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +24,25 @@ public class QuestionUploadInfo {
     private List<ImageDto> commentaryImagesTextOut;
     private Map<String, List<String>> tags;
 
-    public QuestionEntity toEntity( Long examId, String uuid) {
+    public void initializeCollections() {
+        if (this.questionImagesTextIn == null) {
+            this.questionImagesTextIn = new ArrayList<>();
+        }
+        if (this.questionImagesTextOut == null) {
+            this.questionImagesTextOut = new ArrayList<>();
+        }
+        if (this.commentaryImagesTextIn == null) {
+            this.commentaryImagesTextIn = new ArrayList<>();
+        }
+        if (this.commentaryImagesTextOut == null) {
+            this.commentaryImagesTextOut = new ArrayList<>();
+        }
+        if (this.tags == null) {
+            this.tags = new HashMap<>();
+        }
+    }
+
+    public QuestionEntity toDocument( Long examId, String uuid) {
         return QuestionEntity.builder()
                 .id(uuid)
                 .examId(examId)
@@ -38,5 +58,4 @@ public class QuestionUploadInfo {
                 .tagsMap(this.tags)
                 .build();
     }
-
 }

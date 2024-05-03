@@ -4,7 +4,6 @@ import capstone.examlab.exams.domain.Exam;
 import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
-import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
@@ -108,6 +107,8 @@ public class ExamServiceImpl implements ExamsService {
         }
 
         exam.setTypes(examUpdateDto.getTags());
+
+        exam.setExamTitle(examUpdateDto.getExamTitle());
 
         examRepository.save(exam);
     }

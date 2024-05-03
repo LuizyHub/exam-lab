@@ -73,6 +73,8 @@ public class ExamEntity extends Exam {
         }
     }
 
+    private String examTitle;
+
     @Setter(AccessLevel.NONE) // 이 필드에 대한 setter는 생성하지 않음
     private String fileTitle;
 

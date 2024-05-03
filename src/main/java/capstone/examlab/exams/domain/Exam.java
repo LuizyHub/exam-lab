@@ -12,7 +12,9 @@ import java.util.Map;
 @MappedSuperclass
 public abstract class Exam {
 
-    protected String examTitle;
+    abstract public String getExamTitle();
+
+    abstract public void setExamTitle(String examTitle);
 
     abstract public Long getExamId();
 

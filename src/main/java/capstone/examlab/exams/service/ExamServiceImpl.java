@@ -56,10 +56,21 @@ public class ExamServiceImpl implements ExamsService {
     }
 
     @Override
-    public List<ExamDto> getExamList(User user) {
+    public List<ExamDto> getExamList(User user, boolean sample) {
         List<ExamDto> examList = new ArrayList<>();
         examRepository.findAll()
-                .stream().filter(exam -> ((Exam)exam).getUser() == null || (user != null && ((Exam)exam).getUser().equals(user)))
+                .stream().filter(exam -> {
+                    User examUser = ((Exam) exam).getUser();
+                    if (examUser == null) {
+                        return sample;
+                    }
+                    else {
+                        if (user == null) return false;
+                        else {
+                            return examUser.equals(user);
+                        }
+                    }
+                })
                 .forEach(exam -> {
                     examList.add(ExamDto.builder()
                             .examTitle(((Exam)exam).getExamTitle())

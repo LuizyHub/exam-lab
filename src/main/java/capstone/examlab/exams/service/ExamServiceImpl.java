@@ -133,7 +133,7 @@ public class ExamServiceImpl implements ExamsService {
         }
 
         return FileGetResponseDto.builder()
-                .isExist(exam.getFileTitle() != null)
+                .isExist(true)
                 .fileTitle(exam.getFileTitle())
                 .build();
     }

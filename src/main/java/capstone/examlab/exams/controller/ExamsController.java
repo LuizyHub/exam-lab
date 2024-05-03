@@ -34,9 +34,11 @@ public class ExamsController {
     private final QuestionsService questionsService;
 
     @GetMapping
-    public ExamsResponseGetDto getExams(@Login User user) {
+    public ExamsResponseGetDto getExams(
+            @Login User user,
+            @RequestParam(name = "sample", required = false, defaultValue = "false") boolean sample) {
         ExamsResponseGetDto response = new ExamsResponseGetDto();
-        response.setExams(examsService.getExamList(user));
+        response.setExams(examsService.getExamList(user, sample));
         return response;
     }
 
@@ -66,16 +68,19 @@ public class ExamsController {
     }
 
     @DeleteMapping("/{examId}")
-    public void deleteExam(
+    public ResponseDto deleteExam(
             @Login User user,
             @PathVariable @ValidExamId Long examId) {
-
         // AOP 도입 예정
-        if (user == null) {
+        if (user == null||!examsService.isExamOwner(examId, user)) {
             throw new UnauthorizedException();
         }
-
         examsService.deleteExam(examId, user);
+        boolean deleted = questionsService.deleteQuestionsByExamId(examId);
+        if (!deleted) {
+            return ResponseDto.BAD_REQUEST;
+        }
+        return ResponseDto.OK;
     }
 
     @PutMapping("/{examId}")

@@ -1,7 +1,9 @@
 package capstone.examlab.questions.controller;
 
 import capstone.examlab.ResponseDto;
+import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.exhandler.exception.NotFoundQuestionException;
+import capstone.examlab.exhandler.exception.UnauthorizedException;
 import capstone.examlab.questions.dto.QuestionDto;
 import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;
@@ -29,6 +31,7 @@ import java.util.Map;
 @RequestMapping("api/v1")
 public class QuestionsController {
     private final QuestionsService questionsService;
+    private final ExamsService examsService;
 
     //Create API
     @ResponseStatus(HttpStatus.CREATED)
@@ -36,8 +39,11 @@ public class QuestionsController {
     public ResponseDto addQuestionsByExamId(@PathVariable @ValidExamId Long examId, @RequestPart QuestionUploadInfo questionUploadInfo, @RequestPart(name = "questionImagesIn", required = false) List<MultipartFile> questionImagesIn,
                                             @RequestPart(name = "questionImagesOut", required = false) List<MultipartFile> questionImagesOut, @RequestPart(name = "commentaryImagesIn", required = false) List<MultipartFile> commentaryImagesIn,
                                             @RequestPart(name = "commentaryImagesOut", required = false) List<MultipartFile> commentaryImagesOut, @Login User user) {
+        if (!examsService.isExamOwner(examId, user)) {
+            throw new UnauthorizedException();
+        }
         QuestionDto question = questionsService.addQuestionsByExamId(user, examId, questionUploadInfo, questionImagesIn, questionImagesOut, commentaryImagesIn, commentaryImagesOut);
-        return new ResponseDto(201,question);
+        return new ResponseDto(201, question);
     }
 
     //Read API
@@ -90,6 +96,11 @@ public class QuestionsController {
     //Update API
     @PutMapping("/questions")
     public ResponseDto updateQuestions(@Login User user, @RequestBody QuestionUpdateDto questionUpdateDto) {
+        Long examId = questionsService.getExamIDFromQuestion(questionUpdateDto.getId());
+        if (!examsService.isExamOwner(examId, user)) {
+            throw new UnauthorizedException();
+        }
+
         boolean updated = questionsService.updateQuestionsByQuestionId(user, questionUpdateDto);
         if (!updated) {
             return ResponseDto.BAD_REQUEST;
@@ -110,8 +121,13 @@ public class QuestionsController {
     //Delete Api with questionId
     @DeleteMapping("/questions/{questionId}")
     public ResponseDto deleteQuestionsByQuestionId(@Login User user, @PathVariable String questionId) {
+        Long examId = questionsService.getExamIDFromQuestion(questionId);
+        if (!examsService.isExamOwner(examId, user)) {
+            throw new UnauthorizedException();
+        }
+
         boolean deleted = questionsService.deleteQuestionsByQuestionId(user, questionId);
-        if(!deleted) {
+        if (!deleted) {
             return ResponseDto.BAD_REQUEST;
         }
         return ResponseDto.OK;

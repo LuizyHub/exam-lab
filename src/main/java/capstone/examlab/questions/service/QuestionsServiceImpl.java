@@ -31,7 +31,6 @@ import java.util.*;
 public class QuestionsServiceImpl implements QuestionsService {
     private final QuestionsRepository questionsRepository;
     private final ImageService imageService;
-    private final ExamsService examsService;
     private final BoolQueryBuilder boolQueryBuilder;
     private final ElasticsearchTemplate elasticsearchTemplate;
 
@@ -57,10 +56,6 @@ public class QuestionsServiceImpl implements QuestionsService {
     //Create 로직
     @Override
     public QuestionDto addQuestionsByExamId(User user, Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
-        if (!examsService.isExamOwner(examId, user)) {
-            throw new UnauthorizedException();
-        }
-
         questionUploadInfo.initializeCollections();
         if (questionImagesIn != null) {
             for (int i = 0; i < questionImagesIn.size(); i++) {
@@ -130,6 +125,17 @@ public class QuestionsServiceImpl implements QuestionsService {
         }
     }
 
+    @Override
+    public Long getExamIDFromQuestion(String questionId) {
+        Optional<Question> optionalQuestion = questionsRepository.findById(questionId);
+        if (optionalQuestion.isPresent()) {
+            Question question = optionalQuestion.get();
+            return question.getExamId();
+        } else {
+            throw new NotFoundQuestionException();
+        }
+    }
+
     //Update 로직
     @Override
     public boolean updateQuestionsByQuestionId(User user, QuestionUpdateDto questionUpdateDto) {
@@ -137,9 +143,6 @@ public class QuestionsServiceImpl implements QuestionsService {
         Optional<Question> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();
-            if (!examsService.isExamOwner(question.getExamId(), user)) {
-                throw new UnauthorizedException();
-            }
             questionsRepository.save(questionUpdateDto.updateDocument(question));
             return true;
         } else {
@@ -161,16 +164,11 @@ public class QuestionsServiceImpl implements QuestionsService {
     public boolean deleteQuestionsByQuestionId(User user, String questionId) {
         Optional<Question> optionalQuestion = questionsRepository.findById(questionId);
         if (optionalQuestion.isPresent()) {
-            Question question = optionalQuestion.get();
-            //문제 수정 권한이 있는 유저 체크
-            if (!examsService.isExamOwner(question.getExamId(), user)) {
-                throw new UnauthorizedException();
-            }
             questionsRepository.deleteById(questionId);
+            //삭제 검증
+            return !questionsRepository.existsById(questionId);
         } else {
             return false;
         }
-        //삭제 검증
-        return !questionsRepository.existsById(questionId);
     }
 }

@@ -5,6 +5,7 @@ import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
 import capstone.examlab.questions.dto.QuestionsListDto;
+import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class ExamServiceImpl implements ExamsService {
 
     private final ObjectProvider<Exam> examProvider;
     private final ExamRepository examRepository;
+    private final QuestionsService questionsService;
 
     private static final String[] fileTypeList = {"text/plain", "text/markdown", "application/pdf"};
 

@@ -18,6 +18,8 @@ public interface QuestionsService {
 
     QuestionsListDto searchFromQuestions(Long examId, QuestionsSearchDto questionsSearchDto);
 
+    Long getExamIDFromQuestion(String questionId);
+
     boolean updateQuestionsByQuestionId(User user, QuestionUpdateDto questionsUpdateDto);
 
     boolean deleteQuestionsByExamId(Long examId);

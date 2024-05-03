@@ -39,6 +39,8 @@ public class ExamDoc extends Exam {
         this.userDoc = (UserDoc) user;
     }
 
+    private String examTitle;
+
     private String fileTitle;
 
     private String fileText;

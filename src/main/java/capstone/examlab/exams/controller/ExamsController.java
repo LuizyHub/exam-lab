@@ -82,8 +82,7 @@ public class ExamsController {
     public ResponseDto updateExam(
             @Login User user,
             @PathVariable @ValidExamId Long examId,
-            @Validated @RequestBody ExamUpdateDto examUpdateDto,
-            HttpServletResponse response) {
+            @Validated @RequestBody ExamUpdateDto examUpdateDto) {
 
         // AOP 도입 예정
         if (user == null) {

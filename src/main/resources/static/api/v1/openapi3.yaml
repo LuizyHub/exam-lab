@@ -15,6 +15,13 @@ paths:
       summary: Get all exams
       description: Get all exams
       operationId: exams
+      parameters:
+      - name: sample
+        in: query
+        description: true일 경우 sample 시험도 포함 default는 false
+        required: false
+        schema:
+          type: boolean
       responses:
         "200":
           description: "200"
@@ -66,7 +73,7 @@ paths:
             examples:
               update-question:
                 value: "{\"question\":\"변경된 질문입니다.\",\"options\":[\"변경된 보기1\",\"변경\
-                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"6842b9e6-92d9-4e5e-a01e-c17702df9ad2\"\
+                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"922af762-e356-4e1c-a498-4c05f6873a1c\"\
                   ,\"commentary\":\"변경된 설명입니다.\",\"tags\":{\"난이도\":[\"중\"],\"단원\"\
                   :[\"2\"]}}"
       responses:
@@ -75,7 +82,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 update-question:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -93,10 +100,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"f9022372-a2dd-4fef-943c-9dca3c23979c!\",\"\
-                  password_confirm\":\"f9022372-a2dd-4fef-943c-9dca3c23979c!\",\"\
-                  user_id\":\"f9022372-a2dd-4fef-943c-9dca3c23979c@gmail.com\",\"\
-                  name\":\"f9022372-a2dd-4fef-943c-9dca3c23979c\"}"
+                value: "{\"password\":\"a9b06300-0e59-40a9-8640-a2a3fdbb4869!\",\"\
+                  password_confirm\":\"a9b06300-0e59-40a9-8640-a2a3fdbb4869!\",\"\
+                  user_id\":\"a9b06300-0e59-40a9-8640-a2a3fdbb4869@gmail.com\",\"\
+                  name\":\"a9b06300-0e59-40a9-8640-a2a3fdbb4869\"}"
       responses:
         "200":
           description: "200"
@@ -146,7 +153,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+              $ref: '#/components/schemas/api-v1-questions486549215'
             examples:
               patch-exams:
                 value: "{\"tags\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"1\"\
@@ -157,7 +164,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 patch-exams:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -177,6 +184,13 @@ paths:
       responses:
         "200":
           description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-questions486549215'
+              examples:
+                delete-exams:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
   /api/v1/questions/{questionId}:
     delete:
       tags:
@@ -197,7 +211,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 delete-questions-by-questionId:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -357,7 +371,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 post-file:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -383,7 +397,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 delete-exam-file:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -436,7 +450,7 @@ paths:
                 $ref: '#/components/schemas/api-v1-exams-examId-questions-1876066633'
               examples:
                 Search-questions:
-                  value: "{\"questions\":[{\"id\":\"993559ec-c17d-40af-bad9-27d9ccb9439b\"\
+                  value: "{\"questions\":[{\"id\":\"b8ad77c7-215b-4be0-84aa-04c0aa852041\"\
                     ,\"type\":\"객관식\",\"question\":\"소웨공 테스트 문제?\",\"question_images_in\"\
                     :[],\"question_images_out\":[],\"options\":[\"① 답 예시 1\",\"② 답\
                     \ 예시 2\",\"③ 답 예시 3\",\"④ 답 예시 4\"],\"answers\":[3],\"commentary\"\
@@ -473,10 +487,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 add-questions:
-                  value: "{\"code\":201,\"message\":{\"id\":\"f308e29a-a2ef-4b5e-a3c4-18f640737219\"\
+                  value: "{\"code\":201,\"message\":{\"id\":\"40f678ab-bf43-433e-a7f8-d5d7f5e9f5c8\"\
                     ,\"type\":\"객관식\",\"question\":\"다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤\
                     \ 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?\",\"question_images_in\"\
                     :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/image1.png\"\
@@ -784,6 +798,8 @@ components:
         login:
           type: boolean
           description: 로그인 여부
+    api-v1-questions486549215:
+      type: object
     api-v1-users-963924044:
       required:
       - name
@@ -804,5 +820,3 @@ components:
         name:
           type: string
           description: User name
-    api-v1-exams-examId-file486549215:
-      type: object

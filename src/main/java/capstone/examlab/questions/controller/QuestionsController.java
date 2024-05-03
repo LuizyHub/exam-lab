@@ -108,16 +108,6 @@ public class QuestionsController {
         return ResponseDto.OK;
     }
 
-    //Delete API with examId
-    @DeleteMapping("/exams/{examId}/questions")
-    public ResponseDto deleteQuestionsByExamId(@PathVariable @ValidExamId Long examId) {
-        boolean deleted = questionsService.deleteQuestionsByExamId(examId);
-        if (!deleted) {
-            return ResponseDto.BAD_REQUEST;
-        }
-        return ResponseDto.OK;
-    }
-
     //Delete Api with questionId
     @DeleteMapping("/questions/{questionId}")
     public ResponseDto deleteQuestionsByQuestionId(@Login User user, @PathVariable String questionId) {

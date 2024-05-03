@@ -1,8 +1,6 @@
 package capstone.examlab.questions.service;
 
-import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.exhandler.exception.NotFoundQuestionException;
-import capstone.examlab.exhandler.exception.UnauthorizedException;
 import capstone.examlab.image.service.ImageService;
 import capstone.examlab.questions.dto.*;
 import capstone.examlab.questions.dto.search.QuestionsSearchDto;

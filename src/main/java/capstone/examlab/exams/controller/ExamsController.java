@@ -30,7 +30,6 @@ public class ExamsController {
 
     private final ExamsService examsService;
 
-    // 임시로 활용
     private final QuestionsService questionsService;
 
     @GetMapping

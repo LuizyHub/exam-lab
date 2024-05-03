@@ -12,7 +12,7 @@ public interface ExamsService {
 
     public ExamDetailDto getExamType(Long id, User user);
 
-    public List<ExamDto> getExamList(User user);
+    public List<ExamDto> getExamList(User user, boolean sample);
 
     Long createExam(ExamAddDto examAddDto, User user);
 

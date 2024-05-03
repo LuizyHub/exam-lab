@@ -117,7 +117,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     @AfterEach
     void tearDown() throws Exception {
         this.mockMvc.perform(
-                        delete("/api/v1/exams/{examId}/questions", userAddExamId)
+                        delete("/api/v1/exams/{examId}", userAddExamId)
                                 .session(doLogin())
                 )
                 .andExpect(status().isOk());

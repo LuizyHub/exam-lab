@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import '../css/LoginModal.css'
 
 const LoginModal = ({ onClose }) => {
 
-  const navigate = useNavigate()
+
 
   return (
     <div className="modal-overlay">

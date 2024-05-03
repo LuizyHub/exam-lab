@@ -25,7 +25,7 @@ export default function Navigate() {
     <nav className="navigation">
       <div className="nav-item">
         <img src="/img/시험지샘플.png" alt="Main Image" className="nav-icon" />
-        <Link to="/exams" className="nav-link" style={{textDecorationLine: "none"}}>
+        <Link to="/exams/create" className="nav-link" style={{textDecorationLine: "none"}}>
           나만의 시험지 제작하기
         </Link>
       </div>
@@ -41,7 +41,7 @@ export default function Navigate() {
           내 시험지 관리하기
         </button>
       </div>
-      {showModal && <LoginModal onClose={() => setShowModal(showModal)} />}
+      {showModal && <LoginModal onClose={() => setShowModal(false)} />}
     </nav>
   );
 }

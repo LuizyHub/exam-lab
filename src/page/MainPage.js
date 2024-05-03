@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import Bottom from '../components/Bottom';
 import './MainPage.css'
-import axios from 'axios';
-import { getLoginInfo } from '../function/LoginState';
 
 
 export default function MainPage(){
@@ -25,8 +23,6 @@ export default function MainPage(){
                     </div>
                 </div>
             </div>
-
-
             
                 <nav>
                     <button className='sample-navigate-button'>

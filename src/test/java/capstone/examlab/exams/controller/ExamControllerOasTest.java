@@ -154,7 +154,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
     @Test
     void getExams() throws Exception {
         this.mockMvc.perform(
-                        get("/api/v1/exams")
+                        get("/api/v1/exams?sample=true")
                 )
                 .andExpect(status().isOk())
                 .andDo(document("exams",
@@ -162,6 +162,9 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                 .description("Get all exams")
                                 .tag("exams")
                                 .summary("Get all exams")
+                                .queryParameters(
+                                        parameterWithName("sample").description("true일 경우 sample 시험도 포함 default는 false").optional().type(SimpleType.BOOLEAN)
+                                )
                                 .responseFields(
                                         fieldWithPath("exams").description("List of exams").type(JsonFieldType.ARRAY),
                                         subsectionWithPath("exams").type(JsonFieldType.ARRAY)

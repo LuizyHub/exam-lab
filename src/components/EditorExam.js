@@ -28,8 +28,10 @@ export default function EditorExam({ number }) {
   //단일로 수정
   const [isData, setData] = useState({
     question: '',
-    options: [],
+    options: [],//'①', '②', '③', '④'
   });
+
+  const optionsInit = '①<br>②<br>③<br>④';
 
   const [ID, setID] = useState("");
   const [isResQuestion, setResQuestion] = useState("");
@@ -142,6 +144,35 @@ export default function EditorExam({ number }) {
       });
   }
 
+  // //div이 생성되는 것 막는 함수
+  // const handleInput = (e) => {
+  //   const selection = window.getSelection();
+  //   const range = selection.getRangeAt(0);
+  //   if (e.inputType === 'insertFromPaste') {
+  //     e.preventDefault(); // 붙여넣기 동작 막기
+  //     const text = e.clipboardData.getData('text/plain');
+  //     const div = document.createElement('div');
+  //     div.textContent = text;
+  //     range.insertNode(div);
+  //     range.collapse(false);
+  //     selection.removeAllRanges();
+  //     selection.addRange(range);
+  //   }
+  // };
+
+
+  //'①', '②', '③', '④' 번호 자동 생성
+  const handleOption = (htmlContent, e) => {
+    // 엔터 키 입력인지 확인
+    if (e.nativeEvent.inputType === 'insertParagraph') {
+      // 새로운 옵션 추가
+      const newOption = String.fromCharCode(0x245F + htmlContent.querySelectorAll('br').length + 1);
+      // 새로운 옵션을 현재 HTML 내용에 추가
+      htmlContent.innerHTML += newOption;
+    }
+  }
+
+  //이미지 마킹 실제 이미지로 전환
   const imgRegex = /<img[^>]*>/ig;
   let imgIndex = 0;
   const replacedQuestion = isResQuestion.replace(imgRegex, () => {
@@ -151,7 +182,7 @@ export default function EditorExam({ number }) {
     return `<img src='${isResUrlIn[imgIndex - 1]}' style= "width:5%;" />`;
   })
 
-  console.log(replacedQuestion)
+  // console.log(replacedQuestion)
   return (
 
     <div>
@@ -173,7 +204,8 @@ export default function EditorExam({ number }) {
           <img key={index} src={URL} style={{ width: '25%' }} />
         ))}
         {isResOption.map((options, index) => (
-          <p key={index}>{options}</p>
+          <p key={index}
+            dangerouslySetInnerHTML={{ __html: options }}></p>
         ))}
       </div>
 
@@ -364,6 +396,37 @@ export default function EditorExam({ number }) {
         className="editor"
         contentEditable="true"
         ref={editorRef3}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // 기본 동작 막기
+          }
+        }}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // 기본 동작 막기
+            const editor = e.target;
+            const brCount = editor.querySelectorAll('br').length + 1;
+            const newOption = String.fromCharCode(0x245F + brCount + 1);
+
+            // 생성된 문자를 현재 포커스된 위치에 삽입합니다.
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            const textNode = document.createTextNode(newOption);
+            range.insertNode(textNode);
+
+            // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
+            const br = document.createElement('br');
+            range.insertNode(br);
+
+            // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
+            range.setStartAfter(textNode);
+            range.setEndAfter(textNode);
+
+            // 커서를 설정합니다.
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+        }}
         onDragOver={(e) => e.preventDefault()}
         onCopy={(e) => {
           if (e.target.tagName.toLowerCase() === 'img') {
@@ -395,19 +458,38 @@ export default function EditorExam({ number }) {
           }
         }} // 이미지 붙여넣기 동작 막기
 
-        dangerouslySetInnerHTML={{ __html: '1<br>2<br>3<br>4' }}
+        dangerouslySetInnerHTML={{ __html: optionsInit }}
 
         onInput={() => {
           const isOptions = editorRef3.current.innerHTML;
 
-          // 줄 바꿈을 기준으로 배열을 분할하고, 필터링하여 빈 문자열을 제거합니다.
-          const optionsArray = isOptions.split('\n').filter(option => option.trim() !== '');
 
-          // <div>을 기준으로 분할하고, 각 요소를 trim하여 새로운 배열을 생성합니다.
-          const splitOptionsArray = optionsArray.flatMap(option => option.split('<div>').map(text => text.trim()));
-          const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
+          const optionsInitArray = isOptions.split('<br>').map(item => item.trim());
 
-          setData(prevState => ({ ...prevState, options: isOptionsArray }));
+          const splitOptionsArray = optionsInitArray.flatMap(option => option.split('<div>').map(text => text.trim()));
+
+          // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
+
+          setData(prevState => ({ ...prevState, options: splitOptionsArray }));
+
+          const optionsArray = splitOptionsArray.filter(option => option !== '');
+
+          setData(prevState => ({ ...prevState, options: optionsArray }));
+
+          // setData(prevState => ({ ...prevState, options: isOptions }));
+
+          console.log(isOptions)
+          // setData(prevState => ({ ...prevState, options: isOptions }));
+
+          // // 줄 바꿈을 기준으로 배열을 분할하고, 필터링하여 빈 문자열을 제거합니다.
+          // const optionsArray = optionsInitArray.split('\n').filter(option => option.trim() !== '');
+          // const optionsArray = splitOptionsArray.filter(option => option.trim() !== '');
+
+          // // <div>을 기준으로 분할하고, 각 요소를 trim하여 새로운 배열을 생성합니다.
+
+          // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
+          // // console.log(isOptions);
+          // setData(prevState => ({ ...prevState, options: optionsArray }));
         }}
 
         style={{

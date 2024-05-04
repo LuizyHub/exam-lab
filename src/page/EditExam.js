@@ -29,14 +29,15 @@ export default function EditExam() {
       >생성</button>
 
       {isCreate.map((component, index) => (
-        <div style={{ marginTop: '40px', padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '700px' }}>
-          <button onClick={() => handleDelete(index)}>삭제</button>
-          <div key={index}>{component}</div>
+        <div key={index} style={{ marginTop: '40px' }}>
+          <div key={index} style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '700px' }}>
+            <button style={{ marginLeft: '80%' }} onClick={() => handleDelete(index)}>템플릿 삭제</button>
+
+            <div key={index}>{component}</div>
+
+          </div>
         </div>
       ))}
-
-
-
 
       {/* <EditorExam></EditorExam>
       <EditorExam></EditorExam> */}

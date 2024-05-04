@@ -35,7 +35,7 @@ export default function EditorExam() {
 
   const sendPostData = () => {
 
-    const URL = '/api/v1/exams/3/questions'
+    const URL = '/api/v1/exams/11/questions'
     const formData = new FormData();
 
     const questionImagesTextIn = [];
@@ -84,7 +84,7 @@ export default function EditorExam() {
         console.log(response.data.message);
         console.log(response.data);
         const message = response.data.message;
-        setID(message);
+        setID(message.id);
       })
       .catch((error) => {
         console.log(error);
@@ -95,8 +95,9 @@ export default function EditorExam() {
     console.log("삭제");
     console.log(isUrlIn);
     console.log(ID);
-    const URL = `/api/v1/questions/${ID}`
-    // const URL = `/api/v1/questions/671eb7d7-2cc6-446d-8790-83cb0bd8cddc`
+    // const URL = `/api/v1/questions/${ID}`
+    const URL = `/api/v1/questions/2a5ef27f-e6c6-4cec-8c7e-9cfa31fb2fd4`
+    // console.log(ID)
     axios.delete(URL, {
     })
       .then((response) => {

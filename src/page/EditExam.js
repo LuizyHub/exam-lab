@@ -2,9 +2,14 @@
 import EditorExam from "../components/EditorExam"
 import AttributeManager from "../components/AttributeManager"
 import { useState } from "react";
+import { useLoginController } from "../function/useLoginController";
 // import { useDataHandle } from "../..//dataHandle";
 
 export default function EditExam() {
+
+  //로그인 리모컨
+  const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
+
   const [isCreate, setCreate] = useState([]);
 
   const handleCreate = () => {
@@ -22,6 +27,11 @@ export default function EditExam() {
   return (
     <>
       <h1>Test</h1>
+      <div style={{ marginBottom: '40px' }}>
+        <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleAutoLogin() }}>logIn</button>
+        <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLogout() }}>logOut</button>
+        <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLoginState() }}>logState</button>
+      </div>
       <button>시험지 생성</button>
       <AttributeManager></AttributeManager>
       {/* AttributeManager 저장하기가 되어야 EditorExam이 활성화 */}

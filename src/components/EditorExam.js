@@ -6,7 +6,7 @@ import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
 
-export default function EditorExam() {
+export default function EditorExam({ number }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImage();
   const { handleFileObject, handleIdContent, imageReplace } = handleData();
@@ -32,6 +32,10 @@ export default function EditorExam() {
   });
 
   const [ID, setID] = useState("");
+  const [isResQuestion, setResQuestion] = useState("");
+  const [isResOption, setResOption] = useState([]);
+  const [isResUrlIn, setResUrlIn] = useState([]);
+  const [isResUrlOut, setResUrlOut] = useState([]);
 
   const sendPostData = () => {
 
@@ -85,6 +89,12 @@ export default function EditorExam() {
         console.log(response.data);
         const message = response.data.message;
         setID(message.id);
+        setResQuestion(message.question);
+        setResOption(message.options);
+        // setResOption(prevOption => [...prevOption, ...message.option]);
+        setResUrlIn(message.question_images_in.map(image => image.url));
+        // console.log(message.question_images_in[0].url);
+        setResUrlOut(message.question_images_out.map(image => image.url));
       })
       .catch((error) => {
         console.log(error);
@@ -95,8 +105,8 @@ export default function EditorExam() {
     console.log("삭제");
     console.log(isUrlIn);
     console.log(ID);
-    // const URL = `/api/v1/questions/${ID}`
-    const URL = `/api/v1/questions/2a5ef27f-e6c6-4cec-8c7e-9cfa31fb2fd4`
+    const URL = `/api/v1/questions/${ID}`
+    // const URL = `/api/v1/questions/6f9a1418-a3c8-4c0b-91a3-7a461164dcf6`
     // console.log(ID)
     axios.delete(URL, {
     })
@@ -132,7 +142,18 @@ export default function EditorExam() {
       });
   }
 
+  const imgRegex = /<img[^>]*>/ig;
+  let imgIndex = 0;
+  const replacedQuestion = isResQuestion.replace(imgRegex, () => {
+    // 이미지의 번호를 1부터 시작하여 증가시킵니다.
+    imgIndex++;
+
+    return `<img src='${isResUrlIn[imgIndex - 1]}' style= "width:5%;" />`;
+  })
+
+  console.log(replacedQuestion)
   return (
+
     <div>
       {/* <select value={contentType1} onChange={handleContentType1}>
         <option value="type">Select</option>
@@ -140,6 +161,21 @@ export default function EditorExam() {
         <option value="이미지">이미지</option>
         <option value="선택지">선택지</option>
       </select> */}
+
+      <div>
+        <h1>Show</h1>
+        <p>{number}</p>
+        <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
+        {/* {isResUrlIn.map((URL, index) => (
+          <img key={index} src={URL} style={{ width: '25%' }} />
+        ))} */}
+        {isResUrlOut.map((URL, index) => (
+          <img key={index} src={URL} style={{ width: '25%' }} />
+        ))}
+        {isResOption.map((options, index) => (
+          <p key={index}>{options}</p>
+        ))}
+      </div>
 
       <EditorTool
         editorRef={editorRef1}
@@ -165,8 +201,8 @@ export default function EditorExam() {
           setUrlIn(prevState => [...prevState, result]);
           setUrlInId(prevState => [...prevState, result.name])
           //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
-          const isQuestion = editorRef1.current.innerHTML;//
-          const imageReplaceResult = imageReplace(isQuestion);
+          const isResQuestion = editorRef1.current.innerHTML;//
+          const imageReplaceResult = imageReplace(isResQuestion);
           console.log(imageReplaceResult);
           setData(
             prevState => ({
@@ -213,8 +249,8 @@ export default function EditorExam() {
 
 
         onInput={() => {
-          const isQuestion = editorRef1.current.innerHTML;
-          const imageReplaceResult = imageReplace(isQuestion);
+          const isResQuestion = editorRef1.current.innerHTML;
+          const imageReplaceResult = imageReplace(isResQuestion);
           console.log(imageReplaceResult);
           setData(
             prevState => ({
@@ -359,6 +395,7 @@ export default function EditorExam() {
           }
         }} // 이미지 붙여넣기 동작 막기
 
+        dangerouslySetInnerHTML={{ __html: '1<br>2<br>3<br>4' }}
 
         onInput={() => {
           const isOptions = editorRef3.current.innerHTML;
@@ -384,6 +421,8 @@ export default function EditorExam() {
 
       <button type='submit' onClick={() => {
         sendPostData();
+        console.log(isResOption);
+        console.log(isResUrlIn);
       }}>생성</button>
       <button onClick={() => {
         sendDeleteData();

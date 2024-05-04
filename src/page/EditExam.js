@@ -9,7 +9,7 @@ export default function EditExam() {
 
   const handleCreate = () => {
     // 새로운 컴포넌트를 생성하여 상태에 추가
-    setCreate([...isCreate, <EditorExam key={isCreate.length} />]);
+    setCreate([...isCreate, <EditorExam key={isCreate.length} number={isCreate.length + 1} />]);
   };
 
   const handleDelete = (elementIndex) => {
@@ -22,13 +22,14 @@ export default function EditExam() {
   return (
     <>
       <h1>Test</h1>
+      <button>시험지 생성</button>
       <AttributeManager></AttributeManager>
       {/* AttributeManager 저장하기가 되어야 EditorExam이 활성화 */}
-      <button
-        onClick={handleCreate}
-      >생성</button>
 
-      {isCreate.map((component, index) => (
+      <button
+        onClick={() => { handleCreate(); console.log(isCreate.length); }}
+      >생성</button>
+      {isCreate.reverse().map((component, index) => (
         <div key={index} style={{ marginTop: '40px' }}>
           <div key={index} style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '700px' }}>
             <button style={{ marginLeft: '80%' }} onClick={() => handleDelete(index)}>템플릿 삭제</button>
@@ -39,8 +40,7 @@ export default function EditExam() {
         </div>
       ))}
 
-      {/* <EditorExam></EditorExam>
-      <EditorExam></EditorExam> */}
+
     </>
   )
 }

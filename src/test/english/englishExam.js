@@ -32,26 +32,26 @@ export default function EnglishExam() {
     return parsedText;
   };
 
-// 표를 처리하는 함수
-const parseTable = (text) => {
-  const regex = /<table>(.*?)<\/table>/g;
-  let parsedText = text.replace(regex, (match) => {
-    return `<table style="border-collapse: collapse; width: 100%;">${match}</table>`;
-  });
+  // 표를 처리하는 함수
+  const parseTable = (text) => {
+    const regex = /<table>(.*?)<\/table>/g;
+    let parsedText = text.replace(regex, (match) => {
+      return `<table style="border-collapse: collapse; width: 100%;">${match}</table>`;
+    });
 
-  parsedText = parsedText.replace(/<thead>/g, '<thead style="background-color: #f2f2f2;">');
-  parsedText = parsedText.replace(/<th>/g, '<th style="border: 1px solid #ddd; padding: 8px;">');
-  parsedText = parsedText.replace(/<td>/g, '<td style="border: 1px solid #ddd; padding: 8px;">');
+    parsedText = parsedText.replace(/<thead>/g, '<thead style="background-color: #f2f2f2;">');
+    parsedText = parsedText.replace(/<th>/g, '<th style="border: 1px solid #ddd; padding: 8px;">');
+    parsedText = parsedText.replace(/<td>/g, '<td style="border: 1px solid #ddd; padding: 8px;">');
 
-  return parsedText;
-};
+    return parsedText;
+  };
 
-// <br> 태그를 처리하는 함수
-const parseLineBreaks = (text) => {
-  const regex = /<br\s*\/?>/gi; 
-  const parsedText = text.replace(regex, '<br />');
-  return parsedText;
-};
+  // <br> 태그를 처리하는 함수
+  const parseLineBreaks = (text) => {
+    const regex = /<br\s*\/?>/gi;
+    const parsedText = text.replace(regex, '<br />');
+    return parsedText;
+  };
 
   // <content> 태그를 처리하는 함수
   const parseContent = (text) => {
@@ -66,19 +66,19 @@ const parseLineBreaks = (text) => {
     return parsedText;
   };
 
-// <longLine> 태그를 처리하는 함수
-const parseLongLine = (text) => {
-  const regex = /<longLine>/g; 
-  const parsedText = text.replace(regex, '<span style="display: inline-block; width: 120px; border-bottom: 1px solid black;"></span>');
-  return parsedText;
-};
+  // <longLine> 태그를 처리하는 함수
+  const parseLongLine = (text) => {
+    const regex = /<longLine>/g;
+    const parsedText = text.replace(regex, '<span style="display: inline-block; width: 120px; border-bottom: 1px solid black;"></span>');
+    return parsedText;
+  };
 
-// <longlongLine> 태그를 처리하는 함수
-const parseLongLongLine = (text) => {
-  const regex = /<longlongLine>/g; 
-  const parsedText = text.replace(regex, '<span style="display: inline-block; width: 250px; border-bottom: 1px solid black;"></span>');
-  return parsedText;
-};
+  // <longlongLine> 태그를 처리하는 함수
+  const parseLongLongLine = (text) => {
+    const regex = /<longlongLine>/g;
+    const parsedText = text.replace(regex, '<span style="display: inline-block; width: 250px; border-bottom: 1px solid black;"></span>');
+    return parsedText;
+  };
 
 
 
@@ -92,7 +92,7 @@ const parseLongLongLine = (text) => {
             {questionData.options.map((option, optionIndex) => (
               <li key={optionIndex}>{parse(parseHeaders(parseTable(parseLongLine(parseLongLongLine(parseContent(option))))))}</li>
             ))}
-          </ul> <br/>
+          </ul> <br />
         </div>
       ))}
     </div>

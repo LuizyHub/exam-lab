@@ -6,7 +6,7 @@ import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
 
-export default function EditorExam({ number }) {
+export default function EditorComment({ number }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImage();
   const { handleFileObject, handleIdContent, imageReplace } = handleData();
@@ -298,90 +298,81 @@ export default function EditorExam({ number }) {
           setUrlOutId(prevState => [...prevState, result.name])
         }}
       />
-      <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>
-        <div
-          className="editor"
-          contentEditable="false"
-          ref={editorRef2}
-          readOnly
-          onDragOver={(e) => e.preventDefault()}
-          onCopy={(e) => {
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
+      <div
+        className="editor"
+        contentEditable="false"
+        ref={editorRef2}
+        readOnly
+        onDragOver={(e) => e.preventDefault()}
+        onCopy={(e) => {
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+        }} // 이미지 복사 동작 막기
+        onCut={(e) => {
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+        }} // 이미지 잘라내기 동작 막기
+        onPaste={(e) => {
+          // 에디터 내에서 이미지 잘라내기 동작 막기
+          if (e.target.tagName.toLowerCase() === 'img') {
+            e.preventDefault();
+          }
+          //외부 이미지 붙혀넣기 동작 막기
+          const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+          let hasImage = false;
+          for (let index in items) {
+            const item = items[index];
+            if (item.kind === 'file' && item.type.includes('image')) {
+              hasImage = true;
+              break;
             }
-          }} // 이미지 복사 동작 막기
-          onCut={(e) => {
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
-            }
-          }} // 이미지 잘라내기 동작 막기
-          onPaste={(e) => {
-            // 에디터 내에서 이미지 잘라내기 동작 막기
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
-            }
-            //외부 이미지 붙혀넣기 동작 막기
-            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-            let hasImage = false;
-            for (let index in items) {
-              const item = items[index];
-              if (item.kind === 'file' && item.type.includes('image')) {
-                hasImage = true;
-                break;
-              }
-            }
-            if (hasImage) {
-              e.preventDefault();
-            }
-          }} // 이미지 붙여넣기 동작 막기
+          }
+          if (hasImage) {
+            e.preventDefault();
+          }
+        }} // 이미지 붙여넣기 동작 막기
 
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault(); // 기본 동작 막기
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // 기본 동작 막기
 
-              // 생성된 문자열을 현재 포커스된 위치에 삽입합니다.
-              const selection = window.getSelection();
-              const range = selection.getRangeAt(0);
-              const textNode = document.createTextNode(imageInit);
-              range.insertNode(textNode);
+            // 생성된 문자열을 현재 포커스된 위치에 삽입합니다.
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            const textNode = document.createTextNode(imageInit);
+            range.insertNode(textNode);
 
-              // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
-              const br = document.createElement('br');
-              range.insertNode(br);
+            // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
+            const br = document.createElement('br');
+            range.insertNode(br);
 
-              // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
-              range.setStartAfter(textNode);
-              range.setEndAfter(textNode);
+            // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
+            range.setStartAfter(textNode);
+            range.setEndAfter(textNode);
 
-              // 커서를 설정합니다.
-              selection.removeAllRanges();
-              selection.addRange(range);
-            }
-          }}
+            // 커서를 설정합니다.
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+        }}
+        dangerouslySetInnerHTML={{ __html: imageInit }}
 
-          onInput={() => {
-            const isImage = editorRef2.current.innerHTML;
-            console.log(isImage);
+        onInput={() => {
+          const isImage = editorRef2.current.innerHTML;
+          console.log(isImage);
 
-            const resultEdit = handleFileObject(editorRef2, isUrlOutId, isUrlOut);
-            const resultId = handleIdContent(editorRef2, isUrlOutId)
-            console.log(resultEdit);
-            setUrlOut(resultEdit);
-            setUrlOutId(resultId);
-          }}
+          const resultEdit = handleFileObject(editorRef2, isUrlOutId, isUrlOut);
+          const resultId = handleIdContent(editorRef2, isUrlOutId)
+          console.log(resultEdit);
+          setUrlOut(resultEdit);
+          setUrlOutId(resultId);
+        }}
 
-        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-        />
-        <div
-          contentEditable={true}
-          dangerouslySetInnerHTML={{ __html: imageInit }}
+        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+      />
 
-          onInput={() => {
-
-          }}
-        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-        />
-      </div>
       {/* ------------------------------------------------------------------------ */}
 
       <EditorTool

@@ -150,23 +150,17 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Delete 로직
     @Override
-    public boolean deleteQuestionsByExamId(Long examId) {
+    public void deleteQuestionsByExamId(Long examId) {
         questionsRepository.deleteByExamId(examId);
-
-        List<Question> questions = questionsRepository.findByExamId(examId);
-
-        return questions.isEmpty();
     }
 
     @Override
-    public boolean deleteQuestionsByQuestionId(User user, String questionId) {
+    public void deleteQuestionsByQuestionId(User user, String questionId) {
         Optional<Question> optionalQuestion = questionsRepository.findById(questionId);
         if (optionalQuestion.isPresent()) {
             questionsRepository.deleteById(questionId);
-            //삭제 검증
-            return !questionsRepository.existsById(questionId);
         } else {
-            return false;
+            throw new NotFoundQuestionException();
         }
     }
 }

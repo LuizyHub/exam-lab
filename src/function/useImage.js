@@ -52,6 +52,7 @@ export const useImage = () => {
   const insertImageConfig = (elementRef, imageDataUrl, elementName) => {
 
     const imgElement = document.createElement('img');
+    const buttonElement = document.createElement('button'); // 버튼 엘리먼트 생성
 
     imgElement.setAttribute('id', elementName); // 이미지에 아이디 설정
     imgElement.src = imageDataUrl;
@@ -68,9 +69,19 @@ export const useImage = () => {
       // console.log(e.target);
     };
     console.log(imgElement);
+
+    // 버튼 설정
+    buttonElement.textContent = 'Delete'; // 버튼 텍스트 설정
+    buttonElement.onclick = (e) => {
+      // 버튼 클릭 시 이미지 삭제 로직 추가
+      imgElement.remove();
+      buttonElement.remove();
+    };
+
     // 에디터에 이미지 DOM에 삽입 -> 여기를 해결...
     if (elementRef.current) {
       elementRef.current.appendChild(imgElement);
+      elementRef.current.appendChild(buttonElement); // 버튼 삽입
     } else {
       console.error("Editor reference is null.");
     }

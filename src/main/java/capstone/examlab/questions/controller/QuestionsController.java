@@ -115,11 +115,7 @@ public class QuestionsController {
         if (!examsService.isExamOwner(examId, user)) {
             throw new UnauthorizedException();
         }
-
-        boolean deleted = questionsService.deleteQuestionsByQuestionId(user, questionId);
-        if (!deleted) {
-            return ResponseDto.BAD_REQUEST;
-        }
+        questionsService.deleteQuestionsByQuestionId(user, questionId);
         return ResponseDto.OK;
     }
 }

@@ -75,10 +75,7 @@ public class ExamsController {
             throw new UnauthorizedException();
         }
         examsService.deleteExam(examId, user);
-        boolean deleted = questionsService.deleteQuestionsByExamId(examId);
-        if (!deleted) {
-            return ResponseDto.BAD_REQUEST;
-        }
+        questionsService.deleteQuestionsByExamId(examId);
         return ResponseDto.OK;
     }
 

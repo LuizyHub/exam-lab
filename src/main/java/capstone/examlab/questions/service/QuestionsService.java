@@ -22,7 +22,7 @@ public interface QuestionsService {
 
     boolean updateQuestionsByQuestionId(User user, QuestionUpdateDto questionsUpdateDto);
 
-    boolean deleteQuestionsByExamId(Long examId);
+    void deleteQuestionsByExamId(Long examId);
 
-    boolean deleteQuestionsByQuestionId(User user, String questionId);
+    void deleteQuestionsByQuestionId(User user, String questionId);
 }

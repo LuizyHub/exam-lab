@@ -136,11 +136,6 @@ public class ExamsController {
         // TODO: AI 서비스 연동
         QuestionsListDto questionsListDto = examsService.getAiQuestions(examId, user);
 
-        // 임시로 활용
-        QuestionsSearchDto questionsSearchDto = QuestionsSearchDto.builder().count(5).build();
-        questionsListDto = questionsService.searchFromQuestions(1L, questionsSearchDto);
-
-
         return questionsListDto;
     }
 }

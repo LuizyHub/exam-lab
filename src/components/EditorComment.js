@@ -6,7 +6,7 @@ import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
 
-export default function EditorExam({ number }) {
+export default function EditorComment({ number }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImage();
   const { handleFileObject, handleIdContent, imageReplace } = handleData();
@@ -72,6 +72,7 @@ export default function EditorExam({ number }) {
       type: 'application/json'
     });
     formData.append('questionUploadInfo', questionUploadInfo);
+
     isUrlIn.forEach((image) => {
       console.log(image.name);
       formData.append('questionImagesIn', image);
@@ -205,12 +206,12 @@ export default function EditorExam({ number }) {
           setUrlIn(prevState => [...prevState, result]);
           setUrlInId(prevState => [...prevState, result.name])
           //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
-
-          //-> 초기값ㄴ
-          const isQuestion = editorRef1.current.innerHTML;//
-          const imageReplaceResult = imageReplace(isQuestion);
+          const isResQuestion = editorRef1.current.innerHTML;//
+          const imageReplaceResult = imageReplace(isResQuestion);
+          console.log(imageReplaceResult);
           setData(
             prevState => ({
+              ...prevState,
               question: imageReplaceResult
             }));
         }}

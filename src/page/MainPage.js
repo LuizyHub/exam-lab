@@ -18,14 +18,14 @@ export default function MainPage(){
                     <img src="/img/examLab_logo.png" alt="logo" style={{ width: '200px', position: 'relative', marginRight: '20px' }} />
                     </div>
                     <div style={{ paddingRight: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <img src="/img/mainImage.png" alt="Main Image" style={{ width: '500px', position: 'relative' }} />
+                        <img src="/img/mainImage.png" alt="Main Image" style={{ width: '500px', position: 'relative' }} />
                     </div>
                 </div>
             </div>
             
             <nav>
                 <button className='sample-navigate-button'>
-                    <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지 제작하기</Link>
+                    <Link to='/exams/create' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지 제작하기</Link>
                 </button>
                 <button className='myExam-navigate-button'>
                     <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>내 문제 관리하기</Link>

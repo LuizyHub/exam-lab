@@ -46,12 +46,12 @@ export default function EditorExam({ number }) {
   const imageInit = '<>';
 
   // view => recoil
-  const [ID, setID] = useRecoilState(IDState);
-  const [isResQuestion, setResQuestion] = useRecoilState(ResQuestionState);
-  const [isResOption, setResOption] = useRecoilState(ResOptionState);
-  const [isResUrlIn, setResUrlIn] = useRecoilState(ResUrlInState);
-  const [isResUrlOut, setResUrlOut] = useRecoilState(ResUrlOutState);
-  const [isResUrlOutDes, setResUrlOutDes] = useRecoilState(ResUrlOutDesState);
+  const [ID, setID] = useState("");
+  const [isResQuestion, setResQuestion] = useState("");
+  const [isResOption, setResOption] = useState([]);
+  const [isResUrlIn, setResUrlIn] = useState([]);
+  const [isResUrlOut, setResUrlOut] = useState([]);
+  const [isResUrlOutDes, setResUrlOutDes] = useState();
 
   const sendPostData = () => {
 
@@ -105,13 +105,13 @@ export default function EditorExam({ number }) {
         console.log(response.data);
         const message = response.data.message;
         setID(message.id);
-        setResQuestion(message.question);
-        setResOption(message.options);
-        // setResOption(prevOption => [...prevOption, ...message.option]);
-        setResUrlIn(message.question_images_in.map(image => image.url));
-        // console.log(message.question_images_in[0].url);
-        setResUrlOut(message.question_images_out.map(image => image.url));
-        setResUrlOutDes(message.question_images_out[0].description);
+        // setResQuestion(message.question);
+        // setResOption(message.options);
+        // // setResOption(prevOption => [...prevOption, ...message.option]);
+        // setResUrlIn(message.question_images_in.map(image => image.url));
+        // // console.log(message.question_images_in[0].url);
+        // setResUrlOut(message.question_images_out.map(image => image.url));
+        // setResUrlOutDes(message.question_images_out[0].description);
       })
       .catch((error) => {
         console.log(error);
@@ -139,10 +139,26 @@ export default function EditorExam({ number }) {
     console.log("수정");
     const URL = `/api/v1/questions`
     console.log(ID)
+
+    // const questionImagesTextIn = [];
+    // isUrlIn.forEach(image => {
+    //   const questionImage = { url: image.url, description: "설명", attribute: "" };
+    //   questionImagesTextIn.push(questionImage);
+    // });
+
+    // const questionImagesTextOut = [];
+    // isUrlOut.forEach(image => {
+    //   const questionImage = { url: image.url, description: isUrlOutDes, attribute: "" };
+    //   questionImagesTextOut.push(questionImage);
+    // });
+
+    //이미지 수정 불가
     const requestData = {
       id: ID,
       question: isData.question,
       options: isData.options,
+      // questionImagesTextIn: [],
+      // questionImagesTextOut: [],
       answers: ["0"],
       commentary: "",
       tags: { "category": ["test"] },
@@ -152,6 +168,44 @@ export default function EditorExam({ number }) {
       .then((response) => {
         console.log(response.data.message);
         console.log(response.data);
+      })
+      .catch((error) => {
+        // 오류 처리
+        console.log(error);
+      });
+  }
+
+  const getData = () => {
+    console.log("가져오기");
+    const URL = '/api/v1/exams/5/questions';
+
+    axios.get(URL)
+      .then((response) => {
+        const res = response.data;
+        console.log(res);
+        console.log(res.id);
+        // setID(res.id);
+        console.log(res.questions);
+        res.questions.forEach((questions, index) => {
+          console.log(`Question ${index + 1}:`);
+          console.log(questions.question);
+          setResQuestion(questions.question);
+          console.log(questions.options);
+          setResOption(questions.options);
+          // questions.question_images_in.forEach((image) => {
+          //   console.log(image.url);
+          //   setResUrlIn(prevent => [...prevent, image.url]);
+          // });
+          setResUrlIn(questions.question_images_in.map(image => image.url));
+          // questions.question_images_out.forEach((image) => {
+          //   console.log(image.url);
+          //   setResUrlOut(prevent => [...prevent, image.url]);
+          // });
+          setResUrlOut(questions.question_images_out.map(image => image.url));
+
+          console.log(questions.question_images_out[0].description);
+          setResUrlOutDes(questions.question_images_out[0].description)
+        });
       })
       .catch((error) => {
         // 오류 처리
@@ -189,7 +243,7 @@ export default function EditorExam({ number }) {
           <img key={index} src={URL} style={{ width: '25%' }} />
         ))} */}
         {isResUrlOut.map((URL, index) => (
-          <img key={index} src={URL} style={{ width: '25%' }} />
+          <img key={index} src={URL} id={'isResUrlOut'} style={{ width: '25%' }} />
         ))}
         <p dangerouslySetInnerHTML={{ __html: isResUrlOutDes }} />
         {isResOption.map((options, index) => (
@@ -197,6 +251,8 @@ export default function EditorExam({ number }) {
             dangerouslySetInnerHTML={{ __html: options }}></p>
         ))}
       </div>
+
+
 
       <EditorTool
         editorRef={editorRef1}
@@ -310,6 +366,7 @@ export default function EditorExam({ number }) {
 
           const result = handleImageSelect(e, editorRef2);
           setUrlOut(prevState => [...prevState, result]);
+          console.log(result);
           //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
           setUrlOutId(prevState => [...prevState, result.name])
         }}
@@ -317,7 +374,7 @@ export default function EditorExam({ number }) {
       <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>
         <div
           className="editor"
-          contentEditable="false"
+          contentEditable="true"
           ref={editorRef2}
           readOnly
           onDragOver={(e) => e.preventDefault()}
@@ -535,16 +592,22 @@ export default function EditorExam({ number }) {
         sendPostData();
         console.log(isResOption);
         console.log(isResUrlIn);
+        getData();//get이 내부로 들어가야하나?
       }}>생성</button>
+
       <button onClick={() => {
         sendDeleteData();
+        getData();//get이 내부로 들어가야하나?
       }
       }>삭제</button>
+
       <button onClick={() => {
         sendPutData();
+        getData();//get이 내부로 들어가야하나?
       }}>수정</button>
 
       <button onClick={() => {
+        getData();
         console.log(isUrlIn);
         console.log(
           "저장된 API question 값 : " + isData.question
@@ -552,12 +615,15 @@ export default function EditorExam({ number }) {
           // + "\n저장된 imageIn name : " + isUrlIn[0].name
           + "\n저장된 isUrlInId name : " + isUrlInId[0]
           + "\n저장된 imageOut 값 : " + isUrlOut
+          + "\n저장된 imageIn 값 : " + isUrlIn
           + "\n저장된 API options 값 : " + isData.options
           + "\n저장된 API isUrlIn 값 : " + isData.isUrlIn
           + "\n저장된 API isUrlOutDes 값 : " + isUrlOutDes
           + "\n저장된 API isResUrlOutDes 값 : " + isResUrlOutDes
         );
-        isUrlInId.forEach((imageId) => { console.log(imageId) })
+        isUrlIn.forEach((image) => { console.log("In" + image) })
+        isUrlOut.forEach((image) => { console.log("Out" + image) })
+        isResUrlOut.forEach((image) => { console.log("ResOut" + image) })
         console.log(ID);
       }}>확인</button>
     </div >

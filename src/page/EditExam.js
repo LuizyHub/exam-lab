@@ -4,7 +4,8 @@ import AttributeManager from "../components/AttributeManager"
 import { useState } from "react";
 import { useLoginController } from "../function/useLoginController";
 // import { useDataHandle } from "../..//dataHandle";
-import { RecoilRoot, useRecoilState } from "recoil";
+
+import { useRecoilState } from "recoil";
 import {
   IDState,
   ResQuestionState,
@@ -40,15 +41,16 @@ export default function EditExam() {
   const [isResUrlOut, setResUrlOut] = useRecoilState(ResUrlOutState);
   const [isResUrlOutDes, setResUrlOutDes] = useRecoilState(ResUrlOutDesState);
 
-  //이미지 마킹 실제 이미지로 전환
-  const imgRegex = /<img[^>]*>/ig;
-  let imgIndex = 0;
-  const replacedQuestion = isResQuestion.replace(imgRegex, () => {
-    // 이미지의 번호를 1부터 시작하여 증가시킵니다.
-    imgIndex++;
 
-    return `<img src='${isResUrlIn[imgIndex - 1]}' style= "width:5%;" />`;
-  })
+  //이미지 마킹 실제 이미지로 전환
+  // const imgRegex = /<img[^>]*>/ig;
+  // let imgIndex = 0;
+  // const replacedQuestion = isResQuestion.replace(imgRegex, () => {
+  //   // 이미지의 번호를 1부터 시작하여 증가시킵니다.
+  //   imgIndex++;
+
+  //   return `<img src='${isResUrlIn[imgIndex - 1]}' style= "width:5%;" />`;
+  // })
 
   return (
     <>
@@ -63,14 +65,14 @@ export default function EditExam() {
       {/* AttributeManager 저장하기가 되어야 EditorExam이 활성화 */}
 
 
-      <div>
+      {/* <div>
         <h1>View</h1>
         <p>{isCreate.length + 1}</p>
-        <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
-        {/* {isResUrlIn.map((URL, index) => (
+        <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} /> */}
+      {/* {isResUrlIn.map((URL, index) => (
           <img key={index} src={URL} style={{ width: '25%' }} />
         ))} */}
-        {isResUrlOut.map((URL, index) => (
+      {/* {isResUrlOut.map((URL, index) => (
           <img key={index} src={URL} style={{ width: '25%' }} />
         ))}
         <p dangerouslySetInnerHTML={{ __html: isResUrlOutDes }} />
@@ -78,12 +80,12 @@ export default function EditExam() {
           <p key={index}
             dangerouslySetInnerHTML={{ __html: options }}></p>
         ))}
-      </div>
+      </div> */}
 
       <button
         onClick={() => { handleCreate(); console.log(isCreate.length); }}
       >생성</button>
-      {isCreate.reverse().map((component, index) => (
+      {isCreate.map((component, index) => (
         <div key={index} style={{ marginTop: '40px' }}>
           <div key={index} style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '700px' }}>
             <button style={{ marginLeft: '80%' }} onClick={() => handleDelete(index)}>템플릿 삭제</button>

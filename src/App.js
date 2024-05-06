@@ -1,4 +1,5 @@
 import SelectExam from "./page/SelectExamPage";
+import { RecoilRoot } from 'recoil';
 import LabExam from "./page/LabExam";
 import EditExam from "./page/EditExam";
 import MainPage from "./page/MainPage"
@@ -10,20 +11,22 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     // test Router 변경 예정
-    <BrowserRouter>
-      <div>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/exams" element={<SelectExam />} />
-          <Route path="/selectQuestion" element={<SelectQuestionPage />} />
-          <Route path="/workbooks/create" element={<LabExam />} />
-          <Route path="/exams/3" element={<EditExam />} />
-          <Route path="/htmlParse" element={<ParsingImageTest />} />
-          <Route path="/english" element={<EnglishExam />} />
-          {/* 영어문제 테스트를 위한 페이지 */}
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <RecoilRoot>
+      <BrowserRouter>
+        <div>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/exams" element={<SelectExam />} />
+            <Route path="/selectQuestion" element={<SelectQuestionPage />} />
+            <Route path="/workbooks/create" element={<LabExam />} />
+            <Route path="/exams/3" element={<EditExam />} />
+            <Route path="/htmlParse" element={<ParsingImageTest />} />
+            <Route path="/english" element={<EnglishExam />} />
+            {/* 영어문제 테스트를 위한 페이지 */}
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </RecoilRoot>
   )
 }
 

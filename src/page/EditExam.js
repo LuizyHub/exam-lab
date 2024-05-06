@@ -4,7 +4,15 @@ import AttributeManager from "../components/AttributeManager"
 import { useState } from "react";
 import { useLoginController } from "../function/useLoginController";
 // import { useDataHandle } from "../..//dataHandle";
-
+import { RecoilRoot, useRecoilState } from "recoil";
+import {
+  IDState,
+  ResQuestionState,
+  ResOptionState,
+  ResUrlInState,
+  ResUrlOutState,
+  ResUrlOutDesState,
+} from '../function/recoilView';
 export default function EditExam() {
 
   //로그인 리모컨
@@ -24,6 +32,24 @@ export default function EditExam() {
     setCreate(deleteElement);
   };
 
+  //recoil
+  const [ID, setID] = useRecoilState(IDState);
+  const [isResQuestion, setResQuestion] = useRecoilState(ResQuestionState);
+  const [isResOption, setResOption] = useRecoilState(ResOptionState);
+  const [isResUrlIn, setResUrlIn] = useRecoilState(ResUrlInState);
+  const [isResUrlOut, setResUrlOut] = useRecoilState(ResUrlOutState);
+  const [isResUrlOutDes, setResUrlOutDes] = useRecoilState(ResUrlOutDesState);
+
+  //이미지 마킹 실제 이미지로 전환
+  const imgRegex = /<img[^>]*>/ig;
+  let imgIndex = 0;
+  const replacedQuestion = isResQuestion.replace(imgRegex, () => {
+    // 이미지의 번호를 1부터 시작하여 증가시킵니다.
+    imgIndex++;
+
+    return `<img src='${isResUrlIn[imgIndex - 1]}' style= "width:5%;" />`;
+  })
+
   return (
     <>
       <h1>Test</h1>
@@ -35,6 +61,24 @@ export default function EditExam() {
       <button>시험지 생성</button>
       <AttributeManager></AttributeManager>
       {/* AttributeManager 저장하기가 되어야 EditorExam이 활성화 */}
+
+
+      <div>
+        <h1>View</h1>
+        <p>{isCreate.length + 1}</p>
+        <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
+        {/* {isResUrlIn.map((URL, index) => (
+          <img key={index} src={URL} style={{ width: '25%' }} />
+        ))} */}
+        {isResUrlOut.map((URL, index) => (
+          <img key={index} src={URL} style={{ width: '25%' }} />
+        ))}
+        <p dangerouslySetInnerHTML={{ __html: isResUrlOutDes }} />
+        {isResOption.map((options, index) => (
+          <p key={index}
+            dangerouslySetInnerHTML={{ __html: options }}></p>
+        ))}
+      </div>
 
       <button
         onClick={() => { handleCreate(); console.log(isCreate.length); }}

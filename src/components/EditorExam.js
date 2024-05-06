@@ -5,6 +5,15 @@ import { handleData } from '../function/handleData';
 import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import {
+  IDState,
+  ResQuestionState,
+  ResOptionState,
+  ResUrlInState,
+  ResUrlOutState,
+  ResUrlOutDesState,
+} from '../function/recoilView';
 
 export default function EditorExam({ number }) {
   //from import
@@ -37,12 +46,12 @@ export default function EditorExam({ number }) {
   const imageInit = '<>';
 
   // view => recoil
-  const [ID, setID] = useState("");
-  const [isResQuestion, setResQuestion] = useState("");
-  const [isResOption, setResOption] = useState([]);
-  const [isResUrlIn, setResUrlIn] = useState([]);
-  const [isResUrlOut, setResUrlOut] = useState([]);
-  const [isResUrlOutDes, setResUrlOutDes] = useState([]);
+  const [ID, setID] = useRecoilState(IDState);
+  const [isResQuestion, setResQuestion] = useRecoilState(ResQuestionState);
+  const [isResOption, setResOption] = useRecoilState(ResOptionState);
+  const [isResUrlIn, setResUrlIn] = useRecoilState(ResUrlInState);
+  const [isResUrlOut, setResUrlOut] = useRecoilState(ResUrlOutState);
+  const [isResUrlOutDes, setResUrlOutDes] = useRecoilState(ResUrlOutDesState);
 
   const sendPostData = () => {
 

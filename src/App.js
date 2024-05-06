@@ -1,7 +1,7 @@
 import SelectExam from "./page/SelectExamPage";
 import SelectExamCreate from "./page/SelectExamCreatePage";
 import LabExam from "./page/LabExam";
-import EditExam from "./test/EditPage/EditExam";
+import EditExam from "./page/EditExam";
 import EditExamRefactory from "./test/EditPage/EditExamRefactory";
 import MainPage from "./page/MainPage"
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
@@ -25,8 +25,8 @@ function App() {
             <Route path="/exams/create" element={<SelectExamCreate />} />
             <Route path="/selectQuestion" element={<SelectQuestionPage />} />
             <Route path="/workbooks/create" element={<LabExam />} />
-            {/* <Route path="/edit" element={<EditExam />} /> */}
-            <Route path="/edit" element={<EditExamRefactory />} />
+            <Route path="/edit" element={<EditExam />} />
+            {/* <Route path="/edit" element={<EditExamRefactory />} /> */}
             <Route path="/htmlParse" element={<ParsingImageTest />} />
             <Route path="/workbooks" element={<WorkBooks />} />
             {/* 영어문제 테스트를 위한 페이지 */} 

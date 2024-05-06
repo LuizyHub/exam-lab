@@ -179,6 +179,8 @@ public class ExamServiceImpl implements ExamsService {
 
         String fileTitle = file.getOriginalFilename();
         String fileText = getFieldText(file, fileType);
+        //글자 수 유효검증
+        validateFileText(fileText);
 
         exam.setFile(fileTitle, fileText);
         examRepository.save(exam);
@@ -230,9 +232,14 @@ public class ExamServiceImpl implements ExamsService {
             }
         }
         else if (fileType.equals("application/pdf")) {
-            // TODO: pdf 파일을 text로 변환하는 로직
             return pdfService.getTextFromPDF(file);
         }
         return null;
+    }
+
+    private void validateFileText(String fileText) throws BadRequestException {
+        if (fileText == null || fileText.trim().isEmpty() || fileText.length()<20) {
+            throw new BadRequestException("생성에 필요한 파일의 글자수가 부족합니다.");
+        }
     }
 }

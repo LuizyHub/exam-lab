@@ -6,7 +6,7 @@ import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
 
-export default function EditorExam({ number }) {
+export default function EditorComment({ number }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImage();
   const { handleFileObject, handleIdContent, imageReplace } = handleData();

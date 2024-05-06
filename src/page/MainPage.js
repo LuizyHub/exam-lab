@@ -83,7 +83,7 @@ export default function MainPage() {
                     <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>시험지 제작하기</Link>
                 </button>
                 <button className='myExam-navigate-button'>
-                    <Link to='/editR' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지</Link>
+                    <Link to='/exams/3' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지</Link>
                 </button>
             </nav>
 

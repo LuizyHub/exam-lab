@@ -11,7 +11,7 @@ export default function Navigate() {
                 </div>
                 <div className="nav-item">
                     <img src="/img/시험지제작.png" alt="Main Image" className="nav-icon" />
-                    <Link to='/editR' className="nav-link">나만의 시험지</Link>
+                    <Link to='/exams/3' className="nav-link">나만의 시험지</Link>
                 </div>
             </nav>
         </div>

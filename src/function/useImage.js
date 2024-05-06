@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export const useImage = () => {
 
@@ -48,28 +48,11 @@ export const useImage = () => {
     return files[0]; //항상 배열로 넘겨줘야함
   };
 
-  // // 이미지를 렌더링하는 함수, 여기서 이미지 url을 알 수 있다.
-  // const readImageData = (file, elementRef) => {
-  //   // 이미지 파일을 읽어들임
-  //   const reader = new FileReader();
-  //   reader.onload = function (e) {
-  //     const imageDataUrl = e.target.result; //여기서 const여야 하는 이유는?우선 한번 이미지를렌더링 할 때 변경할 필요가 없기 때문이다.
-  //     setUrl(imageDataUrl);
-
-  //     // 이미지 삽입
-  //     insertImageConfig(imageDataUrl, elementRef);//어떤 영역에 읽어 드릴지 정해야 해서 elementRef를 인자로 두어야 한다.
-  //     console.log(`url : ${exportUrl}`)
-  //   };
-  //   reader.readAsDataURL(file, elementRef);
-
-  // }
-
-  //나중에 export
-
   // 이미지 삽입, 이미지 설정 함수
   const insertImageConfig = (elementRef, imageDataUrl, elementName) => {
 
     const imgElement = document.createElement('img');
+    const buttonElement = document.createElement('button'); // 버튼 엘리먼트 생성
 
     imgElement.setAttribute('id', elementName); // 이미지에 아이디 설정
     imgElement.src = imageDataUrl;
@@ -86,9 +69,19 @@ export const useImage = () => {
       // console.log(e.target);
     };
     console.log(imgElement);
+
+    // 버튼 설정
+    buttonElement.textContent = 'Delete'; // 버튼 텍스트 설정
+    buttonElement.onclick = (e) => {
+      // 버튼 클릭 시 이미지 삭제 로직 추가
+      imgElement.remove();
+      buttonElement.remove();
+    };
+
     // 에디터에 이미지 DOM에 삽입 -> 여기를 해결...
     if (elementRef.current) {
       elementRef.current.appendChild(imgElement);
+      elementRef.current.appendChild(buttonElement); // 버튼 삽입
     } else {
       console.error("Editor reference is null.");
     }

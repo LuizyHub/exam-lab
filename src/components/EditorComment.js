@@ -218,17 +218,17 @@ export default function EditorExam({ number }) {
 
   // console.log(replacedQuestion)
   return (
-
     <div>
-      <h3>답안등록</h3>
-      {/* <select value={contentType1} onChange={handleContentType1}>
+      <div>
+        <h3>답안등록</h3>
+        {/* <select value={contentType1} onChange={handleContentType1}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
         <option value="이미지">이미지</option>
         <option value="선택지">선택지</option>
       </select> */}
 
-      {/* <div>
+        {/* <div>
         <h1>View</h1>
         <p>{number}</p>
         <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
@@ -244,99 +244,99 @@ export default function EditorExam({ number }) {
 
 
 
-      <EditorTool
-        editorRef={editorRef1}
-        contentType={'문제'}
-        // handleContentType={handleContentType1}
-        handleToolClick={handleToolClick}
-        imageSelectorRef={imageSelectorRef1}
-        handleImgToolClick={handleImgToolClick}
-        isImageSize={isImageSize}
-        handleImgSize={handleImgSize}
-      />
+        <EditorTool
+          editorRef={editorRef1}
+          contentType={'문제'}
+          // handleContentType={handleContentType1}
+          handleToolClick={handleToolClick}
+          imageSelectorRef={imageSelectorRef1}
+          handleImgToolClick={handleImgToolClick}
+          isImageSize={isImageSize}
+          handleImgSize={handleImgSize}
+        />
 
-      {/* 이미지 파일 load */}
-      <input
-        type="file"
-        accept="image/*"
-        style={{ display: 'none' }}
-        ref={imageSelectorRef1}
-        onChange={(e) => {
-          //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
-          const result = handleImageSelect(e, editorRef1);
-          console.log(result);
-          setCommentUrlIn(prevState => [...prevState, result]);
-          setCommentUrlInId(prevState => [...prevState, result.name])
-          //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
-          const isResQuestion = editorRef1.current.innerHTML;//
-          const imageReplaceResult = imageReplace(isResQuestion);
-          console.log(imageReplaceResult);
-          setData(
-            prevState => ({
-              ...prevState,
-              question: imageReplaceResult
-            }));
-        }}
-      />
+        {/* 이미지 파일 load */}
+        <input
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          ref={imageSelectorRef1}
+          onChange={(e) => {
+            //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
+            const result = handleImageSelect(e, editorRef1);
+            console.log(result);
+            setCommentUrlIn(prevState => [...prevState, result]);
+            setCommentUrlInId(prevState => [...prevState, result.name])
+            //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
+            const isResQuestion = editorRef1.current.innerHTML;//
+            const imageReplaceResult = imageReplace(isResQuestion);
+            console.log(imageReplaceResult);
+            setData(
+              prevState => ({
+                ...prevState,
+                question: imageReplaceResult
+              }));
+          }}
+        />
 
-      <div
-        className="editor"
-        contentEditable="true"
-        ref={editorRef1}
-        onDragOver={(e) => e.preventDefault()}
-        onCopy={(e) => {
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-        }} // 이미지 복사 동작 막기
-        onCut={(e) => {
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-        }} // 이미지 잘라내기 동작 막기
-        onPaste={(e) => {
-          // 에디터 내에서 이미지 잘라내기 동작 막기
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-          //외부 이미지 붙혀넣기 동작 막기
-          const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-          let hasImage = false;
-          for (let index in items) {
-            const item = items[index];
-            if (item.kind === 'file' && item.type.includes('image')) {
-              hasImage = true;
-              break;
+        <div
+          className="editor"
+          contentEditable="true"
+          ref={editorRef1}
+          onDragOver={(e) => e.preventDefault()}
+          onCopy={(e) => {
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
             }
-          }
-          if (hasImage) {
-            e.preventDefault();
-          }
-        }} // 이미지 붙여넣기 동작 막기
+          }} // 이미지 복사 동작 막기
+          onCut={(e) => {
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
+            }
+          }} // 이미지 잘라내기 동작 막기
+          onPaste={(e) => {
+            // 에디터 내에서 이미지 잘라내기 동작 막기
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
+            }
+            //외부 이미지 붙혀넣기 동작 막기
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            let hasImage = false;
+            for (let index in items) {
+              const item = items[index];
+              if (item.kind === 'file' && item.type.includes('image')) {
+                hasImage = true;
+                break;
+              }
+            }
+            if (hasImage) {
+              e.preventDefault();
+            }
+          }} // 이미지 붙여넣기 동작 막기
 
 
-        onInput={() => {
-          const isResQuestion = editorRef1.current.innerHTML;
-          const imageReplaceResult = imageReplace(isResQuestion);
-          console.log(imageReplaceResult);
-          setData(
-            prevState => ({
-              ...prevState,
-              question: imageReplaceResult
-            }));
-          const resultEdit = handleFileObject(editorRef1, isCommentUrlInId, isCommentUrlIn);
-          const resultId = handleIdContent(editorRef1, isCommentUrlInId)
-          console.log(resultEdit);
-          setCommentUrlIn(resultEdit);
-          setCommentUrlInId(resultId);
-        }}
+          onInput={() => {
+            const isResQuestion = editorRef1.current.innerHTML;
+            const imageReplaceResult = imageReplace(isResQuestion);
+            console.log(imageReplaceResult);
+            setData(
+              prevState => ({
+                ...prevState,
+                question: imageReplaceResult
+              }));
+            const resultEdit = handleFileObject(editorRef1, isCommentUrlInId, isCommentUrlIn);
+            const resultId = handleIdContent(editorRef1, isCommentUrlInId)
+            console.log(resultEdit);
+            setCommentUrlIn(resultEdit);
+            setCommentUrlInId(resultId);
+          }}
 
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-      />
+          style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+        />
 
-      {/* ------------------------------------------------------------------------ */}
+        {/* ------------------------------------------------------------------------ */}
 
-      {/* 
+        {/* 
       <EditorTool
         editorRef={editorRef2}
         contentType={'이미지'}
@@ -449,20 +449,20 @@ export default function EditorExam({ number }) {
         // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
         />
       </div> */}
-      {/* ------------------------------------------------------------------------ */}
+        {/* ------------------------------------------------------------------------ */}
 
-      <EditorTool
-        editorRef={editorRef3}
-        contentType={'선택지'}
-        // handleContentType={handleContentType3}
-        handleToolClick={handleToolClick}
-        imageSelectorRef={imageSelectorRef3}
-        handleImgToolClick={handleImgToolClick}
-        isImageSize={isImageSize}
-        handleImgSize={handleImgSize}
-      // handleContent={() => { handleContent(editorRef3) }}
-      />
-      {/* <input
+        <EditorTool
+          editorRef={editorRef3}
+          contentType={'선택지'}
+          // handleContentType={handleContentType3}
+          handleToolClick={handleToolClick}
+          imageSelectorRef={imageSelectorRef3}
+          handleImgToolClick={handleImgToolClick}
+          isImageSize={isImageSize}
+          handleImgSize={handleImgSize}
+        // handleContent={() => { handleContent(editorRef3) }}
+        />
+        {/* <input
         type="file"
         accept="image/*"
         style={{ display: 'none' }}
@@ -470,153 +470,154 @@ export default function EditorExam({ number }) {
         onChange={(e) => { handleImageSelect(e, editorRef3) }}
       /> */}
 
-      <div
-        className="editor"
-        contentEditable="true"
-        ref={editorRef3}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault(); // 기본 동작 막기
-          }
-        }}
-        onKeyUp={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault(); // 기본 동작 막기
-            const editor = e.target;
-            const brCount = editor.querySelectorAll('br').length + 1;
-            const newOption = String.fromCharCode(0x245F + brCount);
-
-            // 생성된 문자를 현재 포커스된 위치에 삽입합니다.
-            const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            const textNode = document.createTextNode(newOption);
-            range.insertNode(textNode);
-
-            // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
-            const br = document.createElement('br');
-            range.insertNode(br);
-
-            // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
-            range.setStartAfter(textNode);
-            range.setEndAfter(textNode);
-
-            // 커서를 설정합니다.
-            selection.removeAllRanges();
-            selection.addRange(range);
-          }
-        }}
-        onDragOver={(e) => e.preventDefault()}
-        onCopy={(e) => {
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-        }} // 이미지 복사 동작 막기
-        onCut={(e) => {
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-        }} // 이미지 잘라내기 동작 막기
-        onPaste={(e) => {
-          // 에디터 내에서 이미지 잘라내기 동작 막기
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-          //외부 이미지 붙혀넣기 동작 막기
-          const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-          let hasImage = false;
-          for (let index in items) {
-            const item = items[index];
-            if (item.kind === 'file' && item.type.includes('image')) {
-              hasImage = true;
-              break;
+        <div
+          className="editor"
+          contentEditable="true"
+          ref={editorRef3}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault(); // 기본 동작 막기
             }
-          }
-          if (hasImage) {
-            e.preventDefault();
-          }
-        }} // 이미지 붙여넣기 동작 막기
+          }}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault(); // 기본 동작 막기
+              const editor = e.target;
+              const brCount = editor.querySelectorAll('br').length + 1;
+              const newOption = String.fromCharCode(0x245F + brCount);
 
-        // dangerouslySetInnerHTML={{ __html: optionsInit }}
+              // 생성된 문자를 현재 포커스된 위치에 삽입합니다.
+              const selection = window.getSelection();
+              const range = selection.getRangeAt(0);
+              const textNode = document.createTextNode(newOption);
+              range.insertNode(textNode);
 
-        onInput={() => {
-          const isOptions = editorRef3.current.innerHTML;
+              // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
+              const br = document.createElement('br');
+              range.insertNode(br);
+
+              // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
+              range.setStartAfter(textNode);
+              range.setEndAfter(textNode);
+
+              // 커서를 설정합니다.
+              selection.removeAllRanges();
+              selection.addRange(range);
+            }
+          }}
+          onDragOver={(e) => e.preventDefault()}
+          onCopy={(e) => {
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
+            }
+          }} // 이미지 복사 동작 막기
+          onCut={(e) => {
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
+            }
+          }} // 이미지 잘라내기 동작 막기
+          onPaste={(e) => {
+            // 에디터 내에서 이미지 잘라내기 동작 막기
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
+            }
+            //외부 이미지 붙혀넣기 동작 막기
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            let hasImage = false;
+            for (let index in items) {
+              const item = items[index];
+              if (item.kind === 'file' && item.type.includes('image')) {
+                hasImage = true;
+                break;
+              }
+            }
+            if (hasImage) {
+              e.preventDefault();
+            }
+          }} // 이미지 붙여넣기 동작 막기
+
+          // dangerouslySetInnerHTML={{ __html: optionsInit }}
+
+          onInput={() => {
+            const isOptions = editorRef3.current.innerHTML;
 
 
-          const optionsInitArray = isOptions.split('<br>').map(item => item.trim());
+            const optionsInitArray = isOptions.split('<br>').map(item => item.trim());
 
-          const splitOptionsArray = optionsInitArray.flatMap(option => option.split('<div>').map(text => text.trim()));
+            const splitOptionsArray = optionsInitArray.flatMap(option => option.split('<div>').map(text => text.trim()));
 
-          // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
+            // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
 
-          setData(prevState => ({ ...prevState, options: splitOptionsArray }));
+            setData(prevState => ({ ...prevState, options: splitOptionsArray }));
 
-          const optionsArray = splitOptionsArray.filter(option => option !== '');
+            const optionsArray = splitOptionsArray.filter(option => option !== '');
 
-          setData(prevState => ({ ...prevState, options: optionsArray }));
+            setData(prevState => ({ ...prevState, options: optionsArray }));
 
-          // setData(prevState => ({ ...prevState, options: isOptions }));
+            // setData(prevState => ({ ...prevState, options: isOptions }));
 
-          console.log(isOptions)
-          // setData(prevState => ({ ...prevState, options: isOptions }));
+            console.log(isOptions)
+            // setData(prevState => ({ ...prevState, options: isOptions }));
 
-          // // 줄 바꿈을 기준으로 배열을 분할하고, 필터링하여 빈 문자열을 제거합니다.
-          // const optionsArray = optionsInitArray.split('\n').filter(option => option.trim() !== '');
-          // const optionsArray = splitOptionsArray.filter(option => option.trim() !== '');
+            // // 줄 바꿈을 기준으로 배열을 분할하고, 필터링하여 빈 문자열을 제거합니다.
+            // const optionsArray = optionsInitArray.split('\n').filter(option => option.trim() !== '');
+            // const optionsArray = splitOptionsArray.filter(option => option.trim() !== '');
 
-          // // <div>을 기준으로 분할하고, 각 요소를 trim하여 새로운 배열을 생성합니다.
+            // // <div>을 기준으로 분할하고, 각 요소를 trim하여 새로운 배열을 생성합니다.
 
-          // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
-          // // console.log(isOptions);
-          // setData(prevState => ({ ...prevState, options: optionsArray }));
-        }}
+            // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
+            // // console.log(isOptions);
+            // setData(prevState => ({ ...prevState, options: optionsArray }));
+          }}
 
-        style={{
-          padding: '16px 24px',
-          border: '1px solid #D6D6D6',
-          borderRadius: '4px',
-          width: '600px',
+          style={{
+            padding: '16px 24px',
+            border: '1px solid #D6D6D6',
+            borderRadius: '4px',
+            width: '600px',
 
-        }}
-      />
+          }}
+        />
 
-      <button type='submit' onClick={() => {
-        sendPostData();
-        console.log(isResOption);
-        console.log(isResUrlIn);
-        // getData();//get이 내부로 들어가야하나?
-      }}>생성</button>
+        <button type='submit' onClick={() => {
+          sendPostData();
+          console.log(isResOption);
+          console.log(isResUrlIn);
+          // getData();//get이 내부로 들어가야하나?
+        }}>생성</button>
 
-      <button onClick={() => {
-        sendDeleteData();
-        // getData();//get이 내부로 들어가야하나?
-      }
-      }>삭제</button>
+        <button onClick={() => {
+          sendDeleteData();
+          // getData();//get이 내부로 들어가야하나?
+        }
+        }>삭제</button>
 
-      <button onClick={() => {
-        sendPutData();
-        // getData();//get이 내부로 들어가야하나?
-      }}>수정</button>
+        <button onClick={() => {
+          sendPutData();
+          // getData();//get이 내부로 들어가야하나?
+        }}>수정</button>
 
-      <button onClick={() => {
-        // getData();
-        console.log(isCommentUrlIn);
-        console.log(
-          "저장된 API question 값 : " + isData.question
-          + "\n저장된 imageIn 값 : " + isCommentUrlIn[0]
-          // + "\n저장된 imageIn name : " + isCommentUrlIn[0].name
-          + "\n저장된 isCommentUrlInId name : " + isCommentUrlInId[0]
-          + "\n저장된 imageOut 값 : " + isCommentUrlOut
-          + "\n저장된 imageIn 값 : " + isCommentUrlIn
-          + "\n저장된 API options 값 : " + isData.options
-          + "\n저장된 API isCommentUrlIn 값 : " + isData.isCommentUrlIn
-          + "\n저장된 API isCommentUrlOutDes 값 : " + isCommentUrlOutDes
-          + "\n저장된 API isResUrlOutDes 값 : " + isResUrlOutDes
-        );
-        isCommentUrlIn.forEach((image) => { console.log("In" + image) })
-        isCommentUrlOut.forEach((image) => { console.log("Out" + image) })
-        isResUrlOut.forEach((image) => { console.log("ResOut" + image) })
-        console.log(ID);
-      }}>확인</button>
-    </div >
+        <button onClick={() => {
+          // getData();
+          console.log(isCommentUrlIn);
+          console.log(
+            "저장된 API question 값 : " + isData.question
+            + "\n저장된 imageIn 값 : " + isCommentUrlIn[0]
+            // + "\n저장된 imageIn name : " + isCommentUrlIn[0].name
+            + "\n저장된 isCommentUrlInId name : " + isCommentUrlInId[0]
+            + "\n저장된 imageOut 값 : " + isCommentUrlOut
+            + "\n저장된 imageIn 값 : " + isCommentUrlIn
+            + "\n저장된 API options 값 : " + isData.options
+            + "\n저장된 API isCommentUrlIn 값 : " + isData.isCommentUrlIn
+            + "\n저장된 API isCommentUrlOutDes 값 : " + isCommentUrlOutDes
+            + "\n저장된 API isResUrlOutDes 값 : " + isResUrlOutDes
+          );
+          isCommentUrlIn.forEach((image) => { console.log("In" + image) })
+          isCommentUrlOut.forEach((image) => { console.log("Out" + image) })
+          isResUrlOut.forEach((image) => { console.log("ResOut" + image) })
+          console.log(ID);
+        }}>확인</button>
+      </div >
+    </div>
   );
 }

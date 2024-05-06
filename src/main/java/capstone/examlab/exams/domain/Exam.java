@@ -35,4 +35,6 @@ public abstract class Exam {
     abstract public void setFile(String fileTitle, String fileText);
 
     abstract public void deleteFile();
+
+    abstract public String getFileText();
 }

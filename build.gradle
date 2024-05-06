@@ -23,10 +23,11 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
 }
 
 ext {
-    set('snippetsDir', file("build/generated-snippets"))
+    set('springAiVersion', "0.8.1")
 }
 
 dependencies {
@@ -67,6 +68,15 @@ dependencies {
     testImplementation 'org.testcontainers:testcontainers:1.19.3'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation("org.testcontainers:junit-jupiter:1.12.0")
+
+    //Spring openai
+    implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+    }
 }
 
 tasks.named('test') {

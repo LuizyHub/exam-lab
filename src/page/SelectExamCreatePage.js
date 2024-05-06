@@ -44,8 +44,7 @@ export default function SelectExamCreatePage() {
               {exam.exam_title}
             </button>
           ))}
-          <button onClick={()=> {navigate('/editR')}}> + 시험 추가 
-          </button>
+          <button onClick={()=> {navigate('/edit')}}> + 시험 추가 </button>
         </div>
       </div>
       <NavigationBar />

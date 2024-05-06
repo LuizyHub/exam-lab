@@ -26,7 +26,7 @@ function App() {
             <Route path="/selectQuestion" element={<SelectQuestionPage />} />
             <Route path="/workbooks/create" element={<LabExam />} />
             {/* <Route path="/edit" element={<EditExam />} /> */}
-            <Route path="/editR" element={<EditExamRefactory />} />
+            <Route path="/edit" element={<EditExamRefactory />} />
             <Route path="/htmlParse" element={<ParsingImageTest />} />
             <Route path="/workbooks" element={<WorkBooks />} />
             {/* 영어문제 테스트를 위한 페이지 */} 

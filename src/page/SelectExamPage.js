@@ -23,7 +23,7 @@ export default function SelectExamPage() {
 
   // 시험 종류 선택
   const handleExamTypeClick = (examId, examTitle) => {
-    navigate('/editR', { state: { examId, examTitle } });
+    navigate('/edit', { state: { examId, examTitle } });
   }
   
 
@@ -85,7 +85,7 @@ export default function SelectExamPage() {
         </div>
       </div>
       <NavigationBar />
-      <button onClick={()=> {navigate('/editR')}}> + 시험 추가 </button>
+      <button onClick={()=> {navigate('/edit')}}> + 시험 추가 </button>
       {/* {inputExamTitleModal &&
         <div className="modal">
           <div className="modal-content">

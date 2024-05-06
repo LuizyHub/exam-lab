@@ -7,6 +7,7 @@ import capstone.examlab.exams.domain.Exam;
 import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exhandler.exception.UnauthorizedException;
+import capstone.examlab.pdf.PDFService;
 import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.users.domain.User;
@@ -32,6 +33,7 @@ public class ExamServiceImpl implements ExamsService {
 
     private final ObjectProvider<Exam> examProvider;
     private final ExamRepository examRepository;
+    private final PDFService pdfService;
     private final QuestionsService questionsService;
     private final AiService aiService;
 
@@ -229,7 +231,7 @@ public class ExamServiceImpl implements ExamsService {
         }
         else if (fileType.equals("application/pdf")) {
             // TODO: pdf 파일을 text로 변환하는 로직
-
+            return pdfService.getTextFromPDF(file);
         }
         return null;
     }

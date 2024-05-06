@@ -63,6 +63,9 @@ dependencies {
     //Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+    //pdfbox
+    implementation 'org.apache.pdfbox:pdfbox:2.0.24'
+
     //Elasticsearch TestContainer
     testImplementation 'org.testcontainers:elasticsearch:1.19.3'
     testImplementation 'org.testcontainers:testcontainers:1.19.3'

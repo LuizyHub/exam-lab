@@ -210,7 +210,6 @@ export default function EditorExam({ number }) {
           console.log(imageReplaceResult);
           setData(
             prevState => ({
-              ...prevState,
               question: imageReplaceResult
             }));
         }}

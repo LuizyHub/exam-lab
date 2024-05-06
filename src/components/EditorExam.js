@@ -205,10 +205,9 @@ export default function EditorExam({ number }) {
           setUrlIn(prevState => [...prevState, result]);
           setUrlInId(prevState => [...prevState, result.name])
           //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
-
-          //-> 초기값ㄴ
-          const isQuestion = editorRef1.current.innerHTML;//
-          const imageReplaceResult = imageReplace(isQuestion);
+          const isResQuestion = editorRef1.current.innerHTML;//
+          const imageReplaceResult = imageReplace(isResQuestion);
+          console.log(imageReplaceResult);
           setData(
             prevState => ({
               question: imageReplaceResult

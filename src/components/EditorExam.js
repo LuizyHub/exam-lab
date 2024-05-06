@@ -42,7 +42,7 @@ export default function EditorExam({ number }) {
     options: [],//'①', '②', '③', '④'
   });
 
-  const optionsInit = '①<br>②<br>③<br>④';
+  const optionsInit = '①<br>';//②<br>③<br>④
   const imageInit = '<>';
 
   // view => recoil
@@ -105,13 +105,13 @@ export default function EditorExam({ number }) {
         console.log(response.data);
         const message = response.data.message;
         setID(message.id);
-        // setResQuestion(message.question);
-        // setResOption(message.options);
-        // // setResOption(prevOption => [...prevOption, ...message.option]);
-        // setResUrlIn(message.question_images_in.map(image => image.url));
-        // // console.log(message.question_images_in[0].url);
-        // setResUrlOut(message.question_images_out.map(image => image.url));
-        // setResUrlOutDes(message.question_images_out[0].description);
+        setResQuestion(message.question);
+        setResOption(message.options);
+        // setResOption(prevOption => [...prevOption, ...message.option]);
+        setResUrlIn(message.question_images_in.map(image => image.url));
+        // console.log(message.question_images_in[0].url);
+        setResUrlOut(message.question_images_out.map(image => image.url));
+        setResUrlOutDes(message.question_images_out[0].description);
       })
       .catch((error) => {
         console.log(error);
@@ -175,46 +175,47 @@ export default function EditorExam({ number }) {
       });
   }
 
-  const getData = () => {
-    console.log("가져오기");
-    const URL = '/api/v1/exams/5/questions';
+  // const getData = () => {
+  //   console.log("가져오기");
+  //   const URL = '/api/v1/exams/5/questions';
 
-    axios.get(URL)
-      .then((response) => {
-        const res = response.data;
-        console.log(res);
-        console.log(res.id);
-        // setID(res.id);
-        console.log(res.questions);
-        res.questions.forEach((questions, index) => {
-          console.log(`Question ${index + 1}:`);
-          console.log(questions.question);
-          setResQuestion(questions.question);
-          console.log(questions.options);
-          setResOption(questions.options);
-          // questions.question_images_in.forEach((image) => {
-          //   console.log(image.url);
-          //   setResUrlIn(prevent => [...prevent, image.url]);
-          // });
-          setResUrlIn(questions.question_images_in.map(image => image.url));
-          // questions.question_images_out.forEach((image) => {
-          //   console.log(image.url);
-          //   setResUrlOut(prevent => [...prevent, image.url]);
-          // });
-          setResUrlOut(questions.question_images_out.map(image => image.url));
+  //   axios.get(URL)
+  //     .then((response) => {
+  //       const res = response.data;
+  //       console.log(res);
+  //       console.log(res.id);
+  //       // setID(res.id);
+  //       console.log(res.questions);
+  //       res.questions.forEach((questions, index) => {
+  //         console.log(`Question ${index + 1}:`);
+  //         console.log(questions.question);
+  //         setResQuestion(questions.question);
+  //         console.log(questions.options);
+  //         setResOption(questions.options);
+  //         // questions.question_images_in.forEach((image) => {
+  //         //   console.log(image.url);
+  //         //   setResUrlIn(prevent => [...prevent, image.url]);
+  //         // });
+  //         setResUrlIn(questions.question_images_in.map(image => image.url));
+  //         // questions.question_images_out.forEach((image) => {
+  //         //   console.log(image.url);
+  //         //   setResUrlOut(prevent => [...prevent, image.url]);
+  //         // });
+  //         setResUrlOut(questions.question_images_out.map(image => image.url));
 
-          console.log(questions.question_images_out[0].description);
-          setResUrlOutDes(questions.question_images_out[0].description)
-        });
-      })
-      .catch((error) => {
-        // 오류 처리
-        console.log(error);
-      });
-  }
+  //         console.log(questions.question_images_out[0].description);
+  //         setResUrlOutDes(questions.question_images_out[0].description)
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       // 오류 처리
+  //       console.log(error);
+  //     });
+  // }
 
 
   //이미지 마킹 실제 이미지로 전환
+
   const imgRegex = /<img[^>]*>/ig;
   let imgIndex = 0;
   const replacedQuestion = isResQuestion.replace(imgRegex, () => {
@@ -228,6 +229,7 @@ export default function EditorExam({ number }) {
   return (
 
     <div>
+      <h3>문제등록</h3>
       {/* <select value={contentType1} onChange={handleContentType1}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
@@ -235,13 +237,10 @@ export default function EditorExam({ number }) {
         <option value="선택지">선택지</option>
       </select> */}
 
-      <div>
+      {/* <div>
         <h1>View</h1>
         <p>{number}</p>
         <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
-        {/* {isResUrlIn.map((URL, index) => (
-          <img key={index} src={URL} style={{ width: '25%' }} />
-        ))} */}
         {isResUrlOut.map((URL, index) => (
           <img key={index} src={URL} id={'isResUrlOut'} style={{ width: '25%' }} />
         ))}
@@ -250,7 +249,7 @@ export default function EditorExam({ number }) {
           <p key={index}
             dangerouslySetInnerHTML={{ __html: options }}></p>
         ))}
-      </div>
+      </div> */}
 
 
 
@@ -493,7 +492,7 @@ export default function EditorExam({ number }) {
             e.preventDefault(); // 기본 동작 막기
             const editor = e.target;
             const brCount = editor.querySelectorAll('br').length + 1;
-            const newOption = String.fromCharCode(0x245F + brCount + 1);
+            const newOption = String.fromCharCode(0x245F + brCount);
 
             // 생성된 문자를 현재 포커스된 위치에 삽입합니다.
             const selection = window.getSelection();
@@ -592,22 +591,22 @@ export default function EditorExam({ number }) {
         sendPostData();
         console.log(isResOption);
         console.log(isResUrlIn);
-        getData();//get이 내부로 들어가야하나?
+        // getData();//get이 내부로 들어가야하나?
       }}>생성</button>
 
       <button onClick={() => {
         sendDeleteData();
-        getData();//get이 내부로 들어가야하나?
+        // getData();//get이 내부로 들어가야하나?
       }
       }>삭제</button>
 
       <button onClick={() => {
         sendPutData();
-        getData();//get이 내부로 들어가야하나?
+        // getData();//get이 내부로 들어가야하나?
       }}>수정</button>
 
       <button onClick={() => {
-        getData();
+        // getData();
         console.log(isUrlIn);
         console.log(
           "저장된 API question 값 : " + isData.question

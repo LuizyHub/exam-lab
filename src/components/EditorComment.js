@@ -6,7 +6,7 @@ import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
 
-export default function EditorComment({ number }) {
+export default function EditorExam({ number }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImage();
   const { handleFileObject, handleIdContent, imageReplace } = handleData();
@@ -19,25 +19,30 @@ export default function EditorComment({ number }) {
   //*editorRefN은 이후에 해당 컴포넌트(contentEditable)가 생성되면 함께 생성이 되어야 한다.
   const editorRef1 = useRef(null); //이미지를 appendChild할 때 dom의 위치를 참조하기 위함
   const editorRef2 = useRef(null);
+  const editorRefDescription = useRef(null);
   const editorRef3 = useRef(null);
 
-  const [isUrlOut, setUrlOut] = useState([]);
-  const [isUrlOutId, setUrlOutId] = useState([]);
-  const [isUrlIn, setUrlIn] = useState([]);
-  const [isUrlInId, setUrlInId] = useState([]);
+  const [isCommentUrlOut, setCommentUrlOut] = useState([]);
+  const [isCommentUrlOutId, setCommentUrlOutId] = useState([]);
+  const [isCommentUrlOutDes, setCommentUrlOutDes] = useState();
+  const [isCommentUrlIn, setCommentUrlIn] = useState([]);
+  const [isCommentUrlInId, setCommentUrlInId] = useState([]);
   //단일로 수정
   const [isData, setData] = useState({
     question: '',
     options: [],//'①', '②', '③', '④'
   });
 
-  const optionsInit = '①<br>②<br>③<br>④';
+  const optionsInit = '①<br>';//②<br>③<br>④
   const imageInit = '<>';
+
+  // view => recoil
   const [ID, setID] = useState("");
   const [isResQuestion, setResQuestion] = useState("");
   const [isResOption, setResOption] = useState([]);
   const [isResUrlIn, setResUrlIn] = useState([]);
   const [isResUrlOut, setResUrlOut] = useState([]);
+  const [isResUrlOutDes, setResUrlOutDes] = useState();
 
   const sendPostData = () => {
 
@@ -45,14 +50,14 @@ export default function EditorComment({ number }) {
     const formData = new FormData();
 
     const questionImagesTextIn = [];
-    isUrlIn.forEach(image => {
-      const questionImage = { url: "", description: "설명", attribute: "속성" };
+    isCommentUrlIn.forEach(image => {
+      const questionImage = { url: "", description: "설명", attribute: "" };
       questionImagesTextIn.push(questionImage);
     });
 
     const questionImagesTextOut = [];
-    isUrlOut.forEach(image => {
-      const questionImage = { url: "", description: "설명", attribute: "속성" };
+    isCommentUrlOut.forEach(image => {
+      const questionImage = { url: "", description: isCommentUrlOutDes, attribute: "" };
       questionImagesTextOut.push(questionImage);
     });
 
@@ -73,12 +78,12 @@ export default function EditorComment({ number }) {
     });
     formData.append('questionUploadInfo', questionUploadInfo);
 
-    isUrlIn.forEach((image) => {
+    isCommentUrlIn.forEach((image) => {
       console.log(image.name);
       formData.append('questionImagesIn', image);
     });
     //questionImagesOut
-    isUrlOut.forEach((image) => {
+    isCommentUrlOut.forEach((image) => {
       console.log(image.name);
       formData.append('questionImagesOut', image);
     });
@@ -97,6 +102,7 @@ export default function EditorComment({ number }) {
         setResUrlIn(message.question_images_in.map(image => image.url));
         // console.log(message.question_images_in[0].url);
         setResUrlOut(message.question_images_out.map(image => image.url));
+        setResUrlOutDes(message.question_images_out[0].description);
       })
       .catch((error) => {
         console.log(error);
@@ -105,7 +111,7 @@ export default function EditorComment({ number }) {
 
   const sendDeleteData = () => {
     console.log("삭제");
-    console.log(isUrlIn);
+    console.log(isCommentUrlIn);
     console.log(ID);
     const URL = `/api/v1/questions/${ID}`
     // const URL = `/api/v1/questions/6f9a1418-a3c8-4c0b-91a3-7a461164dcf6`
@@ -124,10 +130,26 @@ export default function EditorComment({ number }) {
     console.log("수정");
     const URL = `/api/v1/questions`
     console.log(ID)
+
+    // const questionImagesTextIn = [];
+    // isCommentUrlIn.forEach(image => {
+    //   const questionImage = { url: image.url, description: "설명", attribute: "" };
+    //   questionImagesTextIn.push(questionImage);
+    // });
+
+    // const questionImagesTextOut = [];
+    // isCommentUrlOut.forEach(image => {
+    //   const questionImage = { url: image.url, description: isCommentUrlOutDes, attribute: "" };
+    //   questionImagesTextOut.push(questionImage);
+    // });
+
+    //이미지 수정 불가
     const requestData = {
       id: ID,
       question: isData.question,
       options: isData.options,
+      // questionImagesTextIn: [],
+      // questionImagesTextOut: [],
       answers: ["0"],
       commentary: "",
       tags: { "category": ["test"] },
@@ -144,8 +166,47 @@ export default function EditorComment({ number }) {
       });
   }
 
+  // const getData = () => {
+  //   console.log("가져오기");
+  //   const URL = '/api/v1/exams/5/questions';
+
+  //   axios.get(URL)
+  //     .then((response) => {
+  //       const res = response.data;
+  //       console.log(res);
+  //       console.log(res.id);
+  //       // setID(res.id);
+  //       console.log(res.questions);
+  //       res.questions.forEach((questions, index) => {
+  //         console.log(`Question ${index + 1}:`);
+  //         console.log(questions.question);
+  //         setResQuestion(questions.question);
+  //         console.log(questions.options);
+  //         setResOption(questions.options);
+  //         // questions.question_images_in.forEach((image) => {
+  //         //   console.log(image.url);
+  //         //   setResUrlIn(prevent => [...prevent, image.url]);
+  //         // });
+  //         setResUrlIn(questions.question_images_in.map(image => image.url));
+  //         // questions.question_images_out.forEach((image) => {
+  //         //   console.log(image.url);
+  //         //   setResUrlOut(prevent => [...prevent, image.url]);
+  //         // });
+  //         setResUrlOut(questions.question_images_out.map(image => image.url));
+
+  //         console.log(questions.question_images_out[0].description);
+  //         setResUrlOutDes(questions.question_images_out[0].description)
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       // 오류 처리
+  //       console.log(error);
+  //     });
+  // }
+
 
   //이미지 마킹 실제 이미지로 전환
+
   const imgRegex = /<img[^>]*>/ig;
   let imgIndex = 0;
   const replacedQuestion = isResQuestion.replace(imgRegex, () => {
@@ -159,6 +220,7 @@ export default function EditorComment({ number }) {
   return (
 
     <div>
+      <h3>답안등록</h3>
       {/* <select value={contentType1} onChange={handleContentType1}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
@@ -166,21 +228,21 @@ export default function EditorComment({ number }) {
         <option value="선택지">선택지</option>
       </select> */}
 
-      <div>
-        <h1>Show</h1>
+      {/* <div>
+        <h1>View</h1>
         <p>{number}</p>
         <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
-        {/* {isResUrlIn.map((URL, index) => (
-          <img key={index} src={URL} style={{ width: '25%' }} />
-        ))} */}
         {isResUrlOut.map((URL, index) => (
-          <img key={index} src={URL} style={{ width: '25%' }} />
+          <img key={index} src={URL} id={'isResUrlOut'} style={{ width: '25%' }} />
         ))}
+        <p dangerouslySetInnerHTML={{ __html: isResUrlOutDes }} />
         {isResOption.map((options, index) => (
           <p key={index}
             dangerouslySetInnerHTML={{ __html: options }}></p>
         ))}
-      </div>
+      </div> */}
+
+
 
       <EditorTool
         editorRef={editorRef1}
@@ -203,8 +265,8 @@ export default function EditorComment({ number }) {
           //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
           const result = handleImageSelect(e, editorRef1);
           console.log(result);
-          setUrlIn(prevState => [...prevState, result]);
-          setUrlInId(prevState => [...prevState, result.name])
+          setCommentUrlIn(prevState => [...prevState, result]);
+          setCommentUrlInId(prevState => [...prevState, result.name])
           //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
           const isResQuestion = editorRef1.current.innerHTML;//
           const imageReplaceResult = imageReplace(isResQuestion);
@@ -262,11 +324,11 @@ export default function EditorComment({ number }) {
               ...prevState,
               question: imageReplaceResult
             }));
-          const resultEdit = handleFileObject(editorRef1, isUrlInId, isUrlIn);
-          const resultId = handleIdContent(editorRef1, isUrlInId)
+          const resultEdit = handleFileObject(editorRef1, isCommentUrlInId, isCommentUrlIn);
+          const resultId = handleIdContent(editorRef1, isCommentUrlInId)
           console.log(resultEdit);
-          setUrlIn(resultEdit);
-          setUrlInId(resultId);
+          setCommentUrlIn(resultEdit);
+          setCommentUrlInId(resultId);
         }}
 
         style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
@@ -274,6 +336,7 @@ export default function EditorComment({ number }) {
 
       {/* ------------------------------------------------------------------------ */}
 
+      {/* 
       <EditorTool
         editorRef={editorRef2}
         contentType={'이미지'}
@@ -293,86 +356,99 @@ export default function EditorComment({ number }) {
         onChange={(e) => {
 
           const result = handleImageSelect(e, editorRef2);
-          setUrlOut(prevState => [...prevState, result]);
+          setCommentUrlOut(prevState => [...prevState, result]);
+          console.log(result);
           //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
-          setUrlOutId(prevState => [...prevState, result.name])
+          setCommentUrlOutId(prevState => [...prevState, result.name])
         }}
       />
-      <div
-        className="editor"
-        contentEditable="false"
-        ref={editorRef2}
-        readOnly
-        onDragOver={(e) => e.preventDefault()}
-        onCopy={(e) => {
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-        }} // 이미지 복사 동작 막기
-        onCut={(e) => {
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-        }} // 이미지 잘라내기 동작 막기
-        onPaste={(e) => {
-          // 에디터 내에서 이미지 잘라내기 동작 막기
-          if (e.target.tagName.toLowerCase() === 'img') {
-            e.preventDefault();
-          }
-          //외부 이미지 붙혀넣기 동작 막기
-          const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-          let hasImage = false;
-          for (let index in items) {
-            const item = items[index];
-            if (item.kind === 'file' && item.type.includes('image')) {
-              hasImage = true;
-              break;
+      <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>
+        <div
+          className="editor"
+          contentEditable="true"
+          ref={editorRef2}
+          readOnly
+          onDragOver={(e) => e.preventDefault()}
+          onCopy={(e) => {
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
             }
-          }
-          if (hasImage) {
-            e.preventDefault();
-          }
-        }} // 이미지 붙여넣기 동작 막기
+          }} // 이미지 복사 동작 막기
+          onCut={(e) => {
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
+            }
+          }} // 이미지 잘라내기 동작 막기
+          onPaste={(e) => {
+            // 에디터 내에서 이미지 잘라내기 동작 막기
+            if (e.target.tagName.toLowerCase() === 'img') {
+              e.preventDefault();
+            }
+            //외부 이미지 붙혀넣기 동작 막기
+            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+            let hasImage = false;
+            for (let index in items) {
+              const item = items[index];
+              if (item.kind === 'file' && item.type.includes('image')) {
+                hasImage = true;
+                break;
+              }
+            }
+            if (hasImage) {
+              e.preventDefault();
+            }
+          }} // 이미지 붙여넣기 동작 막기
 
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault(); // 기본 동작 막기
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault(); // 기본 동작 막기
 
-            // 생성된 문자열을 현재 포커스된 위치에 삽입합니다.
-            const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            const textNode = document.createTextNode(imageInit);
-            range.insertNode(textNode);
+              // 생성된 문자열을 현재 포커스된 위치에 삽입합니다.
+              const selection = window.getSelection();
+              const range = selection.getRangeAt(0);
+              const textNode = document.createTextNode(imageInit);
+              range.insertNode(textNode);
 
-            // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
-            const br = document.createElement('br');
-            range.insertNode(br);
+              // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
+              const br = document.createElement('br');
+              range.insertNode(br);
 
-            // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
-            range.setStartAfter(textNode);
-            range.setEndAfter(textNode);
+              // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
+              range.setStartAfter(textNode);
+              range.setEndAfter(textNode);
 
-            // 커서를 설정합니다.
-            selection.removeAllRanges();
-            selection.addRange(range);
-          }
-        }}
-        dangerouslySetInnerHTML={{ __html: imageInit }}
+              // 커서를 설정합니다.
+              selection.removeAllRanges();
+              selection.addRange(range);
+            }
+          }}
 
-        onInput={() => {
-          const isImage = editorRef2.current.innerHTML;
-          console.log(isImage);
+          onInput={() => {
+            const isImage = editorRef2.current.innerHTML;
+            console.log(isImage);
 
-          const resultEdit = handleFileObject(editorRef2, isUrlOutId, isUrlOut);
-          const resultId = handleIdContent(editorRef2, isUrlOutId)
-          console.log(resultEdit);
-          setUrlOut(resultEdit);
-          setUrlOutId(resultId);
-        }}
+            const resultEdit = handleFileObject(editorRef2, isCommentUrlOutId, isCommentUrlOut);
+            const resultId = handleIdContent(editorRef2, isCommentUrlOutId)
+            console.log(resultEdit);
+            setCommentUrlOut(resultEdit);
+            setCommentUrlOutId(resultId);
+          }}
 
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-      />
+          style={{ display: 'flex' }}
+        />
+        <div
+          contentEditable={true}
+          ref={editorRefDescription}
+          dangerouslySetInnerHTML={{ __html: imageInit }}
 
+          onInput={() => {
+            const isOutImage = editorRefDescription.current.innerHTML;
+            setCommentUrlOutDes(isOutImage);
+            console.log(isOutImage)
+          }}
+        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+        />
+      </div> */}
       {/* ------------------------------------------------------------------------ */}
 
       <EditorTool
@@ -386,13 +462,13 @@ export default function EditorComment({ number }) {
         handleImgSize={handleImgSize}
       // handleContent={() => { handleContent(editorRef3) }}
       />
-      <input
+      {/* <input
         type="file"
         accept="image/*"
         style={{ display: 'none' }}
         ref={imageSelectorRef3}
         onChange={(e) => { handleImageSelect(e, editorRef3) }}
-      />
+      /> */}
 
       <div
         className="editor"
@@ -408,7 +484,7 @@ export default function EditorComment({ number }) {
             e.preventDefault(); // 기본 동작 막기
             const editor = e.target;
             const brCount = editor.querySelectorAll('br').length + 1;
-            const newOption = String.fromCharCode(0x245F + brCount + 1);
+            const newOption = String.fromCharCode(0x245F + brCount);
 
             // 생성된 문자를 현재 포커스된 위치에 삽입합니다.
             const selection = window.getSelection();
@@ -460,7 +536,7 @@ export default function EditorComment({ number }) {
           }
         }} // 이미지 붙여넣기 동작 막기
 
-        dangerouslySetInnerHTML={{ __html: optionsInit }}
+        // dangerouslySetInnerHTML={{ __html: optionsInit }}
 
         onInput={() => {
           const isOptions = editorRef3.current.innerHTML;
@@ -507,27 +583,38 @@ export default function EditorComment({ number }) {
         sendPostData();
         console.log(isResOption);
         console.log(isResUrlIn);
+        // getData();//get이 내부로 들어가야하나?
       }}>생성</button>
+
       <button onClick={() => {
         sendDeleteData();
+        // getData();//get이 내부로 들어가야하나?
       }
       }>삭제</button>
+
       <button onClick={() => {
         sendPutData();
+        // getData();//get이 내부로 들어가야하나?
       }}>수정</button>
 
       <button onClick={() => {
-        console.log(isUrlIn);
+        // getData();
+        console.log(isCommentUrlIn);
         console.log(
           "저장된 API question 값 : " + isData.question
-          + "\n저장된 imageIn 값 : " + isUrlIn[0]
-          // + "\n저장된 imageIn name : " + isUrlIn[0].name
-          + "\n저장된 isUrlInId name : " + isUrlInId[0]
-          + "\n저장된 imageOut 값 : " + isUrlOut
+          + "\n저장된 imageIn 값 : " + isCommentUrlIn[0]
+          // + "\n저장된 imageIn name : " + isCommentUrlIn[0].name
+          + "\n저장된 isCommentUrlInId name : " + isCommentUrlInId[0]
+          + "\n저장된 imageOut 값 : " + isCommentUrlOut
+          + "\n저장된 imageIn 값 : " + isCommentUrlIn
           + "\n저장된 API options 값 : " + isData.options
-          + "\n저장된 API isUrlIn 값 : " + isData.isUrlIn
+          + "\n저장된 API isCommentUrlIn 값 : " + isData.isCommentUrlIn
+          + "\n저장된 API isCommentUrlOutDes 값 : " + isCommentUrlOutDes
+          + "\n저장된 API isResUrlOutDes 값 : " + isResUrlOutDes
         );
-        isUrlInId.forEach((imageId) => { console.log(imageId) })
+        isCommentUrlIn.forEach((image) => { console.log("In" + image) })
+        isCommentUrlOut.forEach((image) => { console.log("Out" + image) })
+        isResUrlOut.forEach((image) => { console.log("ResOut" + image) })
         console.log(ID);
       }}>확인</button>
     </div >

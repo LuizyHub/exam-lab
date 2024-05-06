@@ -1,55 +1,52 @@
-body {
-    background-color: #F9F9F9; /* 페이지 내 전체 화면 색상지정*/
-}
+/* NavigationBar.css */
 
-
-.navigation-bar {
+.navigation-container {
     position: fixed;
     top: 0;
-    left: -200px; /* 초기에 왼쪽으로 숨겨진 상태 */
-    width: 200px;
+    left: -250px; /* 왼쪽으로 이동 */
+    width: 250px;
     height: 100%;
     background-color: #fff;
-    transition: left 0.3s ease;
-    display: flex; /* 수직으로 배치하기 위해 flexbox를 사용 */
-    flex-direction: column; /* 아이템을 수직으로 배치 */
-    justify-content: flex-start; /* 아이템을 컨테이너의 시작 부분에 배치 */
-}
-
-.navigation-bar nav {
-    text-align: center; /* 버튼을 중앙 정렬 */
-}
-
-.navigation-bar.visible {
-    left: 0; /* 버튼 클릭시 왼쪽으로 나타남 */
-}
-
-.navigation-bar.hidden {
-    width: 0; /* 숨겨진 상태일 때 너비를 0으로 설정하여 완전히 숨김 */
-}
-
-.navigation-bar.hidden .login-button,
-.navigation-bar.hidden .signup-button {
-    display: none; /* 숨기기 */
-}
-
-.close-button {
-    position: absolute;
-    top: 20px;
-    left: 180px;
-}
-
-.navigation-content {
-    padding-top: 50px; /* 네비게이션 콘텐츠의 상단 패딩을 조정 */
-    margin-bottom: 220px;
-    display: flex; /* 하이퍼링크를 수직으로 배치하기 위해 추가 */
-    flex-direction: column; /* 하이퍼링크를 수직으로 배치 */
-
-}
-
-
-
-.login-button{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease-in-out; /* left 속성에 대한 트랜지션 추가 */
+  }
+  
+  .navigation-container.open {
+    left: 0px; /* open 클래스가 추가되면 왼쪽으로 이동 */
+  }
+  
+  .navigation-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding-top: 20px;
+  }
+  
+  .navigation-content {
+    flex: 1;
+    width: 100%;
+  }
+  
+  .logo {
+    width: 140px;
+    margin-bottom: 20px;
+  }
+  
+  .user-lab {
+    color: black; 
+    background-color: #fff;
+    width: 180px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .login-button{
+    width: 150px;
+    text-align: center;
     background-color: #29B8B5;
     display: inline-block;
     color: #fff;
@@ -59,10 +56,12 @@ body {
     cursor: pointer;
     border-radius: 20px;
     font-size: 16px;
-    margin-top: 50px;
+    text-decoration-line: none;
 }
 
 .signup-button {
+    width: 150px;
+    text-align: center;
     background-color: #EBF0F6;
     display: inline-block;
     color: #A2ACB9;
@@ -72,27 +71,40 @@ body {
     cursor: pointer;
     border-radius: 20px;
     font-size: 16px;
-    
+    text-decoration-line: none;
+    margin-bottom: 50px;
 }
+  
+  .close-button-container {
+    position: absolute;
+    top: 20px;
+    right: -30%;
+  }
+  
+  .close-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .navigation-icon-left {
+    width: 20px;
+    margin-left: 190px;
 
+  }
 
-.login-button:hover,
-.signup-button:hover {
-    background-color: #238C8A;
-}
-
-.user-lab {
-    background-color: #ffffff; /* 하얀색 배경색 */
-    border: 1px solid #808080; /* 회색 테두리 */
-    border-radius: 5px; /* 테두리의 꼭지점을 둥글게 만듭니다. */
-    padding: 5px 5px; /* 버튼 내부의 내용과 테두리 사이의 간격을 조정합니다. */
-    width: 90%;
+  .navigation-icon-right {
+    width: 20px;
     margin-left: 10px;
   }
   
-  /* 버튼 내부 텍스트 스타일링 */
-  .user-lab p {
-    margin: 15; /* 내부 텍스트의 위아래 여백을 제거합니다. */
-    font-size: 15px; /* 텍스트 크기를 조정합니다. */
+  
+  
+  /* Media Query for smaller screens */
+  @media (max-width: 768px) {
+    .navigation-container {
+      width: 220px;
+    }
   }
   

@@ -1,5 +1,8 @@
 package capstone.examlab.exams.service;
 
+import capstone.examlab.ai.AiService;
+import capstone.examlab.ai.dto.Question;
+import capstone.examlab.ai.dto.Questions;
 import capstone.examlab.exams.domain.Exam;
 import capstone.examlab.exams.dto.*;
 import capstone.examlab.exams.repository.ExamRepository;
@@ -8,6 +11,7 @@ import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -29,6 +33,7 @@ public class ExamServiceImpl implements ExamsService {
     private final ObjectProvider<Exam> examProvider;
     private final ExamRepository examRepository;
     private final QuestionsService questionsService;
+    private final AiService aiService;
 
     private static final String[] fileTypeList = {"text/plain", "text/markdown", "application/pdf"};
 
@@ -201,8 +206,17 @@ public class ExamServiceImpl implements ExamsService {
         }
 
         // TODO: AI 서비스 연동
+        String content = exam.getFileText();
+        Questions questions;
+        try {
+            questions = aiService.generateQuestions(content);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("AI 서비스 호출 중 오류가 발생했습니다.");
+        }
 
-        return null;
+        QuestionsListDto questionsListDto = questionsService.addAIQuestionsByExamId(examId, questions.getQuestions().stream().map(Question::toQuestionUpdateDto).toList());
+
+        return questionsListDto;
     }
 
     private String getFieldText(MultipartFile file, String fileType) {

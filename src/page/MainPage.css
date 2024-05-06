@@ -1,5 +1,12 @@
 
-  
+.main-page {
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar-open {
+    margin-left: 250px;
+}
+
   
 
 .sample-navigate-button {

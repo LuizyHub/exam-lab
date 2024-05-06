@@ -1,17 +1,16 @@
-
 import React, { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { isVisibleState } from '../recoil/atoms';
 import { Link } from 'react-router-dom';
 import NavigationBar from '../components/NavigationBar';
 import Bottom from '../components/Bottom';
 import './MainPage.css'
 
-
 export default function MainPage(){
-  
+    const isSidebarOpen = useRecoilValue(isVisibleState); 
 
     return(
-        <div className="main-page">
-
+        <div className={`main-page ${isSidebarOpen ? 'sidebar-open' : ''}`}> {/* isSidebarOpen 상태에 따라 클래스 추가 */}
             <div className="page-content" style={{ position: 'relative' }}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%', height: '400px', background: 'linear-gradient(102.06deg, #E0F9F8 12.5%, #E2E6FA 98.35%)', top: 0, left: 0 }}>
                     <div style={{ paddingLeft: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -24,19 +23,17 @@ export default function MainPage(){
                 </div>
             </div>
             
-                <nav>
-                    <button className='sample-navigate-button'>
-                        <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지 제작하기</Link>
-                    </button>
-                    <button className='myExam-navigate-button'>
-                        <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>내 문제 관리하기</Link>
-                    </button>
-                    <button className='sample-navigate-button'>
-                        <Link to='/workbooks' style={{ textDecoration: 'none', color: 'inherit' }}>내 시험지 관리하기</Link>
-                    </button>
-
-                </nav>
-
+            <nav>
+                <button className='sample-navigate-button'>
+                    <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지 제작하기</Link>
+                </button>
+                <button className='myExam-navigate-button'>
+                    <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>내 문제 관리하기</Link>
+                </button>
+                <button className='sample-navigate-button'>
+                    <Link to='/workbooks' style={{ textDecoration: 'none', color: 'inherit' }}>내 시험지 관리하기</Link>
+                </button>
+            </nav>
                 
             <footer>
                 <Bottom />
@@ -45,4 +42,3 @@ export default function MainPage(){
         </div>
     );
 }
-

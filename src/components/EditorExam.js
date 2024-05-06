@@ -120,6 +120,7 @@ export default function EditorExam({ number }) {
         console.log(response.data);
         const message = response.data.message;
         setID(message.id);
+
         setResQuestion(message.question);
         setResOption(message.options);
         // setResOption(prevOption => [...prevOption, ...message.option]);
@@ -174,8 +175,8 @@ export default function EditorExam({ number }) {
       options: isData.options,
       // questionImagesTextIn: [],
       // questionImagesTextOut: [],
-      answers: ["0"],
-      commentary: "",
+      answers: [isCommentAnswers],
+      commentary: isCommentary,
       tags: { "category": ["test"] },
     };
 
@@ -245,7 +246,7 @@ export default function EditorExam({ number }) {
     <div>
       <div>
         <div>
-          <h3>문제등록</h3>
+          {/* <h3>문제등록</h3> */}
           {/* <select value={contentType1} onChange={handleContentType1}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
@@ -389,7 +390,7 @@ export default function EditorExam({ number }) {
           <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>
             <div
               className="editor"
-              contentEditable="true"
+              contentEditable="false"
               ref={editorRef2}
               readOnly
               onDragOver={(e) => e.preventDefault()}

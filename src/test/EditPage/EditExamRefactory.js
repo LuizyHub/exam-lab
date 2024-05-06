@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import EditorExam from "../../components/EditorExam";
 import AttributeManager from "../../components/AttributeManager";
+import AICreate from "../AI/AICreate";
 // import { useDataHandle } from "../..//dataHandle";
 
 export default function EditExam() {
@@ -35,6 +36,7 @@ export default function EditExam() {
       <AttributeManager examId={examId} />
       <h1>Test</h1>
       <EditorExam></EditorExam>
+      <AICreate examId={examId}/>
       {/* <EditorExam></EditorExam>
       <EditorExam></EditorExam> */}
     </>

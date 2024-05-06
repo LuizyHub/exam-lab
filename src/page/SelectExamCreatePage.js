@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import NavigationBar from '../components/NavigationBar';
+import './SelectExamPage.css';
 
 
 export default function SelectExamCreatePage() {
@@ -10,7 +11,7 @@ export default function SelectExamCreatePage() {
 
 
   useEffect(() => {
-    axios.get(`/api/v1/exams`)
+    axios.get(`/api/v1/exams?sample=true`)
     .then (response => {
       console.log(response.data);
       setExams(response.data.exams); 
@@ -39,7 +40,7 @@ export default function SelectExamCreatePage() {
         <h3>step1. 시험 선택하기</h3>
         <div className="examList">
           {exams.map(exam => (
-            <button key={exam.exam_id} onClick={() => handleExamTypeClick(exam.exam_id, exam.exam_title)}>
+            <button className="exam" key={exam.exam_id} onClick={() => handleExamTypeClick(exam.exam_id, exam.exam_title)}>
               {exam.exam_title}
             </button>
           ))}

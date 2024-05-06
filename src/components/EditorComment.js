@@ -6,7 +6,7 @@ import EditorTool from '../components/EditorTool';
 
 import axios from 'axios';
 
-export default function EditorExam({ number }) {
+export default function EditorComment({ number }) {
   //from import
   const { isImageSize, handleImgSize, handleImageSelect } = useImage();
   const { handleFileObject, handleIdContent, imageReplace } = handleData();
@@ -72,6 +72,7 @@ export default function EditorExam({ number }) {
       type: 'application/json'
     });
     formData.append('questionUploadInfo', questionUploadInfo);
+
     isUrlIn.forEach((image) => {
       console.log(image.name);
       formData.append('questionImagesIn', image);

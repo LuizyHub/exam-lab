@@ -19,10 +19,12 @@ export default function EditorExam({ number }) {
   //*editorRefN은 이후에 해당 컴포넌트(contentEditable)가 생성되면 함께 생성이 되어야 한다.
   const editorRef1 = useRef(null); //이미지를 appendChild할 때 dom의 위치를 참조하기 위함
   const editorRef2 = useRef(null);
+  const editorRefDescription = useRef(null);
   const editorRef3 = useRef(null);
 
   const [isUrlOut, setUrlOut] = useState([]);
   const [isUrlOutId, setUrlOutId] = useState([]);
+  const [isUrlOutDes, setUrlOutDes] = useState();
   const [isUrlIn, setUrlIn] = useState([]);
   const [isUrlInId, setUrlInId] = useState([]);
   //단일로 수정
@@ -33,11 +35,14 @@ export default function EditorExam({ number }) {
 
   const optionsInit = '①<br>②<br>③<br>④';
   const imageInit = '<>';
+
+  // view => recoil
   const [ID, setID] = useState("");
   const [isResQuestion, setResQuestion] = useState("");
   const [isResOption, setResOption] = useState([]);
   const [isResUrlIn, setResUrlIn] = useState([]);
   const [isResUrlOut, setResUrlOut] = useState([]);
+  const [isResUrlOutDes, setResUrlOutDes] = useState([]);
 
   const sendPostData = () => {
 
@@ -46,13 +51,13 @@ export default function EditorExam({ number }) {
 
     const questionImagesTextIn = [];
     isUrlIn.forEach(image => {
-      const questionImage = { url: "", description: "설명", attribute: "속성" };
+      const questionImage = { url: "", description: "설명", attribute: "" };
       questionImagesTextIn.push(questionImage);
     });
 
     const questionImagesTextOut = [];
     isUrlOut.forEach(image => {
-      const questionImage = { url: "", description: "설명", attribute: "속성" };
+      const questionImage = { url: "", description: isUrlOutDes, attribute: "" };
       questionImagesTextOut.push(questionImage);
     });
 
@@ -97,6 +102,7 @@ export default function EditorExam({ number }) {
         setResUrlIn(message.question_images_in.map(image => image.url));
         // console.log(message.question_images_in[0].url);
         setResUrlOut(message.question_images_out.map(image => image.url));
+        setResUrlOutDes(message.question_images_out[0].description);
       })
       .catch((error) => {
         console.log(error);
@@ -167,7 +173,7 @@ export default function EditorExam({ number }) {
       </select> */}
 
       <div>
-        <h1>Show</h1>
+        <h1>View</h1>
         <p>{number}</p>
         <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
         {/* {isResUrlIn.map((URL, index) => (
@@ -176,6 +182,7 @@ export default function EditorExam({ number }) {
         {isResUrlOut.map((URL, index) => (
           <img key={index} src={URL} style={{ width: '25%' }} />
         ))}
+        <p dangerouslySetInnerHTML={{ __html: isResUrlOutDes }} />
         {isResOption.map((options, index) => (
           <p key={index}
             dangerouslySetInnerHTML={{ __html: options }}></p>
@@ -370,14 +377,17 @@ export default function EditorExam({ number }) {
             setUrlOutId(resultId);
           }}
 
-        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+          style={{ display: 'flex' }}
         />
         <div
           contentEditable={true}
+          ref={editorRefDescription}
           dangerouslySetInnerHTML={{ __html: imageInit }}
 
           onInput={() => {
-
+            const isOutImage = editorRefDescription.current.innerHTML;
+            setUrlOutDes(isOutImage);
+            console.log(isOutImage)
           }}
         // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
         />
@@ -535,6 +545,8 @@ export default function EditorExam({ number }) {
           + "\n저장된 imageOut 값 : " + isUrlOut
           + "\n저장된 API options 값 : " + isData.options
           + "\n저장된 API isUrlIn 값 : " + isData.isUrlIn
+          + "\n저장된 API isUrlOutDes 값 : " + isUrlOutDes
+          + "\n저장된 API isResUrlOutDes 값 : " + isResUrlOutDes
         );
         isUrlInId.forEach((imageId) => { console.log(imageId) })
         console.log(ID);

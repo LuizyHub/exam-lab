@@ -129,7 +129,7 @@ const handleSubmit = async (e) => {
                             <button
                                 key={tag}
                                 type="button"
-                                onClick={() => handleTagClick(tagGroup, tag)} // 수정된 부분
+                                onClick={() => handleTagClick(tagGroup, tag)} 
                                 className={selectedTags.some(item => item.tagGroup === tagGroup && item.tag === tag) ? "selected-tag" : ""}
                             >
                                 {tag}

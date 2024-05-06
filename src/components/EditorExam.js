@@ -72,7 +72,6 @@ export default function EditorExam({ number }) {
       type: 'application/json'
     });
     formData.append('questionUploadInfo', questionUploadInfo);
-
     isUrlIn.forEach((image) => {
       console.log(image.name);
       formData.append('questionImagesIn', image);

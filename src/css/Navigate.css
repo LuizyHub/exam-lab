@@ -1,28 +1,37 @@
 .navigation {
     padding: 10px 20px;
-}
-
-.nav-item {
+  }
+  
+  .nav-item {
     display: flex;
     align-items: center;
-    margin-bottom: 20px; /* 각 nav-item 사이에 오른쪽 여백을 추가합니다. */
-}
-
-.nav-item:last-child {
-    margin-right: 0; /* 마지막 nav-item에는 오른쪽 여백을 추가하지 않습니다. */
-}
-
-.nav-item:hover {
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+  .nav-item:last-child {
+    margin-right: 0;
+  }
+  
+  .nav-item:hover {
     background-color: #ECF7F7;
-}
-
-.nav-icon {
-    width: 20px; /* 아이콘 이미지의 너비를 조정합니다. */
-    margin-right: 5px; /* 아이콘과 텍스트 사이에 오른쪽 여백을 추가합니다. */
-}
-
-.nav-link {
-    text-decoration: none;
-    color: #333; /* 링크 텍스트 색상을 지정합니다. */
-    font-size: 14px; /* 링크 텍스트의 크기를 조정합니다. */
-}
+  }
+  
+  .nav-icon {
+    width: 20px;
+    margin-right: 5px;
+  }
+  
+  .nav-link {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  
+  
+  
+  

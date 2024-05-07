@@ -328,7 +328,8 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Test
     void testPostFile() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", "강의자료.txt", "text/plain", "강의자료 내용입니다. 이 내용을 토대로 문제를 만들어야합니다.".getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", "강의자료.txt", "text/plain", ("강의자료 내용입니다. 이 내용을 토대로 문제를 만들어야합니다. 하지만 자료의 내용은" +
+                "20단어를 넘겨야 문제를 생성 할 수 있어요. 그러니 꼭 20개 단어를 넘기는지 확인해 보세요").getBytes());
         //존재하지않는 RequestBuilder를 생성하기 위한 과정
         MockMultipartHttpServletRequestBuilder customRestDocumentationRequestBuilder =
                 RestDocumentationRequestBuilders.multipart("/api/v1/exams/{examId}/file", addExamsAndGetId());

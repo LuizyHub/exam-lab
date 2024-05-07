@@ -215,7 +215,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                 .andDo(document("add-questions",
                         resource(ResourceSnippetParameters.builder()
                                 .description("문제 추가")
-                                .tag("question")
+                                .tag("questions")
                                 .summary("Add question")
                                 .requestHeaders(HeaderDocumentation.headerWithName(HttpHeaders.CONTENT_TYPE)
                                         .description("questionUploadInfo-ContentType: application/json" +
@@ -242,7 +242,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                 .andDo(document("Search-questions",
                         resource(ResourceSnippetParameters.builder()
                                 .description("Exam ID를 통한 Questions 조회")
-                                .tag("question")
+                                .tag("questions")
                                 .summary("Search questions")
                                 .pathParameters(
                                         parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
@@ -309,7 +309,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                 .andDo(document("update-question",
                         resource(ResourceSnippetParameters.builder()
                                 .description("Question 내용 업데이트")
-                                .tag("question")
+                                .tag("questions")
                                 .summary("Update question")
                                 .requestFields(
                                         fieldWithPath("id").description("문제 ID").type(JsonFieldType.STRING),
@@ -337,7 +337,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
 //                .andDo(document("delete-questions-by-examId",
 //                        resource(ResourceSnippetParameters.builder()
 //                                .description("해당되는 시험 ID Questions 삭제")
-//                                .tag("question")
+//                                .tag("questions")
 //                                .summary("Delete questions by examId")
 //                                .pathParameters(
 //                                        parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
@@ -356,7 +356,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                 .andDo(document("delete-questions-by-questionId",
                         resource(ResourceSnippetParameters.builder()
                                 .description("해당되는 문제 ID Question 삭제")
-                                .tag("question")
+                                .tag("questions")
                                 .summary("Delete questions by questionId")
                                 .pathParameters(
                                         parameterWithName("questionId").description("QuestionId").type(SimpleType.STRING)

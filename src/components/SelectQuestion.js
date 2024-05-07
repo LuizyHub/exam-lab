@@ -129,7 +129,7 @@ const handleSubmit = async (e) => {
                             <button
                                 key={tag}
                                 type="button"
-                                onClick={() => handleTagClick(tagGroup, tag)} // 수정된 부분
+                                onClick={() => handleTagClick(tagGroup, tag)} 
                                 className={selectedTags.some(item => item.tagGroup === tagGroup && item.tag === tag) ? "selected-tag" : ""}
                             >
                                 {tag}
@@ -140,7 +140,7 @@ const handleSubmit = async (e) => {
 
                 </div>
                 <div className="selectWord-container">
-                    <span>검색어  </span>
+                    <span> 키워드 검색  </span>
                     <input
                         type="text"
                         value={search}
@@ -181,7 +181,7 @@ const handleSubmit = async (e) => {
                     )}
                 </div>
                 <br />  
-                <input type="submit" onClick={handleSubmit} value="문제 보기" />
+                <input type="submit" onClick={handleSubmit} value="문제 검색" />
             </div>
             <hr />
             <ShowQuestionList questions={questions}/>

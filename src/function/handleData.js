@@ -1,7 +1,11 @@
 import React from 'react';
 import parse from 'html-react-parser';
 
+<<<<<<<< HEAD:src/function/handleData.js
 export const handleData = () => {
+========
+export const DataHandle = () => {
+>>>>>>>> dev/fe:src/function/dataHandle.js
   // 이미지 추적 후 여기에 html로 저장이 될 수는 함수
 
   //이미지의 url만 저장되는 코드

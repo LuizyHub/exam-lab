@@ -45,6 +45,7 @@ export default function EditorExam({ number }) {
   const [isData, setData] = useState({
     question: '',
     options: [],//'①', '②', '③', '④'
+    options: [],//'①', '②', '③', '④'
   });
 
   //답안 state
@@ -70,6 +71,7 @@ export default function EditorExam({ number }) {
 
   const sendPostData = () => {
 
+    const URL = '/api/v1/exams/5/questions'
     const URL = '/api/v1/exams/5/questions'
     const formData = new FormData();
 
@@ -101,7 +103,6 @@ export default function EditorExam({ number }) {
       type: 'application/json'
     });
     formData.append('questionUploadInfo', questionUploadInfo);
-
     isUrlIn.forEach((image) => {
       console.log(image.name);
       formData.append('questionImagesIn', image);
@@ -139,6 +140,8 @@ export default function EditorExam({ number }) {
     console.log(isUrlIn);
     console.log(ID);
     const URL = `/api/v1/questions/${ID}`
+    // const URL = `/api/v1/questions/6f9a1418-a3c8-4c0b-91a3-7a461164dcf6`
+    // console.log(ID)
     // const URL = `/api/v1/questions/6f9a1418-a3c8-4c0b-91a3-7a461164dcf6`
     // console.log(ID)
     axios.delete(URL, {
@@ -243,6 +246,7 @@ export default function EditorExam({ number }) {
 
   // console.log(replacedQuestion)
   return (
+
     <div>
       <div>
         <div>

@@ -140,7 +140,6 @@ export const useImage = () => {
     // 에디터에 이미지 DOM에 삽입 -> 여기를 해결...
     if (elementRef.current) {
       elementRef.current.appendChild(imgElement);
-      // elementRef.current.appendChild(buttonElement); // 버튼 삽입
     } else {
       console.error("Editor reference is null.");
     }

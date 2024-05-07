@@ -2,13 +2,41 @@
 import EditorExam from "../components/EditorExam"
 import EditorComment from "../components/EditorComment"
 import AttributeManager from "../components/AttributeManager"
-import { useState } from "react";
+import AICreate from "../test/AI/AICreate";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useLoginController } from "../function/useLoginController";
+// import { useDataHandle } from "../..//dataHandle";
 
 export default function EditExam() {
 
   //로그인 리모컨
   const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
+
+  const [isCreate, setCreate] = useState([]);
+
+  const location = useLocation();
+
+  // 선택된 시험의 examId와 examTitle을 받아, AttributeManager 컴포넌트에게 props로 전달
+  const [examTitle, setExamTitle] = useState('');
+  const [examId, setExamId] = useState('');
+
+  console.log("Location:", location);
+  console.log("Exam ID:", examId);
+  console.log("Exam Title:", examTitle);
+
+  useEffect(() => {
+    // location.state가 정의되어 있을 때만 examId와 examTitle을 설정합니다.
+    if (location && location.state) {
+      const { examId, examTitle } = location.state;
+      setExamId(examId);
+      setExamTitle(examTitle);
+      console.log("Location:", location);
+      console.log("Exam ID:", examId);
+      console.log("Exam Title:", examTitle);
+
+    }
+  }, [location]);
 
   const [isExamCreate, setExamCreate] = useState([]);
   const [isCommentCreate, setCommentCreate] = useState([]);
@@ -59,7 +87,7 @@ export default function EditExam() {
       <button onClick={() => {
         handleExamCreate();
       }}>문제추가</button>
-
+      <AICreate examId={examId} />
     </>
   )
 }

@@ -1,8 +1,8 @@
 import SelectExam from "./page/SelectExamPage";
 import SelectExamCreate from "./page/SelectExamCreatePage";
+import { RecoilRoot } from 'recoil';
 import LabExam from "./page/LabExam";
 import EditExam from "./page/EditExam";
-import EditExamRefactory from "./test/EditPage/EditExamRefactory";
 import MainPage from "./page/MainPage"
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 import SelectQuestionPage from "./page/SelectQuestionPage"
@@ -12,12 +12,11 @@ import AttributeManager from "./components/AttributeManager";
 import EnglishExam from "./test/english/englishExam";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { RecoilRoot } from 'recoil'; 
 
 function App() {
   return (
     <BrowserRouter>
-      <RecoilRoot> 
+      <RecoilRoot>
         <div>
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -29,12 +28,12 @@ function App() {
             {/* <Route path="/edit" element={<EditExamRefactory />} /> */}
             <Route path="/htmlParse" element={<ParsingImageTest />} />
             <Route path="/workbooks" element={<WorkBooks />} />
-            {/* 영어문제 테스트를 위한 페이지 */} 
+            {/* 영어문제 테스트를 위한 페이지 */}
             <Route path="/english" element={<EnglishExam />} />
             <Route path="/attribute" element={<AttributeManager />} />
           </Routes>
         </div>
-      </RecoilRoot> 
+      </RecoilRoot>
     </BrowserRouter>
   )
 }

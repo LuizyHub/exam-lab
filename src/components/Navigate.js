@@ -25,13 +25,13 @@ export default function Navigate() {
     <nav className="navigation">
       <div className="nav-item">
         <img src="/img/시험지샘플.png" alt="Main Image" className="nav-icon" />
-        <Link to="/exams/create" className="nav-link" style={{textDecorationLine: "none"}}>
+        <Link to="/exams/create" className="nav-link" style={{ textDecorationLine: "none" }}>
           나만의 시험지
         </Link>
       </div>
       <div className="nav-item">
         <button className="nav-link" onClick={() => handleNavigate('/exams')}>
-        <img src="/img/시험지제작.png" alt="Main Image" className="nav-icon" />
+          <img src="/img/시험지제작.png" alt="Main Image" className="nav-icon" />
           나만의 문제
         </button>
       </div>

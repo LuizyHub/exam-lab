@@ -129,7 +129,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                 .andExpect(status().isOk())
                 .andDo(document("delete-exams",
                         resource(ResourceSnippetParameters.builder()
-                                .description("본인의 시험만 삭제할 수 있습니다")
+                                .description("본인의 시험만 삭제할 수 있습니다 또한 관련된 문제들도 삭제 됩니다")
                                 .tag("exams")
                                 .summary("delete exams")
                                 .build()

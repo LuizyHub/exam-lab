@@ -25,13 +25,13 @@ export default function MainPage(){
             
             <nav>
                 <button className='sample-navigate-button'>
-                    <Link to='/exams/create' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지 제작하기</Link>
+                    <Link to='/exams/create' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 시험지</Link>
                 </button>
                 <button className='myExam-navigate-button'>
-                    <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>내 문제 관리하기</Link>
+                    <Link to='/exams' style={{ textDecoration: 'none', color: 'inherit' }}>나만의 문제</Link>
                 </button>
                 <button className='sample-navigate-button'>
-                    <Link to='/workbooks' style={{ textDecoration: 'none', color: 'inherit' }}>내 시험지 관리하기</Link>
+                    <Link to='/workbooks' style={{ textDecoration: 'none', color: 'inherit' }}>시험지 저장소</Link>
                 </button>
             </nav>
                 

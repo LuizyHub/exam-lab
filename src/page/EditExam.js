@@ -60,7 +60,7 @@ export default function EditExam() {
 
       <button>시험지 생성</button>
 
-      <AttributeManager></AttributeManager>
+      <AttributeManager examId={examId}></AttributeManager>
 
       {isExamCreate.map((component, index) => (
         <div key={index} style={{ marginTop: '40px' }}>

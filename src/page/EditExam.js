@@ -52,11 +52,11 @@ export default function EditExam() {
     <>
       <h1>Test</h1>
       {/* 리모컨 */}
-      <div style={{ marginBottom: '40px' }}>
+      {/* <div style={{ marginBottom: '40px' }}>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleAutoLogin() }}>logIn</button>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLogout() }}>logOut</button>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLoginState() }}>logState</button>
-      </div>
+      </div> */}
 
       <button>시험지 생성</button>
 

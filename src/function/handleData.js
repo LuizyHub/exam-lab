@@ -1,7 +1,9 @@
 import React from 'react';
 import parse from 'html-react-parser';
 
+
 export const handleData = () => {
+
   // 이미지 추적 후 여기에 html로 저장이 될 수는 함수
 
   //이미지의 url만 저장되는 코드

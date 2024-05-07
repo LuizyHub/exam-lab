@@ -1,9 +1,15 @@
 package capstone.examlab.exams.controller;
 
 import capstone.examlab.RestDocsOpenApiSpecTest;
+import capstone.examlab.ai.AiService;
+import capstone.examlab.ai.dto.Question;
+import capstone.examlab.ai.dto.Questions;
 import capstone.examlab.exams.domain.Exam;
 import capstone.examlab.exams.repository.ExamRepository;
+import capstone.examlab.questions.dto.QuestionDto;
+import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.dto.image.ImageDto;
+import capstone.examlab.questions.service.QuestionsService;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.Schema;
 import com.epages.restdocs.apispec.SimpleType;
@@ -16,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -38,6 +45,9 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
@@ -61,6 +71,12 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Autowired
     ObjectProvider<Exam> examProvider;
+
+    @MockBean
+    AiService aiService;
+
+    @MockBean
+    QuestionsService questionsService;
 
     @BeforeEach
     public void beforeTest() {
@@ -246,6 +262,7 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Test
     void testDeleteExamFile() throws Exception {
+        doNothing().when(questionsService).deleteQuestionsByExamId(anyLong());
         this.mockMvc.perform(delete("/api/v1/exams/{examId}/file", addExamsAndSetFileAndGetId())
                         .session(doLogin()))
                 .andExpect(status().isOk())
@@ -265,6 +282,30 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Test
     void testAiQuestions() throws Exception {
+        Questions questions = new Questions();
+        ArrayList<Question> questionsList= new ArrayList<>();
+        questionsList.add(Question.builder()
+                        .question("문제1")
+                        .answers(List.of(1))
+                        .commentary("해설1")
+                        .options(List.of("보기1", "보기2", "보기3", "보기4"))
+                        .build());
+        questions.setQuestions(questionsList);
+
+        when(aiService.generateQuestions(anyString())).thenReturn(questions);
+
+        ArrayList<QuestionDto> questionDtos = new ArrayList<>();
+        questionDtos.add(QuestionDto.builder()
+                .question("문제1")
+                .answers(List.of(1))
+                .commentary("해설1")
+                .options(List.of("보기1", "보기2", "보기3", "보기4"))
+                .build());
+
+        QuestionsListDto questionsListDto = new QuestionsListDto(questionDtos);
+
+        when(questionsService.addAIQuestionsByExamId(anyLong(), anyList())).thenReturn(questionsListDto);
+
         this.mockMvc.perform(post("/api/v1/exams/{examId}/ai", addExamsAndSetFileAndGetId())
                         .session(doLogin()))
                 .andExpect(status().isOk())

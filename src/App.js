@@ -3,7 +3,6 @@ import SelectExamCreate from "./page/SelectExamCreatePage";
 import { RecoilRoot } from 'recoil';
 import LabExam from "./page/LabExam";
 import EditExam from "./page/EditExam";
-import EditExamRefactory from "./test/EditPage/EditExamRefactory";
 import MainPage from "./page/MainPage"
 import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 import SelectQuestionPage from "./page/SelectQuestionPage"
@@ -13,7 +12,6 @@ import AttributeManager from "./components/AttributeManager";
 import EnglishExam from "./test/english/englishExam";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { RecoilRoot } from 'recoil';
 
 function App() {
   return (

@@ -2,12 +2,13 @@ import React, { useRef, useState } from 'react';
 import { handleToolClick, handleImgToolClick } from '../function/toolHandle';
 import { useImage } from '../function/useImage';
 import { handleData } from '../function/handleData';
+
 import EditorTool from '../components/EditorTool';
 
 
 import axios from 'axios';
 
-export default function EditorExam({ number }) {
+export default function EditorExam({ examId }) {
 
   //Commentary Ctrl
   const [isCommentHide, setCommentHide] = useState(false);
@@ -45,7 +46,6 @@ export default function EditorExam({ number }) {
   const [isData, setData] = useState({
     question: '',
     options: [],//'①', '②', '③', '④'
-    options: [],//'①', '②', '③', '④'
   });
 
   //답안 state
@@ -71,8 +71,7 @@ export default function EditorExam({ number }) {
 
   const sendPostData = () => {
 
-    const URL = '/api/v1/exams/5/questions'
-    const URL = '/api/v1/exams/5/questions'
+    const URL = `/api/v1/exams/${examId}/questions`
     const formData = new FormData();
 
     const questionImagesTextIn = [];
@@ -94,7 +93,7 @@ export default function EditorExam({ number }) {
       questionImagesTextIn: questionImagesTextIn,
       questionImagesTextOut: questionImagesTextOut,
       answers: [isCommentAnswers],
-      tags: { "category": ["test"] },
+      // tags: { "category": ["test"] },
       commentary: isCommentary
       //해답지
       // commentaryImagesTextIn: [{ url: "", description: "설명", attribute: "속성" }],
@@ -180,7 +179,7 @@ export default function EditorExam({ number }) {
       // questionImagesTextOut: [],
       answers: [isCommentAnswers],
       commentary: isCommentary,
-      tags: { "category": ["test"] },
+      // tags: { "category": ["test"] },
     };
 
     axios.put(URL, requestData)
@@ -235,16 +234,16 @@ export default function EditorExam({ number }) {
 
   //이미지 마킹 실제 이미지로 전환
 
-  const imgRegex = /<img[^>]*>/ig;
-  let imgIndex = 0;
-  const replacedQuestion = isResQuestion.replace(imgRegex, () => {
-    // 이미지의 번호를 1부터 시작하여 증가시킵니다.
-    imgIndex++;
+  // const imgRegex = /<img[^>]*>/ig;
+  // let imgIndex = 0;
+  // const replacedQuestion = isResQuestion.replace(imgRegex, () => {
+  //   // 이미지의 번호를 1부터 시작하여 증가시킵니다.
+  //   imgIndex++;
 
-    return `<img src='${isResUrlIn[imgIndex - 1]}' style= "width:5%;" />`;
-  })
-
+  //   return `<img src='${isResUrlIn[imgIndex - 1]}' style= "width:5%;" />`;
+  // }) 
   // console.log(replacedQuestion)
+
   return (
 
     <div>
@@ -881,6 +880,7 @@ export default function EditorExam({ number }) {
           isUrlOut.forEach((image) => { console.log("Out" + image) })
           isResUrlOut.forEach((image) => { console.log("ResOut" + image) })
           console.log(ID);
+          console.log("test : " + examId);
           console.log(
             "저장된 Answer 값 : " + isCommentAnswers
             + "\n저장된 Commentary 값 : " + isCommentary

@@ -1,6 +1,5 @@
 // import { useRef } from "react";
 import EditorExam from "../components/EditorExam"
-import EditorComment from "../components/EditorComment"
 import AttributeManager from "../components/AttributeManager"
 import AICreate from "../test/AI/AICreate";
 import { useState, useEffect } from "react";
@@ -12,8 +11,6 @@ export default function EditExam() {
 
   //로그인 리모컨
   const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
-
-  const [isCreate, setCreate] = useState([]);
 
   const location = useLocation();
 
@@ -34,21 +31,14 @@ export default function EditExam() {
       console.log("Location:", location);
       console.log("Exam ID:", examId);
       console.log("Exam Title:", examTitle);
-
     }
   }, [location]);
 
   const [isExamCreate, setExamCreate] = useState([]);
-  const [isCommentCreate, setCommentCreate] = useState([]);
-  const [isType, setType] = useState('true');
-
-  const handleSetType = (element) => {
-    return setType(element);
-  }
 
   const handleExamCreate = () => {
     // 새로운 컴포넌트를 생성하여 상태에 추가
-    setExamCreate([...isExamCreate, <EditorExam key={isExamCreate.length} number={isExamCreate.length + 1} />]);
+    setExamCreate([...isExamCreate, <EditorExam key={isExamCreate.length} examId={examId} />]);
   };
 
   const handleExamDelete = (elementIndex) => {

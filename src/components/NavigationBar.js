@@ -91,8 +91,8 @@ const [isVisible, setIsVisible] = useRecoilState(isVisibleState);
           </>
         ) : (
           <>
-            <Link to='/users/login' className="login-button">로그인</Link>
-            <Link to='/users/add' className="signup-button">회원가입</Link>
+            <a href='/users/login'className="login-button">로그인</a>
+            <a href='/users/add'className="signup-button">회원가입</a>
           </>
         )}
 

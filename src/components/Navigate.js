@@ -26,19 +26,19 @@ export default function Navigate() {
       <div className="nav-item">
         <img src="/img/시험지샘플.png" alt="Main Image" className="nav-icon" />
         <Link to="/exams/create" className="nav-link" style={{textDecorationLine: "none"}}>
-          나만의 시험지 제작하기
+          나만의 시험지
         </Link>
       </div>
       <div className="nav-item">
         <button className="nav-link" onClick={() => handleNavigate('/exams')}>
         <img src="/img/시험지제작.png" alt="Main Image" className="nav-icon" />
-          내 문제 관리하기
+          나만의 문제
         </button>
       </div>
       <div className="nav-item">
         <img src="/img/시험지제작.png" alt="Main Image" className="nav-icon" />
         <button className="nav-link" onClick={() => handleNavigate('/workbooks')}>
-          내 시험지 관리하기
+          시험지 저장소
         </button>
       </div>
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}

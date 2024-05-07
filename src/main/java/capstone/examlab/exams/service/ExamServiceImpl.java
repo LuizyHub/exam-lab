@@ -238,8 +238,15 @@ public class ExamServiceImpl implements ExamsService {
     }
 
     private void validateFileText(String fileText) throws BadRequestException {
-        if (fileText == null || fileText.trim().isEmpty() || fileText.length()<20) {
-            throw new BadRequestException("생성에 필요한 파일의 글자수가 부족합니다.");
+        if (fileText == null || fileText.trim().isEmpty()) {
+            throw new BadRequestException("생성에 필요한 파일의 내용이 없습니다.");
+        }
+
+        String[] words = fileText.split("\\s+");
+        int wordCount = words.length;
+
+        if (wordCount < 20) {
+            throw new BadRequestException("생성에 필요한 파일의 단어 수가 부족합니다.");
         }
     }
 }

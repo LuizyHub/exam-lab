@@ -36,10 +36,9 @@ public class QuestionsServiceImpl implements QuestionsService {
     public QuestionsListDto addAIQuestionsByExamId(Long examId, List<QuestionUpdateDto> questionsUpdateListDto) {
         List<QuestionDto> questionsList = new ArrayList<>();
         for (QuestionUpdateDto questionUpdateDto : questionsUpdateListDto) {
-            String uuid = UUID.randomUUID().toString();
             String questionType = "객관식";
-            Question question = questionUpdateDto.toDocument(examId, uuid, questionType);
-            questionsRepository.save(question);
+            Question question = questionUpdateDto.toDocument(examId, questionType);
+            String uuid = questionsRepository.save(question).getId();
             //생성 및 조회 검증
             Optional<Question> createdQuestion = questionsRepository.findById(uuid);
             if (createdQuestion.isPresent()) {
@@ -80,9 +79,8 @@ public class QuestionsServiceImpl implements QuestionsService {
             }
         }
 
-        String uuid = UUID.randomUUID().toString();
-        Question question = questionUploadInfo.toDocument(examId, uuid);
-        uuid = questionsRepository.save(question).getId();
+        Question question = questionUploadInfo.toDocument(examId);
+        String uuid = questionsRepository.save(question).getId();
         Optional<Question> createdQuestion = questionsRepository.findById(uuid);
         if (createdQuestion.isPresent()) {
             return QuestionDto.fromDocument(createdQuestion.get());

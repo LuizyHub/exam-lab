@@ -42,9 +42,8 @@ public class QuestionUploadInfo {
         }
     }
 
-    public Question toDocument(Long examId, String uuid) {
+    public Question toDocument(Long examId) {
         return Question.builder()
-                .id(uuid)
                 .examId(examId)
                 .type(this.type)
                 .question(this.question)

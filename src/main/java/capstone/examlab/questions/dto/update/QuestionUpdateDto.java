@@ -19,9 +19,8 @@ public class QuestionUpdateDto {
     private Map<String, List<String>> tags;
 
     //AI문제 QuestionUpadteDto -> Question
-    public Question toDocument(Long examId, String uuid, String type) {
+    public Question toDocument(Long examId, String type) {
         return Question.builder()
-                .id(uuid)
                 .examId(examId)
                 .type(type)
                 .question(this.question)

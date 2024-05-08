@@ -11,11 +11,11 @@ export default function ShowQuestion({ question, question_images_in, question_im
             <div className="image-container">{renderImages(question_images_out)}</div>
 
             {/* 4선지 */}
-            <ul className="options-list" style={{listStyleType:"none"}}>
+            <ol className="options-list" >
                 {options.map((option, optionIndex) => (
                     <li key={optionIndex} className="option-item">{option}</li>
                 ))}
-            </ul>
+            </ol>
         </div>
     );
 }

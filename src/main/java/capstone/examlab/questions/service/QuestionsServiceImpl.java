@@ -39,13 +39,8 @@ public class QuestionsServiceImpl implements QuestionsService {
             String questionType = "객관식";
             Question question = questionUpdateDto.toDocument(examId, questionType);
             String uuid = questionsRepository.save(question).getId();
-            //생성 및 조회 검증
-            Optional<Question> createdQuestion = questionsRepository.findById(uuid);
-            if (createdQuestion.isPresent()) {
-                questionsList.add(QuestionDto.fromDocument(createdQuestion.get()));
-            } else {
-                throw new NotFoundQuestionException();
-            }
+            question.setId(uuid);
+            questionsList.add(QuestionDto.fromDocument(question));
         }
         return new QuestionsListDto(questionsList);
     }
@@ -61,12 +56,9 @@ public class QuestionsServiceImpl implements QuestionsService {
 
         Question question = questionUploadInfo.toDocument(examId);
         String uuid = questionsRepository.save(question).getId();
-        Optional<Question> createdQuestion = questionsRepository.findById(uuid);
-        if (createdQuestion.isPresent()) {
-            return QuestionDto.fromDocument(createdQuestion.get());
-        } else {
-            throw new NotFoundQuestionException();
-        }
+        question.setId(uuid);
+        return QuestionDto.fromDocument(question);
+
     }
 
     //Read 로직

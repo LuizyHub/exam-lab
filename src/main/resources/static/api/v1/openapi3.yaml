@@ -61,7 +61,7 @@ paths:
   /api/v1/questions:
     put:
       tags:
-      - question
+      - questions
       summary: Update question
       description: Question 내용 업데이트
       operationId: update-question
@@ -73,7 +73,7 @@ paths:
             examples:
               update-question:
                 value: "{\"question\":\"변경된 질문입니다.\",\"options\":[\"변경된 보기1\",\"변경\
-                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"337aae2c-b2b8-4b7f-9026-330fd6002aa3\"\
+                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"Aw5jV48BXRBYEYFcoMBf\"\
                   ,\"commentary\":\"변경된 설명입니다.\",\"tags\":{\"난이도\":[\"중\"],\"단원\"\
                   :[\"2\"]}}"
       responses:
@@ -100,10 +100,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"aca36f2f-f0a3-4db7-8d9c-4a2af92b996f!\",\"\
-                  password_confirm\":\"aca36f2f-f0a3-4db7-8d9c-4a2af92b996f!\",\"\
-                  user_id\":\"aca36f2f-f0a3-4db7-8d9c-4a2af92b996f@gmail.com\",\"\
-                  name\":\"aca36f2f-f0a3-4db7-8d9c-4a2af92b996f\"}"
+                value: "{\"password\":\"1c75a40e-0ee9-4514-86da-1a55e0bd87ed!\",\"\
+                  password_confirm\":\"1c75a40e-0ee9-4514-86da-1a55e0bd87ed!\",\"\
+                  user_id\":\"1c75a40e-0ee9-4514-86da-1a55e0bd87ed@gmail.com\",\"\
+                  name\":\"1c75a40e-0ee9-4514-86da-1a55e0bd87ed\"}"
       responses:
         "200":
           description: "200"
@@ -172,7 +172,7 @@ paths:
       tags:
       - exams
       summary: delete exams
-      description: 본인의 시험만 삭제할 수 있습니다
+      description: 본인의 시험만 삭제할 수 있습니다 또한 관련된 문제들도 삭제 됩니다
       operationId: delete-exams
       parameters:
       - name: examId
@@ -194,7 +194,7 @@ paths:
   /api/v1/questions/{questionId}:
     delete:
       tags:
-      - question
+      - questions
       summary: Delete questions by questionId
       description: 해당되는 문제 ID Question 삭제
       operationId: delete-questions-by-questionId
@@ -285,44 +285,11 @@ paths:
                 $ref: '#/components/schemas/AiQuestions'
               examples:
                 ai-questions:
-                  value: "{\"questions\":[{\"id\":\"db96d7ce-9bb1-4aaa-bbef-cc473cc20285\"\
-                    ,\"type\":\"객관식\",\"question\":\"다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤\
-                    \ 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 \\n것은?\",\"question_images_in\"\
-                    :[],\"question_images_out\":[],\"options\":[\"① 제1종 대형면허 및 소형견\
-                    인차면허\",\"② 제1종 보통면허 및 대형견인차면허\",\"③ 제1종 보통면허 및 소형견인차면허\",\"④ 제\
-                    2종 보통면허 및 대형견인차면허\"],\"answers\":[4],\"commentary\":\"도로교통법 시행\
-                    규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는 견인\\n하는 자동\
-                    차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.\",\"commentary_images_in\"\
-                    :[],\"commentary_images_out\":[],\"tags\":{\"category\":[\"화물\"\
-                    ]}},{\"id\":\"d9c5be8e-00aa-49df-b7ef-75db4ce51d74\",\"type\"\
-                    :\"객관식\",\"question\":\"도로교통법령상 운전면허증 발급에 대한 설명으로 옳지 않은 것은?\"\
-                    ,\"question_images_in\":[],\"question_images_out\":[],\"options\"\
-                    :[\"① 운전면허시험 합격일로부터 30일 이내에 운전면허증을 발급받아야 한다.\",\"② 영문운전면허증을 발급\
-                    받을 수 없다.\",\"③ 모바일운전면허증을 발급받을 수 있다.\",\"④ 운전면허증을 잃어버린 경우에는 재발급\
-                    \ 받을 수 있다.\"],\"answers\":[2],\"commentary\":\"도로교통법시행규칙 제77조∼\
-                    제81조\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
-                    tags\":{\"category\":[\"법\"]}},{\"id\":\"04ef1ba9-bd37-403e-95b3-2c2c65587e95\"\
-                    ,\"type\":\"객관식\",\"question\":\"시·도경찰청장이 발급한 국제운전면허증의 유효기간은 발\
-                    급받은 날부터 몇 년인가?\",\"question_images_in\":[],\"question_images_out\"\
-                    :[],\"options\":[\"① 1년\",\"② 2년\",\"③ 3년\",\"④ 4년\"],\"answers\"\
-                    :[1],\"commentary\":\"도로교통법 제96조에 따라 국제운전면허증의 유효기간은 발급받은 날부터 1년\
-                    이다.\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
-                    tags\":{}},{\"id\":\"b7614a8d-cbed-41d2-bd17-600626f698ba\",\"\
-                    type\":\"객관식\",\"question\":\"도로교통법상 승차정원 15인승의 긴급 승합자동차를 처음 운\
-                    전하려고 할 때 필요한 조건으로 맞는 것은?\",\"question_images_in\":[],\"question_images_out\"\
-                    :[],\"options\":[\"① 제1종 보통면허, 교통안전교육 3시간\",\"② 제1종 특수면허(대형견인차\
-                    ), 교통안전교육 2시간\",\"③ 제1종 특수면허(구난차), 교통안전교육 2시간\",\"④ 제2종 보통면허,\
-                    \ 교통안전교육 3시간\"],\"answers\":[1],\"commentary\":\"도로교통법 시행규칙 별표\
-                    18 승차정원 15인승의 승합자동차는 1종 대형면허 또는 1종 보통면허가 필요하고 긴급자\\n동차 업무에 종사하\
-                    는 사람은 도로교통법 시행령 제38조의2 제2항에 따른 신규(3시간) 및 정기교통안전교육(2시간)\\n을 받아야\
-                    \ 한다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
-                    :[],\"tags\":{}},{\"id\":\"b3b559ce-58b7-4167-b606-35ae9e5a6846\"\
-                    ,\"type\":\"객관식\",\"question\":\"도로교통법상 연습운전면허의 유효 기간은?\",\"question_images_in\"\
-                    :[],\"question_images_out\":[],\"options\":[\"① 받은 날부터 6개월\",\"\
-                    ② 받은 날부터 1년\",\"③ 받은 날부터 2년\",\"④ 받은 날부터 3년\"],\"answers\":[2],\"\
-                    commentary\":\"도로교통법 제81조에 따라 연습운전면허는 그 면허를 받은 날부터 1년 동안 효력을 가\
-                    진다.\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
-                    tags\":{}}],\"size\":5}"
+                  value: "{\"questions\":[{\"id\":null,\"type\":null,\"question\"\
+                    :\"문제1\",\"question_images_in\":null,\"question_images_out\":null,\"\
+                    options\":[\"보기1\",\"보기2\",\"보기3\",\"보기4\"],\"answers\":[1],\"\
+                    commentary\":\"해설1\",\"commentary_images_in\":null,\"commentary_images_out\"\
+                    :null,\"tags\":null}],\"size\":1}"
   /api/v1/exams/{examId}/file:
     get:
       tags:
@@ -404,7 +371,7 @@ paths:
   /api/v1/exams/{examId}/questions:
     get:
       tags:
-      - question
+      - questions
       summary: Search questions
       description: Exam ID를 통한 Questions 조회
       operationId: Search-questions
@@ -450,15 +417,15 @@ paths:
                 $ref: '#/components/schemas/api-v1-exams-examId-questions-1876066633'
               examples:
                 Search-questions:
-                  value: "{\"questions\":[{\"id\":\"ab185034-11ec-4030-a14f-50e48fea536c\"\
-                    ,\"type\":\"객관식\",\"question\":\"소웨공 테스트 문제?\",\"question_images_in\"\
-                    :[],\"question_images_out\":[],\"options\":[\"① 답 예시 1\",\"② 답\
-                    \ 예시 2\",\"③ 답 예시 3\",\"④ 답 예시 4\"],\"answers\":[3],\"commentary\"\
-                    :\"30이 가장 큰 수입니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
+                  value: "{\"questions\":[{\"id\":\"BA5jV48BXRBYEYFcocBC\",\"type\"\
+                    :\"객관식\",\"question\":\"소웨공 테스트 문제?\",\"question_images_in\":[],\"\
+                    question_images_out\":[],\"options\":[\"① 답 예시 1\",\"② 답 예시 2\"\
+                    ,\"③ 답 예시 3\",\"④ 답 예시 4\"],\"answers\":[3],\"commentary\":\"\
+                    30이 가장 큰 수입니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
                     :[],\"tags\":{\"단원\":[\"1\"],\"난이도\":[\"하\"]}}],\"size\":1}"
     post:
       tags:
-      - question
+      - questions
       summary: Add question
       description: 문제 추가
       operationId: add-questions
@@ -490,20 +457,20 @@ paths:
                 $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
               examples:
                 add-questions:
-                  value: "{\"code\":201,\"message\":{\"id\":\"73e5c4b4-c4a1-4c6c-9168-7646716c3f18\"\
+                  value: "{\"code\":201,\"message\":{\"id\":\"Ag5jV48BXRBYEYFcn8Cy\"\
                     ,\"type\":\"객관식\",\"question\":\"다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤\
                     \ 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?\",\"question_images_in\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/11d199d9-3fa9-46e0-a5e7-8a325307347e.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/4c10bb0c-d175-4f52-8449-c203623f6af0.png\"\
                     ,\"description\":\"설명1\",\"attribute\":\"속성1\"}],\"question_images_out\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/3e5a2c79-7d5f-40b0-91c8-7fc5b36e797f.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/786eaa44-1789-409d-a6e0-2b04d1bda18e.png\"\
                     ,\"description\":\"설명2\",\"attribute\":\"속성2\"}],\"options\":[\"\
                     ① 제1종 대형면허 및 소형견인차면허\",\"② 제1종 보통면허 및 대형견인차면허\",\"③ 제1종 보통면허 및\
                     \ 소형견인차면허\",\"④ 제2종 보통면허 및 대형견인차면허\"],\"answers\":[4],\"commentary\"\
                     :\"도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는\
                     \ 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.\",\"\
-                    commentary_images_in\":[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/e9ed37de-6ad5-44f7-99c6-c4f4c759586d.png\"\
+                    commentary_images_in\":[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/97017213-ee5e-4f83-89b0-8fb002ee0c5a.png\"\
                     ,\"description\":\"설명3\",\"attribute\":\"속성3\"}],\"commentary_images_out\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/146d5278-9b22-4128-94cb-fbd722b10e4f.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/0c189bb8-dc14-4a37-97a5-71ef0144abad.png\"\
                     ,\"description\":\"설명4\",\"attribute\":\"속성4\"}],\"tags\":{}}}"
 components:
   schemas:
@@ -786,20 +753,6 @@ components:
         exam_title:
           type: string
           description: 시험지 이름
-    api-v1-users-status615510992:
-      required:
-      - login
-      - user_name
-      type: object
-      properties:
-        user_name:
-          type: string
-          description: 사용자 이름
-        login:
-          type: boolean
-          description: 로그인 여부
-    api-v1-exams-examId-file486549215:
-      type: object
     api-v1-users-963924044:
       required:
       - name
@@ -820,3 +773,17 @@ components:
         name:
           type: string
           description: User name
+    api-v1-users-status615510992:
+      required:
+      - login
+      - user_name
+      type: object
+      properties:
+        user_name:
+          type: string
+          description: 사용자 이름
+        login:
+          type: boolean
+          description: 로그인 여부
+    api-v1-exams-examId-file486549215:
+      type: object

@@ -71,7 +71,7 @@ export const handleData = () => {
       // 이전에 저장된 이미지 ID 배열과 새로운 이미지 ID 배열을 비교하여 유지해야 할 이미지 ID를 업데이트합니다.
       updatedImageIds = updatedImageIds.filter(id => newImageIds.includes(id));
     }
-    console.log(updatedImageIds);
+    // console.log(updatedImageIds);
     return updatedImageIds;
   };
 

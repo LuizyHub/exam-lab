@@ -1,4 +1,3 @@
-// import { useRef } from "react";
 import EditorExam from "../components/EditorExam"
 import AttributeManager from "../components/AttributeManager"
 import AICreate from "../test/AI/AICreate";
@@ -11,9 +10,7 @@ export default function EditExam() {
 
   //로그인 리모컨
   const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
-
   const location = useLocation();
-
   // 선택된 시험의 examId와 examTitle을 받아, AttributeManager 컴포넌트에게 props로 전달
   const [examTitle, setExamTitle] = useState('');
   const [examId, setExamId] = useState('');
@@ -32,7 +29,7 @@ export default function EditExam() {
       console.log("Exam ID:", examId);
       console.log("Exam Title:", examTitle);
     }
-  }, [location]);
+  }, [location]);//useEffect로 가지고 왔기 때문에 새로고침이 발생해야하기에 의존성 uesEffect가 다시 렌더링이 되어야 한다.
 
   const [isExamCreate, setExamCreate] = useState([]);
 
@@ -52,11 +49,11 @@ export default function EditExam() {
     <>
       <h1>Test</h1>
       {/* 리모컨 */}
-      {/* <div style={{ marginBottom: '40px' }}>
+      <div style={{ marginBottom: '40px' }}>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleAutoLogin() }}>logIn</button>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLogout() }}>logOut</button>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLoginState() }}>logState</button>
-      </div> */}
+      </div>
 
       <button>시험지 생성</button>
 
@@ -76,6 +73,7 @@ export default function EditExam() {
 
       <button onClick={() => {
         handleExamCreate();
+        console.log(examId);
       }}>문제추가</button>
       <AICreate examId={examId} />
     </>

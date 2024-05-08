@@ -153,12 +153,5 @@ public class QuestionsServiceImpl implements QuestionsService {
     }
 
     @Override
-    public void deleteQuestionsByQuestionId(User user, String questionId) {
-        Optional<Question> optionalQuestion = questionsRepository.findById(questionId);
-        if (optionalQuestion.isPresent()) {
-            questionsRepository.deleteById(questionId);
-        } else {
-            throw new NotFoundQuestionException();
-        }
-    }
+    public void deleteQuestionsByQuestionId(User user, String questionId) {questionsRepository.deleteById(questionId);}
 }

@@ -54,30 +54,10 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public QuestionDto addQuestionsByExamId(User user, Long examId, QuestionUploadInfo questionUploadInfo, List<MultipartFile> questionImagesIn, List<MultipartFile> questionImagesOut, List<MultipartFile> commentaryImagesIn, List<MultipartFile> commentaryImagesOut) {
         questionUploadInfo.initializeCollections();
-        if (questionImagesIn != null) {
-            for (int i = 0; i < questionImagesIn.size(); i++) {
-                String imageUrl = imageService.saveImageInS3(questionImagesIn.get(i));
-                questionUploadInfo.getQuestionImagesTextIn().get(i).setUrl(imageUrl);
-            }
-        }
-        if (questionImagesOut != null) {
-            for (int i = 0; i < questionImagesOut.size(); i++) {
-                String imageUrl = imageService.saveImageInS3(questionImagesOut.get(i));
-                questionUploadInfo.getQuestionImagesTextOut().get(i).setUrl(imageUrl);
-            }
-        }
-        if (commentaryImagesIn != null) {
-            for (int i = 0; i < commentaryImagesIn.size(); i++) {
-                String imageUrl = imageService.saveImageInS3(commentaryImagesIn.get(i));
-                questionUploadInfo.getCommentaryImagesTextIn().get(i).setUrl(imageUrl);
-            }
-        }
-        if (commentaryImagesOut != null) {
-            for (int i = 0; i < commentaryImagesOut.size(); i++) {
-                String imageUrl = imageService.saveImageInS3(commentaryImagesOut.get(i));
-                questionUploadInfo.getCommentaryImagesTextOut().get(i).setUrl(imageUrl);
-            }
-        }
+        processImages(questionImagesIn, questionUploadInfo, "questionImagesIn");
+        processImages(questionImagesOut, questionUploadInfo, "questionImagesOut");
+        processImages(commentaryImagesIn, questionUploadInfo,"commentaryImagesIn");
+        processImages(commentaryImagesOut, questionUploadInfo, "commentaryImagesOut");
 
         Question question = questionUploadInfo.toDocument(examId);
         String uuid = questionsRepository.save(question).getId();
@@ -154,4 +134,27 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     @Override
     public void deleteQuestionsByQuestionId(User user, String questionId) {questionsRepository.deleteById(questionId);}
+
+    //이미지 생성 및 url추가 로직
+    private void processImages(List<MultipartFile> images, QuestionUploadInfo questionUploadInfo, String imageType) {
+        if (images != null) {
+            for (int i = 0; i < images.size(); i++) {
+                String imageUrl = imageService.saveImageInS3(images.get(i));
+                switch (imageType) {
+                    case "questionImagesIn":
+                        questionUploadInfo.getQuestionImagesTextIn().get(i).setUrl(imageUrl);
+                        break;
+                    case "questionImagesOut":
+                        questionUploadInfo.getQuestionImagesTextOut().get(i).setUrl(imageUrl);
+                        break;
+                    case "commentaryImagesIn":
+                        questionUploadInfo.getCommentaryImagesTextIn().get(i).setUrl(imageUrl);
+                        break;
+                    case "commentaryImagesOut":
+                        questionUploadInfo.getCommentaryImagesTextOut().get(i).setUrl(imageUrl);
+                        break;
+                }
+            }
+        }
+    }
 }

@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function AttributeManager({ examId }) {
-    const [attributes, setAttributes] = useState([{ name: '', values: [''] }]);
+    const [attributes, setAttributes] = useState([{ name: '난이도', values: ['상', '중', '하'] }]); // 속성,태그에 대한 default을 설정한다.
     const [examTitle, setExamTitle] = useState('');
+    const [isShowModal, setIsShowModal] = useState(attributes.map(() => false)); 
+    // 선택한 속성에 대한 모달을 띠우기 위해 배열로 만드며 false로 초기화한다.
+
+
 
     useEffect(() => {
         if (examId) {
@@ -53,12 +57,26 @@ export default function AttributeManager({ examId }) {
         setAttributes(newAttributes);
     };
 
+    // 속성 삭제 메세지 창에 대한 모달 상태 제어
+    // 해당 속성에 대한 모달창이 뜰 수 있게 해당 index만 true로 설정한다.
+    const handleDeleteConfirm = (index) => {
+        const newIsShowModal = [...isShowModal]; 
+        newIsShowModal[index] = true; // 해당 인덱스의 모달 표시 여부를 true로 설정
+        setIsShowModal(newIsShowModal);
+    };
+
+    // 모든 모달 닫기
+    const handleCloseModal = () => {
+        setIsShowModal(attributes.map(() => false)); 
+    };
+
     const handleDeleteTag = (attributeIndex, tagIndex) => {
         const newAttributes = [...attributes];
         newAttributes[attributeIndex].values.splice(tagIndex, 1);
         setAttributes(newAttributes);
     };
 
+    // 시험 제목과 속성, 태그들을 생성한다.
     const handleExamDataSubmit = () => {
         const data = {
             exam_title: examTitle,
@@ -78,6 +96,7 @@ export default function AttributeManager({ examId }) {
             });
     };
 
+    // 시험 제목과 속성, 태그들을 업데이트한다.
     const handleUpdateExamData = () => {
         const data = {
             exam_title: examTitle,
@@ -110,8 +129,35 @@ export default function AttributeManager({ examId }) {
                             <button onClick={() => handleDeleteTag(index, tagIndex)}>태그 삭제</button>
                         </div>
                     ))}
+                    <p> 속성과 태그를 입력하세요. 예시: 난이도(상중하), 주차(1,2,3) </p>
                     <button onClick={() => handleAddTag(index)}>태그 추가</button>
-                    <button onClick={() => handleDeleteAttribute(index)}>속성 삭제</button>
+                    <button onClick={()=> handleDeleteConfirm(index) }>속성 삭제</button>
+                    {isShowModal[index] &&  // 배열에서 해당 인덱스의 모달 표시 여부를 확인
+                        <div style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <div style={{
+                                backgroundColor: 'white',
+                                padding: 20,
+                                borderRadius: 5,
+                                boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+                            }}>
+                                <h3>속성 삭제시, 모든 문제에 대한 속성이 삭제됩니다. 진행하시겠습니까?</h3>
+                                <button onClick={() => { handleDeleteAttribute(index); handleCloseModal(); }}>삭제하기</button>
+                                <button onClick={handleCloseModal}>취소</button>
+                            </div>
+                        </div>
+                    }
+
+
                 </div>
             ))}
             <button onClick={handleAddAttribute}>속성 추가</button>

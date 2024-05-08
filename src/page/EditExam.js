@@ -1,5 +1,6 @@
 // import { useRef } from "react";
 import EditorExam from "../components/EditorExam"
+import NavigationBar from "../components/NavigationBar";
 import AttributeManager from "../components/AttributeManager"
 import AICreate from "../test/AI/AICreate";
 import { useState, useEffect } from "react";
@@ -50,7 +51,7 @@ export default function EditExam() {
 
   return (
     <>
-      <h1>Test</h1>
+      <h1>문제 등록하기</h1>
       {/* 리모컨 */}
       {/* <div style={{ marginBottom: '40px' }}>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleAutoLogin() }}>logIn</button>
@@ -58,8 +59,7 @@ export default function EditExam() {
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLoginState() }}>logState</button>
       </div> */}
 
-      <button>시험지 생성</button>
-
+      <NavigationBar />      
       <AttributeManager examId={examId}></AttributeManager>
 
       {isExamCreate.map((component, index) => (

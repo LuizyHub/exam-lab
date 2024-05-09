@@ -9,4 +9,5 @@ import lombok.Data;
 public class ExamDto {
     private String examTitle;
     private Long examId;
+    private Integer size;
 }

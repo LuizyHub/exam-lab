@@ -64,32 +64,19 @@ public class QuestionsServiceImpl implements QuestionsService {
     @Override
     public QuestionsListDto searchFromQuestions(Long examId, QuestionsSearchDto questionsSearchDto) {
         List<QuestionDto> questionsList = new ArrayList<>();
-        int count = 0;
-        //전체 조회
-        if (questionsSearchDto.getCount() == 0) {
-            List<Question> questionEntities = questionsRepository.findByExamId(examId);
-            if (questionEntities.isEmpty()) return new QuestionsListDto(questionsList);
-            for (Question question : questionEntities) {
-                questionsList.add(QuestionDto.fromDocument(question));
-            }
-            return new QuestionsListDto(questionsList);
-        } else { //일부 조회
-            Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
-            //쿼리문 코드 적용 및 elasticSearch 통신 관련
-            NativeQuery searchQuery = new NativeQuery(query);
-            searchQuery.setPageable(PageRequest.of(0, questionsSearchDto.getCount()));
-            SearchHits<Question> searchHits = elasticsearchTemplate.search(searchQuery, Question.class);
+        Query query = boolQueryBuilder.searchQuestionsQuery(examId, questionsSearchDto);
+        //쿼리문 코드 적용 및 elasticSearch 통신 관련
+        NativeQuery searchQuery = new NativeQuery(query);
+        //한 시험당 문제가 1만개가 넘지 않는다고 가정
+        int pageSize = questionsSearchDto.getCount() == 0 ? 10000 : questionsSearchDto.getCount();
+        searchQuery.setPageable(PageRequest.of(0, pageSize));
+        SearchHits<Question> searchHits = elasticsearchTemplate.search(searchQuery, Question.class);
 
-            for (SearchHit<Question> hit : searchHits) {
-                if (count >= questionsSearchDto.getCount()) {
-                    break;
-                }
-                Question question = hit.getContent();
-                questionsList.add(QuestionDto.fromDocument(question));
-                count++;
-            }
-            return new QuestionsListDto(questionsList);
+        for (SearchHit<Question> hit : searchHits) {
+            Question question = hit.getContent();
+            questionsList.add(QuestionDto.fromDocument(question));
         }
+        return new QuestionsListDto(questionsList);
     }
 
     @Override

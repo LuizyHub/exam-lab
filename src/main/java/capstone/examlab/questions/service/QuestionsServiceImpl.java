@@ -10,6 +10,9 @@ import capstone.examlab.questions.documnet.Question;
 import capstone.examlab.questions.repository.BoolQueryBuilder;
 import capstone.examlab.questions.repository.QuestionsRepository;
 import capstone.examlab.users.domain.User;
+import co.elastic.clients.elasticsearch._types.aggregations.AggregationBuilders;
+import co.elastic.clients.elasticsearch._types.aggregations.TermsAggregation;
+import co.elastic.clients.elasticsearch._types.aggregations.ValueCountAggregation;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -111,6 +114,11 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     @Override
     public void deleteQuestionsByQuestionId(User user, String questionId) {questionsRepository.deleteById(questionId);}
+
+    @Override
+    public int countQuestionsByExamId(Long examId) {
+        return questionsRepository.findByExamId(examId).size();
+    }
 
     //이미지 생성 및 url추가 로직
     private void processImages(List<MultipartFile> images, QuestionUploadInfo questionUploadInfo, String imageType) {

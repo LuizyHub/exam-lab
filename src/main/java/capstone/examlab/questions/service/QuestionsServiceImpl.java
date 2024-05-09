@@ -13,6 +13,7 @@ import capstone.examlab.users.domain.User;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -38,8 +39,7 @@ public class QuestionsServiceImpl implements QuestionsService {
         for (QuestionUpdateDto questionUpdateDto : questionsUpdateListDto) {
             String questionType = "객관식";
             Question question = questionUpdateDto.toDocument(examId, questionType);
-            String uuid = questionsRepository.save(question).getId();
-            question.setId(uuid);
+            question = questionsRepository.save(question);
             questionsList.add(QuestionDto.fromDocument(question));
         }
         return new QuestionsListDto(questionsList);
@@ -55,8 +55,7 @@ public class QuestionsServiceImpl implements QuestionsService {
         processImages(commentaryImagesOut, questionUploadInfo, "commentaryImagesOut");
 
         Question question = questionUploadInfo.toDocument(examId);
-        String uuid = questionsRepository.save(question).getId();
-        question.setId(uuid);
+        question = questionsRepository.save(question);
         return QuestionDto.fromDocument(question);
 
     }
@@ -106,15 +105,14 @@ public class QuestionsServiceImpl implements QuestionsService {
 
     //Update 로직
     @Override
-    public boolean updateQuestionsByQuestionId(User user, QuestionUpdateDto questionUpdateDto) {
+    public void updateQuestionsByQuestionId(User user, QuestionUpdateDto questionUpdateDto) throws BadRequestException {
         //Optional 통한 데이터 존재 검증
         Optional<Question> optionalQuestion = questionsRepository.findById(questionUpdateDto.getId());
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();
             questionsRepository.save(questionUpdateDto.updateDocument(question));
-            return true;
         } else {
-            return false;
+            throw new BadRequestException("해당하는 문제가 없습니다");
         }
     }
 

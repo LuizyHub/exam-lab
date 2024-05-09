@@ -18,13 +18,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,7 +47,7 @@ public class QuestionsController {
 
     //Read API
     @GetMapping("/exams/{examId}/questions")
-    public QuestionsListDto selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams Map<String, String> params) {
+    public QuestionsListDto selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam MultiValueMap params) {
         QuestionsSearchDto questionsSearchDto = buildQuestionsSearch(params);
         QuestionsListDto questionsListDto = questionsService.searchFromQuestions(examId, questionsSearchDto);
         if (questionsListDto.getSize() == 0) {
@@ -60,24 +58,22 @@ public class QuestionsController {
     }
 
     //Read 파라미터 처리 로직
-    private QuestionsSearchDto buildQuestionsSearch(Map<String, String> params) {
+    private QuestionsSearchDto buildQuestionsSearch(Map<String, List<String>> params) {
         Map<String, List<String>> tags = new HashMap<>();
         List<String> includes = new ArrayList<>();
         int count = 10;
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
+        for (Map.Entry<String, List<String>> entry : params.entrySet()) {
             String key = entry.getKey();
-            String value = entry.getValue();
+            List<String> values = entry.getValue();
             if (key.startsWith("tags_")) {
                 String[] tokens = key.split("_", 2);
                 String category = tokens[1];
-                //키가 맵에 없으면 새로 생성, value값이 list타입이므로 새로 생성
-                tags.computeIfAbsent(category, k -> new ArrayList<String>()).add(value);
+                tags.computeIfAbsent(category, k -> new ArrayList<>()).addAll(values);
             } else if (key.equals("includes")) {
-                includes.add(value);
+                includes.addAll(values);
             } else if (key.equals("count")) {
                 try {
-                    count = Integer.parseInt(value);
+                    count = Integer.parseInt(values.get(0));
                     if (count < 0) {
                         throw new IllegalArgumentException("Count 값은 0 이상이어야 합니다.");
                     }

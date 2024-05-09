@@ -84,8 +84,7 @@ public class ExamServiceImpl implements ExamsService {
                     examList.add(ExamDto.builder()
                             .examTitle(((Exam)exam).getExamTitle())
                             .examId(((Exam)exam).getExamId())
-                            // TODO: size 계산
-                            .size(1234)
+                            .size(questionsService.countQuestionsByExamId(((Exam)exam).getExamId()))
                             .build());
                 });
         return examList;

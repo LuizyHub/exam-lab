@@ -16,6 +16,7 @@ import capstone.examlab.valid.ValidExamId;
 import capstone.examlab.valid.ValidParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -95,16 +96,12 @@ public class QuestionsController {
 
     //Update API
     @PutMapping("/questions")
-    public ResponseDto updateQuestions(@Login User user, @RequestBody QuestionUpdateDto questionUpdateDto) {
+    public ResponseDto updateQuestions(@Login User user, @RequestBody QuestionUpdateDto questionUpdateDto) throws BadRequestException {
         Long examId = questionsService.getExamIDFromQuestion(questionUpdateDto.getId());
         if (!examsService.isExamOwner(examId, user)) {
             throw new UnauthorizedException();
         }
-
-        boolean updated = questionsService.updateQuestionsByQuestionId(user, questionUpdateDto);
-        if (!updated) {
-            return ResponseDto.BAD_REQUEST;
-        }
+        questionsService.updateQuestionsByQuestionId(user, questionUpdateDto);
         return ResponseDto.OK;
     }
 

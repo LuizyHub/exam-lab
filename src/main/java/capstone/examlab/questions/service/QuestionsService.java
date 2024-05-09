@@ -6,6 +6,7 @@ import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.dto.update.QuestionUpdateDto;
 import capstone.examlab.questions.dto.upload.QuestionUploadInfo;
 import capstone.examlab.users.domain.User;
+import org.apache.coyote.BadRequestException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface QuestionsService {
 
     Long getExamIDFromQuestion(String questionId);
 
-    boolean updateQuestionsByQuestionId(User user, QuestionUpdateDto questionsUpdateDto);
+    void updateQuestionsByQuestionId(User user, QuestionUpdateDto questionsUpdateDto) throws BadRequestException;
 
     void deleteQuestionsByExamId(Long examId);
 

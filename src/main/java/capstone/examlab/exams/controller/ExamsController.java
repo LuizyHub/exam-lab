@@ -9,6 +9,7 @@ import capstone.examlab.questions.dto.search.QuestionsSearchDto;
 import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.users.argumentresolver.Login;
 import capstone.examlab.users.domain.User;
+import capstone.examlab.util.Util;
 import capstone.examlab.valid.ValidExamId;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -57,7 +59,14 @@ public class ExamsController {
     @PostMapping
     public ResponseDto createExam(
             @Login User user,
-            @Validated @RequestBody ExamAddDto examAddDto) {
+            @Validated @RequestBody ExamAddDto examAddDto) throws BadRequestException {
+
+        for (List<String> tags : examAddDto.getTags().values()) {
+            for (String tag : tags) {
+                if (!Util.isSingleToken(tag))
+                    throw new BadRequestException("태그는 공백 없이 한 단어로 입력해주세요.");
+            }
+        }
 
         // AOP 도입 예정
         if (user == null) {
@@ -85,7 +94,14 @@ public class ExamsController {
     public ResponseDto updateExam(
             @Login User user,
             @PathVariable @ValidExamId Long examId,
-            @Validated @RequestBody ExamUpdateDto examUpdateDto) {
+            @Validated @RequestBody ExamUpdateDto examUpdateDto) throws BadRequestException {
+
+        for (List<String> tags : examUpdateDto.getTags().values()) {
+            for (String tag : tags) {
+                if (!Util.isSingleToken(tag))
+                    throw new BadRequestException("태그는 공백 없이 한 단어로 입력해주세요.");
+            }
+        }
 
         // AOP 도입 예정
         if (user == null) {

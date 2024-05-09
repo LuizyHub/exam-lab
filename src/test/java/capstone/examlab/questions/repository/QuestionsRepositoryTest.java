@@ -175,4 +175,9 @@ public class QuestionsRepositoryTest {
         questionsRepository.deleteById(questionUuid);
         assertThat(questionsRepository.existsById(questionUuid)).isFalse();
     }
+
+    @Test
+    void countQuestionsByExamId(){
+        assertThat(questionsRepository.findByExamId(existExamId).size() == 1);
+    }
 }

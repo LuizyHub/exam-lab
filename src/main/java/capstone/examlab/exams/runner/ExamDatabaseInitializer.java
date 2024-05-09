@@ -3,6 +3,7 @@ package capstone.examlab.exams.runner;
 import capstone.examlab.exams.domain.Exam;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.users.domain.User;
+import capstone.examlab.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
@@ -22,7 +23,9 @@ public class ExamDatabaseInitializer implements ApplicationRunner {
 
     private final ObjectProvider<Exam> examProvider;
     private final ExamRepository examRepository;
-//    private final SubExamRepository subExamRepository;
+    // 개발용 코드
+//    private final UserRepository userRepository;
+
     @Override
     public void run(ApplicationArguments args) {
         // 데이터 베이스 초기화
@@ -41,7 +44,15 @@ public class ExamDatabaseInitializer implements ApplicationRunner {
 
         Exam englishSATExam = examProvider.getObject();
         englishSATExam.setExamTitle("수능 - 영어");
-        englishSATExam.setTypes(Map.of("category", List.of("문법", "독해", "어휘", "듣기")));
+        englishSATExam.setTypes(Map.of(
+                "연도", List.of("2024", "2023", "2022"),
+                "월", List.of("6", "9", "11"),
+                "분류", List.of("목적", "분위기심경", "대의파악", "함의추론", "도표이해", "내용일치", "실용문일치", "어법", "단어쓰임", "빈칸추론", "무관한문장", "글의순서", "문장넣기", "요약문완성"),
+                "배점", List.of("2", "3")));
+
+        // 개발용 코드
+//        User user = (User) userRepository.findByUserId("lab3@gmail.com").get();
+//        englishSATExam.setUser(user);
 
         try {
             englishSATExam = examRepository.save(englishSATExam);

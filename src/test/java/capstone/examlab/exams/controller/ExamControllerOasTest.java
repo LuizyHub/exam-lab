@@ -188,7 +188,8 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
                                                 .attributes(Attributes.key("exam_title").value(String.class),
                                                         Attributes.key("exam_id").value(Long.class)),
                                         fieldWithPath("exams[].exam_title").description("Exam title").type(JsonFieldType.STRING),
-                                        fieldWithPath("exams[].exam_id").description("Exam id").type(JsonFieldType.NUMBER)
+                                        fieldWithPath("exams[].exam_id").description("Exam id").type(JsonFieldType.NUMBER),
+                                        fieldWithPath("exams[].size").description("Exam size").type(JsonFieldType.NUMBER)
                                 )
                                 .responseSchema(Schema.schema("ExamList"))
                                 .build()

@@ -32,7 +32,8 @@ paths:
               examples:
                 exams:
                   value: "{\"exams\":[{\"exam_title\":\"운전면허 - 1,2종\",\"exam_id\"\
-                    :1},{\"exam_title\":\"수능 - 영어\",\"exam_id\":2}]}"
+                    :1,\"size\":1234},{\"exam_title\":\"수능 - 영어\",\"exam_id\":2,\"\
+                    size\":1234}]}"
     post:
       tags:
       - exams
@@ -73,7 +74,7 @@ paths:
             examples:
               update-question:
                 value: "{\"question\":\"변경된 질문입니다.\",\"options\":[\"변경된 보기1\",\"변경\
-                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"Aw5jV48BXRBYEYFcoMBf\"\
+                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"KQ4vXY8BXRBYEYFcb8AO\"\
                   ,\"commentary\":\"변경된 설명입니다.\",\"tags\":{\"난이도\":[\"중\"],\"단원\"\
                   :[\"2\"]}}"
       responses:
@@ -82,7 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 update-question:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -100,10 +101,10 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"1c75a40e-0ee9-4514-86da-1a55e0bd87ed!\",\"\
-                  password_confirm\":\"1c75a40e-0ee9-4514-86da-1a55e0bd87ed!\",\"\
-                  user_id\":\"1c75a40e-0ee9-4514-86da-1a55e0bd87ed@gmail.com\",\"\
-                  name\":\"1c75a40e-0ee9-4514-86da-1a55e0bd87ed\"}"
+                value: "{\"password\":\"6fe6f1bf-ba20-419c-b170-4898a5939f22!\",\"\
+                  password_confirm\":\"6fe6f1bf-ba20-419c-b170-4898a5939f22!\",\"\
+                  user_id\":\"6fe6f1bf-ba20-419c-b170-4898a5939f22@gmail.com\",\"\
+                  name\":\"6fe6f1bf-ba20-419c-b170-4898a5939f22\"}"
       responses:
         "200":
           description: "200"
@@ -153,7 +154,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+              $ref: '#/components/schemas/api-v1-questions486549215'
             examples:
               patch-exams:
                 value: "{\"tags\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"1\"\
@@ -164,7 +165,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 patch-exams:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -187,7 +188,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 delete-exams:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -211,7 +212,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 delete-questions-by-questionId:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -338,7 +339,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 post-file:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -364,7 +365,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 delete-exam-file:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -417,7 +418,7 @@ paths:
                 $ref: '#/components/schemas/api-v1-exams-examId-questions-1876066633'
               examples:
                 Search-questions:
-                  value: "{\"questions\":[{\"id\":\"BA5jV48BXRBYEYFcocBC\",\"type\"\
+                  value: "{\"questions\":[{\"id\":\"Kg4vXY8BXRBYEYFcb8Dm\",\"type\"\
                     :\"객관식\",\"question\":\"소웨공 테스트 문제?\",\"question_images_in\":[],\"\
                     question_images_out\":[],\"options\":[\"① 답 예시 1\",\"② 답 예시 2\"\
                     ,\"③ 답 예시 3\",\"④ 답 예시 4\"],\"answers\":[3],\"commentary\":\"\
@@ -454,23 +455,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-exams-examId-file486549215'
+                $ref: '#/components/schemas/api-v1-questions486549215'
               examples:
                 add-questions:
-                  value: "{\"code\":201,\"message\":{\"id\":\"Ag5jV48BXRBYEYFcn8Cy\"\
+                  value: "{\"code\":201,\"message\":{\"id\":\"KA4vXY8BXRBYEYFcbsBt\"\
                     ,\"type\":\"객관식\",\"question\":\"다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤\
                     \ 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?\",\"question_images_in\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/4c10bb0c-d175-4f52-8449-c203623f6af0.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/11cdf3cb-3f7e-4936-9182-4e6cd72fc50f.png\"\
                     ,\"description\":\"설명1\",\"attribute\":\"속성1\"}],\"question_images_out\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/786eaa44-1789-409d-a6e0-2b04d1bda18e.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/fafede70-2bcf-45ac-b96c-cb0c949c93ef.png\"\
                     ,\"description\":\"설명2\",\"attribute\":\"속성2\"}],\"options\":[\"\
                     ① 제1종 대형면허 및 소형견인차면허\",\"② 제1종 보통면허 및 대형견인차면허\",\"③ 제1종 보통면허 및\
                     \ 소형견인차면허\",\"④ 제2종 보통면허 및 대형견인차면허\"],\"answers\":[4],\"commentary\"\
                     :\"도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는\
                     \ 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.\",\"\
-                    commentary_images_in\":[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/97017213-ee5e-4f83-89b0-8fb002ee0c5a.png\"\
+                    commentary_images_in\":[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/acc08858-f2ec-4e23-bd83-3c926b97f277.png\"\
                     ,\"description\":\"설명3\",\"attribute\":\"속성3\"}],\"commentary_images_out\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/0c189bb8-dc14-4a37-97a5-71ef0144abad.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/3fdeb245-1de2-40c5-8db1-c6bbc2370d62.png\"\
                     ,\"description\":\"설명4\",\"attribute\":\"속성4\"}],\"tags\":{}}}"
 components:
   schemas:
@@ -540,27 +541,6 @@ components:
     ExamType:
       title: ExamType
       type: object
-    ExamList:
-      title: ExamList
-      required:
-      - exams
-      type: object
-      properties:
-        exams:
-          type: array
-          description: Exam
-          items:
-            required:
-            - exam_id
-            - exam_title
-            type: object
-            properties:
-              exam_id:
-                type: number
-                description: Exam id
-              exam_title:
-                type: string
-                description: Exam title
     api-v1-users-login1770795545:
       required:
       - password
@@ -573,6 +553,27 @@ components:
         user_id:
           type: string
           description: User id
+    ExamFile:
+      title: ExamFile
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: number
+          description: 응답 코드
+        message:
+          required:
+          - exist
+          - file_title
+          type: object
+          properties:
+            exist:
+              type: boolean
+              description: 파일 존재 여부
+            file_title:
+              type: string
+              description: File title
     api-v1-exams-examId-questions-1876066633:
       required:
       - questions
@@ -716,30 +717,34 @@ components:
                       - type: string
                       - type: number
                 description: 문제의 태그 맵 정보
-    ExamFile:
-      title: ExamFile
-      required:
-      - code
-      type: object
-      properties:
-        code:
-          type: number
-          description: 응답 코드
-        message:
-          required:
-          - exist
-          - file_title
-          type: object
-          properties:
-            exist:
-              type: boolean
-              description: 파일 존재 여부
-            file_title:
-              type: string
-              description: File title
     AiQuestions:
       title: AiQuestions
       type: object
+    ExamList:
+      title: ExamList
+      required:
+      - exams
+      type: object
+      properties:
+        exams:
+          type: array
+          description: Exam
+          items:
+            required:
+            - exam_id
+            - exam_title
+            - size
+            type: object
+            properties:
+              size:
+                type: number
+                description: Exam size
+              exam_id:
+                type: number
+                description: Exam id
+              exam_title:
+                type: string
+                description: Exam title
     ExamAdd:
       title: ExamAdd
       required:
@@ -753,6 +758,20 @@ components:
         exam_title:
           type: string
           description: 시험지 이름
+    api-v1-questions486549215:
+      type: object
+    api-v1-users-status615510992:
+      required:
+      - login
+      - user_name
+      type: object
+      properties:
+        user_name:
+          type: string
+          description: 사용자 이름
+        login:
+          type: boolean
+          description: 로그인 여부
     api-v1-users-963924044:
       required:
       - name
@@ -773,17 +792,3 @@ components:
         name:
           type: string
           description: User name
-    api-v1-users-status615510992:
-      required:
-      - login
-      - user_name
-      type: object
-      properties:
-        user_name:
-          type: string
-          description: 사용자 이름
-        login:
-          type: boolean
-          description: 로그인 여부
-    api-v1-exams-examId-file486549215:
-      type: object

@@ -26,4 +26,6 @@ public interface QuestionsService {
     void deleteQuestionsByExamId(Long examId);
 
     void deleteQuestionsByQuestionId(User user, String questionId);
+
+    int countQuestionsByExamId(Long examId);
 }

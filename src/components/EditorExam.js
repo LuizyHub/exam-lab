@@ -4,7 +4,8 @@ import { useImage } from '../function/useImage';
 import { handleData } from '../function/handleData';
 
 import EditorTool from '../components/EditorTool';
-
+import { handleOnInput, handleDragOver, handleCopy, handleCut, handlePaste, handleKeyDown, handleKeyUp } from '../function/eventHandle';
+import { Editor } from './Editor';
 import { sendPostData, sendDeleteData, sendPutData } from '../function/axiosData';
 
 export default function EditorExam({ examId }) {
@@ -146,42 +147,13 @@ export default function EditorExam({ examId }) {
                 }));
             }}
           />
-
-          <div
-            className="editor"
-            contentEditable="true"
-            ref={editorRef1}
+          <Editor
+            editorRef={editorRef1}
+            contentEditable={"true"}
             onDragOver={(e) => e.preventDefault()}
-            onCopy={(e) => {
-              if (e.target.tagName.toLowerCase() === 'img') {
-                e.preventDefault();
-              }
-            }} // 이미지 복사 동작 막기
-            onCut={(e) => {
-              if (e.target.tagName.toLowerCase() === 'img') {
-                e.preventDefault();
-              }
-            }} // 이미지 잘라내기 동작 막기
-            onPaste={(e) => {
-              // 에디터 내에서 이미지 잘라내기 동작 막기
-              if (e.target.tagName.toLowerCase() === 'img') {
-                e.preventDefault();
-              }
-              //외부 이미지 붙혀넣기 동작 막기
-              const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-              let hasImage = false;
-              for (let index in items) {
-                const item = items[index];
-                if (item.kind === 'file' && item.type.includes('image')) {
-                  hasImage = true;
-                  break;
-                }
-              }
-              if (hasImage) {
-                e.preventDefault();
-              }
-            }} // 이미지 붙여넣기 동작 막기
-
+            onCopy={(e) => { handleCopy(e); }}
+            onCut={(e) => { handleCut(e); }}
+            onPaste={(e) => { handlePaste(e); }}
 
             onInput={() => {
               const isResQuestion = editorRef1.current.innerHTML;
@@ -198,8 +170,7 @@ export default function EditorExam({ examId }) {
               setUrlInId(resultId);
             }}
 
-            style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-          />
+            style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
 
           {/* ------------------------------------------------------------------------ */}
 
@@ -452,7 +423,7 @@ export default function EditorExam({ examId }) {
         </div >
       </div>
       {/* -------------------------아래부터 답안 등록 -------------- */}
-      <div id='CommentaryArea' style={{ display: isCommentHide ? 'block' : 'none' }} >
+      <div id='CommentaryArea' style={{ display: isCommentHide ? 'none' : 'block' }} >
 
         <EditorTool
           editorRef={editorRef3}

@@ -5,6 +5,7 @@ export function handleOnInput() {
 
 export function handleDragOver(e) {
   // 이벤트 처리 로직
+  e.preventDefault()
 }
 
 export function handleCopy(e) {
@@ -38,11 +39,35 @@ export function handlePaste(e) {
   }
   if (hasImage) {
     e.preventDefault();
-  }// 에디터 내에서 이미지 잘라내기 동작 막기
+  }
 }
 
 export function handleKeyDown(e) {
   // 이벤트 처리 로직
+  //editorRef2
+  /**
+  if (e.key === 'Enter') {
+    e.preventDefault(); // 기본 동작 막기
+
+    // 생성된 문자열을 현재 포커스된 위치에 삽입합니다.
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const textNode = document.createTextNode(imageInit);
+    range.insertNode(textNode);
+
+    // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
+    const br = document.createElement('br');
+    range.insertNode(br);
+
+    // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
+    range.setStartAfter(textNode);
+    range.setEndAfter(textNode);
+
+    // 커서를 설정합니다.
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+   */
 }
 
 export function handleKeyUp(e) {

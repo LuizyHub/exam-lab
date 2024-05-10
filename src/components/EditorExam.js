@@ -200,42 +200,15 @@ export default function EditorExam({ examId }) {
             }}
           />
           <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>
-            <div
-              className="editor"
-              contentEditable="false"
-              ref={editorRef2}
-              readOnly
-              onDragOver={(e) => e.preventDefault()}
-              onCopy={(e) => {
-                if (e.target.tagName.toLowerCase() === 'img') {
-                  e.preventDefault();
-                }
-              }} // 이미지 복사 동작 막기
-              onCut={(e) => {
-                if (e.target.tagName.toLowerCase() === 'img') {
-                  e.preventDefault();
-                }
-              }} // 이미지 잘라내기 동작 막기
-              onPaste={(e) => {
-                // 에디터 내에서 이미지 잘라내기 동작 막기
-                if (e.target.tagName.toLowerCase() === 'img') {
-                  e.preventDefault();
-                }
-                //외부 이미지 붙혀넣기 동작 막기
-                const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-                let hasImage = false;
-                for (let index in items) {
-                  const item = items[index];
-                  if (item.kind === 'file' && item.type.includes('image')) {
-                    hasImage = true;
-                    break;
-                  }
-                }
-                if (hasImage) {
-                  e.preventDefault();
-                }
-              }} // 이미지 붙여넣기 동작 막기
 
+            <Editor
+              editorRef={editorRef2}
+              contentEditable={false}
+              readOnly={true}
+              onDragOver={(e) => e.preventDefault()}
+              onCopy={handleCopy}
+              onCut={handleCut}
+              onPaste={handlePaste}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault(); // 기본 동작 막기
@@ -259,7 +232,6 @@ export default function EditorExam({ examId }) {
                   selection.addRange(range);
                 }
               }}
-
               onInput={() => {
                 const isImage = editorRef2.current.innerHTML;
                 console.log(isImage);
@@ -270,10 +242,22 @@ export default function EditorExam({ examId }) {
                 setUrlOut(resultEdit);
                 setUrlOutId(resultId);
               }}
-
               style={{ display: 'flex' }}
             />
-            <div
+
+            <Editor
+              contentEditable={true}
+              editorRef={editorRefDescription}
+              dangerouslySetInnerHTML={{ __html: imageInit }}
+              onInput={
+                () => {
+                  const isOutImage = editorRefDescription.current.innerHTML;
+                  setUrlOutDes(isOutImage);
+                  // console.log(isOutImage)
+                }
+              }
+            />
+            {/* <div
               contentEditable={true}
               ref={editorRefDescription}
               dangerouslySetInnerHTML={{ __html: imageInit }}
@@ -284,7 +268,7 @@ export default function EditorExam({ examId }) {
                 // console.log(isOutImage)
               }}
             // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-            />
+            /> */}
           </div>
           {/* ------------------------------------------------------------------------ */}
 

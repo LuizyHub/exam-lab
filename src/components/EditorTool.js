@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+// import { useEffect } from "react"
 
 export default function EditorTool({ editorRef, contentType, handleContentType, handleToolClick, imageSelectorRef, handleImgToolClick, isImageSize, handleImgSize, handleContent }) {
 

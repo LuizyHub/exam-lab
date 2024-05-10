@@ -257,18 +257,6 @@ export default function EditorExam({ examId }) {
                 }
               }
             />
-            {/* <div
-              contentEditable={true}
-              ref={editorRefDescription}
-              dangerouslySetInnerHTML={{ __html: imageInit }}
-
-              onInput={() => {
-                const isOutImage = editorRefDescription.current.innerHTML;
-                setUrlOutDes(isOutImage);
-                // console.log(isOutImage)
-              }}
-            // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-            /> */}
           </div>
           {/* ------------------------------------------------------------------------ */}
 
@@ -290,8 +278,85 @@ export default function EditorExam({ examId }) {
             ref={imageSelectorRef3}
             onChange={(e) => { handleImageSelect(e, editorRef3) }}
           />
+          <Editor
+            editorRef={editorRef3}
+            contentEditable={"true"}
+            onDragOver={(e) => e.preventDefault()}
+            onCopy={handleCopy}
+            onCut={handleCut}
+            onPaste={handlePaste}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault(); // 기본 동작 막기
+              }
+            }}
+            onKeyUp={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault(); // 기본 동작 막기
+                const editor = e.target;
+                const brCount = editor.querySelectorAll('br').length + 1;
+                const newOption = String.fromCharCode(0x245F + brCount);
 
-          <div
+                // 생성된 문자를 현재 포커스된 위치에 삽입합니다.
+                const selection = window.getSelection();
+                const range = selection.getRangeAt(0);
+                const textNode = document.createTextNode(newOption);
+                range.insertNode(textNode);
+
+                // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
+                const br = document.createElement('br');
+                range.insertNode(br);
+
+                // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
+                range.setStartAfter(textNode);
+                range.setEndAfter(textNode);
+
+                // 커서를 설정합니다.
+                selection.removeAllRanges();
+                selection.addRange(range);
+              }
+            }}
+            dangerouslySetInnerHTML={{ __html: optionsInit }}
+            onInput={() => {
+              const answers = editorRef3.current.innerHTML;
+
+
+              const optionsInitArray = answers.split('<br>').map(item => item.trim());
+
+              const splitOptionsArray = optionsInitArray.flatMap(option => option.split('<div>').map(text => text.trim()));
+
+              // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
+
+              setData(prevState => ({ ...prevState, options: splitOptionsArray }));
+
+              const optionsArray = splitOptionsArray.filter(option => option !== '');
+
+              setData(prevState => ({ ...prevState, options: optionsArray }));
+
+              // setData(prevState => ({ ...prevState, options: answers }));
+
+              // console.log(answers)
+              // setData(prevState => ({ ...prevState, options: answers }));
+
+              // // 줄 바꿈을 기준으로 배열을 분할하고, 필터링하여 빈 문자열을 제거합니다.
+              // const optionsArray = optionsInitArray.split('\n').filter(option => option.trim() !== '');
+              // const optionsArray = splitOptionsArray.filter(option => option.trim() !== '');
+
+              // // <div>을 기준으로 분할하고, 각 요소를 trim하여 새로운 배열을 생성합니다.
+
+              // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
+              // // console.log(answers);
+              // setData(prevState => ({ ...prevState, options: optionsArray }));
+            }}
+            style={{
+              padding: '16px 24px',
+              border: '1px solid #D6D6D6',
+              borderRadius: '4px',
+              width: '600px',
+            }}
+          />
+
+          {/* <div
             className="editor"
             contentEditable="true"
             ref={editorRef3}
@@ -398,7 +463,7 @@ export default function EditorExam({ examId }) {
               width: '600px',
 
             }}
-          />
+          /> */}
 
           <button onClick={() => {
             console.log("test");

@@ -122,6 +122,8 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Test
     void deleteExams() throws Exception {
+        doNothing().when(questionsService).deleteQuestionsByExamId(anyLong());
+
         this.mockMvc.perform(
                         delete("/api/v1/exams/{examId}", addExamsAndGetId())
                                 .session(doLogin())
@@ -263,7 +265,6 @@ class ExamControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @Test
     void testDeleteExamFile() throws Exception {
-        doNothing().when(questionsService).deleteQuestionsByExamId(anyLong());
         this.mockMvc.perform(delete("/api/v1/exams/{examId}/file", addExamsAndSetFileAndGetId())
                         .session(doLogin()))
                 .andExpect(status().isOk())

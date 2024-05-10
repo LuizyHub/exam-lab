@@ -470,60 +470,17 @@ export default function EditorExam({ examId }) {
         /> 
         */}
 
-        <div
-          className="editor"
-          contentEditable="true"
-          ref={editorRef5}
+        <Editor
+          editorRef={editorRef5}
+          contentEditable={true}
           onDragOver={(e) => e.preventDefault()}
-          onCopy={(e) => {
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
-            }
-          }} // 이미지 복사 동작 막기
-          onCut={(e) => {
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
-            }
-          }} // 이미지 잘라내기 동작 막기
-          onPaste={(e) => {
-            // 에디터 내에서 이미지 잘라내기 동작 막기
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
-            }
-            //외부 이미지 붙혀넣기 동작 막기
-            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-            let hasImage = false;
-            for (let index in items) {
-              const item = items[index];
-              if (item.kind === 'file' && item.type.includes('image')) {
-                hasImage = true;
-                break;
-              }
-            }
-            if (hasImage) {
-              e.preventDefault();
-            }
-          }} // 이미지 붙여넣기 동작 막기
-
+          onCopy={handleCopy}
+          onCut={handleCut}
+          onPaste={handlePaste}
           onInput={() => {
-            // 여기 있는 isResQuestion과 useState의 isResQuestion와는 다른 거임
             const Commentary = editorRef4.current.innerHTML;
-            // console.log(Commentary);
             setCommentary(Commentary);
-            // const imageReplaceResult = imageReplace(Commentary);
-            // console.log(imageReplaceResult);
-            // setData(
-            //   prevState => ({
-            //     ...prevState,
-            //     question: imageReplaceResult
-            //   }));
-            // const resultEdit = handleFileObject(editorRef1, isCommentUrlInId, isCommentUrlIn);
-            // const resultId = handleIdContent(editorRef1, isCommentUrlInId)
-            // console.log(resultEdit);
-            // setCommentUrlIn(resultEdit);
-            // setCommentUrlInId(resultId);
           }}
-
           style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
         />
 

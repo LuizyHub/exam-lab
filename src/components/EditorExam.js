@@ -87,29 +87,29 @@ export default function EditorExam({ examId }) {
   return (
 
     <div>
-      <div>
+      <div className='questionArea'>
         <div>
           {/* <h3>문제등록</h3> */}
           {/* <select value={contentType1} onChange={handleContentType1}>
-        <option value="type">Select</option>
-        <option value="문제">문제</option>
-        <option value="이미지">이미지</option>
-        <option value="선택지">선택지</option>
-      </select> */}
+            <option value="type">Select</option>
+            <option value="문제">문제</option>
+            <option value="이미지">이미지</option>
+            <option value="선택지">선택지</option>
+          </select> */}
 
           {/* <div>
-        <h1>View</h1>
-        <p>{number}</p>
-        <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
-        {isResUrlOut.map((URL, index) => (
-          <img key={index} src={URL} id={'isResUrlOut'} style={{ width: '25%' }} />
-        ))}
-        <p dangerouslySetInnerHTML={{ __html: isResUrlOutDes }} />
-        {isResOption.map((options, index) => (
-          <p key={index}
-            dangerouslySetInnerHTML={{ __html: options }}></p>
-        ))}
-      </div> */}
+            <h1>View</h1>
+            <p>{number}</p>
+            <p dangerouslySetInnerHTML={{ __html: replacedQuestion }} />
+            {isResUrlOut.map((URL, index) => (
+              <img key={index} src={URL} id={'isResUrlOut'} style={{ width: '25%' }} />
+            ))}
+            <p dangerouslySetInnerHTML={{ __html: isResUrlOutDes }} />
+            {isResOption.map((options, index) => (
+              <p key={index}
+                dangerouslySetInnerHTML={{ __html: options }}></p>
+            ))}
+          </div> */}
 
 
 
@@ -149,7 +149,7 @@ export default function EditorExam({ examId }) {
           />
           <Editor
             editorRef={editorRef1}
-            contentEditable={"true"}
+            contentEditable={true}
             onDragOver={(e) => e.preventDefault()}
             onCopy={(e) => { handleCopy(e); }}
             onCut={(e) => { handleCut(e); }}
@@ -280,7 +280,7 @@ export default function EditorExam({ examId }) {
           />
           <Editor
             editorRef={editorRef3}
-            contentEditable={"true"}
+            contentEditable={true}
             onDragOver={(e) => e.preventDefault()}
             onCopy={handleCopy}
             onCut={handleCut}
@@ -356,115 +356,6 @@ export default function EditorExam({ examId }) {
             }}
           />
 
-          {/* <div
-            className="editor"
-            contentEditable="true"
-            ref={editorRef3}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault(); // 기본 동작 막기
-              }
-            }}
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault(); // 기본 동작 막기
-                const editor = e.target;
-                const brCount = editor.querySelectorAll('br').length + 1;
-                const newOption = String.fromCharCode(0x245F + brCount);
-
-                // 생성된 문자를 현재 포커스된 위치에 삽입합니다.
-                const selection = window.getSelection();
-                const range = selection.getRangeAt(0);
-                const textNode = document.createTextNode(newOption);
-                range.insertNode(textNode);
-
-                // 새로운 줄을 만들기 위해 br 태그를 삽입합니다.
-                const br = document.createElement('br');
-                range.insertNode(br);
-
-                // 커서를 새로운 줄의 시작 지점으로 이동시킵니다.
-                range.setStartAfter(textNode);
-                range.setEndAfter(textNode);
-
-                // 커서를 설정합니다.
-                selection.removeAllRanges();
-                selection.addRange(range);
-              }
-            }}
-            onDragOver={(e) => e.preventDefault()}
-            onCopy={(e) => {
-              if (e.target.tagName.toLowerCase() === 'img') {
-                e.preventDefault();
-              }
-            }} // 이미지 복사 동작 막기
-            onCut={(e) => {
-              if (e.target.tagName.toLowerCase() === 'img') {
-                e.preventDefault();
-              }
-            }} // 이미지 잘라내기 동작 막기
-            onPaste={(e) => {
-              // 에디터 내에서 이미지 잘라내기 동작 막기
-              if (e.target.tagName.toLowerCase() === 'img') {
-                e.preventDefault();
-              }
-              //외부 이미지 붙혀넣기 동작 막기
-              const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-              let hasImage = false;
-              for (let index in items) {
-                const item = items[index];
-                if (item.kind === 'file' && item.type.includes('image')) {
-                  hasImage = true;
-                  break;
-                }
-              }
-              if (hasImage) {
-                e.preventDefault();
-              }
-            }} // 이미지 붙여넣기 동작 막기
-
-            dangerouslySetInnerHTML={{ __html: optionsInit }}
-
-            onInput={() => {
-              const answers = editorRef3.current.innerHTML;
-
-
-              const optionsInitArray = answers.split('<br>').map(item => item.trim());
-
-              const splitOptionsArray = optionsInitArray.flatMap(option => option.split('<div>').map(text => text.trim()));
-
-              // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
-
-              setData(prevState => ({ ...prevState, options: splitOptionsArray }));
-
-              const optionsArray = splitOptionsArray.filter(option => option !== '');
-
-              setData(prevState => ({ ...prevState, options: optionsArray }));
-
-              // setData(prevState => ({ ...prevState, options: answers }));
-
-              // console.log(answers)
-              // setData(prevState => ({ ...prevState, options: answers }));
-
-              // // 줄 바꿈을 기준으로 배열을 분할하고, 필터링하여 빈 문자열을 제거합니다.
-              // const optionsArray = optionsInitArray.split('\n').filter(option => option.trim() !== '');
-              // const optionsArray = splitOptionsArray.filter(option => option.trim() !== '');
-
-              // // <div>을 기준으로 분할하고, 각 요소를 trim하여 새로운 배열을 생성합니다.
-
-              // const isOptionsArray = splitOptionsArray.map(text => text.replace('</div>', ''));
-              // // console.log(answers);
-              // setData(prevState => ({ ...prevState, options: optionsArray }));
-            }}
-
-            style={{
-              padding: '16px 24px',
-              border: '1px solid #D6D6D6',
-              borderRadius: '4px',
-              width: '600px',
-
-            }}
-          /> */}
-
           <button onClick={() => {
             console.log("test");
             handleCommentHide();
@@ -475,15 +366,14 @@ export default function EditorExam({ examId }) {
       <div id='CommentaryArea' style={{ display: isCommentHide ? 'none' : 'block' }} >
 
         <EditorTool
-          editorRef={editorRef3}
+          editorRef={editorRef4}
           contentType={'선택지'}
-          // handleContentType={handleContentType3}
+          // handleContentType={handleContentType1}
           handleToolClick={handleToolClick}
-          imageSelectorRef={imageSelectorRef3}
+          // imageSelectorRef={imageSelectorRef1}
           handleImgToolClick={handleImgToolClick}
           isImageSize={isImageSize}
           handleImgSize={handleImgSize}
-        // handleContent={() => { handleContent(editorRef3) }}
         />
         {/* <input
         type="file"
@@ -493,10 +383,13 @@ export default function EditorExam({ examId }) {
         onChange={(e) => { handleImageSelect(e, editorRef3) }}
       /> */}
 
-        <div
-          className="editor"
-          contentEditable="true"
-          ref={editorRef5}
+        <Editor
+          editorRef={editorRef4}
+          contentEditable={true}
+          onDragOver={(e) => e.preventDefault()}
+          onCopy={handleCopy}
+          onCut={handleCut}
+          onPaste={handlePaste}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault(); // 기본 동작 막기
@@ -528,54 +421,20 @@ export default function EditorExam({ examId }) {
               selection.addRange(range);
             }
           }}
-          onDragOver={(e) => e.preventDefault()}
-          onCopy={(e) => {
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
-            }
-          }} // 이미지 복사 동작 막기
-          onCut={(e) => {
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
-            }
-          }} // 이미지 잘라내기 동작 막기
-          onPaste={(e) => {
-            // 에디터 내에서 이미지 잘라내기 동작 막기
-            if (e.target.tagName.toLowerCase() === 'img') {
-              e.preventDefault();
-            }
-            //외부 이미지 붙혀넣기 동작 막기
-            const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-            let hasImage = false;
-            for (let index in items) {
-              const item = items[index];
-              if (item.kind === 'file' && item.type.includes('image')) {
-                hasImage = true;
-                break;
-              }
-            }
-            if (hasImage) {
-              e.preventDefault();
-            }
-          }} // 이미지 붙여넣기 동작 막기
-
           onInput={() => {
             const answers = editorRef5.current.innerHTML;
             setCommentAnswers(answers);
           }}
-
           style={{
             padding: '16px 24px',
             border: '1px solid #D6D6D6',
             borderRadius: '4px',
             width: '600px',
-
           }}
         />
 
-
         <EditorTool
-          editorRef={editorRef4}
+          editorRef={editorRef5}
           contentType={'선택지'}
           // handleContentType={handleContentType1}
           handleToolClick={handleToolClick}
@@ -614,7 +473,7 @@ export default function EditorExam({ examId }) {
         <div
           className="editor"
           contentEditable="true"
-          ref={editorRef4}
+          ref={editorRef5}
           onDragOver={(e) => e.preventDefault()}
           onCopy={(e) => {
             if (e.target.tagName.toLowerCase() === 'img') {

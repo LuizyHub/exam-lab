@@ -173,7 +173,7 @@ export default function SelectExamPage() {
                 <DeleteConfirmModal>
                   <ModalBody>
                     <h3>{exam.exam_title}에 대한 모든 문제들이 삭제됩니다. 정말로 삭제하시겠습니까? </h3>
-                    <ModalButton primary onClick={() => { handleExamDelete(exam.exam_id); }}>삭제하기</ModalButton>
+                    <ModalButton primary="true" onClick={() => { handleExamDelete(exam.exam_id); }}>삭제하기</ModalButton>
                     <ModalButton onClick={() => handleCloseModal(exam.exam_id)}>취소</ModalButton>
                   </ModalBody>
                 </DeleteConfirmModal>

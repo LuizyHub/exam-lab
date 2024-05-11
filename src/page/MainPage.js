@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { isVisibleState } from '../recoil/atoms';
 import { Link } from 'react-router-dom';
-import MainInto from '../components/MainIntro';
+import MainIntro from '../components/MainIntro';
 import NavigationBar from '../components/NavigationBar';
 import Bottom from '../components/Bottom';
 import styled from 'styled-components';
@@ -10,9 +10,10 @@ import styled from 'styled-components';
 const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: ${props => props.isSidebarOpen ? '235px' : '0px'};
+    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '235px' : '0px'};
     transition: margin-left 0.3s ease;
 `;
+
 
 const PageContent = styled.div`
     position: relative;
@@ -87,7 +88,7 @@ export default function MainPage() {
     const isSidebarOpen = useRecoilValue(isVisibleState);
 
     return (
-        <MainContainer isSidebarOpen={isSidebarOpen}>
+        <MainContainer $isSidebarOpen={isSidebarOpen}>
             <PageContent>
                 <ContentWrapper>
                     <LogoWrapper>
@@ -101,17 +102,20 @@ export default function MainPage() {
             </PageContent>
 
             <Navigation>
-                <NavButton primary>
-                    <StyledLink to='/exams/create'>나만의 시험지</StyledLink>
-                </NavButton>
-                <NavButton>
-                    <StyledLink to='/exams'>나만의 문제</StyledLink>
-                </NavButton>
-                <NavButton primary>
-                    <StyledLink to='/workbooks'>시험지 저장소</StyledLink>
-                </NavButton>
+            <NavButton primary="true">
+    <StyledLink to={{ pathname: '/exams/create' }}>나만의 시험지</StyledLink>
+</NavButton>
+<NavButton >
+    <StyledLink to={{ pathname: '/exams' }}>나만의 문제</StyledLink>
+</NavButton>
+<NavButton primary="true">
+    <StyledLink to={{ pathname: '/workbooks' }}>시험지 저장소</StyledLink>
+</NavButton>
+
+
+
             </Navigation>
-            <MainInto />
+            <MainIntro />
             <footer>
                 <Bottom />
             </footer>

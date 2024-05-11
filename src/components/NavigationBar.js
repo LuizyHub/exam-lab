@@ -11,13 +11,15 @@ import axios from 'axios';
 const NavigationContainer = styled.div`
     position: fixed;
     top: 0;
-    left: ${props => props.isVisible ? '0' : '-250px'};
+    left: ${({ isVisible }) => (isVisible ? '0' : '-250px')};
     width: 240px;
     height: 100%;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease-in-out;
 `;
+
+
 
 const NavigationBarContent = styled.div`
     display: flex;
@@ -138,13 +140,13 @@ export default function NavigationBar() {
     };
 
     return (
-        <NavigationContainer isVisible={isVisible}>
+        <NavigationContainer $isVisible={isVisible}>
             <NavigationBarContent>
-                        <Link to='/'> 
+                <Link to='/'> 
                     <Logo src="/img/examLab_logo.png" alt="logo" />
                 </Link>
-                <CloseButtonContainer isVisible={isVisible}>
-                    <CloseButton onClick={toggleVisibility} isVisible={isVisible}>
+                <CloseButtonContainer $isVisible={isVisible}>
+                    <CloseButton onClick={toggleVisibility}>
                         {isVisible ? <NavigationIcon src="/img/네비게이션바.png" alt="navigation" left /> : null}
                     </CloseButton>
                 </CloseButtonContainer>
@@ -153,7 +155,7 @@ export default function NavigationBar() {
                     <Navigate />
                     {/* 배포 시 삭제될 개발용 로그인 버튼 */}
                     <button onClick={handleAutoLogin}>자동 로그인</button>
-                    <button onClick={handleLogout} primary>로그아웃</button>
+                    <button onClick={handleLogout} primary="true">로그아웃</button>
                     <button onClick={handleLoginState}>로그인정보 받아오기</button>
                 </NavigationContent>
                 {userInfo.loginStatus === true ? (
@@ -166,7 +168,7 @@ export default function NavigationBar() {
                 ) : (
                     <>
                         <a href='/users/login'>
-                            <StyledButton primary>로그인</StyledButton>
+                            <StyledButton primary="true">로그인</StyledButton>
                         </a>
                         <a href='/users/add'>
                             <StyledButton>회원가입</StyledButton>

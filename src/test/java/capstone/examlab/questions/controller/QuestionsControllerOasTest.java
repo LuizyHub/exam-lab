@@ -4,6 +4,7 @@ import capstone.examlab.RestDocsOpenApiSpecTest;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.questions.dto.image.ImageDto;
+import capstone.examlab.questions.service.QuestionsService;
 import capstone.examlab.users.domain.User;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.SimpleType;
@@ -54,6 +55,9 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    private QuestionsService questionsService;
+
     @MockBean
     private ExamsService examsService;
 
@@ -65,23 +69,6 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
         //실제 존재하는 데이터가 아니기 때문에 유효성 검사 통과 로직 필요
         when(examRepository.existsByExamId(userAddExamId)).thenReturn(true);
         when(examsService.isExamOwner(eq(userAddExamId), any(User.class))).thenReturn(true);
-
-        //테스트용 '시험' 생성
-        Map<String, Object> map = new HashMap<>();
-        map.put("exam_title", "소웨공");
-        Map<String, List<String>> tags = new HashMap<>();
-        tags.put("단원", List.of("1", "2", "3"));
-        tags.put("난이도", List.of("상", "중", "하"));
-        map.put("tags", tags);
-
-        this.mockMvc.perform(
-                        post("/api/v1/exams")
-                                .content(objectMapper.writeValueAsString(map))
-                                .contentType("application/json")
-                                .session(doLogin()
-                                )
-                )
-                .andExpect(status().isCreated());
 
         //테스트용 '문제' 생성
         Map<String, Object> questionUploadInfo = new HashMap<>();
@@ -115,12 +102,8 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
     }
 
     @AfterEach
-    void tearDown() throws Exception {
-        this.mockMvc.perform(
-                        delete("/api/v1/exams/{examId}", userAddExamId)
-                                .session(doLogin())
-                )
-                .andExpect(status().isOk());
+    void tearDown() {
+        questionsService.deleteQuestionsByExamId(userAddExamId);
     }
 
     @Test
@@ -324,27 +307,6 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                         )
                 ));
     }
-
-
-//    Objectmapper를 MockBean으로 안받고 Autowired함으로써 실제 데이터를 건드려버린다 -> 추후 수정 필요
-//    @Test
-//    void deleteQuestionsByExamID() throws Exception {
-//
-//        mockMvc.perform(
-//                        delete("/api/v1/exams/{examId}/questions", existExamId)
-//                )
-//                .andExpect(status().isOk())
-//                .andDo(document("delete-questions-by-examId",
-//                        resource(ResourceSnippetParameters.builder()
-//                                .description("해당되는 시험 ID Questions 삭제")
-//                                .tag("questions")
-//                                .summary("Delete questions by examId")
-//                                .pathParameters(
-//                                        parameterWithName("examId").description("ExamId").type(SimpleType.INTEGER)
-//                                )
-//                                .build())
-//                ));
-//    }
 
     @Test
     void deleteQuestionsByQuestionID() throws Exception {

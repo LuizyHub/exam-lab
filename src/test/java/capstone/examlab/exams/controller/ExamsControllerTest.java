@@ -10,7 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,28 +20,30 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ExamsController.class)
+//@WebMvcTest(ExamsController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @Tag("basic_test")
 class ExamsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private ExamsService examsService;
+//    @MockBean
+//    private ExamsService examsService;
 
     @MockBean
     private ExamRepository examRepository;
 
     @Autowired
     private LoginUserArgumentResolver loginUserArgumentResolver;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    // 임시로 활용
-    @MockBean
-    private QuestionsService questionsService;
+//
+//    @MockBean
+//    private UserRepository userRepository;
+//
+//    // 임시로 활용
+//    @MockBean
+//    private QuestionsService questionsService;
 
     @BeforeEach
     void setUp() {

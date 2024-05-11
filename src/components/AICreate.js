@@ -1,5 +1,27 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+
+const ModalBackground = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+`;
+
+const ModalContent = styled.div`
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+`;
+
 
 export default function AICreate({ examId }) {
     const [modalOpen, setModalOpen] = useState(false);
@@ -85,25 +107,30 @@ export default function AICreate({ examId }) {
         <div>
             <h3>AI</h3>
             {modalOpen && (
-                <div className="modal">
-                    <div className="modal-content">
+                <ModalBackground>
+                    <ModalContent>
                         <h2>파일을 업로드해주세요</h2>
                         {/* 파일 이름 표시 */}
-                        {fileName && <p>파일 이름: {fileName}</p>}
-                        <input
+                        {fileName && 
+                        <div>
+                        <p>파일 이름: {fileName}</p>
+                          <button onClick={handleFileDelete}> 파일 삭제 </button>
+                          <button onClick={handleCreateAIQButtonClick} disabled={loading}>
+                              {loading ? '문제 생성 중...' : '문제 생성'}
+                          </button>
+                          </div>
+                          }
+                        {!fileName &&  <input
                             type="file"
                             accept=".pdf,.txt,.md"
                             onChange={handleFileUpload}
                             ref={fileInputRef}
-                        />
-                        <button onClick={handleFileUpload} > 파일 업로드 </button>
-                        <button onClick={handleFileDelete}> 파일 삭제 </button>
-                        <button onClick={handleCreateAIQButtonClick} disabled={loading}>
-                            {loading ? '문제 생성 중...' : '문제 생성'}
-                        </button>
+                        /> }
+                       
+                      
                         <button onClick={() => setModalOpen(false)}>닫기</button>
-                    </div>
-                </div>
+                    </ModalContent>
+                </ModalBackground>
             )}
             <button onClick={() => setModalOpen(true)}>AI로 문제 생성하기</button>
         </div>

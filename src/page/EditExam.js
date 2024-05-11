@@ -2,7 +2,7 @@
 import EditorExam from "../components/EditorExam"
 import NavigationBar from "../components/NavigationBar";
 import AttributeManager from "../components/AttributeManager"
-import AICreate from "../test/AI/AICreate";
+import AICreate from "../components/AICreate";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLoginController } from "../function/useLoginController";

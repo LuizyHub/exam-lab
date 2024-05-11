@@ -32,8 +32,8 @@ paths:
               examples:
                 exams:
                   value: "{\"exams\":[{\"exam_title\":\"운전면허 - 1,2종\",\"exam_id\"\
-                    :1,\"size\":1234},{\"exam_title\":\"수능 - 영어\",\"exam_id\":2,\"\
-                    size\":1234}]}"
+                    :1,\"size\":0},{\"exam_title\":\"수능 - 영어\",\"exam_id\":2,\"size\"\
+                    :0}]}"
     post:
       tags:
       - exams
@@ -74,7 +74,7 @@ paths:
             examples:
               update-question:
                 value: "{\"question\":\"변경된 질문입니다.\",\"options\":[\"변경된 보기1\",\"변경\
-                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"KQ4vXY8BXRBYEYFcb8AO\"\
+                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"1Q4qaI8BXRBYEYFcusD8\"\
                   ,\"commentary\":\"변경된 설명입니다.\",\"tags\":{\"난이도\":[\"중\"],\"단원\"\
                   :[\"2\"]}}"
       responses:
@@ -83,7 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-questions486549215'
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
               examples:
                 update-question:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -101,13 +101,145 @@ paths:
               $ref: '#/components/schemas/api-v1-users-963924044'
             examples:
               user add:
-                value: "{\"password\":\"6fe6f1bf-ba20-419c-b170-4898a5939f22!\",\"\
-                  password_confirm\":\"6fe6f1bf-ba20-419c-b170-4898a5939f22!\",\"\
-                  user_id\":\"6fe6f1bf-ba20-419c-b170-4898a5939f22@gmail.com\",\"\
-                  name\":\"6fe6f1bf-ba20-419c-b170-4898a5939f22\"}"
+                value: "{\"password\":\"44c986bc-2942-4dc9-9364-8c683f8ea618!\",\"\
+                  password_confirm\":\"44c986bc-2942-4dc9-9364-8c683f8ea618!\",\"\
+                  user_id\":\"44c986bc-2942-4dc9-9364-8c683f8ea618@gmail.com\",\"\
+                  name\":\"44c986bc-2942-4dc9-9364-8c683f8ea618\"}"
       responses:
         "200":
           description: "200"
+  /api/v1/workbooks:
+    get:
+      tags:
+      - workbooks
+      summary: 사용자의 문제집 목록을 조회한다.
+      description: "사용자의 시험지 목록을 조회한다.    \n- 로그인 되어있어야 합니다."
+      operationId: workbooks-get
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workbook-summary-list'
+              examples:
+                workbooks-get:
+                  value: "{\"code\":200,\"message\":[{\"id\":\"663f87e850579211a393b35c\"\
+                    ,\"title\":\"한국인 상식 시험지\",\"summary\":\"힌국인 상식 시험지 입니다.\",\"created_date\"\
+                    :\"2024-05-11T23:59:52.242\",\"updated_date\":\"2024-05-11T23:59:52.242\"\
+                    },{\"id\":\"663f87e850579211a393b35d\",\"title\":\"한국인 상식 시험지\"\
+                    ,\"summary\":\"힌국인 상식 시험지 입니다.\",\"created_date\":\"2024-05-11T23:59:52.28\"\
+                    ,\"updated_date\":\"2024-05-11T23:59:52.28\"}]}"
+    post:
+      tags:
+      - workbooks
+      summary: 시험지를 생성한다.
+      description: "시험지를 생성한다.    \n- 로그인 되어있어야 합니다.  \n- content에는 어떤값이 들어가도 json형\
+        식만 맞다면 동작합니다."
+      operationId: workbooks-post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workbook-create'
+            examples:
+              workbooks-post:
+                value: "{\n\t\"title\": \"한국인 상식 시험지\",\n    \"summary\": \"힌국인 상식\
+                  \ 시험지 입니다.\",\n\t\"content\": {\n        \"questions\": [\n    \
+                  \        {\n                \"id\": \"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"호돌이\",\n          \
+                  \          \"수호랑\",\n                    \"반다비\",\n            \
+                  \        \"하니\"\n                ],\n                \"answers\"\
+                  : [\n                    0\n                ],\n               \
+                  \ \"commentary\": \"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\n           \
+                  \     \"commentary_images_in\": [],\n                \"commentary_images_out\"\
+                  : [],\n                \"tags\": null\n            },\n        \
+                  \    {\n                \"id\": \"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"한글을 창제한 왕인 다음 중 누구입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"세종대왕\",\n         \
+                  \           \"태조\",\n                    \"광해군\",\n            \
+                  \        \"영조\"\n                ],\n                \"answers\"\
+                  : [\n                    0\n                ],\n               \
+                  \ \"commentary\": \"한글을 창제한 왕은 세종대왕입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            },\n            {\n       \
+                  \         \"id\": \"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\",\n  \
+                  \              \"type\": \"객관식\",\n                \"question\"\
+                  : \"한글은 누가 창제하였습니까?\",\n                \"question_images_in\":\
+                  \ [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"이순신\",\n          \
+                  \          \"세종대왕\",\n                    \"광개토대왕\",\n         \
+                  \           \"김구\"\n                ],\n                \"answers\"\
+                  : [\n                    1\n                ],\n               \
+                  \ \"commentary\": \"한글은 세종대왕에 의해 창제되었습니다.\",\n                \"\
+                  commentary_images_in\": [],\n                \"commentary_images_out\"\
+                  : [],\n                \"tags\": null\n            },\n        \
+                  \    {\n                \"id\": \"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 한국의 전통 음식이 아닌 것은?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"김치\",\n           \
+                  \         \"스시\",\n                    \"불고기\",\n              \
+                  \      \"비빔밥\"\n                ],\n                \"answers\"\
+                  : [\n                    1\n                ],\n               \
+                  \ \"commentary\": \"스시는 일본의 전통 음식입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            },\n            {\n       \
+                  \         \"id\": \"b78fef73-7237-40e2-8a68-dca7a9611a2a\",\n  \
+                  \              \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 한국의 수도는 어디입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"서울\",\n           \
+                  \         \"부산\",\n                    \"인천\",\n               \
+                  \     \"대구\"\n                ],\n                \"answers\": [\n\
+                  \                    0\n                ],\n                \"commentary\"\
+                  : \"서울은 대한민국의 수도입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            }\n        ],\n        \"size\"\
+                  : 5\n    }\n}"
+      responses:
+        "201":
+          description: "201"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workbook'
+              examples:
+                workbooks-post:
+                  value: "{\"code\":201,\"message\":{\"id\":\"663f87e850579211a393b35c\"\
+                    ,\"title\":\"한국인 상식 시험지\",\"summary\":\"힌국인 상식 시험지 입니다.\",\"content\"\
+                    :{\"questions\":[{\"id\":\"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니\
+                    까?\",\"question_images_in\":[],\"question_images_out\":[],\"options\"\
+                    :[\"호돌이\",\"수호랑\",\"반다비\",\"하니\"],\"answers\":[0],\"commentary\"\
+                    :\"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\"commentary_images_in\":[],\"\
+                    commentary_images_out\":[],\"tags\":null},{\"id\":\"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글을 창제한 왕인 다음 중 누구입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"세종대왕\",\"태조\",\"\
+                    광해군\",\"영조\"],\"answers\":[0],\"commentary\":\"한글을 창제한 왕은 세종대왕\
+                    입니다.\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글은 누가 창제하였습니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"이순신\",\"세종대왕\",\"\
+                    광개토대왕\",\"김구\"],\"answers\":[1],\"commentary\":\"한글은 세종대왕에 의해\
+                    \ 창제되었습니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
+                    :[],\"tags\":null},{\"id\":\"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 전통 음식이 아닌 것은?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"김치\",\"스시\",\"불고\
+                    기\",\"비빔밥\"],\"answers\":[1],\"commentary\":\"스시는 일본의 전통 음식입니다\
+                    .\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"b78fef73-7237-40e2-8a68-dca7a9611a2a\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 수도는 어디입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"서울\",\"부산\",\"인천\
+                    \",\"대구\"],\"answers\":[0],\"commentary\":\"서울은 대한민국의 수도입니다.\"\
+                    ,\"commentary_images_in\":[],\"commentary_images_out\":[],\"tags\"\
+                    :null}],\"size\":5},\"created_date\":\"2024-05-11T23:59:52.242941\"\
+                    ,\"updated_date\":\"2024-05-11T23:59:52.242941\"}}"
   /api/v1/exams/{examId}:
     get:
       tags:
@@ -154,7 +286,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/api-v1-questions486549215'
+              $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
             examples:
               patch-exams:
                 value: "{\"tags\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"1\"\
@@ -165,7 +297,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-questions486549215'
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
               examples:
                 patch-exams:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -188,7 +320,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-questions486549215'
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
               examples:
                 delete-exams:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -212,7 +344,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-questions486549215'
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
               examples:
                 delete-questions-by-questionId:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -262,6 +394,199 @@ paths:
               examples:
                 user status:
                   value: "{\"user_name\":\"lab1\",\"login\":true}"
+  /api/v1/workbooks/{workbookId}:
+    get:
+      tags:
+      - workbooks
+      summary: 시험지를 조회한다.
+      description: "시험지를 조회한다.    \n- 로그인 되어있어야 합니다.  \n- content에는 어떤값이 들어가도 json형\
+        식만 맞다면 동작합니다."
+      operationId: workbooks-get-id
+      parameters:
+      - name: workbookId
+        in: path
+        description: 시험지 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workbook'
+              examples:
+                workbooks-get-id:
+                  value: "{\"code\":200,\"message\":{\"id\":\"663f87e850579211a393b35e\"\
+                    ,\"title\":\"한국인 상식 시험지\",\"summary\":\"힌국인 상식 시험지 입니다.\",\"content\"\
+                    :{\"questions\":[{\"id\":\"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니\
+                    까?\",\"question_images_in\":[],\"question_images_out\":[],\"options\"\
+                    :[\"호돌이\",\"수호랑\",\"반다비\",\"하니\"],\"answers\":[0],\"commentary\"\
+                    :\"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\"commentary_images_in\":[],\"\
+                    commentary_images_out\":[],\"tags\":null},{\"id\":\"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글을 창제한 왕인 다음 중 누구입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"세종대왕\",\"태조\",\"\
+                    광해군\",\"영조\"],\"answers\":[0],\"commentary\":\"한글을 창제한 왕은 세종대왕\
+                    입니다.\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글은 누가 창제하였습니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"이순신\",\"세종대왕\",\"\
+                    광개토대왕\",\"김구\"],\"answers\":[1],\"commentary\":\"한글은 세종대왕에 의해\
+                    \ 창제되었습니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
+                    :[],\"tags\":null},{\"id\":\"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 전통 음식이 아닌 것은?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"김치\",\"스시\",\"불고\
+                    기\",\"비빔밥\"],\"answers\":[1],\"commentary\":\"스시는 일본의 전통 음식입니다\
+                    .\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"b78fef73-7237-40e2-8a68-dca7a9611a2a\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 수도는 어디입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"서울\",\"부산\",\"인천\
+                    \",\"대구\"],\"answers\":[0],\"commentary\":\"서울은 대한민국의 수도입니다.\"\
+                    ,\"commentary_images_in\":[],\"commentary_images_out\":[],\"tags\"\
+                    :null}],\"size\":5},\"created_date\":\"2024-05-11T23:59:52.341\"\
+                    ,\"updated_date\":\"2024-05-11T23:59:52.341\"}}"
+    put:
+      tags:
+      - workbooks
+      summary: 시험지를 수정한다.
+      description: "시험지를 수정한다.    \n- 로그인 되어있어야 합니다.  \n- content에는 어떤값이 들어가도 json형\
+        식만 맞다면 동작합니다."
+      operationId: workbooks-put
+      parameters:
+      - name: workbookId
+        in: path
+        description: 시험지 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workbook'
+            examples:
+              workbooks-put:
+                value: "{\n\t\"title\": \"한국인 상식 시험지\",\n    \"summary\": \"힌국인 상식\
+                  \ 시험지 입니다.\",\n\t\"content\": {\n        \"questions\": [\n    \
+                  \        {\n                \"id\": \"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"호돌이\",\n          \
+                  \          \"수호랑\",\n                    \"반다비\",\n            \
+                  \        \"하니\"\n                ],\n                \"answers\"\
+                  : [\n                    0\n                ],\n               \
+                  \ \"commentary\": \"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\n           \
+                  \     \"commentary_images_in\": [],\n                \"commentary_images_out\"\
+                  : [],\n                \"tags\": null\n            },\n        \
+                  \    {\n                \"id\": \"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"한글을 창제한 왕인 다음 중 누구입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"세종대왕\",\n         \
+                  \           \"태조\",\n                    \"광해군\",\n            \
+                  \        \"영조\"\n                ],\n                \"answers\"\
+                  : [\n                    0\n                ],\n               \
+                  \ \"commentary\": \"한글을 창제한 왕은 세종대왕입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            },\n            {\n       \
+                  \         \"id\": \"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\",\n  \
+                  \              \"type\": \"객관식\",\n                \"question\"\
+                  : \"한글은 누가 창제하였습니까?\",\n                \"question_images_in\":\
+                  \ [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"이순신\",\n          \
+                  \          \"세종대왕\",\n                    \"광개토대왕\",\n         \
+                  \           \"김구\"\n                ],\n                \"answers\"\
+                  : [\n                    1\n                ],\n               \
+                  \ \"commentary\": \"한글은 세종대왕에 의해 창제되었습니다.\",\n                \"\
+                  commentary_images_in\": [],\n                \"commentary_images_out\"\
+                  : [],\n                \"tags\": null\n            },\n        \
+                  \    {\n                \"id\": \"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 한국의 전통 음식이 아닌 것은?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"김치\",\n           \
+                  \         \"스시\",\n                    \"불고기\",\n              \
+                  \      \"비빔밥\"\n                ],\n                \"answers\"\
+                  : [\n                    1\n                ],\n               \
+                  \ \"commentary\": \"스시는 일본의 전통 음식입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            },\n            {\n       \
+                  \         \"id\": \"b78fef73-7237-40e2-8a68-dca7a9611a2a\",\n  \
+                  \              \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 한국의 수도는 어디입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"서울\",\n           \
+                  \         \"부산\",\n                    \"인천\",\n               \
+                  \     \"대구\"\n                ],\n                \"answers\": [\n\
+                  \                    0\n                ],\n                \"commentary\"\
+                  : \"서울은 대한민국의 수도입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            }\n        ],\n        \"size\"\
+                  : 5\n    }\n}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workbook'
+              examples:
+                workbooks-put:
+                  value: "{\"code\":200,\"message\":{\"id\":\"663f87e850579211a393b35a\"\
+                    ,\"title\":\"한국인 상식 시험지\",\"summary\":\"힌국인 상식 시험지 입니다.\",\"content\"\
+                    :{\"questions\":[{\"id\":\"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니\
+                    까?\",\"question_images_in\":[],\"question_images_out\":[],\"options\"\
+                    :[\"호돌이\",\"수호랑\",\"반다비\",\"하니\"],\"answers\":[0],\"commentary\"\
+                    :\"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\"commentary_images_in\":[],\"\
+                    commentary_images_out\":[],\"tags\":null},{\"id\":\"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글을 창제한 왕인 다음 중 누구입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"세종대왕\",\"태조\",\"\
+                    광해군\",\"영조\"],\"answers\":[0],\"commentary\":\"한글을 창제한 왕은 세종대왕\
+                    입니다.\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글은 누가 창제하였습니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"이순신\",\"세종대왕\",\"\
+                    광개토대왕\",\"김구\"],\"answers\":[1],\"commentary\":\"한글은 세종대왕에 의해\
+                    \ 창제되었습니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
+                    :[],\"tags\":null},{\"id\":\"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 전통 음식이 아닌 것은?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"김치\",\"스시\",\"불고\
+                    기\",\"비빔밥\"],\"answers\":[1],\"commentary\":\"스시는 일본의 전통 음식입니다\
+                    .\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"b78fef73-7237-40e2-8a68-dca7a9611a2a\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 수도는 어디입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"서울\",\"부산\",\"인천\
+                    \",\"대구\"],\"answers\":[0],\"commentary\":\"서울은 대한민국의 수도입니다.\"\
+                    ,\"commentary_images_in\":[],\"commentary_images_out\":[],\"tags\"\
+                    :null}],\"size\":5},\"created_date\":\"2024-05-11T23:59:52.159\"\
+                    ,\"updated_date\":\"2024-05-11T23:59:52.183412\"}}"
+    delete:
+      tags:
+      - workbooks
+      summary: 시험지를 삭제한다.
+      description: "시험지를 삭제한다.    \n- 로그인 되어있어야 합니다"
+      operationId: workbooks-delete
+      parameters:
+      - name: workbookId
+        in: path
+        description: 시험지 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                workbooks-delete:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
   /api/v1/exams/{examId}/ai:
     post:
       tags:
@@ -339,7 +664,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-questions486549215'
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
               examples:
                 post-file:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -365,7 +690,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-questions486549215'
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
               examples:
                 delete-exam-file:
                   value: "{\"code\":200,\"message\":\"OK\"}"
@@ -418,12 +743,12 @@ paths:
                 $ref: '#/components/schemas/api-v1-exams-examId-questions-1876066633'
               examples:
                 Search-questions:
-                  value: "{\"questions\":[{\"id\":\"Kg4vXY8BXRBYEYFcb8Dm\",\"type\"\
+                  value: "{\"questions\":[{\"id\":\"1g4qaI8BXRBYEYFcu8Da\",\"type\"\
                     :\"객관식\",\"question\":\"소웨공 테스트 문제?\",\"question_images_in\":[],\"\
                     question_images_out\":[],\"options\":[\"① 답 예시 1\",\"② 답 예시 2\"\
                     ,\"③ 답 예시 3\",\"④ 답 예시 4\"],\"answers\":[3],\"commentary\":\"\
                     30이 가장 큰 수입니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
-                    :[],\"tags\":{\"단원\":[\"1\"],\"난이도\":[\"하\"]}}],\"size\":1}"
+                    :[],\"tags\":{\"난이도\":[\"하\"],\"단원\":[\"1\"]}}],\"size\":1}"
     post:
       tags:
       - questions
@@ -455,26 +780,70 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/api-v1-questions486549215'
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
               examples:
                 add-questions:
-                  value: "{\"code\":201,\"message\":{\"id\":\"KA4vXY8BXRBYEYFcbsBt\"\
+                  value: "{\"code\":201,\"message\":{\"id\":\"1A4qaI8BXRBYEYFcusBZ\"\
                     ,\"type\":\"객관식\",\"question\":\"다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤\
                     \ 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?\",\"question_images_in\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/11cdf3cb-3f7e-4936-9182-4e6cd72fc50f.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/334f8a71-d1b4-4cd2-a42f-775c2a7fde0b.png\"\
                     ,\"description\":\"설명1\",\"attribute\":\"속성1\"}],\"question_images_out\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/fafede70-2bcf-45ac-b96c-cb0c949c93ef.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/48678f4e-8b20-4ae2-bcf6-f6e6e2d9e916.png\"\
                     ,\"description\":\"설명2\",\"attribute\":\"속성2\"}],\"options\":[\"\
                     ① 제1종 대형면허 및 소형견인차면허\",\"② 제1종 보통면허 및 대형견인차면허\",\"③ 제1종 보통면허 및\
                     \ 소형견인차면허\",\"④ 제2종 보통면허 및 대형견인차면허\"],\"answers\":[4],\"commentary\"\
                     :\"도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는\
                     \ 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.\",\"\
-                    commentary_images_in\":[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/acc08858-f2ec-4e23-bd83-3c926b97f277.png\"\
+                    commentary_images_in\":[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/add5a8b3-d4df-49a7-ae14-d3609a54fb58.png\"\
                     ,\"description\":\"설명3\",\"attribute\":\"속성3\"}],\"commentary_images_out\"\
-                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/3fdeb245-1de2-40c5-8db1-c6bbc2370d62.png\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/dbfff6ae-a46c-4990-ab41-0b379b11238f.png\"\
                     ,\"description\":\"설명4\",\"attribute\":\"속성4\"}],\"tags\":{}}}"
 components:
   schemas:
+    ExamType:
+      title: ExamType
+      type: object
+    ExamList:
+      title: ExamList
+      required:
+      - exams
+      type: object
+      properties:
+        exams:
+          type: array
+          description: Exam
+          items:
+            required:
+            - exam_id
+            - exam_title
+            - size
+            type: object
+            properties:
+              size:
+                type: number
+                description: Exam size
+              exam_id:
+                type: number
+                description: Exam id
+              exam_title:
+                type: string
+                description: Exam title
+    workbook-summary-list:
+      title: workbook-summary-list
+      type: object
+    ExamAdd:
+      title: ExamAdd
+      required:
+      - exam_title
+      - tags
+      type: object
+      properties:
+        tags:
+          type: object
+          description: tag 정보들
+        exam_title:
+          type: string
+          description: 시험지 이름
     api-v1-exams1523854693:
       required:
       - code
@@ -538,9 +907,6 @@ components:
                 - type: string
                 - type: number
           description: 변경될 문제 태그
-    ExamType:
-      title: ExamType
-      type: object
     api-v1-users-login1770795545:
       required:
       - password
@@ -553,6 +919,9 @@ components:
         user_id:
           type: string
           description: User id
+    workbook-create:
+      title: workbook-create
+      type: object
     ExamFile:
       title: ExamFile
       required:
@@ -720,45 +1089,8 @@ components:
     AiQuestions:
       title: AiQuestions
       type: object
-    ExamList:
-      title: ExamList
-      required:
-      - exams
-      type: object
-      properties:
-        exams:
-          type: array
-          description: Exam
-          items:
-            required:
-            - exam_id
-            - exam_title
-            - size
-            type: object
-            properties:
-              size:
-                type: number
-                description: Exam size
-              exam_id:
-                type: number
-                description: Exam id
-              exam_title:
-                type: string
-                description: Exam title
-    ExamAdd:
-      title: ExamAdd
-      required:
-      - exam_title
-      - tags
-      type: object
-      properties:
-        tags:
-          type: object
-          description: tag 정보들
-        exam_title:
-          type: string
-          description: 시험지 이름
-    api-v1-questions486549215:
+    workbook:
+      title: workbook
       type: object
     api-v1-users-status615510992:
       required:
@@ -772,6 +1104,8 @@ components:
         login:
           type: boolean
           description: 로그인 여부
+    api-v1-workbooks-workbookId486549215:
+      type: object
     api-v1-users-963924044:
       required:
       - name

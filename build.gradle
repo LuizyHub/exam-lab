@@ -58,7 +58,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     //Embedded MongoDB
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.12.2'
+//    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.12.2'
 
     //Thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

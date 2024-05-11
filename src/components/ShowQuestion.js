@@ -1,6 +1,5 @@
 import React from "react";
 import { parseImages, renderImages } from "../function/renderImages";
-import '../css/ShowQuestion.css'
 
 export default function ShowQuestion({ question, question_images_in, question_images_out, options }) {
     return (

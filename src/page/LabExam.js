@@ -3,6 +3,19 @@ import { Link, useLocation } from "react-router-dom";
 import "../css/style.css"
 import { handleShuffle } from '../function/shuffleArray'
 import { renderImages, parseImages } from '../function/renderImages'
+import { useRecoilValue } from 'recoil';
+import { isVisibleState } from '../recoil/atoms';
+import NavigationBar from '../components/NavigationBar';
+import styled from 'styled-components';
+
+
+const LabExamContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-left: ${props => props.isSidebarOpen ? '250px' : '60px'};
+    transition: margin-left 0.3s ease;
+`;
+
 
 export default function LabExam() {
 
@@ -10,6 +23,7 @@ export default function LabExam() {
   const { selectedQuestions } = location.state;
   const [isQuestion, setIsQuestion] = useState([]);
   const [isCommentary, setIsCommentary] = useState(false); //답안지 상태관리
+  const isSidebarOpen = useRecoilValue(isVisibleState);
 
 
   useEffect(() => {
@@ -22,7 +36,7 @@ export default function LabExam() {
   }
 
   return (
-    <div>
+    <LabExamContent isSidebarOpen={isSidebarOpen}>
       <h2>Test</h2>
       {/* 문제 섞기 버튼 */}
       <button onClick={() => handleShuffle(isQuestion, setIsQuestion)}>Shuffle</button>
@@ -48,6 +62,7 @@ export default function LabExam() {
           </div>
         ))}
       </ol>
-    </div >
+      <NavigationBar />
+    </LabExamContent >
   );
 }

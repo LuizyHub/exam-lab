@@ -6,12 +6,23 @@ import AICreate from "../test/AI/AICreate";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLoginController } from "../function/useLoginController";
+import { useRecoilValue } from 'recoil';
+import { isVisibleState } from '../recoil/atoms';
+import styled from 'styled-components';
 // import { useDataHandle } from "../..//dataHandle";
+
+const EditExamPage = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-left: ${props => props.isSidebarOpen ? '250px' : '60px'};
+    transition: margin-left 0.3s ease;
+`;
 
 export default function EditExam() {
 
   //로그인 리모컨
   const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
+  const isSidebarOpen = useRecoilValue(isVisibleState);
 
   const location = useLocation();
 
@@ -50,7 +61,7 @@ export default function EditExam() {
   };
 
   return (
-    <>
+    <EditExamPage isSidebarOpen={isSidebarOpen}>
       <h1>문제 등록하기</h1>
       {/* 리모컨 */}
       {/* <div style={{ marginBottom: '40px' }}>
@@ -78,6 +89,6 @@ export default function EditExam() {
         handleExamCreate();
       }}>문제추가</button>
       <AICreate examId={examId} />
-    </>
+    </EditExamPage>
   )
 }

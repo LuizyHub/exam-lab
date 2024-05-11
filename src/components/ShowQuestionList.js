@@ -1,24 +1,97 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ShowQuestion from "./ShowQuestion";
-import '../css/ShowQuestionList.css';
+import styled from 'styled-components';
+
+const ShowQuestionContent = styled.div`
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 30px;
+`;
+
+const Button = styled.button`
+    padding: 10px 20px;
+    background-color: #5BB6B4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    cursor: pointer;
+`;
+
+const ListButton = styled.button`
+    padding: 10px 20px;
+    background-color: #5BB6B4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+`;
+
+const ToggleButton = styled.button`
+    padding: 10px 20px;
+    background-color: ${({ show }) => show ? '#C6E7E7' : '#5BB6B4'};
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+`;
+
+const CheckBox = styled.input`
+    position: absolute; /* 절대 위치 설정 */
+    top: 0;
+    right: 0px; /* 오른쪽에 위치 */
+    width: 20px; /* 너비 조절 */
+    height: 20px; /* 높이 조절 */
+`;
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
+const QuestionContainer = styled.div`
+    flex: 8;
+    height: 100vh;
+    padding: 20px;
+    border-radius: 10px;
+`;
+
+const QuestionList = styled.ul`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+`;
+
+const QuestionItem = styled.li`
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: ${({ selected }) => selected ? '#EDFAFA' : '#fff'};
+    transition: background-color 0.3s; /* 배경색 변경에 대한 transition 효과 추가 */
+    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이게 함 */
+`;
+
+const StyledLabel = styled.label`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+`;
 
 export default function ShowQuestionList({ questions }) {
     const navigate = useNavigate();
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [showSelectedQuestions, setShowSelectedQuestions] = useState(false);
     const [showSelectedQuestionsCount, setShowSelectedQuestionsCount] = useState("");
-    const [selectAllChecked, setSelectAllChecked] = useState(false);
 
     useEffect(() => {
-        const storedSelectedQuestions = localStorage.getItem("selectedQuestions");
-        if (storedSelectedQuestions) {
-            setSelectedQuestions(JSON.parse(storedSelectedQuestions));
-        }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem("selectedQuestions", JSON.stringify(selectedQuestions));
         setShowSelectedQuestionsCount(selectedQuestions.length);
     }, [selectedQuestions]);
 
@@ -37,9 +110,8 @@ export default function ShowQuestionList({ questions }) {
         setSelectedQuestions([...selectedQuestions, ...newQuestions]); 
     };
 
-
     const handleSubmitQuestion = () => {
-        if(showSelectedQuestionsCount > 0) {
+        if (showSelectedQuestionsCount > 0) {
             navigate("../workbooks/create", { state: { selectedQuestions: selectedQuestions } });
         } else {
             alert("한 문제 이상 선택해야합니다.")
@@ -47,50 +119,55 @@ export default function ShowQuestionList({ questions }) {
     };
 
     return (
-        <div>
-            <button onClick={handleSubmitQuestion} style={{ padding: '10px 20px', backgroundColor: '#5BB6B4', color: 'white', border: 'none', borderRadius: '5px', marginBottom: '20px', cursor: 'pointer' }}>시험지 생성</button>
-            <button onClick={handleSelectAllQuestions}>전체 선택</button>
-            <button onClick={() => setShowSelectedQuestions(!showSelectedQuestions)}>선택된 문제 {showSelectedQuestionsCount}</button>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <div style={{ flex: 8, height: '100vh', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '10px' }}>
-                    {showSelectedQuestions === false ? (
-                        <ul style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', listStyle: 'none', padding: 0 }}>
-                            {questions.map((item, index) => (
-                                <li key={index} style={{ marginBottom: '20px', padding: '20px', borderRadius: '10px', backgroundColor: '#fff', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }}>
-                                    <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                                        <input type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
+        <ShowQuestionContent>
+            <Button onClick={handleSubmitQuestion}>시험지 생성</Button>
+            <ListButton onClick={handleSelectAllQuestions}>전체 선택</ListButton>
+            <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} show={showSelectedQuestions}>
+                선택된 문제 {showSelectedQuestionsCount}
+            </ToggleButton>
+            <Container>
+                <QuestionContainer>
+                    <QuestionList>
+                        {showSelectedQuestions ? (
+                            selectedQuestions.map((item, index) => (
+                                <QuestionItem 
+                                    key={index} 
+                                    onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
+                                    selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
+                                >
+                                    <StyledLabel>
+                                        <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
                                         <ShowQuestion
                                             question={item.question}
                                             question_images_out={item.question_images_out}
                                             question_images_in={item.question_images_in}
                                             options={item.options}
                                         />
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <div>
-                            <h2>선택된 문제들</h2>
-                            <ul style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', listStyle: 'none', padding: 0 }}>
-                                {selectedQuestions.map((item, index) => (
-                                    <li key={index} style={{ marginBottom: '20px', padding: '20px', borderRadius: '10px', backgroundColor: '#fff', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)' }}>
-                                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                                        <input type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
+                                    </StyledLabel>
+                                </QuestionItem>
+                            ))
+                        ) : (
+                            questions.map((item, index) => (
+                                <QuestionItem 
+                                    key={index} 
+                                    onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
+                                    selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
+                                >
+                                    <StyledLabel>
+                                        <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
                                         <ShowQuestion
                                             question={item.question}
                                             question_images_out={item.question_images_out}
                                             question_images_in={item.question_images_in}
                                             options={item.options}
                                         />
-                                    </label>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
+                                    </StyledLabel>
+                                </QuestionItem>
+                            ))
+                        )}
+                    </QuestionList>
+                </QuestionContainer>
+            </Container>
+        </ShowQuestionContent>
     );
 }

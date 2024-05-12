@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navigate from './Navigate';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { loginState } from '../recoil/atoms';
 import { isVisibleState } from '../recoil/atoms';
@@ -11,15 +11,13 @@ import axios from 'axios';
 const NavigationContainer = styled.div`
     position: fixed;
     top: 0;
-    left: ${({ isVisible }) => (isVisible ? '0' : '-250px')};
+    left: ${({ $isVisible }) => ($isVisible ? '0' : '-250px')};
     width: 240px;
     height: 100%;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease-in-out;
 `;
-
-
 
 const NavigationBarContent = styled.div`
     display: flex;
@@ -69,7 +67,7 @@ const StyledButton = styled.button`
 const CloseButtonContainer = styled.div`
     position: absolute;
     top: 20px;
-    right: ${({ isVisible }) => (isVisible ? '10px' : '-25%')}; /* Adjusted right position */
+    right: ${({ $isVisible }) => ($isVisible ? '10px' : '-25%')};
     overflow: hidden;
     transition: right 0.3s ease-in-out;
 `;
@@ -87,6 +85,8 @@ const NavigationIcon = styled.img`
     width: 20px;
     outline: none;
 `;
+
+
 
 
 export default function NavigationBar() {
@@ -146,9 +146,10 @@ export default function NavigationBar() {
                     <Logo src="/img/examLab_logo.png" alt="logo" />
                 </Link>
                 <CloseButtonContainer $isVisible={isVisible}>
-                    <CloseButton onClick={toggleVisibility}>
-                        {isVisible ? <NavigationIcon src="/img/네비게이션바.png" alt="navigation" left /> : null}
-                    </CloseButton>
+                <CloseButton onClick={toggleVisibility} $isVisible={isVisible}>
+                    {isVisible ? <NavigationIcon src="/img/네비게이션바.png" alt="navigation" /> : null}
+                </CloseButton>
+
                 </CloseButtonContainer>
 
                 <NavigationContent>

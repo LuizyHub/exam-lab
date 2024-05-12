@@ -122,7 +122,7 @@ export default function ShowQuestionList({ questions }) {
         <ShowQuestionContent>
             <Button onClick={handleSubmitQuestion}>시험지 생성</Button>
             <ListButton onClick={handleSelectAllQuestions}>전체 선택</ListButton>
-            <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} show={showSelectedQuestions}>
+            <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} $show={showSelectedQuestions}>
                 선택된 문제 {showSelectedQuestionsCount}
             </ToggleButton>
             <Container>

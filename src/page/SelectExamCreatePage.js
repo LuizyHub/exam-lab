@@ -10,7 +10,7 @@ import styled from "styled-components";
 const SelectExam = styled.div`
       display: flex;
       flex-direction: column;
-      margin-left: ${props => props.isSidebarOpen ? '250px' : '60px'};
+      margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
       transition: margin-left 0.3s ease;
 `;
 
@@ -85,7 +85,7 @@ export default function SelectExamCreatePage() {
   
   return (
     <div>
-        <SelectExam isSidebarOpen={isSidebarOpen}>
+        <SelectExam $isSidebarOpen={isSidebarOpen}>
         <h1>나만의 시험지</h1>
         <p>등록된 문제를 조합해서 나만의 시험지를 제작해보세요</p>
         <ExamCreateButton onClick={() => {navigate('/edit')}}>

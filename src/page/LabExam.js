@@ -12,7 +12,7 @@ import styled from 'styled-components';
 const LabExamContent = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: ${props => props.isSidebarOpen ? '250px' : '60px'};
+    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
     transition: margin-left 0.3s ease;
 `;
 
@@ -36,7 +36,7 @@ export default function LabExam() {
   }
 
   return (
-    <LabExamContent isSidebarOpen={isSidebarOpen}>
+    <LabExamContent $isSidebarOpen={isSidebarOpen}>
       <h2>Test</h2>
       {/* 문제 섞기 버튼 */}
       <button onClick={() => handleShuffle(isQuestion, setIsQuestion)}>Shuffle</button>

@@ -10,7 +10,7 @@ import { isVisibleState } from '../recoil/atoms';
 const SelectExam = styled.div`
    display: flex;
    flex-direction: column;
-   margin-left: ${props => props.isSidebarOpen ? '250px' : '60px'};
+   margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
    transition: margin-left 0.3s ease;
 `;
 
@@ -153,7 +153,7 @@ export default function SelectExamPage() {
   }
 
   return (
-    <SelectExam isSidebarOpen={isSidebarOpen}>
+    <SelectExam $isSidebarOpen={isSidebarOpen}>
       <div>
         <h1>나만의 문제</h1>
         <p>문제를 새롭게 등록해보세요</p>

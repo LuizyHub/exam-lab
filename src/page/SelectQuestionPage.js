@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const SelectQuesion = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: ${props => props.isSidebarOpen ? '250px' : '60px'};
+    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
     margin-right: 60px;
     transition: margin-left 0.3s ease;
 `;
@@ -18,7 +18,7 @@ export default function SelectQuestionPage() {
     const isSidebarOpen = useRecoilValue(isVisibleState);
 
     return (
-        <SelectQuesion isSidebarOpen={isSidebarOpen}>
+        <SelectQuesion $isSidebarOpen={isSidebarOpen}>
             <div>
                 <SelectQuestion />
                 <NavigationBar />

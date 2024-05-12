@@ -8,8 +8,6 @@ import { isVisibleState } from '../recoil/atoms';
 
 
 const SelectExam = styled.div`
-   display: flex;
-   flex-direction: column;
    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
    transition: margin-left 0.3s ease;
 `;
@@ -98,6 +96,7 @@ export default function SelectExamPage() {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
   const [modalStates, setModalStates] = useState({}); // 시험별 모달 상태
+  const [examSize, setExamSize] = useState([]);
   const isSidebarOpen = useRecoilValue(isVisibleState);
 
   useEffect(() => {
@@ -160,15 +159,14 @@ export default function SelectExamPage() {
         <ExamCreateButton onClick={() => {navigate('/edit')}}> 
           <CreateImg src="/img/추가하기.png" alt="Create Icon" />
         </ExamCreateButton>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}> 
           {exams.map(exam => (
             <div key={exam.exam_id}>
               <ExamButton onClick={() => handleExamTypeClick(exam.exam_id, exam.exam_title)}>
-                {exam.exam_title}
+              <p style={{fontSize: '15px',  marginTop:'0px', fontWeight: 'bold'}}>{exam.exam_title} </p>
+                <p style={{fontSize: '12px', marginBottom:'0px'}}> {exam.size}문제 </p>
                 <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(exam.exam_id); }} />
-              </ExamButton>
-
-              
+              </ExamButton>  
               {modalStates[exam.exam_id] && 
                 <DeleteConfirmModal>
                   <ModalBody>
@@ -180,7 +178,7 @@ export default function SelectExamPage() {
               }
             </div>
           ))}
-        </div>
+      </div>
       </div>
       <NavigationBar />
     </SelectExam>

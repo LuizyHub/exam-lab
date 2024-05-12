@@ -110,12 +110,6 @@ export default function ShowQuestionList({ questions }) {
         setSelectedQuestions([...selectedQuestions, ...newQuestions]); 
     };
 
-    // 모든 문제를 선택된 문제로 설정
-    const handleSelectAllQuestions = () => {
-        const newQuestions = questions.filter(item => !selectedQuestions.some(q => q.id === item.id));
-        setSelectedQuestions([...selectedQuestions, ...newQuestions]); 
-    };
-
 
     const handleSubmitQuestion = () => {
         if (showSelectedQuestionsCount > 0) {

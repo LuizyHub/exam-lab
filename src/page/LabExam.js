@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { isVisibleState } from '../recoil/atoms';
 import NavigationBar from '../components/NavigationBar';
 import styled from 'styled-components';
+import axios from "axios";
 
 
 const LabExamContent = styled.div`
@@ -21,14 +22,29 @@ export default function LabExam() {
 
   const location = useLocation();
   const { selectedQuestions } = location.state;
+  const workbookId = location.state.workbookId;
+
+  const [workbook, setWorkbook] = useState([]);
   const [isQuestion, setIsQuestion] = useState([]);
   const [isCommentary, setIsCommentary] = useState(false); //답안지 상태관리
   const isSidebarOpen = useRecoilValue(isVisibleState);
 
+  console.log(workbookId);
 
   useEffect(() => {
     setIsQuestion(selectedQuestions);
   })
+
+  useEffect(()=> {
+    axios.get(`/api/v1/workbooks/${workbookId}`)
+    .then(response => {
+      console.log(response.data);
+      setWorkbook(response.data.message);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }, [workbookId])
 
 
   const handleCommentary = () => {
@@ -37,14 +53,14 @@ export default function LabExam() {
 
   return (
     <LabExamContent $isSidebarOpen={isSidebarOpen}>
-      <h2>Test</h2>
+      <h2>{workbook.title}</h2>
       {/* 문제 섞기 버튼 */}
       <button onClick={() => handleShuffle(isQuestion, setIsQuestion)}>Shuffle</button>
       <button onClick={handleCommentary}>Commentary</button>
-      <Link to="/">back</Link>
+      
       <ol style={{ listStylePosition: 'inside' }}>
         {/* , listStyleType: 'none'   */}
-        {isQuestion.map((item, index) => (
+        {isQuestion && isQuestion.map((item, index) => (
           <div key={index}>
             <li key={index} style={{ marginBottom: '70px', border: '1px solid black', width: '70%' }}>
               {/* 질문 */}

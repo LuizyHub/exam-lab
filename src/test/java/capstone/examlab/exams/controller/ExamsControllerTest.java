@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@WebMvcTest(ExamsController.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @Tag("basic_test")
@@ -29,21 +28,11 @@ class ExamsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @MockBean
-//    private ExamsService examsService;
-
     @MockBean
     private ExamRepository examRepository;
 
     @Autowired
     private LoginUserArgumentResolver loginUserArgumentResolver;
-//
-//    @MockBean
-//    private UserRepository userRepository;
-//
-//    // 임시로 활용
-//    @MockBean
-//    private QuestionsService questionsService;
 
     @BeforeEach
     void setUp() {

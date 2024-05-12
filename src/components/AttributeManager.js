@@ -115,6 +115,14 @@ export default function AttributeManager({ examId }) {
                 console.error('error', error);
             });
     };
+
+    // 속성과 태그의 input에 스페이스바 입력을 막는다.
+    const handleSpaceKeyPress = (event) => {
+        if (event.key === ' ') {
+            event.preventDefault();
+        }
+    };
+    
     
 
     return (
@@ -122,10 +130,22 @@ export default function AttributeManager({ examId }) {
             <input value={examTitle} onChange={handleExamTitleChange} placeholder="시험지 제목" />
             {attributes.map((attribute, index) => (
                 <div key={index}>
-                    <input value={attribute.name} onChange={(event) => handleAttributeChange(index, event)} placeholder="속성" />
+                    <input 
+                        value={attribute.name} 
+                        onChange={(event) => handleAttributeChange(index, event)} 
+                        placeholder="속성" 
+                        onKeyDown={(event) => handleSpaceKeyPress(event)}
+                    />
+
                     {attribute.values.map((value, tagIndex) => (
                         <div key={tagIndex}>
-                            <input value={value} onChange={(event) => handleTagChange(index, tagIndex, event)} placeholder="태그" />
+                            <input 
+                                value={value} 
+                                onChange={(event) => handleTagChange(index, tagIndex, event)} 
+                                placeholder="태그" 
+                                onKeyDown={(event) => handleSpaceKeyPress(event)}
+                            />
+
                             <button onClick={() => handleDeleteTag(index, tagIndex)}>태그 삭제</button>
                         </div>
                     ))}

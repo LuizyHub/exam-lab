@@ -15,8 +15,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
+    <RecoilRoot>
     <BrowserRouter>
-      <RecoilRoot>
         <div>
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -33,8 +33,9 @@ function App() {
             <Route path="/attribute" element={<AttributeManager />} />
           </Routes>
         </div>
-      </RecoilRoot>
+      
     </BrowserRouter>
+    </RecoilRoot>
   )
 }
 

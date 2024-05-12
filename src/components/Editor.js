@@ -1,26 +1,21 @@
-export default function Editor({ editorRef, imageSelectorRef, handleImageSelect, handleContent }) {
-  return (
-    <>
-      {/* <div
-        className="editor"
-        contentEditable="true"
-        ref={editorRef}
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-      /> */}
-      <div
-        className="editor"
-        contentEditable="true"
-        ref={editorRef}
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-      />
+import React from 'react';
 
-      <input
-        type="file"
-        accept="image/*"
-        style={{ display: 'none' }}
-        ref={imageSelectorRef}
-        onChange={(e) => { handleImageSelect(e, editorRef) }}
-      />
-    </>
-  )
-}
+export const Editor = ({ editorRef, contentEditable, onInput, onDragOver, onCopy, onCut, onPaste, onKeyDown, onKeyUp, readOnly, dangerouslySetInnerHTML, style }) => {
+  return (
+    <div
+      className="editor"
+      contentEditable={contentEditable}
+      ref={editorRef}
+      onInput={onInput}
+      readOnly={readOnly}
+      onDragOver={onDragOver}
+      onCopy={onCopy}
+      onCut={onCut}
+      onPaste={onPaste}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      style={style}
+      dangerouslySetInnerHTML={dangerouslySetInnerHTML}
+    />
+  );
+};

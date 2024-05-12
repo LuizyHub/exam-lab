@@ -23,11 +23,16 @@ const ModalContent = styled.div`
 `;
 
 
+import EditorEdit from '../../components/EditorEdit';
+
+//axiosData 함수에 있는 getData와 연동
 export default function AICreate({ examId }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [fileName, setFileName] = useState(""); // 파일 이름 상태 추가
     const fileInputRef = useRef(null);
     const [loading, setLoading] = useState(false); // 로딩 상태 추가
+
+    const [isObject, setObject] = useState([]);//AI getObject가져오기
 
     useEffect(() => {
         if (examId) {
@@ -43,6 +48,8 @@ export default function AICreate({ examId }) {
                 })
         }
     }, [examId]);
+
+
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
@@ -88,13 +95,15 @@ export default function AICreate({ examId }) {
             setLoading(false);
         }
     }
-
+    //분리해야함
     const handleCreateAIQButtonClick = async () => {
         try {
             setLoading(true);
             // 문제 생성 요청 보내기
             const aiResponse = await axios.post(`/api/v1/exams/${examId}/ai`);
             console.log('문제 업로드 성공:', aiResponse.data);
+            const object = aiResponse.data;
+            setObject(object.questions);
         } catch (error) {
             console.error('문제 생성 실패:', error);
             alert('문제 생성에 실패했습니다.');
@@ -133,6 +142,9 @@ export default function AICreate({ examId }) {
                 </ModalBackground>
             )}
             <button onClick={() => setModalOpen(true)}>AI로 문제 생성하기</button>
+            {isObject.map((object, index) => (
+                <EditorEdit key={index} object={object} index={index} isObject={isObject} />
+            ))}
         </div>
     );
 }

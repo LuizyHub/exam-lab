@@ -98,7 +98,7 @@ export const sendDeleteData = async (UUID) => {
     console.log(error);
   }
 }
-
+//if insert params that Object.question or options.. about Object useState
 export const sendPutData = async (UUID, elementQuestions, elementOptions, elementCommentAnswers, elementCommentary) => {
   console.log("수정");
   const URL = `/api/v1/questions`
@@ -163,3 +163,22 @@ export const sendPutData = async (UUID, elementQuestions, elementOptions, elemen
 //       console.log(error);
 //     });
 // }
+
+export const getData = async (PAGE_ID) => {
+  try {
+    console.log("가져오기");
+    const URL = `/api/v1/exams/${PAGE_ID}/questions?count=0`;
+
+    const response = await axios.get(URL);
+    const res = response.data;
+    console.log(res);
+    console.log(res.size);
+    return res;
+    // res.questions.forEach((questions, index) => {
+    //   console.log(`Question ${index + 1}:`);
+    // });
+  } catch (error) {
+    // 오류 처리
+    console.log(error);
+  }
+}

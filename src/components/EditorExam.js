@@ -111,8 +111,6 @@ export default function EditorExam({ examId }) {
             ))}
           </div> */}
 
-
-
           <EditorTool
             editorRef={editorRef1}
             contentType={'문제'}
@@ -245,7 +243,7 @@ export default function EditorExam({ examId }) {
               style={{ display: 'flex' }}
             />
 
-            <Editor
+            {/* <Editor
               contentEditable={true}
               editorRef={editorRefDescription}
               dangerouslySetInnerHTML={{ __html: imageInit }}
@@ -253,10 +251,10 @@ export default function EditorExam({ examId }) {
                 () => {
                   const isOutImage = editorRefDescription.current.innerHTML;
                   setUrlOutDes(isOutImage);
-                  // console.log(isOutImage)
+                  console.log(isOutImage)
                 }
               }
-            />
+            /> */}
           </div>
           {/* ------------------------------------------------------------------------ */}
 
@@ -422,7 +420,7 @@ export default function EditorExam({ examId }) {
             }
           }}
           onInput={() => {
-            const answers = editorRef5.current.innerHTML;
+            const answers = editorRef4.current.innerHTML;
             setCommentAnswers(answers);
           }}
           style={{
@@ -478,14 +476,16 @@ export default function EditorExam({ examId }) {
           onCut={handleCut}
           onPaste={handlePaste}
           onInput={() => {
-            const Commentary = editorRef4.current.innerHTML;
+            const Commentary = editorRef5.current.innerHTML;
             setCommentary(Commentary);
           }}
           style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
         />
 
       </div>
+
       {/*------------------ 버튼 영역---------------------- */}
+
       <div>
         <button type='submit' onClick={() => {
           sendPostData(examId, isUrlIn, isUrlOut, isUrlOutDes, isData.question, isData.options, isCommentAnswers, isCommentary)
@@ -502,6 +502,7 @@ export default function EditorExam({ examId }) {
         }
         }>삭제</button>
 
+        {/* UUID가 필요한가? 제거하고 실행 해볼 것 */}
         <button onClick={() => {
           sendPutData(UUID, isData.question, isData.options, isCommentAnswers, isCommentary);
           // getData();//get이 내부로 들어가야하나?

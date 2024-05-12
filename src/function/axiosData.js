@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const configFormData = () => {
+// export const configFormData = () => {
 
-}
+// }
 export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, elementUrlOutDes, elementQuestions, elementOptions, elementCommentAnswers, elementCommentary) => {
   //** DON'T MOVE THIS LINE */
   const URL = `/api/v1/exams/${PAGE_ID}/questions`;

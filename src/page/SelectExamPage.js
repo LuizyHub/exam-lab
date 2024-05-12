@@ -8,6 +8,9 @@ import { isVisibleState } from '../recoil/atoms';
 
 
 const SelectExam = styled.div`
+
+   display: flex;
+   flex-direction: column;
    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
    transition: margin-left 0.3s ease;
 `;
@@ -97,6 +100,7 @@ export default function SelectExamPage() {
   const [exams, setExams] = useState([]);
   const [modalStates, setModalStates] = useState({}); // 시험별 모달 상태
   const [examSize, setExamSize] = useState([]);
+
   const isSidebarOpen = useRecoilValue(isVisibleState);
 
   useEffect(() => {
@@ -167,6 +171,7 @@ export default function SelectExamPage() {
                 <p style={{fontSize: '12px', marginBottom:'0px'}}> {exam.size}문제 </p>
                 <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(exam.exam_id); }} />
               </ExamButton>  
+
               {modalStates[exam.exam_id] && 
                 <DeleteConfirmModal>
                   <ModalBody>

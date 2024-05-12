@@ -54,12 +54,16 @@ export default function EditorEdit({ object, index, isObject }) {
 
   return (
     <>
-      <Editor
+      {/* <Editor
         editorRef={questionRef}
         contentEditable={isContentEditable[index]}
         dangerouslySetInnerHTML={{ __html: replacedQuestion }}
         style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
-      <Editor />
+      <Editor /> */}
+
+      <div
+        dangerouslySetInnerHTML={{ __html: replacedQuestion }}
+        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}></div>
 
       {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
         <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>

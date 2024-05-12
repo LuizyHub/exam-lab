@@ -77,11 +77,11 @@ export default function EditExam() {
     <>
       <h1>Test</h1>
       {/* 리모컨 */}
-      <div style={{ marginBottom: '40px' }}>
+      {/* <div style={{ marginBottom: '40px' }}>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleAutoLogin() }}>logIn</button>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLogout() }}>logOut</button>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLoginState() }}>logState</button>
-      </div>
+      </div> */}
 
       <button>시험지 생성</button>
 
@@ -118,10 +118,9 @@ export default function EditExam() {
         handleExamCreate();
         console.log(examId);
       }}>문제추가</button>
-      <button onClick={() => {
+      {/* <button onClick={() => {
         getData(examId).then((id) => { console.log(id) })
-
-      }}>GetAxios</button>
+      }}>GetAxios</button> */}
       <AICreate examId={examId} />
     </>
   )

@@ -49,7 +49,6 @@ public class QuestionsController {
     @GetMapping("/exams/{examId}/questions")
     public QuestionsListDto selectQuestions(@PathVariable @ValidExamId Long examId, @RequestParam @ValidParams MultiValueMap<String, String> params) {
         QuestionsSearchDto questionsSearchDto = QuestionsSearchDto.fromParams(params);
-        log.info(questionsSearchDto.toString());
         QuestionsListDto questionsListDto = questionsService.searchFromQuestions(examId, questionsSearchDto);
         if (questionsListDto.getSize() == 0) {
             throw new NotFoundQuestionException();

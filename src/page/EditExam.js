@@ -14,7 +14,7 @@ import styled from 'styled-components';
 const EditExamPage = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: ${props => props.isSidebarOpen ? '250px' : '60px'};
+    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
     transition: margin-left 0.3s ease;
 `;
 
@@ -61,7 +61,7 @@ export default function EditExam() {
   };
 
   return (
-    <EditExamPage isSidebarOpen={isSidebarOpen}>
+    <EditExamPage $isSidebarOpen={isSidebarOpen}>
       <h1>문제 등록하기</h1>
       {/* 리모컨 */}
       {/* <div style={{ marginBottom: '40px' }}>

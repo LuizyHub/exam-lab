@@ -159,7 +159,6 @@ const SubmitButton = styled.input`
     }
 `;
 
-
 export default function SelectQuestion() {
     const location = useLocation(); // SelectExamPage.js에서 선택된 시험 받아오기
     const { examId, examTitle } = location.state;
@@ -175,6 +174,7 @@ export default function SelectQuestion() {
 const [selectedPredefinedCount, setSelectedPredefinedCount] = useState(selectedQuestionCount);
 const [selected, setSelected] = useState(false);
     const [questions, setQuestions] = useState([]);
+    const [showCustomCountInput, setShowCustomCountInput] = useState(false); // "기타" 버튼을 클릭했는지 여부
 
     // 태그 가져오기
     useEffect(() => {
@@ -191,6 +191,7 @@ const [selected, setSelected] = useState(false);
         }
     }, [examId]);
     
+
 
     // 태그 선택
     const handleTagClick = (tagGroup, tag) => {

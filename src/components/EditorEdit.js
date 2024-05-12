@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { sendDeleteData, sendPutData } from "../function/axiosData";
 import { Editor } from "./Editor";
-
+//파일위치 항상 확인
 export default function EditorEdit({ object, index, isObject }) {
   //Axios Get useState
   const [isContentEditable, setContentEditable] = useState(Array(isObject.length).fill(false));

@@ -107,15 +107,8 @@ export default function ShowQuestionList({ questions }) {
     // 모든 문제를 선택된 문제로 설정
     const handleSelectAllQuestions = () => {
         const newQuestions = questions.filter(item => !selectedQuestions.some(q => q.id === item.id));
-        setSelectedQuestions([...selectedQuestions, ...newQuestions]); 
+        setSelectedQuestions([...selectedQuestions, ...newQuestions]);
     };
-
-    // 모든 문제를 선택된 문제로 설정
-    const handleSelectAllQuestions = () => {
-        const newQuestions = questions.filter(item => !selectedQuestions.some(q => q.id === item.id));
-        setSelectedQuestions([...selectedQuestions, ...newQuestions]); 
-    };
-
 
     const handleSubmitQuestion = () => {
         if (showSelectedQuestionsCount > 0) {
@@ -137,8 +130,8 @@ export default function ShowQuestionList({ questions }) {
                     <QuestionList>
                         {showSelectedQuestions ? (
                             selectedQuestions.map((item, index) => (
-                                <QuestionItem 
-                                    key={index} 
+                                <QuestionItem
+                                    key={index}
                                     onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
                                     selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
                                 >
@@ -155,8 +148,8 @@ export default function ShowQuestionList({ questions }) {
                             ))
                         ) : (
                             questions.map((item, index) => (
-                                <QuestionItem 
-                                    key={index} 
+                                <QuestionItem
+                                    key={index}
                                     onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
                                     selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
                                 >

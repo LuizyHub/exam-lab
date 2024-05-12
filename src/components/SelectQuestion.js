@@ -4,13 +4,10 @@ import axios from 'axios';
 import ShowQuestionList from "./ShowQuestionList";
 import "../css/SelectQuestion.css";
 
-
 export default function SelectQuestion() {
-  
     const location = useLocation(); // SelectExamPage.js에서 선택된 시험 받아오기
     const { examId, examTitle } = location.state;
 
-    // console.log(examId, examTitle);
 
     const [tags, setTags] = useState([]); // 태그 종류
     const [selectedTags, setSelectedTags] = useState([]); // 선택된 태그 종류
@@ -20,33 +17,34 @@ export default function SelectQuestion() {
     const [questions, setQuestions] = useState([]);
     const [showCustomCountInput, setShowCustomCountInput] = useState(false); // "기타" 버튼을 클릭했는지 여부
 
-
     // 태그 가져오기
     useEffect(() => {
-      if (examId) {
-        const fetchTag = async () => {
-          try {
-            console.log(examId)
-            const response = await axios.get(`/api/v1/exams/${Number(examId)}`);
-            setTags(response.data.tags);
-          } catch(error) {
-            console.error('Tags Error fetching data:', error);
-          }
-        };
-        fetchTag();
-      }
+        if (examId) {
+            const fetchTag = async () => {
+                try {
+                    const response = await axios.get(`/api/v1/exams/${Number(examId)}`);
+                    setTags(response.data.tags);
+                } catch(error) {
+                    console.error('Tags Error fetching data:', error);
+                }
+            };
+            fetchTag();
+        }
     }, [examId]);
     
+
     // 키워드 추가
     const handlePushKeyword = (e) => {
-        if (e.key === 'Enter') {
-        e.preventDefault();
-        if (!e.nativeEvent.isComposing) { 
-            setKeywords([...keywords, search.trim()]); // 입력된 단어를 키워드 배열에 추가
-            setSearch(''); // 검색어를 초기화
-        }
+        if ((e.key === 'Enter' || e.type === 'click') && !e.nativeEvent.isComposing) {
+            e.preventDefault();
+            if (search.trim() !== '') { 
+                setKeywords([...keywords, search.trim()]); // 입력된 단어를 키워드 배열에 추가
+                setSearch(''); // 검색어를 초기화
+            }
         }
     };
+
+
   
     // 키워드 삭제
     const handelDeleteKeyword = (index) => { 
@@ -80,43 +78,40 @@ export default function SelectQuestion() {
         setSelectedQuestionCount(parseInt(e.target.value));
     }
 
-   
     // 유형 정보 API 전달
-const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    let URL = `/api/v1/exams/${Number(examId)}/questions?count=${Number(selectedQuestionCount)}`;
+        let URL = `/api/v1/exams/${Number(examId)}/questions?count=${Number(selectedQuestionCount)}`;
 
-    // 태그 추가
-    selectedTags.forEach(({ tagGroup, tag }) => {
-        URL += `&tags_${tagGroup}=${tag}`;
-    });
-
-    // 검색어 추가
-    if (keywords.length > 0) {
-        keywords.forEach(include => {
-            URL += `&includes=${include}`;
+        // 태그 추가
+        selectedTags.forEach(({ tagGroup, tag }) => {
+            URL += `&tags_${tagGroup}=${tag}`;
         });
-    }
 
-    console.log(URL);
-
-    // API 호출
-    try {
-        const response = await axios.get(URL);
-        console.log(response.data.questions);
-        setQuestions(response.data.questions);
-
-        if (response.data.questions.length === 0) {
-            alert("해당 문제가 없습니다.");
+        // 검색어 추가
+        if (keywords.length > 0) {
+            keywords.forEach(include => {
+                URL += `&includes=${include}`;
+            });
         }
-    } catch (error) {
-        console.error("Error fetching questions:", error);
+
+        console.log(URL);
+
+        // API 호출
+        try {
+            const response = await axios.get(URL);
+            console.log(response.data.questions);
+            setQuestions(response.data.questions);
+        } catch (error) {
+            if (error.response && error.response.status === 404) { // 404 에러 처리
+                alert("해당 문제가 없습니다.");
+            } else {
+                console.error("Error fetching questions:", error);
+            }
+        }   
     }
-}
-    
-    
-    
+
     return(
         <div className="select-question-container">
             <div>
@@ -137,7 +132,6 @@ const handleSubmit = async (e) => {
                         ))}
                     </div>
                 ))}
-
                 </div>
                 <div className="selectWord-container">
                     <span> 키워드 검색  </span>
@@ -146,6 +140,11 @@ const handleSubmit = async (e) => {
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onKeyDown={handlePushKeyword}
+                    />
+                   <img
+                        src="/img/검색돋보기.png"
+                        style={{ width: '15px', position: 'relative', marginRight: '20px', border: '1px solid #ccc' }}
+                        onClick={handlePushKeyword} // 이미지 클릭 시 검색 키워드 추가 
                     />
                     <br />
                     <div className="keyword-list">
@@ -157,11 +156,20 @@ const handleSubmit = async (e) => {
                         ))}
                     </div>
                 </div>
-
                 <br />
                 <div className="question-count">
                     <span>문항수  </span>
-                    {[5, 10, 15, 20, "기타"].map(count => (
+                    <div className="custom-count-input" style={{ display: 'inline-flex', marginRight: '10px' }}>
+                        <input
+                            type="number"
+                            value={selectedQuestionCount}
+                            placeholder="직접 입력"
+                            onChange={handleCustomQuestionCountChange}
+                            min={1} // 최소값 설정
+                            style={{ backgroundColor: '#E8F6F6', color: '#2D2C2B', border: 'none', borderRadius: '5px', padding: '5px 10px', cursor: 'pointer', marginRight: '5px', width: '30px' }}
+                        />
+                    </div>
+                    {[10, 20, 30, 40].map(count => (
                         <button 
                             key={count}
                             value={count}
@@ -171,14 +179,8 @@ const handleSubmit = async (e) => {
                             {count}
                         </button>
                     ))}
-                    {showCustomCountInput && (
-                        <input
-                            type="number"
-                            value={selectedQuestionCount}
-                            placeholder="직접 입력하기"
-                            onChange={handleCustomQuestionCountChange}
-                        />
-                    )}
+                    <button onClick={() => setSelectedQuestionCount(0)} className={selectedQuestionCount === 0 ? "selected-count" : ""}> 전체 </button>
+                   
                 </div>
                 <br />  
                 <input type="submit" onClick={handleSubmit} value="문제 검색" />

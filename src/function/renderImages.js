@@ -19,6 +19,66 @@ export function renderImages(item) {
 //클래스 추가
 // in 이미지 파싱 후 렌더링 함수 수정
 export function parseImages(item, itemElements) {
+  // <box> 태그를 처리하는 함수
+  const parseBox = (text) => {
+    const regex = /<box>(.*?)<\/box>/gi;
+    let parsedText = text;
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      const contentText = match[1];
+      parsedText = parsedText.replace(match[0], `<div style="border: 1px solid black; padding: 10px; margin: 5px 0;">${contentText}</div>`);
+    }
+    return parsedText;
+  };
+
+  // <content> 태그를 처리하는 함수
+  const parseContent = (text) => {
+    const regex = /<content>(.*?)<\/content>/gi;
+    let parsedText = text;
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      const contentText = match[1];
+      parsedText = parsedText.replace(match[0], `<div style="padding: 10px; ">${contentText}</div><br/>`);
+    }
+    return parsedText;
+};
+
+
+  // 줄 바꿈 문자를 처리하는 함수
+  const parseLineBreaks = (text) => {
+    const regex = /\/n/g;
+    const parsedText = text.replace(regex, '\n');
+    return parsedText;
+  };
+
+  // h1/h2/h3 태그를 처리하는 함수
+  const parseHeaders = (text) => {
+    const h1Regex = /<h1>(.*?)<\/h1>/g;
+    const h2Regex = /<h2>(.*?)<\/h2>/g;
+    const h3Regex = /<h3>(.*?)<\/h3>/g;
+
+    let parsedText = text;
+    parsedText = parsedText.replace(h1Regex, '<h1>$1</h1>');
+    parsedText = parsedText.replace(h2Regex, '<h2>$1</h2>');
+    parsedText = parsedText.replace(h3Regex, '<h3>$1</h3>');
+
+    return parsedText;
+  };
+
+  // 표를 처리하는 함수
+  const parseTable = (text) => {
+    const regex = /<table>(.*?)<\/table>/g;
+    let parsedText = text.replace(regex, (match) => {
+      return `<table style="border-collapse: collapse; width: 100%;">${match}</table>`;
+    });
+
+    parsedText = parsedText.replace(/<thead>/g, '<thead style="background-color: #f2f2f2;">');
+    parsedText = parsedText.replace(/<th>/g, '<th style="border: 1px solid #ddd; padding: 8px;">');
+    parsedText = parsedText.replace(/<td>/g, '<td style="border: 1px solid #ddd; padding: 8px;">');
+
+    return parsedText;
+  };
+
   let parsedItem = item;
 
   // 이미지 URL 배열이 정의되었는지 확인합니다.
@@ -30,5 +90,12 @@ export function parseImages(item, itemElements) {
       parsedItem = parsedItem.replace(regex, `src="${itemElementUrl.url}" class="${itemElementUrl.attribute}"`);
     });
   }
+
+  parsedItem = parseTable(parsedItem); // 표 처리
+  parsedItem = parseBox(parsedItem); // <box> 태그 처리
+  parsedItem = parseHeaders(parsedItem); // 헤더 태그 처리
+  parsedItem = parseContent(parsedItem); // <content> 태그 처리
+  parsedItem = parseLineBreaks(parsedItem); // 줄 바꿈 처리
+
   return parse(parsedItem);
-};
+}

@@ -9,8 +9,3 @@ export const isVisibleState = atom({
     key: 'isVisibleState',
     default: false,
   });
-
-export const selectedQuestionsState = atom({
-    key: 'selectedQuestionsState',
-    default: [],
-});

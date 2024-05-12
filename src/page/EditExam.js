@@ -1,17 +1,30 @@
 import EditorExam from "../components/EditorExam"
+import NavigationBar from "../components/NavigationBar";
 import AttributeManager from "../components/AttributeManager"
-import AICreate from "../test/AI/AICreate";
+import AICreate from "../components/AICreate";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLoginController } from "../function/useLoginController";
+import { useRecoilValue } from 'recoil';
+import { isVisibleState } from '../recoil/atoms';
+import styled from 'styled-components';
 import { getData, sendDeleteData, sendPutData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 // import { useDataHandle } from "../..//dataHandle";
+
+const EditExamPage = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
+    transition: margin-left 0.3s ease;
+`;
 
 export default function EditExam() {
 
   //로그인 리모컨
   const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
+  const isSidebarOpen = useRecoilValue(isVisibleState);
+
   const location = useLocation();
   // 선택된 시험의 examId와 examTitle을 받아, AttributeManager 컴포넌트에게 props로 전달
   const [examTitle, setExamTitle] = useState('');
@@ -74,8 +87,8 @@ export default function EditExam() {
   };
 
   return (
-    <>
-      <h1>Test</h1>
+    <EditExamPage $isSidebarOpen={isSidebarOpen}>
+      <h1>문제 등록하기</h1>
       {/* 리모컨 */}
       {/* <div style={{ marginBottom: '40px' }}>
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleAutoLogin() }}>logIn</button>
@@ -83,8 +96,7 @@ export default function EditExam() {
         <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLoginState() }}>logState</button>
       </div> */}
 
-      <button>시험지 생성</button>
-
+      <NavigationBar />
       <AttributeManager examId={examId}></AttributeManager>
 
       {/* 기존문제 가져오기 */}
@@ -122,6 +134,6 @@ export default function EditExam() {
         getData(examId).then((id) => { console.log(id) })
       }}>GetAxios</button> */}
       <AICreate examId={examId} />
-    </>
+    </EditExamPage>
   )
 }

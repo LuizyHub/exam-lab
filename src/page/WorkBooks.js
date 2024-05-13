@@ -107,14 +107,17 @@ export default function WorkBooks() {
 
     const isSidebarOpen = useRecoilValue(isVisibleState);
 
+    // 시험지 불러오기
     useEffect(() => {
         axios.get(`/api/v1/workbooks`)
           .then(response => {
             console.log(response.data);
             setWorkbooks(response.data.message); // 배열 전체를 저장
             console.log(workbooks);
+
+            // 시험지별 삭제 모달을 띠우기 위함
             const initialModalStates = {};
-            response.data.message.forEach(workbook => { // message 배열을 반복하여 처리
+            response.data.message.forEach(workbook => { 
               initialModalStates[workbook.id] = false;
             });
             setModalStates(initialModalStates);
@@ -125,7 +128,7 @@ export default function WorkBooks() {
       }, []);
     
 
-        // 시험지  선택
+        // 시험지 선택
         const handleWorkBookClick = (workbookId) => {
             navigate('/workbooks/create', { state: { workbookId } });
         }
@@ -161,7 +164,7 @@ export default function WorkBooks() {
         return (
             <WorkBooksContent $isSidebarOpen={isSidebarOpen}>
                <h1>시험지 저장소</h1>
-                <WorkBookCreateButton onClick={() => {navigate('/workbooks/create')}}> 
+                <WorkBookCreateButton onClick={() => {navigate('/exams/create')}}> 
                     <CreateImg src="/img/추가하기.png" alt="Create Icon" />
                 </WorkBookCreateButton>
                <div>

@@ -63,7 +63,7 @@ const PdfDocument = ({ isQuestion, isCommentary }) => (
 export default function LabExam() {
 
   const location = useLocation();
-  const { selectedQuestions, examTitle } = location.state;
+  const { selectedQuestions } = location.state;
   const workbookId = location.state.workbookId;
 
   const [isWorkBook, setWorkBook] = useState([]);

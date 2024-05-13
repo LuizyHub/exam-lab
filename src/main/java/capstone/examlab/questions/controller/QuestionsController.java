@@ -75,7 +75,7 @@ public class QuestionsController {
         if (!examsService.isExamOwner(examId, user)) {
             throw new UnauthorizedException();
         }
-        questionsService.deleteQuestionsByQuestionId(user, questionId);
+        questionsService.deleteQuestionsByQuestionId(questionId);
         return ResponseDto.OK;
     }
 }

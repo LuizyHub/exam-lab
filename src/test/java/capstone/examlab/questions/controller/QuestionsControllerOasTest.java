@@ -95,7 +95,6 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                 )
                 .andExpect(status().isCreated())
                 .andReturn();
-        questionId = result.getResponse().getContentAsString();
         String responseContent = result.getResponse().getContentAsString();
         JsonNode jsonResponse = objectMapper.readTree(responseContent);
         questionId = jsonResponse.get("message").get("id").asText();
@@ -103,7 +102,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
 
     @AfterEach
     void tearDown() {
-        questionsService.deleteQuestionsByExamId(userAddExamId);
+        questionsService.deleteQuestionsByQuestionId(questionId);
     }
 
     @Test
@@ -184,7 +183,7 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
             }
         });
 
-        this.mockMvc.perform(
+        MvcResult result = this.mockMvc.perform(
                         customRestDocumentationRequestBuilder
                                 .file(jsonPart)
                                 .file(questionImagesIn)
@@ -209,7 +208,11 @@ class QuestionsControllerOasTest extends RestDocsOpenApiSpecTest {
                                 )
                                 .build()
                         )
-                ));
+                )).andReturn();
+        String responseContent = result.getResponse().getContentAsString();
+        JsonNode jsonResponse = objectMapper.readTree(responseContent);
+        String addedQuestionId = jsonResponse.get("message").get("id").asText();
+        questionsService.deleteQuestionsByQuestionId(addedQuestionId);
     }
 
     @Test

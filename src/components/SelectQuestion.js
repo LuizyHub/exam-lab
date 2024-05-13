@@ -40,7 +40,7 @@ const TagButton = styled.button`
         background-color: #C6E7E7;
     }
 `;
-    
+
 
 const KeywordList = styled.div`
     display: flex;
@@ -171,8 +171,8 @@ export default function SelectQuestion() {
     const [selectedQuestionCount, setSelectedQuestionCount] = useState(20);// 선택된 문제 문항 수 
     const [customQuestionCount, setCustomQuestionCount] = useState(""); // 문항 수 직접 입력을 위한 상태 변수
     // 미리 정의된 문항 수 버튼을 위한 상태 변수
-const [selectedPredefinedCount, setSelectedPredefinedCount] = useState(selectedQuestionCount);
-const [selected, setSelected] = useState(false);
+    const [selectedPredefinedCount, setSelectedPredefinedCount] = useState(selectedQuestionCount);
+    const [selected, setSelected] = useState(false);
     const [questions, setQuestions] = useState([]);
     const [showCustomCountInput, setShowCustomCountInput] = useState(false); // "기타" 버튼을 클릭했는지 여부
 
@@ -183,14 +183,14 @@ const [selected, setSelected] = useState(false);
                 try {
                     const response = await axios.get(`/api/v1/exams/${Number(examId)}`);
                     setTags(response.data.tags);
-                } catch(error) {
+                } catch (error) {
                     console.error('Tags Error fetching data:', error);
                 }
             };
             fetchTag();
         }
     }, [examId]);
-    
+
 
 
     // 태그 선택
@@ -213,12 +213,12 @@ const [selected, setSelected] = useState(false);
             }
         }
     };
-    
-    
 
-  
+
+
+
     // 키워드 삭제
-    const handelDeleteKeyword = (index) => { 
+    const handelDeleteKeyword = (index) => {
         const deleteKeywords = [...keywords];
         deleteKeywords.splice(index, 1); // 선택된 인덱스의 키워드를 제거
         setKeywords(deleteKeywords); // 변경된 키워드 배열을 업데이트
@@ -232,16 +232,16 @@ const [selected, setSelected] = useState(false);
         setCustomQuestionCount(numberValue); // 상태 업데이트
         setSelectedQuestionCount(numberValue); // 선택된 문제 수도 업데이트
     }
-    
-    
-    
-    
 
-// 문항 수 선택 핸들러
-const handleQuestionCountClick = (count) => {
-    setSelectedQuestionCount(count);
-    setSelectedPredefinedCount(count);
-}
+
+
+
+
+    // 문항 수 선택 핸들러
+    const handleQuestionCountClick = (count) => {
+        setSelectedQuestionCount(count);
+        setSelectedPredefinedCount(count);
+    }
 
     // 유형 정보 API 전달
     const handleSubmit = async (e) => {
@@ -274,7 +274,7 @@ const handleQuestionCountClick = (count) => {
             } else {
                 console.error("Error fetching questions:", error);
             }
-        }   
+        }
     }
 
     return (
@@ -316,8 +316,8 @@ const handleQuestionCountClick = (count) => {
                         {keywords.map((keyword, index) => (
                             <KeywordContainer key={index}>
                                 <Keyword>
-                                   {keyword} 
-                                     <DeleteKeywordImg src="/img/x버튼.png" alt="delete img" onClick={() => handelDeleteKeyword(index)} />
+                                    {keyword}
+                                    <DeleteKeywordImg src="/img/x버튼.png" alt="delete img" onClick={() => handelDeleteKeyword(index)} />
                                 </Keyword>
                             </KeywordContainer>
                         ))}
@@ -326,7 +326,7 @@ const handleQuestionCountClick = (count) => {
                 <br />
                 <QuestionCount>
                     <p> 문제 갯수 </p>
-                    <div style={{ display: 'inline-flex'}}>
+                    <div style={{ display: 'inline-flex' }}>
                         {/* <button>
                                         <CountInput
                             type="number"
@@ -339,7 +339,7 @@ const handleQuestionCountClick = (count) => {
                     </div>
                     {/*숫자만 입력 가능하게*/}
                     <CountInput
-                        type="text" pattern="[0-9]*" 
+                        type="text" pattern="[0-9]*"
                         value={customQuestionCount || ""}
                         placeholder={customQuestionCount === "" ? "직접 입력" : ""}
                         onChange={handleCustomQuestionCountChange}
@@ -349,7 +349,7 @@ const handleQuestionCountClick = (count) => {
 
 
                     {[10, 20, 30, 40].map(count => (
-                            <CountButton
+                        <CountButton
                             key={count}
                             type="button"
                             selected={selectedPredefinedCount === count}
@@ -362,14 +362,14 @@ const handleQuestionCountClick = (count) => {
                     {/* 전체 검색 */}
                     {/* <CountButton onClick={() => setSelectedQuestionCount(0)} selected={selectedQuestionCount === 0}> 전체 </CountButton> */}
                 </QuestionCount>
-                <br />  
+                <br />
                 <SubmitButtonContainer>
                     <SubmitButton type="submit" value="문제 검색" onClick={handleSubmit} />
                 </SubmitButtonContainer>
 
-                </Container>
-            <ShowQuestionList questions={questions}/>
+            </Container>
+            <ShowQuestionList questions={questions} />
         </div>
     );
-    
+
 }

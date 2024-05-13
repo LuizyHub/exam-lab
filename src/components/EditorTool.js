@@ -8,7 +8,7 @@ export default function EditorTool({ editorRef, contentType, handleContentType, 
 
   return (
 
-    <div className="editor-menu" style={{ marginBottom: '10px' }}>
+    <div className="editor-Tool" style={{ marginBottom: '10px' }}>
       {/* <select value={contentType} onChange={handleContentType}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
@@ -50,18 +50,18 @@ export default function EditorTool({ editorRef, contentType, handleContentType, 
               style={{ marginRight: '5px' }}
             >IMG
             </button>
-            <input
+            {/* <input
               type='number'
               value={isImageSize}
               onChange={(e) => { handleImgSize(e) }}
               style={{ width: '60px' }}
-            />
+            /> */}
             {/* <button onClick={() => { handleContent(editorRef) }}>저장</button> */}
 
           </>
         ) : contentType === "이미지" ? (
           <>
-            <button onClick={() => { handleImgToolClick(imageSelectorRef) }} style={{ marginRight: '5px' }}>IMG</button>
+            {/* <button onClick={() => { handleImgToolClick(imageSelectorRef) }} style={{ marginRight: '5px' }}>IMG</button> */}
             <input type='number' value={isImageSize} onChange={(e) => { handleImgSize(e) }} style={{ width: '60px' }} />
             {/* <button onClick={() => { handleContent() }}>저장</button> */}
 

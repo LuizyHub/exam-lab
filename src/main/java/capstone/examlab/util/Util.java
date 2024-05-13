@@ -7,7 +7,8 @@ public final class Util {
     public static boolean isSingleToken(String str) {
         return str.matches("^[a-zA-Z가-힣0-9]+$");
     }
-    public static boolean isSingleTokenWithUnderscore(String str) {
-        return str.matches("^[a-zA-Z가-힣0-9_]+$");
+
+    public static boolean matchesTagsPattern(String str) {
+        return str.matches("^tags_[a-zA-Z가-힣0-9]+$");
     }
 }

@@ -21,23 +21,21 @@ public class ParmasValidator implements ConstraintValidator<ValidParams, MultiVa
         if (params.isEmpty()) {
             return true;
         }
-
         for (String key : params.keySet()) {
-            log.info("key: "+key);
-            // @Pattern 검증
-            if (!Util.isSingleTokenWithUnderscore(key)) {
-                return false;
-            }
-            // @Size 검증
-            if(key.length() > 20) {
-                return false;
-            }
-            for (String s: params.get(key)) {
-                if (!Util.isSingleToken(s)) {
+            //key 검증
+            if(key.contains("tags")){
+                if(!Util.matchesTagsPattern(key)||key.length() > 20) {
                     return false;
                 }
-                // @Size 검증
-                if(s.length() > 20) {
+            }
+            else{
+                if(!key.equals("count")&&!key.equals("includes")){
+                    return false;
+                }
+            }
+            //value 검증
+            for (String s: params.get(key)) {
+                if (!Util.isSingleToken(s)||s.length() > 20) {
                     return false;
                 }
             }

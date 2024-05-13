@@ -31,7 +31,7 @@ export function parseImages(item, itemElements) {
       parsedItem = parsedItem.replace(regex, `src="${itemElementUrl.url}" class="${itemElementUrl.attribute}"`);
     });
   }
-  return itemElements;
+  return parse(parsedItem);
 }
 
 //  parsedItem = parseTable(parsedItem); // 표 처리

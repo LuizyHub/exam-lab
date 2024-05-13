@@ -8,8 +8,7 @@ import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 import SelectQuestionPage from "./page/SelectQuestionPage"
 import WorkBooks from "./page/WorkBooks";
 
-import AttributeManager from "./components/AttributeManager";
-import EnglishExam from "./test/english/englishExam";
+import Pdf from "./test/Pdf/Pdf";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -23,14 +22,14 @@ function App() {
             <Route path="/exams" element={<SelectExam />} />
             <Route path="/exams/create" element={<SelectExamCreate />} />
             <Route path="/selectQuestion" element={<SelectQuestionPage />} />
-            <Route path="/workbooks/create" element={<LabExam />} />
             <Route path="/edit" element={<EditExam />} />
             {/* <Route path="/edit" element={<EditExamRefactory />} /> */}
             <Route path="/htmlParse" element={<ParsingImageTest />} />
             <Route path="/workbooks" element={<WorkBooks />} />
-            {/* 영어문제 테스트를 위한 페이지 */}
-            <Route path="/english" element={<EnglishExam />} />
-            <Route path="/attribute" element={<AttributeManager />} />
+            <Route path="/workbooks/create" element={<LabExam />} />
+            
+            {/* 테스트용 */}
+            <Route path="/pdf" element={<Pdf />} />
           </Routes>
         </div>
       

@@ -28,7 +28,7 @@ function App() {
             <Route path="/workbooks" element={<WorkBooks />} />
             <Route path="/workbooks/create" element={<LabExam />} />
             {/* 테스트용 */}
-            //<Route path="/pdf" element={<Pdf />} />
+            {/* <Route path="/pdf" element={<Pdf />} /> */}
           </Routes>
         </div>
 

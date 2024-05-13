@@ -1,6 +1,7 @@
 package capstone.examlab.questions.controller;
 
 
+import capstone.examlab.ai.AiService;
 import capstone.examlab.exams.repository.ExamRepository;
 import capstone.examlab.exams.service.ExamsService;
 import capstone.examlab.questions.dto.QuestionDto;
@@ -13,7 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -26,7 +29,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(QuestionsController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @Tag("basic_test")
 public class QuestionsControllerTest {
 
@@ -38,12 +42,6 @@ public class QuestionsControllerTest {
 
     @MockBean
     private ExamsService examsService;
-
-    @Autowired
-    private LoginUserArgumentResolver loginUserArgumentResolver;
-
-    @MockBean
-    private UserRepository userRepository;
 
     @MockBean
     private ExamRepository examRepository;
@@ -68,7 +66,7 @@ public class QuestionsControllerTest {
                         .queryParam("tags_category", existTags.get(0))
                         .queryParam("tags_category", existTags.get(1))
                         .queryParam("count", String.valueOf(3))
-                        .queryParam("includes", "장농면허어디감"))
+                        .queryParam("includes", "포함되지않는검색어"))
                 .andExpect(status().isNotFound());
 
         // 정규식 검증에 걸린 경우 400에러

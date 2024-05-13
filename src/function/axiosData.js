@@ -18,7 +18,7 @@ export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, element
     const questionImage = {
       url: "",
       description: "설명",
-      attribute: ""
+      attribute: "examlab-image-inline"
     };
     questionImagesTextIn.push(questionImage);
   });
@@ -30,7 +30,7 @@ export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, element
     const questionImage = {
       url: "",
       description: elementUrlOutDes,
-      attribute: ""
+      attribute: "examlab-image-right"
     };
     questionImagesTextOut.push(questionImage);
   });

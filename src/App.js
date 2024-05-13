@@ -8,7 +8,7 @@ import ParsingImageTest from "./test/html_parse_img/parsingImageTest"
 import SelectQuestionPage from "./page/SelectQuestionPage"
 import WorkBooks from "./page/WorkBooks";
 
-import Pdf from "./test/Pdf/Pdf";
+//import Pdf from "./test/Pdf/Pdf";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -27,9 +27,8 @@ function App() {
             <Route path="/htmlParse" element={<ParsingImageTest />} />
             <Route path="/workbooks" element={<WorkBooks />} />
             <Route path="/workbooks/create" element={<LabExam />} />
-
             {/* 테스트용 */}
-            <Route path="/pdf" element={<Pdf />} />
+            //<Route path="/pdf" element={<Pdf />} />
           </Routes>
         </div>
 

@@ -39,11 +39,10 @@ export function parseImages(item, itemElements) {
 //   parsedItem = parseHeaders(parsedItem); // 헤더 태그 처리
 //   parsedItem = parseContent(parsedItem); // <content> 태그 처리
 //   parsedItem = parseLineBreaks(parsedItem); // 줄 바꿈 처리
-
 //   return parse(parsedItem);
 
-// <box> 태그를 처리하는 함수
-export const parseBox = (text) => {
+ // <box> 태그를 처리하는 함수
+ export const parseBox = (text) => {
   const regex = /<box>(.*?)<\/box>/gi;
   let parsedText = text;
   let match;
@@ -88,16 +87,17 @@ export const parseHeaders = (text) => {
   return parsedText;
 };
 
-// 표를 처리하는 함수
-export const parseTable = (text) => {
-  const regex = /<table>(.*?)<\/table>/g;
-  let parsedText = text.replace(regex, (match) => {
-    return `<table style="border-collapse: collapse; width: 100%;">${match}</table>`;
-  });
+  // 표를 처리하는 함수
+  export const parseTable = (text) => {
+    const regex = /<table>(.*?)<\/table>/g;
+    let parsedText = text.replace(regex, (match) => {
+      return `<table style="border-collapse: collapse; width: 100%;">${match}</table>`;
+    });
 
-  parsedText = parsedText.replace(/<thead>/g, '<thead style="background-color: #f2f2f2;">');
-  parsedText = parsedText.replace(/<th>/g, '<th style="border: 1px solid #ddd; padding: 8px;">');
-  parsedText = parsedText.replace(/<td>/g, '<td style="border: 1px solid #ddd; padding: 8px;">');
+    parsedText = parsedText.replace(/<thead>/g, '<thead style="background-color: #f2f2f2;">');
+    parsedText = parsedText.replace(/<th>/g, '<th style="border: 1px solid #ddd; padding: 8px;">');
+    parsedText = parsedText.replace(/<td>/g, '<td style="border: 1px solid #ddd; padding: 8px;">');
 
-  return parsedText;
-};
+    return parsedText;
+  };
+

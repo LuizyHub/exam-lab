@@ -113,7 +113,7 @@ public class QuestionsServiceImpl implements QuestionsService {
     }
 
     @Override
-    public void deleteQuestionsByQuestionId(User user, String questionId) {questionsRepository.deleteById(questionId);}
+    public void deleteQuestionsByQuestionId(String questionId) {questionsRepository.deleteById(questionId);}
 
     @Override
     public int countQuestionsByExamId(Long examId) {

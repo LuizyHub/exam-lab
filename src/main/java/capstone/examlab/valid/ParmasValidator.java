@@ -4,6 +4,7 @@ import capstone.examlab.util.Util;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
@@ -35,7 +36,10 @@ public class ParmasValidator implements ConstraintValidator<ValidParams, MultiVa
             }
             //value 검증
             for (String s: params.get(key)) {
-                if (!Util.isSingleToken(s)||s.length() > 20) {
+                if(key.equals("count")&&Integer.parseInt(s)>10000){
+                    return false;
+                }
+                else if (!Util.isSingleToken(s)||s.length() > 20) {
                     return false;
                 }
             }

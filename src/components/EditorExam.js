@@ -8,7 +8,7 @@ import { handleOnInput, handleDragOver, handleCopy, handleCut, handlePaste, hand
 import { Editor } from './Editor';
 import { sendPostData, sendDeleteData, sendPutData } from '../function/axiosData';
 
-export default function EditorExam({ examId }) {
+export default function EditorExam({ examId, handleExamDelete, index }) {
 
   //Commentary Ctrl
   const [isCommentHide, setCommentHide] = useState(false);
@@ -86,7 +86,7 @@ export default function EditorExam({ examId }) {
 
   return (
 
-    <div>
+    <div key={index} className='editor_out_line'>
       <div className='questionArea'>
         <div>
           {/* <h3>문제등록</h3> */}
@@ -168,7 +168,8 @@ export default function EditorExam({ examId }) {
               setUrlInId(resultId);
             }}
 
-            style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
+          // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+          />
 
           {/* ------------------------------------------------------------------------ */}
 
@@ -197,7 +198,9 @@ export default function EditorExam({ examId }) {
               setUrlOutId(prevState => [...prevState, result.name])
             }}
           />
-          <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>
+          <div
+          // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+          >
 
             <Editor
               editorRef={editorRef2}
@@ -240,7 +243,7 @@ export default function EditorExam({ examId }) {
                 setUrlOut(resultEdit);
                 setUrlOutId(resultId);
               }}
-              style={{ display: 'flex' }}
+            // style={{ display: 'flex' }}
             />
 
             {/* <Editor
@@ -346,12 +349,12 @@ export default function EditorExam({ examId }) {
               // // console.log(answers);
               // setData(prevState => ({ ...prevState, options: optionsArray }));
             }}
-            style={{
-              padding: '16px 24px',
-              border: '1px solid #D6D6D6',
-              borderRadius: '4px',
-              width: '600px',
-            }}
+          // style={{
+          //   padding: '16px 24px',
+          //   border: '1px solid #D6D6D6',
+          //   borderRadius: '4px',
+          //   width: '600px',
+          // }}
           />
 
           <button onClick={() => {
@@ -423,12 +426,12 @@ export default function EditorExam({ examId }) {
             const answers = editorRef4.current.innerHTML;
             setCommentAnswers(answers);
           }}
-          style={{
-            padding: '16px 24px',
-            border: '1px solid #D6D6D6',
-            borderRadius: '4px',
-            width: '600px',
-          }}
+        // style={{
+        //   padding: '16px 24px',
+        //   border: '1px solid #D6D6D6',
+        //   borderRadius: '4px',
+        //   width: '600px',
+        // }}
         />
 
         <EditorTool
@@ -479,7 +482,7 @@ export default function EditorExam({ examId }) {
             const Commentary = editorRef5.current.innerHTML;
             setCommentary(Commentary);
           }}
-          style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
         />
 
       </div>
@@ -498,9 +501,9 @@ export default function EditorExam({ examId }) {
 
         <button onClick={() => {
           sendDeleteData(UUID);
+          handleExamDelete(index);
           // getData();//get이 내부로 들어가야하나?
-        }
-        }>삭제</button>
+        }}>삭제</button>
 
         {/* UUID가 필요한가? 제거하고 실행 해볼 것 */}
         <button onClick={() => {

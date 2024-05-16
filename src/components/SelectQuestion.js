@@ -160,8 +160,8 @@ const SubmitButton = styled.input`
 `;
 
 export default function SelectQuestion() {
-    const location = useLocation(); // SelectExamPage.js에서 선택된 시험 받아오기
-    const { examId, examTitle } = location.state;
+    const location = useLocation(); 
+    const { examId, examTitle } = location.state; // SelectExamPage.js에서 선택된 시험 받아온다.
 
 
     const [tags, setTags] = useState([]); // 태그 종류
@@ -170,11 +170,9 @@ export default function SelectQuestion() {
     const [keywords, setKeywords] = useState([]); // 검색 키워드
     const [selectedQuestionCount, setSelectedQuestionCount] = useState(20);// 선택된 문제 문항 수 
     const [customQuestionCount, setCustomQuestionCount] = useState(""); // 문항 수 직접 입력을 위한 상태 변수
-    // 미리 정의된 문항 수 버튼을 위한 상태 변수
-const [selectedPredefinedCount, setSelectedPredefinedCount] = useState(selectedQuestionCount);
-const [selected, setSelected] = useState(false);
+    const [selectedCountType, setSelectedCountType] = useState('button'); // 선택된 문항 수 버튼 파악
     const [questions, setQuestions] = useState([]);
-    const [showCustomCountInput, setShowCustomCountInput] = useState(false); // "기타" 버튼을 클릭했는지 여부
+    
 
     // 태그 가져오기
     useEffect(() => {
@@ -205,16 +203,15 @@ const [selected, setSelected] = useState(false);
 
     // 키워드 추가
     const handlePushKeyword = (e) => {
-        if ((e.key === 'Enter' || e.type === 'click' || e.key === ' ') && !e.nativeEvent.isComposing) {
+        if ((e.key === 'Enter' || e.type === 'click') && !e.nativeEvent.isComposing) {
             e.preventDefault();
-            if (search.trim() !== '') {
-                setKeywords([...keywords, search.trim()]); // 입력된 단어를 키워드 배열에 추가
+            const trimmedSearch = search.replace(/\s+/g, ''); // 정규식을 사용하여 모든 공백 제거
+            if (trimmedSearch !== '') { // 빈 문자열이 아닌 경우에만 추가
+                setKeywords([...keywords, trimmedSearch]); // 입력된 단어를 키워드 배열에 추가
                 setSearch(''); // 검색어를 초기화
             }
         }
-    };
-    
-    
+    };    
 
   
     // 키워드 삭제
@@ -225,23 +222,25 @@ const [selected, setSelected] = useState(false);
     }
 
 
-
+    // CountInput onChange 이벤트 핸들러
     const handleCustomQuestionCountChange = (e) => {
         const value = e.target.value.trim(); // 입력된 값의 양 끝 공백 제거
         const numberValue = value === "" ? 0 : Number(value); // 문자열을 숫자로 변환
-        setCustomQuestionCount(numberValue); // 상태 업데이트
+        setCustomQuestionCount(numberValue); 
         setSelectedQuestionCount(numberValue); // 선택된 문제 수도 업데이트
     }
     
-    
-    
-    
+    // CountInput 클릭 이벤트 핸들러
+    const handleInputClick = () => {
+        setSelectedCountType('input');  // CountInput 선택 상태 설정
+    };
 
-// 문항 수 선택 핸들러
-const handleQuestionCountClick = (count) => {
-    setSelectedQuestionCount(count);
-    setSelectedPredefinedCount(count);
-}
+    // 문항 수 선택 핸들러
+    const handleQuestionCountClick = (count) => {
+        setSelectedCountType('button'); // CountButton 선택 상태 설정
+        setSelectedQuestionCount(count); 
+        setCustomQuestionCount(""); // CountInput 값 초기화
+    }
 
     // 유형 정보 API 전달
     const handleSubmit = async (e) => {
@@ -289,8 +288,7 @@ const handleQuestionCountClick = (count) => {
                                 <TagButton
                                     key={tag}
                                     selected={selectedTags.some(item => item.tagGroup === tagGroup && item.tag === tag)}
-                                    onClick={() => handleTagClick(tagGroup, tag)}
-                                >
+                                    onClick={() => handleTagClick(tagGroup, tag)} >
                                     {tag}
                                 </TagButton>
                             ))}
@@ -326,41 +324,32 @@ const handleQuestionCountClick = (count) => {
                 <br />
                 <QuestionCount>
                     <p> 문제 갯수 </p>
-                    <div style={{ display: 'inline-flex'}}>
-                        {/* <button>
-                                        <CountInput
-                            type="number"
-                            value={customQuestionCount}
-                            placeholder="직접 입력"
-                            onChange={handleCustomQuestionCountChange}
-                            min={1}
-                        />
-                        </button> */}
-                    </div>
+                    
                     {/*숫자만 입력 가능하게*/}
+                    {/* 숫자 입력란 */}
                     <CountInput
-                        type="text" pattern="[0-9]*" 
-                        value={customQuestionCount || ""}
-                        placeholder={customQuestionCount === "" ? "직접 입력" : ""}
-                        onChange={handleCustomQuestionCountChange}
-                        min={1}
-                        onClick={() => setSelectedQuestionCount(parseInt(customQuestionCount))}
+                    type="text" pattern="[0-9]*" 
+                    value={customQuestionCount || ""}
+                    placeholder={customQuestionCount === "" ? "직접 입력" : ""}
+                    onChange={handleCustomQuestionCountChange}
+                    onClick={handleInputClick} // 클릭 이벤트 핸들러 추가
+                    selected={selectedCountType === 'input'} // 선택된 상태에 따라 배경색 변경
                     />
 
-
+                    {/* 미리 정의된 문제 수 버튼 */}
                     {[10, 20, 30, 40].map(count => (
-                            <CountButton
-                            key={count}
-                            type="button"
-                            selected={selectedPredefinedCount === count}
-                            onClick={() => handleQuestionCountClick(count)}
+                        <CountButton
+                        key={count}
+                        type="button"
+                        selected={selectedQuestionCount === count && selectedCountType === 'button'}
+                        onClick={() => handleQuestionCountClick(count)}
                         >
-                            {count} 문제
+                        {count} 문제
                         </CountButton>
                     ))}
 
-                    {/* 전체 검색 */}
-                    {/* <CountButton onClick={() => setSelectedQuestionCount(0)} selected={selectedQuestionCount === 0}> 전체 </CountButton> */}
+                    {/* 전체 검색 버튼 */}
+                    <CountButton onClick={() => setSelectedQuestionCount(0)} selected={selectedQuestionCount === 0 && selectedCountType === 'button'}> 전체 </CountButton>
                 </QuestionCount>
                 <br />  
                 <SubmitButtonContainer>

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { sendDeleteData, sendPutData } from "../function/axiosData";
 import { Editor } from "./Editor";
+import EditorTool from "./EditorTool";
 //파일위치 항상 확인
 export default function EditorEdit({ object, index, isObject }) {
   //Axios Get useState
@@ -24,13 +25,13 @@ export default function EditorEdit({ object, index, isObject }) {
 
   const handleEdit = () => {
     // 참조가 null인지 확인하고, null이 아닐 때만 innerText를 가져옵니다.
-    if (questionRef.current && optionsRef.current && answersRef.current && commentaryRef.current) {
+    if (optionsRef.current && answersRef.current && commentaryRef.current) {
       const question = questionRef.current.innerText;
       const options = optionsRef.current.innerText;
       const answers = answersRef.current.innerText;
       const commentary = commentaryRef.current.innerText;
 
-      console.log(question, options, answers, commentary);
+      console.log(options, answers, commentary);
       console.log(object.id);
       //options가 foreach로 각 배열들을 인식 할 수 있게 해야한다.
       sendPutData(object.id, question, [options], answers, commentary);
@@ -50,7 +51,7 @@ export default function EditorEdit({ object, index, isObject }) {
     }
     return ''; // 혹은 다른 값을 반환하여 이미지가 없는 경우를 처리할 수 있습니다.
   });
-  console.log(replacedQuestion)
+  // console.log(replacedQuestion)
 
   return (
     <>
@@ -62,30 +63,46 @@ export default function EditorEdit({ object, index, isObject }) {
       <Editor /> */}
 
       <div
+        className="editor"
+        ref={questionRef}
         dangerouslySetInnerHTML={{ __html: replacedQuestion }}
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}></div>
+      // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+      >
+
+      </div>
 
       {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
-        <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>
+        <div
+          className="editor"
+        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+        >
           {object.question_images_out.map((image, index) => (
             <img key={index} src={image.url} style={{ width: '30%' }} />
           ))}
         </div>
       ) : null}
 
+      <EditorTool />
       <Editor
         editorRef={optionsRef}
         contentEditable={isContentEditable[index]}
         dangerouslySetInnerHTML={{ __html: object.options }}
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
-      <Editor editorRef={answersRef}
+      // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
+      />
+      <EditorTool />
+      <Editor
+        editorRef={answersRef}
         contentEditable={isContentEditable[index]}
         dangerouslySetInnerHTML={{ __html: object.answers }}
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
-      <Editor editorRef={commentaryRef}
+      // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
+      />
+      <EditorTool />
+      <Editor
+        editorRef={commentaryRef}
         contentEditable={isContentEditable[index]}
         dangerouslySetInnerHTML={{ __html: object.commentary }}
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
+      // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
+      />
       <button onClick={() => { handleStateChange(index) }}>편집모드</button>
       <button onClick={() => { handleEdit() }}>수정</button>
       <button onClick={() => { sendDeleteData(object.id) }}>삭제</button>

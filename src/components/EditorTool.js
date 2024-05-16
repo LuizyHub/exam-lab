@@ -8,7 +8,9 @@ export default function EditorTool({ editorRef, contentType, handleContentType, 
 
   return (
 
-    <div className="editor-Tool" style={{ marginBottom: '10px' }}>
+    <div className="editor-Tool"
+    // style={{ marginBottom: '10px' }}
+    >
       {/* <select value={contentType} onChange={handleContentType}>
         <option value="type">Select</option>
         <option value="문제">문제</option>
@@ -25,29 +27,29 @@ export default function EditorTool({ editorRef, contentType, handleContentType, 
             <button
               name='bold'
               onClick={(e) => { handleToolClick(e, editorRef) }}
-              style={{ marginRight: '5px' }}
+
             ><b>B</b>
             </button>
             <button
               name='italic'
               onClick={(e) => { handleToolClick(e, editorRef) }}
-              style={{ marginRight: '5px' }}
+
             ><i>I</i>
             </button>
             <button
               name='underline' onClick={(e) => { handleToolClick(e, editorRef) }}
-              style={{ marginRight: '5px' }}
+
             ><u>U</u>
             </button>
             <button
               name='strikeThrough'
               onClick={(e) => { handleToolClick(e, editorRef) }}
-              style={{ marginRight: '5px' }}
+
             ><s>S</s>
             </button>
             <button
               onClick={() => { handleImgToolClick(imageSelectorRef) }}
-              style={{ marginRight: '5px' }}
+
             >IMG
             </button>
             {/* <input
@@ -61,18 +63,18 @@ export default function EditorTool({ editorRef, contentType, handleContentType, 
           </>
         ) : contentType === "이미지" ? (
           <>
-            {/* <button onClick={() => { handleImgToolClick(imageSelectorRef) }} style={{ marginRight: '5px' }}>IMG</button> */}
+            {/* <button onClick={() => { handleImgToolClick(imageSelectorRef) }} >IMG</button> */}
             <input type='number' value={isImageSize} onChange={(e) => { handleImgSize(e) }} style={{ width: '60px' }} />
             {/* <button onClick={() => { handleContent() }}>저장</button> */}
 
           </>
         ) : contentType === "선택지" ? (
           <>
-            <button name='bold' onClick={(e) => { handleToolClick(e, editorRef) }} style={{ marginRight: '5px' }}><b>B</b></button>
-            <button name='italic' onClick={(e) => { handleToolClick(e, editorRef) }} style={{ marginRight: '5px' }}><i>I</i></button>
-            <button name='underline' onClick={(e) => { handleToolClick(e, editorRef) }} style={{ marginRight: '5px' }}><u>U</u></button>
-            <button name='strikeThrough' onClick={(e) => { handleToolClick(e, editorRef) }} style={{ marginRight: '5px' }}><s>S</s></button>
-            {/* <button onClick={() => { handleImgToolClick(imageSelectorRef) }} style={{ marginRight: '5px' }}>IMG</button>
+            <button name='bold' onClick={(e) => { handleToolClick(e, editorRef) }} ><b>B</b></button>
+            <button name='italic' onClick={(e) => { handleToolClick(e, editorRef) }} ><i>I</i></button>
+            <button name='underline' onClick={(e) => { handleToolClick(e, editorRef) }} ><u>U</u></button>
+            <button name='strikeThrough' onClick={(e) => { handleToolClick(e, editorRef) }} ><s>S</s></button>
+            {/* <button onClick={() => { handleImgToolClick(imageSelectorRef) }} >IMG</button>
             <input type='number' value={isImageSize} onChange={(e) => { handleImgSize(e) }} style={{ width: '60px' }} /> */}
             {/* <button onClick={() => { handleContent(editorRef) }}>저장</button> */}
           </>

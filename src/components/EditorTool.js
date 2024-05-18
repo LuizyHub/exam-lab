@@ -63,8 +63,8 @@ export default function EditorTool({ editorRef, contentType, handleContentType, 
           </>
         ) : contentType === "이미지" ? (
           <>
-            {/* <button onClick={() => { handleImgToolClick(imageSelectorRef) }} >IMG</button> */}
-            <input type='number' value={isImageSize} onChange={(e) => { handleImgSize(e) }} style={{ width: '60px' }} />
+            <button onClick={() => { handleImgToolClick(imageSelectorRef) }} >IMG</button>
+            {/* <input type='number' value={isImageSize} onChange={(e) => { handleImgSize(e) }} style={{ width: '60px' }} /> */}
             {/* <button onClick={() => { handleContent() }}>저장</button> */}
 
           </>

@@ -8,7 +8,7 @@ import { handleOnInput, handleDragOver, handleCopy, handleCut, handlePaste, hand
 import { Editor } from './Editor';
 import { sendPostData, sendDeleteData, sendPutData } from '../function/axiosData';
 
-export default function EditorExam({ examId, handleExamDelete, index }) {
+export default function EditorExam({ examId, handleExamDelete }) {
 
   //Commentary Ctrl
   const [isCommentHide, setCommentHide] = useState(false);
@@ -86,7 +86,7 @@ export default function EditorExam({ examId, handleExamDelete, index }) {
 
   return (
 
-    <div key={index} className='editor_out_line'>
+    <div className='editor_out_line'>
       <div className='questionArea'>
         <div>
           {/* <h3>문제등록</h3> */}
@@ -260,7 +260,6 @@ export default function EditorExam({ examId, handleExamDelete, index }) {
             /> */}
           </div>
           {/* ------------------------------------------------------------------------ */}
-
           <EditorTool
             editorRef={editorRef3}
             contentType={'선택지'}
@@ -489,7 +488,7 @@ export default function EditorExam({ examId, handleExamDelete, index }) {
 
       {/*------------------ 버튼 영역---------------------- */}
 
-      <div>
+      <div className='server-button'>
         <button type='submit' onClick={() => {
           sendPostData(examId, isUrlIn, isUrlOut, isUrlOutDes, isData.question, isData.options, isCommentAnswers, isCommentary)
             .then((id) => {
@@ -501,7 +500,7 @@ export default function EditorExam({ examId, handleExamDelete, index }) {
 
         <button onClick={() => {
           sendDeleteData(UUID);
-          handleExamDelete(index);
+          handleExamDelete(examId);
           // getData();//get이 내부로 들어가야하나?
         }}>삭제</button>
 
@@ -511,7 +510,7 @@ export default function EditorExam({ examId, handleExamDelete, index }) {
           // getData();//get이 내부로 들어가야하나?
         }}>수정</button>
 
-        <button onClick={() => {
+        {/* <button onClick={() => {
           console.log("\n저장된 QUESTION_ID 값 : " + UUID
             + "\n저장된 EXAM_ID 값 : " + examId);
           console.log(
@@ -533,7 +532,7 @@ export default function EditorExam({ examId, handleExamDelete, index }) {
             "저장된 Answer 값 : " + isCommentAnswers
             + "\n저장된 Commentary 값 : " + isCommentary
           );
-        }}>확인</button>
+        }}>확인</button> */}
       </div>
     </div>
   );

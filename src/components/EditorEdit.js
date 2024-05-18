@@ -3,7 +3,7 @@ import { sendDeleteData, sendPutData } from "../function/axiosData";
 import { Editor } from "./Editor";
 import EditorTool from "./EditorTool";
 //파일위치 항상 확인
-export default function EditorEdit({ object, index, isObject }) {
+export default function EditorEdit({ object, index, isObject, handleEditDelete }) {
   //Axios Get useState
   const [isContentEditable, setContentEditable] = useState(Array(isObject.length).fill(false));
   // contentEditable 상태를 변경하는 함수
@@ -77,7 +77,7 @@ export default function EditorEdit({ object, index, isObject }) {
         // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
         >
           {object.question_images_out.map((image, index) => (
-            <img key={index} src={image.url} style={{ width: '30%' }} />
+            <img key={index} src={image.url} className="examlab-image-right" style={{ width: '20%' }} />
           ))}
         </div>
       ) : null}
@@ -105,7 +105,10 @@ export default function EditorEdit({ object, index, isObject }) {
       />
       <button onClick={() => { handleStateChange(index) }}>편집모드</button>
       <button onClick={() => { handleEdit() }}>수정</button>
-      <button onClick={() => { sendDeleteData(object.id) }}>삭제</button>
+      <button onClick={() => {
+        sendDeleteData(object.id);
+        handleEditDelete(index);
+      }}>삭제</button>
     </>
   )
 }

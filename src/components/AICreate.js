@@ -111,7 +111,6 @@ export default function AICreate({ examId }) {
 
     return (
         <div>
-            <h3>AI</h3>
             {modalOpen && (
                 <ModalBackground>
                     <ModalContent>

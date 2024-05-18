@@ -1,0 +1,56 @@
+.attribute-mgr {
+  margin: 0;
+  width: 1147px;
+}
+
+.attribute-mgr .title {
+  font-size: 25px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+  width: 100%;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.attribute-mgr .title:hover {
+  border: 1px solid #F5F5F7;
+}
+
+/* 
+.attribute-mgr .title:active {
+  border-color: black;
+} */
+
+.attribute-mgr .attribute-input>div {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.attribute-mgr .attribute-input input {
+  border: 1px solid transparent;
+  outline: none;
+  /* width: 30px; */
+}
+
+.attribute-mgr .attribute-input .tag-input {
+  /* background-color: aqua; */
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.attribute-mgr .attribute-input input:hover {
+  border: 1px solid #F5F5F7;
+}
+
+/* 
+.attribute-mgr .attribute-input input:active {
+  border-color: black;
+} */
+
+.attribute-mgr .server-button {
+  display: flex;
+  justify-content: flex-end;
+}

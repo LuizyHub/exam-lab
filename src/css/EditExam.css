@@ -1,26 +1,89 @@
-.edit_exam {
+#side-bar {
+  position: fixed;
+  top: 230px;
+  right: 50px;
+}
+
+.examlab-image-right {
+  /* width: 30%; */
+}
+
+.edit-exam {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   margin: 0;
-  border: 1px solid #D6D6D6;
+  /* border: 1px solid #D6D6D6; */
   padding: 0;
   align-items: center;
 }
 
-.editor {
+/* .editor-exam {
+  padding: 20px;
+  background-color: #F9F9FA;
+} */
+
+.editor-exam .editor-Tool button {
+  background-color: transparent;
+  border-style: none;
+  margin-right: 10px;
+}
+
+.editor-exam .server-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editor-exam .server-button button {
+  background-color: transparent;
+  border-style: none;
+  /* text-align: right; */
+}
+
+.editor-exam .editor {
+  font-size: 10px;
+  padding: 20px;
+  border: 1px solid #F9F9FA;
+  background-color: #FFFFFF;
+  margin-bottom: 10px;
+}
+
+.editor-exam .editor-Tool {
+  padding: 20px;
+  border: 1px solid #F9F9FA;
+  background-color: #FFFFFF;
+}
+
+.editor-exam .editor-exam-out-line {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #F9F9FA;
+}
+
+.editor-edit .editor-out-line {
+  padding: 16px 24px;
+  border: 1px solid #D6D6D6;
+  border-radius: 4px;
+  width: 1098px;
+  margin-bottom: 20px;
+  /* height: 280px; */
+  /* align-items: center; */
+}
+
+.editor-edit .title {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+/* .editor {
   padding: 16px 24px;
   border: 1px solid #D6D6D6;
   border-radius: 4px;
   width: 600px;
-}
+} */
 
-.editor_out_line {
-  padding: 16px 24px;
-  border: 1px solid #D6D6D6;
-  border-radius: 4px;
-  width: 700px;
-}
 
 /* 
 .editor {

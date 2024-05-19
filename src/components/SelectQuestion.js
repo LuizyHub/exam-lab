@@ -46,7 +46,7 @@ const TagButton = styled.button`
         background-color: #EDFAFA;
     }
 `;
-    
+
 
 const KeywordList = styled.div`
     display: flex;
@@ -183,7 +183,6 @@ export default function SelectQuestion() {
     const [customQuestionCount, setCustomQuestionCount] = useState(""); // 문항 수 직접 입력을 위한 상태 변수
     const [selectedCountType, setSelectedCountType] = useState('button'); // 선택된 문항 수 버튼 파악
     const [questions, setQuestions] = useState([]);
-
     const [showNoneQuestion, setShowNoneQuestion] = useState(false); // 에러 발생 시 NoneQuestion 보이기 여부를 관리하는 상태 추가
     
 
@@ -194,14 +193,14 @@ export default function SelectQuestion() {
                 try {
                     const response = await axios.get(`/api/v1/exams/${Number(examId)}`);
                     setTags(response.data.tags);
-                } catch(error) {
+                } catch (error) {
                     console.error('Tags Error fetching data:', error);
                 }
             };
             fetchTag();
         }
     }, [examId]);
-    
+
 
 
     // 태그 선택
@@ -226,9 +225,12 @@ export default function SelectQuestion() {
         }
     };    
 
-  
+
+
+
+
     // 키워드 삭제
-    const handelDeleteKeyword = (index) => { 
+    const handelDeleteKeyword = (index) => {
         const deleteKeywords = [...keywords];
         deleteKeywords.splice(index, 1); // 선택된 인덱스의 키워드를 제거
         setKeywords(deleteKeywords); // 변경된 키워드 배열을 업데이트
@@ -242,6 +244,7 @@ export default function SelectQuestion() {
         setCustomQuestionCount(numberValue); 
         setSelectedQuestionCount(numberValue); // 선택된 문제 수도 업데이트
     }
+
     
     // CountInput 클릭 이벤트 핸들러
     const handleInputClick = () => {
@@ -253,6 +256,7 @@ export default function SelectQuestion() {
         setSelectedCountType('button'); // CountButton 선택 상태 설정
         setSelectedQuestionCount(count); 
         setCustomQuestionCount(""); // CountInput 값 초기화
+
     }
 
     // 유형 정보 API 전달
@@ -290,6 +294,7 @@ export default function SelectQuestion() {
                 console.error("Error fetching questions:", error);
             }
         }  
+
     }
 
     return (
@@ -330,8 +335,8 @@ export default function SelectQuestion() {
                         {keywords.map((keyword, index) => (
                             <KeywordContainer key={index}>
                                 <Keyword>
-                                   {keyword} 
-                                     <DeleteKeywordImg src="/img/x버튼.png" alt="delete img" onClick={() => handelDeleteKeyword(index)} />
+                                    {keyword}
+                                    <DeleteKeywordImg src="/img/x버튼.png" alt="delete img" onClick={() => handelDeleteKeyword(index)} />
                                 </Keyword>
                             </KeywordContainer>
                         ))}
@@ -339,6 +344,7 @@ export default function SelectQuestion() {
                 </div>
                 <br />
                 <QuestionCount>
+
                     <TitleSpan> 문제 갯수 </TitleSpan>
                     
                     {/*숫자만 입력 가능하게*/}
@@ -367,7 +373,7 @@ export default function SelectQuestion() {
                     {/* 전체 검색 버튼 */}
                     <CountButton onClick={() => setSelectedQuestionCount(0)} selected={selectedQuestionCount === 0 && selectedCountType === 'button'}> 전체 </CountButton>
                 </QuestionCount>
-                <br />  
+                <br />
                 <SubmitButtonContainer>
                     <SubmitButton type="submit" value="문제 검색" onClick={handleSubmit} />
                 </SubmitButtonContainer>
@@ -375,7 +381,8 @@ export default function SelectQuestion() {
                 </Container>
             {showNoneQuestion && <NoneQuestion />}
             <ShowQuestionList questions={questions}/>
+
         </div>
     );
-    
+
 }

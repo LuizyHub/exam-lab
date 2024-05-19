@@ -30,7 +30,7 @@ const FileName = styled.p`
     border: 1px solid #EBEDEF;
     background-color:  #F5F5F7;
     border-radius: 6px;
-    width: 200px;
+    width: 300px;
     font-size: 13px;
     color: #6B6E72;
     padding: 5px;
@@ -59,6 +59,12 @@ const FileDelete = styled.button`
   font-size: 14px;
 `;
 
+const FileIntro = styled.p`
+    color: #9A9DA0;
+    font-size: 13px;
+    margin-top: 0;
+`;
+
 const CloseButton = styled.button`
   position: absolute;
   margin-top: 10px;
@@ -75,12 +81,12 @@ const LoadingMessage = styled.h3`
 
 const AICreateButton = styled.button`
     padding: 10px 20px;
-    background-color: #5BB6B4;
+    background-color: ${({ $loading }) => ($loading ? '#C0C0C0' : '#5BB6B4')};
     color: white;
     border: none;
     border-radius: 5px;
     margin-right: 20px;
-    align-items: center;
+    cursor: ${({ $loading }) => ($loading ? 'not-allowed' : 'pointer')};
 `;
 
 export function AIModal({ fileName, handleFileDelete, handleFileUpload, handleCreateAIQButtonClick, loading, setModalOpen, fileInputRef }) {
@@ -98,15 +104,19 @@ export function AIModal({ fileName, handleFileDelete, handleFileUpload, handleCr
                             <FileName>{fileName}</FileName>
                             <FileDelete onClick={handleFileDelete}> 파일 삭제 </FileDelete>
                         </div>
-                        <AICreateButton onClick={handleCreateAIQButtonClick} disabled={loading}>
-                            {loading ? '문제 생성 중...' : '문제 생성'}
-                        </AICreateButton>
+                        <FileIntro>*.pdf/.txt/.md 파일만 가능합니다.</FileIntro>
+                        <div style={{ display: 'flex', justifyContent: 'center'}}>
+                            <AICreateButton onClick={handleCreateAIQButtonClick} $loading={loading} disabled={loading}>
+                                {loading ? '문제 생성 중...' : '문제 생성'}
+                            </AICreateButton>
+                        </div>
                     </div>
                 }
                 {!fileName && !loading &&
                     <>
-                        <FileName>선택한 파일이 없습니다.</FileName>
+                        
                         <div style={{ display: 'flex', alignItems: 'center'}}>
+                            <FileName>선택한 파일이 없습니다.</FileName>
                             <FileUpLoad htmlFor="input-file"> 파일 선택 </FileUpLoad>
                             <input
                                 type="file"
@@ -117,6 +127,7 @@ export function AIModal({ fileName, handleFileDelete, handleFileUpload, handleCr
                                 style={{display:"none"}}
                             />
                         </div>
+                        <FileIntro>*.pdf/.txt/.md 파일만 가능합니다.</FileIntro>
                     </>
                 }
             </ModalContent>

@@ -18,6 +18,11 @@ const Title = styled.h1`
     text-align: center;
 `;
 
+const TitleSpan = styled.p`
+    font-size: 14px;
+`;
+
+
 const TagsContainer = styled.div`
     margin-bottom: 10px;
     display: flex;
@@ -294,20 +299,20 @@ export default function SelectQuestion() {
                 <TagsContainer>
                     {Object.keys(tags).map(tagGroup => (
                         <div key={tagGroup}>
-                            <span>{tagGroup}</span>
-                            {tags[tagGroup].map(tag => (
-                                <TagButton
-                                    key={tag}
-                                    selected={selectedTags.some(item => item.tagGroup === tagGroup && item.tag === tag)}
-                                    onClick={() => handleTagClick(tagGroup, tag)} >
-                                    {tag}
-                                </TagButton>
-                            ))}
+                            <TitleSpan>{tagGroup}</TitleSpan>
+                                {tags[tagGroup].map(tag => (
+                                    <TagButton
+                                        key={tag}
+                                        selected={selectedTags.some(item => item.tagGroup === tagGroup && item.tag === tag)}
+                                        onClick={() => handleTagClick(tagGroup, tag)} >
+                                        {tag}
+                                    </TagButton>
+                                ))}
                         </div>
                     ))}
                 </TagsContainer>
                 <div>
-                    <span> 키워드 검색  </span>
+                    <TitleSpan> 키워드 검색 </TitleSpan>
                     <KeywordInput
                         type="text"
                         value={search}
@@ -334,7 +339,7 @@ export default function SelectQuestion() {
                 </div>
                 <br />
                 <QuestionCount>
-                    <span> 문제 갯수 </span>
+                    <TitleSpan> 문제 갯수 </TitleSpan>
                     
                     {/*숫자만 입력 가능하게*/}
                     {/* 숫자 입력란 */}

@@ -72,33 +72,33 @@ const Navigation = styled.nav`
 
 const NavContainer = styled.div`
     position: absolute;
-    left: ${props => props.primary ? '0' : ''};
-    right: ${props => props.primary ? '' : '0'};
-    z-index: ${props => props.selected ? 999 : 0};
-    background-color: ${props => props.selected ? '#fff' : '#EBEDEF'};
-    width: ${props => props.selected ? '55vw' : '60vw'};
+    left: ${({ $primary }) => $primary ? '0' : ''};
+    right: ${({ $primary }) => $primary ? '' : '0'};
+    z-index: ${({ $selected }) => $selected ? 999 : 0};
+    background-color: ${({ $selected }) => $selected ? '#fff' : '#EBEDEF'};
+    width: ${({ $selected }) => $selected ? '55vw' : '60vw'};
     height: 160px;
     border: none;
-    border-top-right-radius: ${props => props.primary ? '80px' : '0'};
-    border-top-left-radius: ${props => props.primary ? '0' : '80px'};
-    border-bottom-right-radius: ${props => props.primary ? '80px' : ''};
-    border-bottom-left-radius: ${props => props.primary ? '' : '80px'};
+    border-top-right-radius: ${({ $primary }) => $primary ? '80px' : '0'};
+    border-top-left-radius: ${({ $primary }) => $primary ? '0' : '80px'};
+    border-bottom-right-radius: ${({ $primary }) => $primary ? '80px' : ''};
+    border-bottom-left-radius: ${({ $primary }) => $primary ? '' : '80px'};
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const NavContent = styled.div`
-    margin-left: ${props => props.primary ? '50px' : '180px'};
-    right: ${props => props.primary ? '100px' : '10px'};
+    margin-left: ${({ $primary }) => $primary ? '50px' : '180px'};
+    right: ${({ $primary }) => $primary ? '100px' : '10px'};
     margin-top: 20px;
     margin-bottom: 20px;
 `;
 
 const NavContentP = styled.p`
-    color: ${props => props.selected ? '#29B8B5' : '#9A9DA0'};
+    color: ${({ $selected }) => $selected ? '#29B8B5' : '#9A9DA0'};
 `;
 
 const NavButton = styled.button`
-    background-color: ${props => props.selected ? '#29B8B5' : '#9A9DA0'};
+    background-color: ${({ $selected }) => $selected ? '#29B8B5' : '#9A9DA0'};
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -108,7 +108,7 @@ const NavButton = styled.button`
     transition: background-color 0.3s, color 0.3s;
 
     &:hover {
-        background-color: ${props => props.selected ? '#238C8A' : '#D3DCE6'};
+        background-color: ${({ $selected }) => $selected ? '#238C8A' : '#D3DCE6'};
     }
 `;
 
@@ -139,14 +139,14 @@ export default function MainPage() {
 
                 <Navigation>
                     <NavContainer
-                        primary="true"
-                        selected={selectedNav === 'intro'}
+                        $primary="true"
+                        $selected={selectedNav === 'intro'}
                         onClick={() => setSelectedNav('intro')}
                     >
-                        <NavContent primary="true">
-                            <NavContentP selected={selectedNav === 'intro'}>How To Use</NavContentP>
+                        <NavContent $primary="true">
+                            <NavContentP $selected={selectedNav === 'intro'}>How To Use</NavContentP>
                             <h3>문제를 조합해서 나만의 시험지 제작하기</h3>
-                            <NavButton selected={selectedNav === 'intro'}>
+                            <NavButton $selected={selectedNav === 'intro'}>
                                 <StyledLink to={{ pathname: '/exams/create' }}>나만의 시험지 바로가기
                                      <MoveIcon src="/img/>_icon.png" alt="< Image" />
                                 </StyledLink>
@@ -155,13 +155,13 @@ export default function MainPage() {
                     </NavContainer>
 
                     <NavContainer
-                        selected={selectedNav === 'register'}
+                        $selected={selectedNav === 'register'}
                         onClick={() => setSelectedNav('register')}
                     >
                         <NavContent>
-                            <NavContentP selected={selectedNav === 'register'}>How To Use</NavContentP>
+                            <NavContentP $selected={selectedNav === 'register'}>How To Use</NavContentP>
                             <h3>나만의 문제 등록하기</h3>
-                            <NavButton selected={selectedNav === 'register'}>
+                            <NavButton $selected={selectedNav === 'register'}>
                                 <StyledLink to={{ pathname: '/exams' }}>나만의 문제 바로가기
                                     <MoveIcon src="/img/>_icon.png" alt="< Image" />
                                 </StyledLink>

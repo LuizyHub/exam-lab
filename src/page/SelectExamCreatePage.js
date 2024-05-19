@@ -17,13 +17,13 @@ const SelectExam = styled.div`
 
 const ExamTypeButton = styled.button`
   border: none;
-  color: ${({ selected }) => (selected ? '#262626' : '#9A9DA0')};
+  color: ${({ $selected }) => ($selected ? '#262626' : '#9A9DA0')};
   background-color: #fff;
   font-size: 15px;
   margin-top: 30px;
   margin-bottom: 20px;
-  border-bottom: ${({ selected }) => (selected ? '2px solid #000' : 'none')};
-  font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
+  border-bottom: ${({ $selected }) => ($selected ? '2px solid #000' : 'none')};
+  font-weight: ${({ $selected }) => ($selected ? 'bold' : 'normal')};
   padding-bottom: 5px;
 `;
 
@@ -128,10 +128,10 @@ export default function SelectExamCreatePage() {
         </ExamCreateButton> */}
 
         <div>
-          <ExamTypeButton selected={showResearchExams} onClick={() => setShowResearchExams(true)}>
+          <ExamTypeButton $selected={showResearchExams} onClick={() => setShowResearchExams(true)}>
             연구소 문제
           </ExamTypeButton>
-          <ExamTypeButton selected={!showResearchExams} onClick={() => setShowResearchExams(false)}>
+          <ExamTypeButton $selected={!showResearchExams} onClick={() => setShowResearchExams(false)}>
             나만의 문제
           </ExamTypeButton>
         </div>

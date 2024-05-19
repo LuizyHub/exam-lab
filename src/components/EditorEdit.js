@@ -44,14 +44,22 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
 
   const imgRegex = /<img[^>]*>/ig;
   let imgIndex = 0;
-  const replacedQuestion = object.question.replace(imgRegex, () => {
+  const question = object.question.replace(imgRegex, () => {
     imgIndex++;
     if (object.question_images_in && object.question_images_in.length > imgIndex - 1) {
       return `<img src='${object.question_images_in[imgIndex - 1].url}' style= "width:5%;" />`;
     }
-    return ''; // 혹은 다른 값을 반환하여 이미지가 없는 경우를 처리할 수 있습니다.
+    return '';
   });
-  // console.log(replacedQuestion)
+
+  const replacedQuestion = `<b>${index + 1}. ${question}</b>`
+
+  const replacedOptions = object.options.map((option, index) => {
+    const specialCharacter = option.includes(String.fromCharCode(9312 + index)) ? '' : String.fromCharCode(9312 + index); // 9312은 ①의 유니코드 코드 포인트
+    return `${specialCharacter} ${option}`;
+  }).join('<br>');
+
+  const replacedAnswer = object.answers.map(answer => answer + 1);
 
   return (
     <>
@@ -66,9 +74,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
         className="editor"
         ref={questionRef}
         dangerouslySetInnerHTML={{ __html: replacedQuestion }}
-      // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
       >
-
       </div>
 
       {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
@@ -86,14 +92,14 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
       <Editor
         editorRef={optionsRef}
         contentEditable={isContentEditable[index]}
-        dangerouslySetInnerHTML={{ __html: object.options }}
+        dangerouslySetInnerHTML={{ __html: replacedOptions }}
       // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
       />
       <EditorTool />
       <Editor
         editorRef={answersRef}
         contentEditable={isContentEditable[index]}
-        dangerouslySetInnerHTML={{ __html: object.answers }}
+        dangerouslySetInnerHTML={{ __html: replacedAnswer }}
       // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
       />
       <EditorTool />

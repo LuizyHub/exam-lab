@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Font, PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import "../css/style.css"
+import { Font, PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+// import "../css/style.css"
 import { handleShuffle } from '../function/shuffleArray'
 import { renderImages, parseImages } from '../function/renderImages'
 import { useRecoilValue } from 'recoil';
 import { isVisibleState } from '../recoil/atoms';
 import NavigationBar from '../components/NavigationBar';
 import styled from 'styled-components';
+import '../css/labexam.css';
 import axios from "axios";
 import Exam from "../components/Exam";
 
-const LabExamContent = styled.div`
+const LabExamContent =
+  styled.div`
     display: flex;
     flex-direction: column;
     margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontFamily: 'NanumGothic-Regular',
     fontSize: 10,
-    width: '100%', // Text 요소의 너비를 100%로 설정하여 부모 요소의 너비를 채우도록 함
+    width: '90%', // Text 요소의 너비를 100%로 설정하여 부모 요소의 너비를 채우도록 함
     height: 'auto', // Text 요소의 높이를 자동으로 조정하여 내용에 맞게 함
     marginBottom: 10, // Text 요소 간의 하단 여백 추가
     border: '1px solid black', // 각 Text 요소 주변에 테두리 추가
@@ -48,12 +50,16 @@ const styles = StyleSheet.create({
 const PdfDocument = ({ isQuestion, isCommentary }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* 각 페이지에 대한 컨텐츠를 추가합니다. */}
+      {/* 각 페이지에 대한 컨텐츠를 추가. */}
       {isQuestion.map((question, index) => (
         <div key={index} style={styles.section}>
-          {/* 각 질문과 그에 따른 내용을 렌더링합니다. */}
-          <Text>{question.question}</Text>
-          {/* 다른 요소들을 추가할 수도 있습니다. */}
+          {/* 각 질문과 그에 따른 내용을 렌더링. */}
+          <Text>{index + 1}. {question.question}</Text>
+          {question.question_images_out.map((image, imageIndex) => (
+            <Image key={imageIndex} src={image.url} />
+          ))}
+          {/* <Image src={question.question_images_out.url} /> */}
+          <Text>{question.options}</Text>
         </div>
       ))}
     </Page>
@@ -80,7 +86,7 @@ export default function LabExam() {
           const res = response.data.message;
           const content = res.content;
           setWorkBook(res);
-          setIsQuestion(content.questions);//시험지 저장소 페이지
+          setIsQuestion(content.questions);//문제
         })
         .catch(error => {
           console.log(error);
@@ -97,6 +103,10 @@ export default function LabExam() {
   //버튼 클릭 시 답지 생성 토글
   const handleCommentary = () => {
     setIsCommentary(!isCommentary)
+  }
+
+  const handleQuestion = () => {
+    setIsCommentary(isCommentary)
   }
 
   const postData = async () => {
@@ -118,24 +128,40 @@ export default function LabExam() {
   };
 
   return (
-    <LabExamContent $isSidebarOpen={isSidebarOpen}>
-      {/* <Exam /> */}
-      <h2>{isWorkBook.title}</h2>
-      <input placeholder="시험지 이름 입력" value={isNewWorkBook} onChange={handleInputChange}></input>
-      {/* 문제 섞기 버튼 */}
-      <button onClick={postData}>저장하기</button>
+    <>
+      <LabExamContent $isSidebarOpen={isSidebarOpen}>
 
-      <PDFDownloadLink document={<PdfDocument isQuestion={isQuestion} isCommentary={isCommentary} />} fileName="lab_exam.pdf">
-        {({ loading }) => (loading ? 'Loading...' : 'Download PDF')}
-      </PDFDownloadLink>
+        <NavigationBar />
+        <div className="lab-exam">
+          <div className="button-container">
+            <div className="button-main">
+              {/* <Exam /> */}
+              <h2>{isWorkBook.title}</h2>
 
-      <button onClick={() => handleShuffle(isQuestion, setIsQuestion)}>문제 셔플</button>
-      <button onClick={handleCommentary}>Commentary</button>
-      <button onClick={console.log(selectedQuestions)}>test</button>
+              {/* 이 부분 EditExam과 유사하게 구조화 할 것 */}
+              <div>
+                <input placeholder="시험지 이름 입력" value={isNewWorkBook} onChange={handleInputChange} />
+                <div id="button-pdf">
+                  <PDFDownloadLink document={<PdfDocument isQuestion={isQuestion} isCommentary={isCommentary} />} fileName="lab_exam.pdf">
+                    {({ loading }) => (loading ? 'Loading...' : 'Download PDF')}
+                  </PDFDownloadLink>
+                </div>
+                <button onClick={postData}>저장하기</button>
+              </div>
+            </div>
 
-      <Exam isQuestion={isQuestion} parseImages={parseImages} renderImages={renderImages} isCommentary={isCommentary} />
+            <button onClick={() => handleShuffle(isQuestion, setIsQuestion)}>문제 셔플</button>
+            {/* 문제 부분에 */}
+            <button onClick={handleQuestion}>문제</button>
+            <button onClick={handleCommentary}>해설지</button>
+            {/* <button onClick={console.log(selectedQuestions)}>test</button> */}
+          </div>
 
-      <NavigationBar />
-    </LabExamContent >
+          <Exam isQuestion={isQuestion} parseImages={parseImages} renderImages={renderImages} isCommentary={isCommentary} />
+        </div>
+
+      </LabExamContent >
+    </>
+
   );
 }

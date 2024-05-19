@@ -1,0 +1,42 @@
+.lab-exam {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 1170px;
+  /* background-color: aquamarine; */
+  margin-left: 90px;
+  /* align-items: center; */
+}
+
+.button-container {
+  flex-direction: row;
+  width: 1220px;
+  margin-bottom: 40px;
+  margin-top: 30px;
+}
+
+.button-container .button-main {
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.button-container .button-main>div {
+  display: flex;
+  background-color: aqua;
+}
+
+.button-container .button-main>div>input {
+  width: 900px;
+  /* font-weight: bold; */
+  font-size: 25px;
+  margin-right: 90px;
+}
+
+#button-pdf {
+  border: 1px solid black;
+  background-color: antiquewhite;
+}
+
+.button-container .button-main>div>button {
+  margin-left: 40px;
+}

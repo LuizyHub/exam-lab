@@ -15,4 +15,15 @@ module.exports = function (app) {
             changeOrigin: true,
         })
     );
+
+    // app.use(
+    //     '/',
+    //     createProxyMiddleware({
+    //         target: 'https://exam-lab.store',
+    //         changeOrigin: true,
+    //         onProxyRes: function (proxyRes, req, res) {
+    //             res.setHeader('Access-Control-Allow-Origin', '*');
+    //         }
+    //     })
+    // );
 };

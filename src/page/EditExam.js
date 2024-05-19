@@ -107,7 +107,7 @@ export default function EditExam() {
           <button onClick={() => {
             handleExamCreate();
             console.log(examId);
-          }}>문제추가</button>
+          }}>+</button>
         </div>
 
         <NavigationBar />

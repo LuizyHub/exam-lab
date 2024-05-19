@@ -4,6 +4,7 @@ import NavigationBar from '../components/NavigationBar';
 import axios from "axios";
 import { useRecoilValue } from 'recoil';
 import { isVisibleState } from '../recoil/atoms';
+import {DeleteWorkBookModal} from '../modals/DeleteModal';
 import styled from 'styled-components';
 
 const WorkBooksContent = styled.div`
@@ -38,7 +39,6 @@ const WorkBookButton = styled.button`
     }
 `;
 
-
 const WorkBookCreateButton = styled.button`
     background-color: #F5F5F7;
     border: 0.5px solid #fff;
@@ -67,37 +67,6 @@ const DeleteImg = styled.img`
     width: 15px;
 `;
 
-const DeleteConfirmModal = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;  
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999; 
-`;
-
-const ModalBody = styled.div`
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-`;
-
-const ModalButton = styled.button`
-    background-color: ${props => props.primary ? '#29B8B5' : '#EBF0F6'};
-    color: ${props => props.primary ? '#fff' : '#A2ACB9'};
-    border: none;
-    padding: 10px 20px;
-    margin: 10px;
-    cursor: pointer;
-    border-radius: 10px;
-    font-size: 12px;
-    transition: background-color 0.3s, color 0.3s;
-`;
 
 export default function WorkBooks() {
 
@@ -112,7 +81,11 @@ export default function WorkBooks() {
         axios.get(`/api/v1/workbooks`)
           .then(response => {
             console.log(response.data);
-            setWorkbooks(response.data.message); // 배열 전체를 저장
+            setWorkbooks(response.data.message.map(workbook => ({
+                ...workbook,
+                created_date: formatDateString(workbook.created_date),
+                updated_date: formatDateString(workbook.updated_date)
+            }))); // 배열 전체를 저장
             console.log(workbooks);
 
             // 시험지별 삭제 모달을 띠우기 위함
@@ -126,7 +99,17 @@ export default function WorkBooks() {
             console.error(error);
           });
       }, []);
-    
+
+    // 날짜 문자열 포맷팅 함수
+    const formatDateString = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}.${month}.${day} ${hours}:${minutes}`;
+    };
 
         // 시험지 선택
         const handleWorkBookClick = (workbookId) => {
@@ -172,19 +155,12 @@ export default function WorkBooks() {
                 <div key={workbook.id}>
                     <WorkBookButton onClick={() => handleWorkBookClick(workbook.id)}>
                         <StyledParagraph>{workbook.title}</StyledParagraph>
-                        <StyledParagraph>{workbook.created_date}</StyledParagraph>
-                        <StyledParagraph>{workbook.updated_date}</StyledParagraph>
+                        <StyledParagraph>작성일: {workbook.created_date}</StyledParagraph>
+                        <StyledParagraph>수정일: {workbook.updated_date}</StyledParagraph>
                         <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(workbook.id); }} />
                     </WorkBookButton>
                     {modalStates[workbook.id] && (
-                        <DeleteConfirmModal>
-                            <ModalBody>
-                                <h3>{workbook.title}에 대한 모든 문제들이 삭제됩니다. <br/>
-                                정말로 삭제하시겠습니까? </h3>
-                                <ModalButton primary="true" onClick={() => handleWorkBookDelete(workbook.id)}>삭제하기</ModalButton>
-                                <ModalButton onClick={() => handleCloseModal(workbook.id)}>취소</ModalButton>
-                            </ModalBody>
-                        </DeleteConfirmModal>
+                        <DeleteWorkBookModal workbook={workbook} handleWorkBookDelete={handleWorkBookDelete} handleCloseModal={handleCloseModal} />
                     )}
                 </div>
             ))}
@@ -193,4 +169,3 @@ export default function WorkBooks() {
             </WorkBooksContent>
         );
 };
-

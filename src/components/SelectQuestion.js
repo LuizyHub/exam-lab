@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import axios from 'axios';
 import ShowQuestionList from "./ShowQuestionList";
+import { NoneQuestion, OneMoreQuestion } from "../modals/SelectQuestionModal";
 import styled from 'styled-components';
 
 
@@ -26,7 +27,7 @@ const TagsContainer = styled.div`
 
 const TagButton = styled.button`
     margin: 5px 10px; 
-    background-color: ${({ selected }) => selected ? '#EDFAFA' : '#FFFFFF'};
+    background-color: ${({ selected }) => selected ? '#C6E7E7' : '#FFFFFF'};
     color: #2D2C2B;
     border: 0.5px solid ${({ selected }) => selected ? '#C6E7E7' : '#E2E8EE'};
     border-radius: 4px;
@@ -37,7 +38,7 @@ const TagButton = styled.button`
     height: 45px;
     font-size: 14px;
     &:hover {
-        background-color: #C6E7E7;
+        background-color: #EDFAFA;
     }
 `;
     
@@ -102,7 +103,7 @@ const QuestionCount = styled.div`
 
 const CountButton = styled.button`
   margin: 5px 10px;
-  background-color: ${({ selected }) => (selected ? '#EDFAFA' : '#FFFFFF')};
+  background-color: ${({ selected }) => (selected ? '#C6E7E7' : '#FFFFFF')};
   color: #2D2C2B;
   border: 0.5px solid ${({ selected }) => (selected ? '#C6E7E7' : '#E2E8EE')};
   border-radius: 4px;
@@ -114,7 +115,7 @@ const CountButton = styled.button`
   font-size: 14px;
 
   &:hover {
-    background-color: ${({ selected }) => (selected ? '#C6E7E7' : '#E2E8EE')};
+    background-color: #EDFAFA;
   }
 `;
 
@@ -122,7 +123,7 @@ const CountInput = styled.input`
   margin-left: 10px;
   width: 150px;
   height: 35px;
-  background-color: ${({ selected }) => (selected ? '#E8F6F6' : '#FFFFFF')};
+  background-color: ${({ selected }) => (selected ? '#C6E7E7' : '#FFFFFF')};
   color: #2D2C2B;
   border: 0.5px solid ${({ selected }) => (selected ? '#E2E8EE' : '#E2E8EE')};
   border-radius: 5px;
@@ -133,8 +134,13 @@ const CountInput = styled.input`
   text-align: center;
 
   &:focus {
-    background-color: #E2E8EE;
+    background-color: #C6E7E7;
+    border: 0.5px solid #E2E8EE;
   }
+  &:hover {
+    background-color: #EDFAFA;
+  }
+
 `;
 
 
@@ -172,6 +178,8 @@ export default function SelectQuestion() {
     const [customQuestionCount, setCustomQuestionCount] = useState(""); // 문항 수 직접 입력을 위한 상태 변수
     const [selectedCountType, setSelectedCountType] = useState('button'); // 선택된 문항 수 버튼 파악
     const [questions, setQuestions] = useState([]);
+
+    const [showNoneQuestion, setShowNoneQuestion] = useState(false); // 에러 발생 시 NoneQuestion 보이기 여부를 관리하는 상태 추가
     
 
     // 태그 가져오기
@@ -265,15 +273,18 @@ export default function SelectQuestion() {
         // API 호출
         try {
             const response = await axios.get(URL);
-            console.log(response.data.questions);
             setQuestions(response.data.questions);
         } catch (error) {
-            if (error.response && error.response.status === 404) { // 404 에러 처리
-                alert("해당 문제가 없습니다.");
+            if (error.response && error.response.status === 404) { // 404 에러 처리 
+                setShowNoneQuestion(true); // 에러가 발생하면 showNoneQuestion 상태를 true로 변경하여 NoneQuestion을 보이도록 함
+                setTimeout(() => {
+                    setShowNoneQuestion(false); // 2초 후에 showNoneQuestion 상태를 다시 false로 변경하여 NoneQuestion을 숨김
+                    setQuestions([]);
+                }, 2000);
             } else {
                 console.error("Error fetching questions:", error);
             }
-        }   
+        }  
     }
 
     return (
@@ -283,7 +294,7 @@ export default function SelectQuestion() {
                 <TagsContainer>
                     {Object.keys(tags).map(tagGroup => (
                         <div key={tagGroup}>
-                            <p>{tagGroup}</p>
+                            <span>{tagGroup}</span>
                             {tags[tagGroup].map(tag => (
                                 <TagButton
                                     key={tag}
@@ -296,7 +307,7 @@ export default function SelectQuestion() {
                     ))}
                 </TagsContainer>
                 <div>
-                    <p> 키워드 검색  </p>
+                    <span> 키워드 검색  </span>
                     <KeywordInput
                         type="text"
                         value={search}
@@ -323,7 +334,7 @@ export default function SelectQuestion() {
                 </div>
                 <br />
                 <QuestionCount>
-                    <p> 문제 갯수 </p>
+                    <span> 문제 갯수 </span>
                     
                     {/*숫자만 입력 가능하게*/}
                     {/* 숫자 입력란 */}
@@ -357,6 +368,7 @@ export default function SelectQuestion() {
                 </SubmitButtonContainer>
 
                 </Container>
+            {showNoneQuestion && <NoneQuestion />}
             <ShowQuestionList questions={questions}/>
         </div>
     );

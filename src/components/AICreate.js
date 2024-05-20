@@ -23,8 +23,8 @@ const ModalContent = styled.div`
 `;
 
 //axiosData 함수에 있는 getData와 연동
-export default function AICreate({ examId }) {
-    const [modalOpen, setModalOpen] = useState(false);
+export default function AICreate({ examId, modalOpen, setModalOpen }) {
+    // const [modalOpen, setModalOpen] = useState(false);
     const [fileName, setFileName] = useState(""); // 파일 이름 상태 추가
     const fileInputRef = useRef(null);
     const [loading, setLoading] = useState(false); // 로딩 상태 추가
@@ -137,7 +137,7 @@ export default function AICreate({ examId }) {
                     </ModalContent>
                 </ModalBackground>
             )}
-            <button onClick={() => setModalOpen(true)}>AI로 문제 생성하기</button>
+            {/* <button onClick={() => setModalOpen(true)}>AI로 문제 생성하기</button> */}
             {isObject.map((object, index) => (
                 <EditorEdit key={index} object={object} index={index} isObject={isObject} />
             ))}

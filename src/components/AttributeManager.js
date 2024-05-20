@@ -159,9 +159,9 @@ export default function AttributeManager({ examId }) {
                             {/* <p> 속성과 태그를 입력하세요. 예시: 난이도(상중하), 주차(1,2,3) </p> */}
                         </div>
 
-                        <div>
-                            <button onClick={() => handleDeleteConfirm(index)}>속성 삭제</button>
-                            <button onClick={handleAddAttribute}>속성 추가</button>
+                        <div className='button-attribute'>
+                            <button onClick={handleAddAttribute}>+ 속성 추가</button>
+                            <button onClick={() => handleDeleteConfirm(index)}>- 속성 삭제</button>
                         </div>
 
                         {isShowModal[index] &&  // 배열에서 해당 인덱스의 모달 표시 여부를 확인
@@ -198,8 +198,8 @@ export default function AttributeManager({ examId }) {
             </div>
 
             <div className='server-button'>
-                <button onClick={handleExamDataSubmit}>저장</button>
-                <button onClick={handleUpdateExamData} >수정하기</button>
+                <button id='server-button-save' onClick={handleExamDataSubmit}>저장</button>
+                <button id='server-button-edit' onClick={handleUpdateExamData} >수정</button>
             </div>
         </div >
     );

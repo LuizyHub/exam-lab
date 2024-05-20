@@ -3,7 +3,6 @@
   top: 230px;
   right: 2rem;
   max-height: calc(1vh + 600px);
-  /* 뷰포트 높이에서 300px을 뺀 값 */
 
   width: 78px;
   height: 150px;

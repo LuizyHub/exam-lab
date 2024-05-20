@@ -63,6 +63,7 @@ export default function EditExam() {
     }
 
     //별개의 useEffect 커스텀 컴포넌트로 뺄지 고민 중
+    //스크롤 따라오는 sideBar 함수
     const handleScroll = () => {
       const sidebar = document.getElementById('side-bar');
       if (sidebar) {

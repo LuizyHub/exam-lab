@@ -40,10 +40,25 @@ const styles = StyleSheet.create({
     width: '90%', // Text 요소의 너비를 100%로 설정하여 부모 요소의 너비를 채우도록 함
     height: 'auto', // Text 요소의 높이를 자동으로 조정하여 내용에 맞게 함
     marginBottom: 10, // Text 요소 간의 하단 여백 추가
-    border: '1px solid black', // 각 Text 요소 주변에 테두리 추가
+    border: '1px solid #F9F9FA', // 각 Text 요소 주변에 테두리 추가
+  },
+  image: {
+    width: 80,
+    height: 80,
   },
   input: {
     marginBottom: 10,
+  },
+  buttonPdf: {
+    textDecoration: 'none',
+    color: '#24ABA8',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
   },
 });
 
@@ -55,9 +70,11 @@ const PdfDocument = ({ isQuestion, isCommentary }) => (
         <div key={index} style={styles.section}>
           {/* 각 질문과 그에 따른 내용을 렌더링. */}
           <Text>{index + 1}. {question.question}</Text>
-          {question.question_images_out.map((image, imageIndex) => (
-            <Image key={imageIndex} src={image.url} />
-          ))}
+          {question.question_images_out && question.question_images_out.length > 0 && (
+            question.question_images_out.map((image, imageIndex) => (
+              <Image key={imageIndex} src={image.url} style={styles.image} />
+            ))
+          )}
           {/* <Image src={question.question_images_out.url} /> */}
           <Text>{question.options}</Text>
         </div>
@@ -74,8 +91,9 @@ export default function LabExam() {
 
   const [isWorkBook, setWorkBook] = useState([]);
   const [isNewWorkBook, setNewWorkBook] = useState("");
-  const [isQuestion, setIsQuestion] = useState([]);
-  const [isCommentary, setIsCommentary] = useState(false); //답안지 상태관리
+  const [isQuestion, setIsQuestion] = useState([]); //상태변수 이름 변경 필요
+  const [isCommentaryQuestion, setIsCommentaryQuestion] = useState(true);//상태변수 이름 변경 필요
+  const [isCommentary, setIsCommentary] = useState(false); //상태변수 이름 변경 필요
   const isSidebarOpen = useRecoilValue(isVisibleState);
 
   useEffect(() => {
@@ -102,11 +120,13 @@ export default function LabExam() {
 
   //버튼 클릭 시 답지 생성 토글
   const handleCommentary = () => {
-    setIsCommentary(!isCommentary)
+    setIsCommentaryQuestion(false);
+    setIsCommentary(true);
   }
 
   const handleQuestion = () => {
-    setIsCommentary(isCommentary)
+    setIsCommentaryQuestion(true);
+    setIsCommentary(false);
   }
 
   const postData = async () => {
@@ -136,28 +156,33 @@ export default function LabExam() {
           <div className="button-container">
             <div className="button-main">
               {/* <Exam /> */}
-              <h2>{isWorkBook.title}</h2>
-
-              {/* 이 부분 EditExam과 유사하게 구조화 할 것 */}
               <div>
-                <input placeholder="시험지 이름 입력" value={isNewWorkBook} onChange={handleInputChange} />
+                <input className="title" placeholder="시험지 이름 입력" value={isWorkBook.title} onChange={handleInputChange} />
                 <div id="button-pdf">
-                  <PDFDownloadLink document={<PdfDocument isQuestion={isQuestion} isCommentary={isCommentary} />} fileName="lab_exam.pdf">
-                    {({ loading }) => (loading ? 'Loading...' : 'Download PDF')}
+                  <PDFDownloadLink document={<PdfDocument isQuestion={isQuestion} isCommentary={isCommentary} />} fileName="lab_exam.pdf" style={styles.buttonPdf}>
+                    {({ loading }) => (loading ? 'Loading...' : 'PDF 다운')}
                   </PDFDownloadLink>
                 </div>
                 <button onClick={postData}>저장하기</button>
               </div>
             </div>
+            <div className="button-bottom-container">
 
-            <button onClick={() => handleShuffle(isQuestion, setIsQuestion)}>문제 셔플</button>
-            {/* 문제 부분에 */}
-            <button onClick={handleQuestion}>문제</button>
-            <button onClick={handleCommentary}>해설지</button>
-            {/* <button onClick={console.log(selectedQuestions)}>test</button> */}
+              <div className="button-selection">
+                <button onClick={handleQuestion} style={{ textDecoration: isCommentaryQuestion ? 'underline' : 'none' }}>문제</button>
+                <button onClick={handleCommentary} style={{ textDecoration: isCommentary ? 'underline' : 'none' }}>해설지</button>
+              </div>
+
+              <div className="button-bottom-sub">
+                <button id="button-shuffle" onClick={() => handleShuffle(isQuestion, setIsQuestion)}>문제 셔플</button>
+                <button>1쪽</button>
+                <button style={{ marginLeft: '1%' }}>2쪽</button>
+              </div>
+              {/* <button onClick={console.log(selectedQuestions)}>test</button> */}
+            </div>
           </div>
 
-          <Exam isQuestion={isQuestion} parseImages={parseImages} renderImages={renderImages} isCommentary={isCommentary} />
+          <Exam isQuestion={isQuestion} parseImages={parseImages} renderImages={renderImages} isCommentary={isCommentary} isCommentaryQuestion={isCommentaryQuestion} />
         </div>
 
       </LabExamContent >

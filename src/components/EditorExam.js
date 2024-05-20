@@ -356,10 +356,7 @@ export default function EditorExam({ examId, handleExamDelete }) {
           // }}
           />
 
-          <button onClick={() => {
-            console.log("test");
-            handleCommentHide();
-          }}>답안등록</button>
+
         </div >
       </div>
       {/* -------------------------아래부터 답안 등록 -------------- */}
@@ -509,6 +506,11 @@ export default function EditorExam({ examId, handleExamDelete }) {
           sendPutData(UUID, isData.question, isData.options, isCommentAnswers, isCommentary);
           // getData();//get이 내부로 들어가야하나?
         }}>수정</button>
+
+        <button onClick={() => {
+          console.log("test");
+          handleCommentHide();
+        }}>답안</button>
 
         {/* <button onClick={() => {
           console.log("\n저장된 QUESTION_ID 값 : " + UUID

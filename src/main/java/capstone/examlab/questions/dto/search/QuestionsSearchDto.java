@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @Builder
@@ -31,7 +28,10 @@ public class QuestionsSearchDto {
                 String category = tokens[1];
                 tags.computeIfAbsent(category, k -> new ArrayList<>()).addAll(values);
             } else if (key.equals("includes")) {
-                includes.addAll(values);
+                for (String value : values) {
+                    String[] words = value.split(" ");
+                    includes.addAll(Arrays.asList(words));
+                }
             } else if (key.equals("count")) {
                 try {
                     count = Integer.parseInt(values.get(0));

@@ -36,6 +36,7 @@ export default function EditExam() {
   const [isObject, setObject] = useState([]); //EditorEdit List
   const [isSize, setSize] = useState(100);
   const [isDeleteIndex, setDeleteIndex] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
 
   // 각 Editor의 contentEditable 상태를 관리하는 상태
   // console.log("Location:", location);
@@ -66,12 +67,33 @@ export default function EditExam() {
       const sidebar = document.getElementById('side-bar');
       if (sidebar) {
         const scrollY = window.scrollY;
-        sidebar.style.top = `${scrollY / 10 + 230}px`;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const buttonHeight = sidebar.clientHeight;
+        const initialPosition = 230; // 초기 위치
+        let destination = scrollY / 10 + initialPosition;
+
+        // 스크롤 위치에 따라서 속도 감소
+        const distanceToBottom = documentHeight - scrollY - windowHeight;
+        const maxSpeed = 0.1; // 최대 속도
+        const minSpeed = 0.001; // 최소 속도
+        const easing = minSpeed + (maxSpeed - minSpeed) * (1 - Math.exp(-distanceToBottom / 500)); // 거리에 따라 속도 감소
+
+        const currentTop = parseFloat(sidebar.style.top) || initialPosition;
+        const difference = destination - currentTop;
+
+        // 사이드 바가 화면을 넘어가지 않도록 제어
+        const maxHeight = windowHeight - buttonHeight;
+        // const adjustedDestination = Math.min(destination, maxHeight);
+
+        sidebar.style.top = `${Math.min(currentTop + difference * easing, maxHeight)}px`;
       }
     };
 
+    // 스크롤 이벤트 리스너 추가
     window.addEventListener('scroll', handleScroll);
 
+    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -84,6 +106,13 @@ export default function EditExam() {
   const handleExamCreate = () => {
     // 새로운 컴포넌트를 생성하여 상태에 추가
     setExamCreate([...isExamCreate, <EditorExam key={isExamCreate.length} examId={examId} handleExamDelete={handleExamDelete} />]);
+    //하단으로 내려가는 css 함수
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      });
+    }, 100);
   };
 
   //아래 둘을 하나의 함수로 변경
@@ -97,7 +126,6 @@ export default function EditExam() {
     setObject(deleteElement);
   };
 
-
   return (
     <EditExamPage $isSidebarOpen={isSidebarOpen}>
 
@@ -108,6 +136,7 @@ export default function EditExam() {
             handleExamCreate();
             console.log(examId);
           }}>+</button>
+          <button onClick={() => setModalOpen(true)}>+AI</button>
         </div>
 
         <NavigationBar />
@@ -140,7 +169,7 @@ export default function EditExam() {
             ))}
           </div>
 
-          <AICreate examId={examId} />
+          <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} />
         </div>
       </div>
     </EditExamPage>

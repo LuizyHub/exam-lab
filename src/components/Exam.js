@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Exam({ isQuestion, parseImages, renderImages, isCommentary }) {
+export default function Exam({ isQuestion, parseImages, renderImages, isCommentary, isCommentaryQuestion }) {
   const printComponent = () => {
     const printableArea = document.getElementById('printableArea');
     const printContent = printableArea.innerHTML;
@@ -21,15 +21,16 @@ export default function Exam({ isQuestion, parseImages, renderImages, isCommenta
 
           <div key={index} >
             {/*  display: isQuestion ? 'block' : 'none'에 애러가 생김 */}
-            <div key={index} style={{ display: isQuestion ? 'block' : 'none', marginBottom: '10px', border: '1px solid #EBEDEF', padding: '20px', width: '1180px', height: 'auto' }}>
+            <div key={index} style={{ display: isCommentaryQuestion ? 'block' : 'none', marginBottom: '10px', border: '1px solid #EBEDEF', padding: '20px', width: '1180px', height: 'auto' }}>
               <div>
                 {/* 질문 */}
                 <div><b>{index + 1}. {parseImages(item.question, item.question_images_in)}</b></div>
+
                 {/* 이미지 렌더링 */}
                 <div style={{ width: '300px' }}>{renderImages(item.question_images_out)}</div>
                 {/* 4선지 */}
                 {item.options.map((option, optionIndex) => (
-                  <div key={optionIndex}>{option}</div>
+                  <div key={optionIndex}>{String.fromCharCode(9312 + optionIndex)} {option}</div>
                 ))}
               </div>
             </div>

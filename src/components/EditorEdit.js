@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { sendDeleteData, sendPutData } from "../function/axiosData";
 import { Editor } from "./Editor";
 import EditorTool from "./EditorTool";
+import '../css/EditorEdit.css'
 //파일위치 항상 확인
 export default function EditorEdit({ object, index, isObject, handleEditDelete }) {
   //Axios Get useState
@@ -69,52 +70,54 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
         dangerouslySetInnerHTML={{ __html: replacedQuestion }}
         style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
       <Editor /> */}
-
-      <div
-        className="editor"
-        ref={questionRef}
-        dangerouslySetInnerHTML={{ __html: replacedQuestion }}
-      >
-      </div>
-
-      {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
+      <div className="editor-edit">
         <div
           className="editor"
-        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+          ref={questionRef}
+          dangerouslySetInnerHTML={{ __html: replacedQuestion }}
         >
-          {object.question_images_out.map((image, index) => (
-            <img key={index} src={image.url} className="examlab-image-right" style={{ width: '20%' }} />
-          ))}
         </div>
-      ) : null}
+        {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
+          <div
+            className="editor"
+          // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+          >
+            {object.question_images_out.map((image, index) => (
+              <img key={index} src={image.url} className="examlab-image-right" style={{ width: '20%' }} />
+            ))}
+          </div>
+        ) : null}
 
-      <EditorTool />
-      <Editor
-        editorRef={optionsRef}
-        contentEditable={isContentEditable[index]}
-        dangerouslySetInnerHTML={{ __html: replacedOptions }}
-      // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
-      />
-      <EditorTool />
-      <Editor
-        editorRef={answersRef}
-        contentEditable={isContentEditable[index]}
-        dangerouslySetInnerHTML={{ __html: replacedAnswer }}
-      // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
-      />
-      <EditorTool />
-      <Editor
-        editorRef={commentaryRef}
-        contentEditable={isContentEditable[index]}
-        dangerouslySetInnerHTML={{ __html: object.commentary }}
-      // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
-      />
-      <button onClick={() => { handleStateChange(index) }}>편집모드</button>
-      <button onClick={() => { handleEdit() }}>수정</button>
-      <button onClick={() => {
-        sendDeleteData(object.id);
-        handleEditDelete(index);
-      }}>삭제</button>
+        <EditorTool />
+        <Editor
+          editorRef={optionsRef}
+          contentEditable={isContentEditable[index]}
+          dangerouslySetInnerHTML={{ __html: replacedOptions }}
+        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
+        />
+        <EditorTool />
+        <Editor
+          editorRef={answersRef}
+          contentEditable={isContentEditable[index]}
+          dangerouslySetInnerHTML={{ __html: replacedAnswer }}
+        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
+        />
+        <EditorTool />
+        <Editor
+          editorRef={commentaryRef}
+          contentEditable={isContentEditable[index]}
+          dangerouslySetInnerHTML={{ __html: object.commentary }}
+        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
+        />
+        <div className='server-button'>
+          <button onClick={() => { handleStateChange(index) }}>편집모드</button>
+          <button onClick={() => { handleEdit() }}>수정</button>
+          <button onClick={() => {
+            sendDeleteData(object.id);
+            handleEditDelete(index);
+          }}>삭제</button>
+        </div>
+      </div>
     </>
   )
 }

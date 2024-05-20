@@ -4,7 +4,7 @@
   box-sizing: border-box;
   width: 1170px;
   /* background-color: aquamarine; */
-  margin-left: 90px;
+  margin-left: 120px;
   /* align-items: center; */
 }
 
@@ -22,21 +22,67 @@
 
 .button-container .button-main>div {
   display: flex;
-  background-color: aqua;
+  /* background-color: aqua; */
 }
 
 .button-container .button-main>div>input {
-  width: 900px;
   /* font-weight: bold; */
   font-size: 25px;
   margin-right: 90px;
+  margin-left: 5px;
+  width: 95%;
+  border: 1px solid transparent;
+  font-weight: bold;
+  outline: none;
+}
+
+.button-container .button-main>div>input:hover {
+  border: 1px solid #9A9DA0;
+}
+
+#button-shuffle {
+  margin-right: 87.5%;
 }
 
 #button-pdf {
-  border: 1px solid black;
-  background-color: antiquewhite;
+  background-color: #EDFAFA;
+  width: 123px;
+  /* font: #24ABA8; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
 }
 
 .button-container .button-main>div>button {
   margin-left: 40px;
+  width: 123px;
+  border: none;
+  background-color: #24ABA8;
+  color: #FFFF;
+  font-weight: bold;
+}
+
+.button-bottom-container .button-selection>button {
+  margin-right: 30px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 10px;
+
+  text-underline-position: under;
+  text-underline-offset: 4px;
+}
+
+.button-bottom-container .button-bottom-sub>button {
+  border: 1px solid #EDFAFA;
+  color: #9A9DA0;
+  background-color: transparent;
+}
+
+.button-bottom-container .button-bottom-sub>button:hover {
+  background-color: #24ABA8;
+  color: #FFFF;
 }

@@ -38,8 +38,14 @@ public class ParmasValidator implements ConstraintValidator<ValidParams, MultiVa
             for (String s: params.get(key)) {
                 if(key.equals("count")&&Integer.parseInt(s)>10000){
                     return false;
-                }
-                else if (!Util.isSingleToken(s)||s.length() > 20) {
+                } else if(key.equals("includes")||s.length() > 20){
+                    String[] words = s.split(" ");
+                    for (String word : words) {
+                        if (!Util.isSingleToken(word) || word.length() > 20) {
+                            return false;
+                        }
+                    }
+                } else if (!Util.isSingleToken(s)||s.length() > 20) {
                     return false;
                 }
             }

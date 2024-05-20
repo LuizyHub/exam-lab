@@ -22,7 +22,6 @@ export function renderImages(item) {
 // in 이미지 파싱 후 렌더링 함수 수정
 export function parseImages(item, itemElements) {
 
-
   let parsedItem = item;
 
   // 이미지 URL 배열이 정의되었는지 확인합니다.
@@ -34,16 +33,15 @@ export function parseImages(item, itemElements) {
       parsedItem = parsedItem.replace(regex, `src="${itemElementUrl.url}" class="${itemElementUrl.attribute}"`);
     });
   }
-
-  parsedItem = parseTable(parsedItem); // 표 처리
-  parsedItem = parseBox(parsedItem); // <box> 태그 처리
-  parsedItem = parseHeaders(parsedItem); // 헤더 태그 처리
-  parsedItem = parseContent(parsedItem); // <content> 태그 처리
-  parsedItem = parseLineBreaks(parsedItem); // 줄 바꿈 처리
-
   return parse(parsedItem);
 }
 
+//  parsedItem = parseTable(parsedItem); // 표 처리
+//   parsedItem = parseBox(parsedItem); // <box> 태그 처리
+//   parsedItem = parseHeaders(parsedItem); // 헤더 태그 처리
+//   parsedItem = parseContent(parsedItem); // <content> 태그 처리
+//   parsedItem = parseLineBreaks(parsedItem); // 줄 바꿈 처리
+//   return parse(parsedItem);
 
  // <box> 태그를 처리하는 함수
  export const parseBox = (text) => {
@@ -105,3 +103,4 @@ export const parseHeaders = (text) => {
 
     return parsedText;
   };
+

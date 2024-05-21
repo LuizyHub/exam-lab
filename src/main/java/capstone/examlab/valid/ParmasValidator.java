@@ -4,15 +4,11 @@ import capstone.examlab.util.Util;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.util.MultiValueMap;
-
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class ParmasValidator implements ConstraintValidator<ValidParams, MultiValueMap<String, String>> {
-
+    private static final int MAX_SEARCH_PARAMETER_SIZE = 20;
     @Override
     public void initialize(ValidParams constraintAnnotation) {
     }
@@ -25,7 +21,7 @@ public class ParmasValidator implements ConstraintValidator<ValidParams, MultiVa
         for (String key : params.keySet()) {
             //key 검증
             if(key.contains("tags")){
-                if(!Util.matchesTagsPattern(key)||key.length() > 20) {
+                if(!Util.matchesTagsPattern(key)||key.length() > MAX_SEARCH_PARAMETER_SIZE) {
                     return false;
                 }
             }
@@ -38,14 +34,14 @@ public class ParmasValidator implements ConstraintValidator<ValidParams, MultiVa
             for (String s: params.get(key)) {
                 if(key.equals("count")&&Integer.parseInt(s)>10000){
                     return false;
-                } else if(key.equals("includes")||s.length() > 20){
+                } else if(key.equals("includes")||s.length() > MAX_SEARCH_PARAMETER_SIZE){
                     String[] words = s.split(" ");
                     for (String word : words) {
-                        if (!Util.isSingleToken(word) || word.length() > 20) {
+                        if (!Util.isSingleToken(word) || word.length() > MAX_SEARCH_PARAMETER_SIZE) {
                             return false;
                         }
                     }
-                } else if (!Util.isSingleToken(s)||s.length() > 20) {
+                } else if (!Util.isSingleToken(s)||s.length() > MAX_SEARCH_PARAMETER_SIZE) {
                     return false;
                 }
             }

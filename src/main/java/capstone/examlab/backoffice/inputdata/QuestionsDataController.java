@@ -24,4 +24,12 @@ public class QuestionsDataController {
         questionsDataService.saveQuestions(questions);
         return ResponseEntity.ok("data add success");
     }
+
+    @DeleteMapping("{examId}/questions")
+    public ResponseEntity<String> deleteOriginalQuestions(@PathVariable Long examId) {
+        if(examId == 2){
+//            questionsDataService.deleteQuestion(examId);
+        }
+        return ResponseEntity.ok("data delete success");
+    }
 }

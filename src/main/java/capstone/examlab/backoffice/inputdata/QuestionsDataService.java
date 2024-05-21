@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface QuestionsDataService {
     void saveQuestions(List<Question> questionEntities);
+
+    void deleteQuestion(Long examId);
 }

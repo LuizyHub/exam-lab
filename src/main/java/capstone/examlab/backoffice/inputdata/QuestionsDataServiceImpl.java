@@ -15,4 +15,9 @@ public class QuestionsDataServiceImpl implements QuestionsDataService{
     public void saveQuestions(List<Question> questions) {
         questionsRepository.saveAll(questions);
     }
+
+    @Override
+    public void deleteQuestion(Long examId) {
+        questionsRepository.deleteByExamId(examId);
+    }
 }

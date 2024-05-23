@@ -95,7 +95,7 @@
                 <p>개발 도구</p>
             </td>
             <td>
-                <img src="https://img.shields.io/badge/IntelliJ IDEA-000000?logo=IntelliJ IDEA&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/IntelliJ IDEA-c94799?logo=IntelliJ IDEA&logoColor=ffffff">
                 <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?logo=Visual Studio Code&logoColor=ffffff">
             </td>
         </tr>
@@ -104,16 +104,16 @@
                   <p>언어</p>
             </td>
             <td>
-                  <img src="https://img.shields.io/badge/java-000000?logo=openjdk&logoColor=004088"> 
+                  <img src="https://img.shields.io/badge/java-0d8ac7?logo=openjdk&logoColor=ec2025">
                   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=JavaScript&logoColor=000000">
             </td>
-        </tr>
+        </tr> 
         <tr>
             <td>
                 <p>데이터 베이스</p>
             </td>
             <td>
-                <img src="https://img.shields.io/badge/Elasticsearch-5DACDF?logo=Elasticsearch&logoColor=ECD53F">
+                <img src="https://img.shields.io/badge/Elasticsearch-3ab8ac?logo=Elasticsearch&logoColor=e9b919">
                 <img src="https://img.shields.io/badge/MongoDB-114411?logo=mongodb">
                 <img src="https://img.shields.io/badge/Amazon S3-7D929E?logo=Amazon S3&logoColor=ffffff">
                 <img src="https://img.shields.io/badge/Docker-2496ED?&logo=Docker&logoColor=white">

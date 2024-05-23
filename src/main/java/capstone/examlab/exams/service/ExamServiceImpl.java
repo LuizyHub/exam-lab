@@ -10,6 +10,7 @@ import capstone.examlab.exhandler.exception.UnauthorizedException;
 import capstone.examlab.pdf.PDFService;
 import capstone.examlab.questions.dto.QuestionsListDto;
 import capstone.examlab.questions.service.QuestionsService;
+import capstone.examlab.token.TokenService;
 import capstone.examlab.users.domain.User;
 import capstone.examlab.valid.ValidExamId;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,6 +37,7 @@ public class ExamServiceImpl implements ExamsService {
     private final PDFService pdfService;
     private final QuestionsService questionsService;
     private final AiService aiService;
+    private final TokenService tokenService;
 
     private static final String[] fileTypeList = {"text/plain", "text/markdown", "application/pdf"};
 
@@ -243,11 +245,18 @@ public class ExamServiceImpl implements ExamsService {
             throw new BadRequestException("생성에 필요한 파일의 내용이 없습니다.");
         }
 
-        String[] words = fileText.split("\\s+");
-        int wordCount = words.length;
+        int tokenCount = tokenService.getTokenCount(fileText);
 
-        if (wordCount < 20) {
-            throw new BadRequestException("생성에 필요한 파일의 단어 수가 부족합니다.");
+        log.info("Token count: {}", tokenCount);
+
+        final int TOKEN_COUNT_MIN = 20;
+        final int TOKEN_COUNT_MAX = 100_000; // GPT-4o의 최대 Context 길이 : 128,000
+
+        if (tokenCount < TOKEN_COUNT_MIN) {
+            throw new BadRequestException("생성에 필요한 파일이 너무 작습니다.");
+        }
+        if (tokenCount > TOKEN_COUNT_MAX) {
+            throw new BadRequestException("생성에 필요한 파일이 너무 큽니다.");
         }
     }
 }

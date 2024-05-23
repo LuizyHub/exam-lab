@@ -59,7 +59,7 @@ export default function Navigate() {
   return (
     <NavigationContainer>
       <NavItem>
-        <NavIcon src="/img/나만의 시험지.png" alt="Main Image" />
+        <NavIcon src="/img/시험지저장소_icon.png" alt="Main Image" />
         <Link to='/exams/create' style={{color: 'black', textDecorationLine:'none'}}>나만의 시험지</Link>
       </NavItem>
       <NavItem>

@@ -1,0 +1,10 @@
+.editor-edit .server-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editor-edit .server-button button {
+  background-color: transparent;
+  border-style: none;
+  /* text-align: right; */
+}

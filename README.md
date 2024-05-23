@@ -64,13 +64,13 @@
 > Elasticsearch 검색 엔진을 활용하여, 사용자는 검색어와 태그를 통해 원하는 문제를 빠르고 정확하게 찾을 수 있습니다. 다양한 주제, 난이도, 문제 유형 등을 설정하여 필요한 문제를 즉시 검색해 맞춤형
 > 시험지를 생성해 보세요.
 
-<!--<img alt='' src="" /> -->
+<img alt='selectQeustion' src="https://github.com/LuizyHub/exam-lab/assets/120697456/9727194e-f6b0-43fe-9694-fef40146ae8c" /> 
 
 ### AI 문제 생성
 
 > 최신 GPT-4o를 사용하여 학습 자료를 기반으로 10초 만에 5개의 문제를 자동 생성합니다. 빠르고 정확한 문제 생성으로 학습 효율을 높이세요.
 
-<!--<img alt='' src="" /> -->
+<img alt='addAI' src="https://github.com/LuizyHub/exam-lab/assets/120697456/b42020de-7de9-4d89-80ba-0d89101535fe" /> 
 
 ### PDF 시험지 생성
 

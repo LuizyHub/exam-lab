@@ -48,10 +48,11 @@ export function parseImages(item, itemElements) {
   let match;
   while ((match = regex.exec(text)) !== null) {
     const boxText = match[1];
-    parsedText = parsedText.replace(match[0], `<div class="box">${boxText}</div>`);
+    parsedText = parsedText.replace(match[0], `<div style="border: 1px solid black; padding: 10px;">${boxText}</div>`);
   }
   return parsedText;
 };
+
 
 // <content> 태그를 처리하는 함수
 export const parseContent = (text) => {

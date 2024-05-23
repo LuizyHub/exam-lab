@@ -9,20 +9,23 @@ const ShowQuestionContent = styled.div`
     padding: 20px;
     margin-bottom: 20px;
     margin-top: 30px;
+    overflow: auto;
 `;
 
-const Button = styled.button`
+const CreateButton = styled.button`
+    width: 100%;
+    height: 100px;
     padding: 10px 20px;
-    background-color: #5BB6B4;
-    color: white;
+    border: 1px solid black;
+    color: black;
     border: none;
     border-radius: 5px;
-    margin-bottom: 20px;
     cursor: pointer;
 `;
 
 const ListButton = styled.button`
     padding: 10px 20px;
+    margin-top: 20px;
     background-color: #5BB6B4;
     color: white;
     border: none;
@@ -32,20 +35,25 @@ const ListButton = styled.button`
 
 const ToggleButton = styled.button`
     padding: 10px 20px;
-    background-color: ${({ show }) => show ? '#C6E7E7' : '#5BB6B4'};
-    color: white;
+    background-color: ${({ show }) => show ? '#EDFAFA' : '#F5F5F7'};
+    color: ${({ show }) => show ? '#24ABA8' : '#9A9DA0'};
     border: none;
     border-radius: 5px;
-    margin-left: 10px;
     cursor: pointer;
+    position: absolute;
+    top: 120px;
+    right: 10px;
 `;
 
+
 const CheckBox = styled.input`
-    position: absolute; /* 절대 위치 설정 */
-    top: 0;
-    right: 0px; /* 오른쪽에 위치 */
-    width: 20px; /* 너비 조절 */
-    height: 20px; /* 높이 조절 */
+    position: absolute; 
+    top: 0px;
+    right: 0px; 
+    width: 20px; 
+    margin: 10px;
+    height: 20px; 
+    background-color: black;
 `;
 
 const Container = styled.div`
@@ -74,8 +82,8 @@ const QuestionItem = styled.li`
     border: 1px solid #ccc;
     border-radius: 3px;
     background-color: ${({ selected }) => selected ? '#EDFAFA' : '#fff'};
-    transition: background-color 0.3s; /* 배경색 변경에 대한 transition 효과 추가 */
-    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것처럼 보이게 함 */
+    transition: background-color 0.3s; 
+    cursor: pointer;
 `;
 
 const StyledLabel = styled.label`
@@ -83,6 +91,7 @@ const StyledLabel = styled.label`
     align-items: center;
     flex-direction: column;
     position: relative;
+    margin: 10px;
 `;
 
 export default function ShowQuestionList({ questions }) {
@@ -104,10 +113,19 @@ export default function ShowQuestionList({ questions }) {
         }
     };
 
-    // 모든 문제를 선택된 문제로 설정
+    // 전체 선택 버튼 클릭 -> 모든 문제를 선택된 문제로 설정
     const handleSelectAllQuestions = () => {
         const newQuestions = questions.filter(item => !selectedQuestions.some(q => q.id === item.id));
         setSelectedQuestions([...selectedQuestions, ...newQuestions]);
+    };
+
+    // 전체 삭제 버튼 클릭 -> 선택된 문제 모두 초기화
+    const handleDeleteAllQuestions = () => {
+        setSelectedQuestions([]);
+    };
+
+    const handleLabelClick = (item) => {
+        handleSelectQuestion(item); // 라벨 클릭 시 CheckBox 선택/해제 기능과 동일한 기능 수행
     };
 
     const handleSubmitQuestion = () => {
@@ -119,12 +137,18 @@ export default function ShowQuestionList({ questions }) {
     };
 
     return (
-        <ShowQuestionContent>
-            <Button onClick={handleSubmitQuestion}>시험지 생성</Button>
-            <ListButton onClick={handleSelectAllQuestions}>전체 선택</ListButton>
-            <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} $show={showSelectedQuestions}>
+        <div style={{position: 'relative'}}>
+            <CreateButton onClick={handleSubmitQuestion}>시험지 생성 </CreateButton>
+            {showSelectedQuestions ? (
+                <ListButton onClick={handleDeleteAllQuestions}>전체 삭제</ListButton>
+            ) : (
+                <ListButton onClick={handleSelectAllQuestions}>전체 선택</ListButton>
+            )}
+            <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} show={showSelectedQuestions}>
                 선택된 문제 {showSelectedQuestionsCount}
             </ToggleButton>
+        <ShowQuestionContent>
+            
             <Container>
                 <QuestionContainer>
                     <QuestionList>
@@ -135,7 +159,7 @@ export default function ShowQuestionList({ questions }) {
                                     onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
                                     selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
                                 >
-                                    <StyledLabel>
+                                    <StyledLabel onClick={() => handleLabelClick(item)}>
                                         <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
                                         <ShowQuestion
                                             question={item.question}
@@ -169,5 +193,6 @@ export default function ShowQuestionList({ questions }) {
                 </QuestionContainer>
             </Container>
         </ShowQuestionContent>
+        </div>
     );
 }

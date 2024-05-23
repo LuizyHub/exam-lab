@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import LoginModal from './LoginModal';
+import LoginModal from '../modals/LoginModal';
 import { getLoginInfo } from '../function/LoginState';
 import styled from 'styled-components';
 
@@ -59,7 +59,7 @@ export default function Navigate() {
   return (
     <NavigationContainer>
       <NavItem>
-        <NavIcon src="/img/나만의 시험지.png" alt="Main Image" />
+        <NavIcon src="/img/시험지저장소_icon.png" alt="Main Image" />
         <Link to='/exams/create' style={{color: 'black', textDecorationLine:'none'}}>나만의 시험지</Link>
       </NavItem>
       <NavItem>

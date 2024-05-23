@@ -16,16 +16,17 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 30px;
+  border-radius: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   max-width: 400px;
-  width: 90%;
+  width: 100%;
+  z-index: 1;
 `;
 
 const ModalHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 16px;
 `;
@@ -33,6 +34,7 @@ const ModalHeader = styled.div`
 const ModalTitle = styled.h2`
   margin: 0;
   text-align: center;
+  flex-grow: 1;
 `;
 
 const CloseButton = styled.span`
@@ -44,25 +46,30 @@ const CloseButton = styled.span`
 const ModalBody = styled.div`
   margin-bottom: 16px;
   text-align: center;
+  hr {
+    border: 0;
+    height: 1px;
+    background-color: #EBEDEF;
+  }
 `;
 
 const ModalFooter = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 8px;
 `;
-
-const ModalButton = styled.button`
-  background-color: ${props => props.primary ? '#5BB6B4' : 'transparent'};
-  color: ${props => props.primary ? 'white' : 'black'};
+const LoginA = styled.a`
+  background-color: #5BB6B4;
+  color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  
   transition: background-color 0.3s;
+  text-decoration: none;
+  display: inline-block;
   &:hover {
-    background-color: ${props => props.primary ? '#ECF7F7' : 'rgba(0, 0, 0, 0.1)'};
+    background-color: #ECF7F7;
   }
 `;
 
@@ -78,8 +85,7 @@ const LoginModal = ({ onClose }) => {
           <p>나만의 문제와 시험지 저장소 페이지를 이용하시려면 <br/> 로그인이 필요합니다.</p>
         </ModalBody>
         <ModalFooter>
-          <a href='/users/login' style={{color: "black",textDecorationLine: "none"}}>로그인</a>
-          <ModalButton onClick={onClose}>취소</ModalButton>
+        <LoginA href='/users/login'>로그인</LoginA>
         </ModalFooter>
       </ModalContent>
     </ModalOverlay>

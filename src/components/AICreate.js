@@ -3,25 +3,7 @@ import axios from 'axios';
 import { AIModal } from '../modals/AIModal';
 import styled from 'styled-components';
 import EditorEdit from './EditorEdit';
-const ModalBackground = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-`;
 
-const ModalContent = styled.div`
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-`;
 
 //axiosData 함수에 있는 getData와 연동
 export default function AICreate({ examId, modalOpen, setModalOpen }) {

@@ -15,9 +15,9 @@ const MainContainer = styled.div`
     transition: margin-left 0.3s ease;
 `;
 
-
 const PageContent = styled.div`
     position: relative;
+    left: 0;
 `;
 
 const ContentWrapper = styled.div`
@@ -33,18 +33,18 @@ const ContentWrapper = styled.div`
 `;
 
 const LogoWrapper = styled.div`
-    width: 300px; 
+    left: 300px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 
 const Logo = styled.img`
-    width: 200px; 
+    width: 200px;
     position: relative;
     margin-right: 20px;
 `;
-
 
 const ImageWrapper = styled.div`
     padding-right: 30px;

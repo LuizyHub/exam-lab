@@ -67,7 +67,7 @@ export default function Navigate() {
           <NavButton onClick={() => handleNavigate('/exams')}> 나만의 문제 </NavButton>
       </NavItem>
       <NavItem>
-        <NavIcon src="/img/시험지저장소.png" alt="Main Image" />
+        <NavIcon src="/img/시험지저장소_icon.png" alt="Main Image" />
         <NavButton onClick={() => handleNavigate('/workbooks')}> 시험지 저장소 </NavButton>
       </NavItem>
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}

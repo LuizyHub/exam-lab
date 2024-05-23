@@ -39,7 +39,6 @@ const WorkBookButton = styled.button`
     }
 `;
 
-
 const WorkBookCreateButton = styled.button`
     background-color: #F5F5F7;
     border: 0.5px solid #fff;
@@ -98,7 +97,7 @@ export default function WorkBooks() {
             console.error(error);
           });
       }, []);
-    
+
       // 날짜 문자열 포맷팅 함수
     const formatDateString = (dateString) => {
         const date = new Date(dateString);
@@ -159,7 +158,7 @@ export default function WorkBooks() {
                         <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(workbook.id); }} />
                     </WorkBookButton>
                     {modalStates[workbook.id] && (
-                       <DeleteWorkBookModal workbook={workbook} handleWorkBookDelete={handleWorkBookDelete} handleCloseModal={handleCloseModal} />
+                        <DeleteWorkBookModal workbook={workbook} handleWorkBookDelete={handleWorkBookDelete} handleCloseModal={handleCloseModal} />
                     )}
                 </div>
             ))}

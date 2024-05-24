@@ -63,7 +63,6 @@ const StyledLink = styled(Link)`
     text-decoration: none;
     color: inherit;
 `;
-
 const Navigation = styled.nav`
     display: flex;
     justify-content: center;
@@ -106,7 +105,6 @@ const NavButton = styled.button`
     border-radius: 20px;
     font-size: 16px;
     transition: background-color 0.3s, color 0.3s;
-
     &:hover {
         background-color: ${({ $selected }) => $selected ? '#238C8A' : '#D3DCE6'};
     }

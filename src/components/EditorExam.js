@@ -8,7 +8,7 @@ import { handleOnInput, handleDragOver, handleCopy, handleCut, handlePaste, hand
 import { Editor } from './Editor';
 import { sendPostData, sendDeleteData, sendPutData } from '../function/axiosData';
 
-export default function EditorExam({ examId }) {
+export default function EditorExam({ examId, handleExamDelete }) {
 
   //Commentary Ctrl
   const [isCommentHide, setCommentHide] = useState(false);
@@ -86,7 +86,7 @@ export default function EditorExam({ examId }) {
 
   return (
 
-    <div>
+    <div className='editor_out_line'>
       <div className='questionArea'>
         <div>
           {/* <h3>문제등록</h3> */}
@@ -168,7 +168,8 @@ export default function EditorExam({ examId }) {
               setUrlInId(resultId);
             }}
 
-            style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
+          // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+          />
 
           {/* ------------------------------------------------------------------------ */}
 
@@ -197,7 +198,9 @@ export default function EditorExam({ examId }) {
               setUrlOutId(prevState => [...prevState, result.name])
             }}
           />
-          <div style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}>
+          <div
+          // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+          >
 
             <Editor
               editorRef={editorRef2}
@@ -240,7 +243,7 @@ export default function EditorExam({ examId }) {
                 setUrlOut(resultEdit);
                 setUrlOutId(resultId);
               }}
-              style={{ display: 'flex' }}
+            // style={{ display: 'flex' }}
             />
 
             {/* <Editor
@@ -257,7 +260,6 @@ export default function EditorExam({ examId }) {
             /> */}
           </div>
           {/* ------------------------------------------------------------------------ */}
-
           <EditorTool
             editorRef={editorRef3}
             contentType={'선택지'}
@@ -346,18 +348,15 @@ export default function EditorExam({ examId }) {
               // // console.log(answers);
               // setData(prevState => ({ ...prevState, options: optionsArray }));
             }}
-            style={{
-              padding: '16px 24px',
-              border: '1px solid #D6D6D6',
-              borderRadius: '4px',
-              width: '600px',
-            }}
+          // style={{
+          //   padding: '16px 24px',
+          //   border: '1px solid #D6D6D6',
+          //   borderRadius: '4px',
+          //   width: '600px',
+          // }}
           />
 
-          <button onClick={() => {
-            console.log("test");
-            handleCommentHide();
-          }}>답안등록</button>
+
         </div >
       </div>
       {/* -------------------------아래부터 답안 등록 -------------- */}
@@ -423,12 +422,12 @@ export default function EditorExam({ examId }) {
             const answers = editorRef4.current.innerHTML;
             setCommentAnswers(answers);
           }}
-          style={{
-            padding: '16px 24px',
-            border: '1px solid #D6D6D6',
-            borderRadius: '4px',
-            width: '600px',
-          }}
+        // style={{
+        //   padding: '16px 24px',
+        //   border: '1px solid #D6D6D6',
+        //   borderRadius: '4px',
+        //   width: '600px',
+        // }}
         />
 
         <EditorTool
@@ -479,14 +478,14 @@ export default function EditorExam({ examId }) {
             const Commentary = editorRef5.current.innerHTML;
             setCommentary(Commentary);
           }}
-          style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
+        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
         />
 
       </div>
 
       {/*------------------ 버튼 영역---------------------- */}
 
-      <div>
+      <div className='server-button'>
         <button type='submit' onClick={() => {
           sendPostData(examId, isUrlIn, isUrlOut, isUrlOutDes, isData.question, isData.options, isCommentAnswers, isCommentary)
             .then((id) => {
@@ -498,9 +497,9 @@ export default function EditorExam({ examId }) {
 
         <button onClick={() => {
           sendDeleteData(UUID);
+          handleExamDelete(examId);
           // getData();//get이 내부로 들어가야하나?
-        }
-        }>삭제</button>
+        }}>삭제</button>
 
         {/* UUID가 필요한가? 제거하고 실행 해볼 것 */}
         <button onClick={() => {
@@ -509,6 +508,11 @@ export default function EditorExam({ examId }) {
         }}>수정</button>
 
         <button onClick={() => {
+          console.log("test");
+          handleCommentHide();
+        }}>답안</button>
+
+        {/* <button onClick={() => {
           console.log("\n저장된 QUESTION_ID 값 : " + UUID
             + "\n저장된 EXAM_ID 값 : " + examId);
           console.log(
@@ -530,7 +534,7 @@ export default function EditorExam({ examId }) {
             "저장된 Answer 값 : " + isCommentAnswers
             + "\n저장된 Commentary 값 : " + isCommentary
           );
-        }}>확인</button>
+        }}>확인</button> */}
       </div>
     </div>
   );

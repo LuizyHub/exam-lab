@@ -11,12 +11,19 @@ import axios from 'axios';
 const NavigationContainer = styled.div`
     position: fixed;
     top: 0;
-    left: ${({ $isVisible }) => ($isVisible ? '0' : '-250px')};
-    width: 240px;
+    left: ${({ $isVisible }) => ($isVisible ? '0' : '-205px')};
+    width: 256px;
     height: 100%;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease-in-out;
+`;
+
+const TopContent = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top:16px;
 `;
 
 const NavigationBarContent = styled.div`
@@ -35,41 +42,59 @@ const NavigationContent = styled.div`
 const Logo = styled.img`
     width: 140px;
     margin-bottom: 35px;
-    margin-top: 20px
+    
 `;
 
 const UserLabButton = styled.button`
     background-color: #fff;
     border: 1px solid black;
-    width: 160px;
+    width: 130px;
     padding: 10px 20px;
     border-radius: 5px;
     margin-bottom: 10px;
-    cursor: pointer;
 `;
 
 const StyledButton = styled.button`
-    width: 160px;
-    text-align: center;
-    background-color: ${props => props.primary ? '#29B8B5' : '#EBF0F6'};
+    width: 100%;
     display: inline-block;
-    color: ${props => props.primary ? '#fff' : '#A2ACB9'};
+    background-color: #fff;
+    color: #3E3F41;
     border: none;
-    padding: 10px 20px;
-    margin: 10px;
     cursor: pointer;
-    border-radius: 20px;
     font-size: 16px;
     text-decoration-line: none;
-    margin-bottom: ${props => props.primary ? '0' : '50px'};
+    margin-bottom: 80px;
+    margin-top: 10px;
+`;
+
+const LogImgContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const LogImg = styled.img`
+    width: 30px;
+    position: absolute; 
+    left: ${({ $isVisible }) => $isVisible ? '30px' : ' '}; 
+    right: ${({ $isVisible }) => $isVisible ? ' ' : '8px'}; 
+    transition: right 0.1s ease-in-out;
+`;
+
+const LoginText = styled.span`
+    margin-left: 6px;
+    font-size: 15px;
+`;
+
+const LogoutText = styled.span`
+    margin-left: 65px;
+    font-size: 15px;
 `;
 
 const CloseButtonContainer = styled.div`
     position: absolute;
-    top: 20px;
-    right: ${({ $isVisible }) => ($isVisible ? '10px' : '-25%')};
-    overflow: hidden;
-    transition: right 0.3s ease-in-out;
+    top: 40px;
+    right: 7px;
+    transition: right 0.1s ease-in-out;
 `;
 
 const CloseButton = styled.button`
@@ -142,15 +167,16 @@ export default function NavigationBar() {
     return (
         <NavigationContainer $isVisible={isVisible}>
             <NavigationBarContent>
-                <Link to='/'> 
-                    <Logo src="/img/examLab_logo.png" alt="logo" />
-                </Link>
-                <CloseButtonContainer $isVisible={isVisible}>
-                <CloseButton onClick={toggleVisibility} $isVisible={isVisible}>
-                    {isVisible ? <NavigationIcon src="/img/네비게이션바.png" alt="navigation" /> : null}
-                </CloseButton>
-
-                </CloseButtonContainer>
+                <TopContent>
+                    <Link to='/'> 
+                        <Logo src="/img/examLab_logo.png" alt="logo" />
+                    </Link>
+                    <CloseButtonContainer $isVisible={isVisible}>
+                        <CloseButton onClick={toggleVisibility}>
+                            <NavigationIcon src="/img/네비게이션바.png" alt="navigation" /> 
+                        </CloseButton>
+                    </CloseButtonContainer>
+                </TopContent>
 
                 <NavigationContent>
                     <Navigate />
@@ -164,17 +190,23 @@ export default function NavigationBar() {
                         <UserLabButton>
                             <p>{userInfo.userName}님의 연구소</p>
                         </UserLabButton>
-                        <StyledButton onClick={handleLogout}>로그아웃</StyledButton>
+                        <StyledButton onClick={handleLogout}>
+                            <LogImgContainer>
+                                <LogImg src='/img/로그아웃_icon.png' $isVisible={isVisible} />
+                                <LogoutText>로그아웃</LogoutText>
+                            </LogImgContainer>
+                        </StyledButton>
                     </>
                 ) : (
-                    <>
-                        <a href='/users/login'>
-                            <StyledButton primary="true">로그인</StyledButton>
-                        </a>
-                        <a href='/users/add'>
-                            <StyledButton>회원가입</StyledButton>
-                        </a>
-                    </>
+                        
+                    <a href='/users/login'>
+                        <StyledButton>
+                            <LogImgContainer>
+                                <LogImg src='/img/로그인_icon.png' $isVisible={isVisible} />
+                                <LoginText>로그인 / 회원가입</LoginText>
+                            </LogImgContainer>
+                        </StyledButton>
+                    </a>
                 )}
             </NavigationBarContent>
             {!isVisible && (

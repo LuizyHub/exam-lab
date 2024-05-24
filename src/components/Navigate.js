@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { isVisibleState } from '../recoil/atoms';
 import LoginModal from '../modals/LoginModal';
 import { getLoginInfo } from '../function/LoginState';
 import styled from 'styled-components';
@@ -8,12 +10,15 @@ const NavigationContainer = styled.nav`
   padding: 10px 0px;
 `;
 
-const NavItem = styled.div`
+const NavItem = styled.button`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  border: none;
+  background-color: transparent;
   height: 40px;
-  font-size: 14px;
+  width:100%;
+  font-size: 15px;
   transition: height 0.3s ease;
   &:hover {
     background-color: #ECF7F7;
@@ -21,27 +26,29 @@ const NavItem = styled.div`
   }
 `;
 
-const NavButton = styled.button`
-  display: flex;
-  border: none;
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  textDecorationLine: none;
+const NavText = styled.p`
+  margin-left: 15px;
+`;
+
+const NavLink = styled(Link)`
+  color: black;
+  text-decoration-line:none;
 `;
 
 const NavIcon = styled.img`
-  width: 20px;
-  margin-right: 8px;
-  margin-left: 30px
+  width: ${({ $primary }) => $primary ? '25px' : '20px'};
+  margin-right: 0px;
+  margin-left: ${({ $primary }) => $primary ? '24px' : '25px'};
+  position: relative;
+  right: ${({ $isSidebarOpen }) => $isSidebarOpen ? '5px' : '-190px'};
 `;
 
+
 export default function Navigate() {
-  const [showModal, setShowModal] = useState(false);
+
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const isSidebarOpen = useRecoilValue(isVisibleState);
 
   const handleNavigate = async (path) => {
     try {
@@ -58,18 +65,23 @@ export default function Navigate() {
 
   return (
     <NavigationContainer>
-      <NavItem>
-        <NavIcon src="/img/시험지저장소_icon.png" alt="Main Image" />
-        <Link to='/exams/create' style={{color: 'black', textDecorationLine:'none'}}>나만의 시험지</Link>
+<NavLink to='/exams/create'>
+        <NavItem>
+          <NavIcon src="/img/시험지제작소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
+          <NavText>시험지 제작소</NavText>
+        </NavItem>
+      </NavLink>
+      
+      <NavItem onClick={() => handleNavigate('/exams')}>
+          <NavIcon src="/img/문제관리소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} $primary="true"/>
+          <NavText>문제 관리소</NavText>
       </NavItem>
-      <NavItem>
-          <NavIcon src="/img/나만의 문제.png" alt="Main Image" />
-          <NavButton onClick={() => handleNavigate('/exams')}> 나만의 문제 </NavButton>
+
+      <NavItem onClick={() => handleNavigate('/workbooks')}>
+        <NavIcon src="/img/시험지저장소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
+        <NavText>시험지 저장소</NavText>
       </NavItem>
-      <NavItem>
-        <NavIcon src="/img/시험지저장소_icon.png" alt="Main Image" />
-        <NavButton onClick={() => handleNavigate('/workbooks')}> 시험지 저장소 </NavButton>
-      </NavItem>
+
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
     </NavigationContainer>
   );

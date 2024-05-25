@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import axios from 'axios';
 import ShowQuestionList from "./ShowQuestionList";
+import { NoneQuestion, OneMoreQuestion } from "../modals/SelectQuestionModal";
 import styled from 'styled-components';
 
 
@@ -14,33 +15,39 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-    text-align: center;
+    
+`;
+
+
+const SelectTitle = styled.p`
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 14px;
 `;
 
 const TagsContainer = styled.div`
     margin-bottom: 10px;
     display: flex;
     flex-wrap: wrap;
-
 `;
 
 const TagButton = styled.button`
     margin: 5px 10px; 
-    background-color: ${({ selected }) => selected ? '#EDFAFA' : '#FFFFFF'};
+    background-color: ${({ $selected }) => $selected ? '#C6E7E7' : '#FFFFFF'};
     color: #2D2C2B;
-    border: 0.5px solid ${({ selected }) => selected ? '#C6E7E7' : '#E2E8EE'};
+    border: 0.5px solid ${({ $selected }) => $selected ? '#C6E7E7' : '#E2E8EE'};
     border-radius: 4px;
     padding: 5px 8px;
     cursor: pointer;
     flex: 1; 
-    width: 220px;
-    height: 45px;
-    font-size: 14px;
+    width: 180px;
+    height: 58px;
+    font-size: 15px;
     &:hover {
-        background-color: #C6E7E7;
+        background-color: #EDFAFA;
     }
 `;
-
+    
 
 const KeywordList = styled.div`
     display: flex;
@@ -54,14 +61,15 @@ const KeywordContainer = styled.div`
 `;
 
 const KeywordInput = styled.input`
-    width: 85%;
-    height: 30px;
+    width: 88%;
+    height: 44px;
     margin-left: 10px;
     margin-right: 10px;
     padding: 5px 15px;
     border : 1px solid #E2E8EE;
     border-radius: 4px;
     outline: none;
+    font-size: 15px;
     transition: border-color 0.2s; 
     flex: 1;
     &:focus {
@@ -88,10 +96,11 @@ const DeleteKeywordImg = styled.img`
 `;
 
 const SearchImg = styled.img`
-    width: 18px;
+    width: 22px;
+    height: 22px;
     position: relative;
-    padding: 6px;
-    top: 10px;
+    padding: 15px;
+    top: 22px;
     border: 1px solid #ccc;
     border-radius: 4px;
 `;
@@ -102,39 +111,42 @@ const QuestionCount = styled.div`
 
 const CountButton = styled.button`
   margin: 5px 10px;
-  background-color: ${({ selected }) => (selected ? '#EDFAFA' : '#FFFFFF')};
+  background-color: ${({ $selected }) => ($selected ? '#C6E7E7' : '#FFFFFF')};
   color: #2D2C2B;
-  border: 0.5px solid ${({ selected }) => (selected ? '#C6E7E7' : '#E2E8EE')};
+  border: 0.5px solid ${({ $selected }) => ($selected ? '#C6E7E7' : '#E2E8EE')};
   border-radius: 4px;
   padding: 5px 8px;
   cursor: pointer;
   flex: 1;
-  width: 150px;
-  height: 45px;
-  font-size: 14px;
-
+  width: 190px;
+  height: 60px;
+  font-size:15px;
   &:hover {
-    background-color: ${({ selected }) => (selected ? '#C6E7E7' : '#E2E8EE')};
+    background-color: #EDFAFA;
   }
 `;
 
 const CountInput = styled.input`
   margin-left: 10px;
-  width: 150px;
-  height: 35px;
-  background-color: ${({ selected }) => (selected ? '#E8F6F6' : '#FFFFFF')};
+  width: 170px;
+  height: 48px;
+  background-color: ${({ $selected }) => ($selected ? '#C6E7E7' : '#FFFFFF')};
   color: #2D2C2B;
-  border: 0.5px solid ${({ selected }) => (selected ? '#E2E8EE' : '#E2E8EE')};
+  border: 0.5px solid ${({ $selected }) => ($selected ? '#E2E8EE' : '#E2E8EE')};
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
   margin-right: 5px;
-  width: 130px;
   text-align: center;
-
+  font-size:15px;
   &:focus {
-    background-color: #E2E8EE;
+    background-color: #C6E7E7;
+    border: 0.5px solid #E2E8EE;
   }
+  &:hover {
+    background-color: #EDFAFA;
+  }
+
 `;
 
 
@@ -145,7 +157,7 @@ const SubmitButtonContainer = styled.div`
 `;
 
 const SubmitButton = styled.input`
-    background-color: #5BB6B4;
+    background-color: #29B8B5;
     color: white;
     border: none;
     border-radius: 5px;
@@ -153,15 +165,16 @@ const SubmitButton = styled.input`
     cursor: pointer;
     margin-top: 10px;
     align-self: center;
-
+    font-size:15px;
+    font-weight: bold;
     &:hover {
         background-color: #C6E7E7;
     }
 `;
 
 export default function SelectQuestion() {
-    const location = useLocation(); // SelectExamPage.js에서 선택된 시험 받아오기
-    const { examId, examTitle } = location.state;
+    const location = useLocation(); 
+    const { examId, examTitle } = location.state; // SelectExamPage.js에서 선택된 시험 받아온다.
 
 
     const [tags, setTags] = useState([]); // 태그 종류
@@ -170,11 +183,11 @@ export default function SelectQuestion() {
     const [keywords, setKeywords] = useState([]); // 검색 키워드
     const [selectedQuestionCount, setSelectedQuestionCount] = useState(20);// 선택된 문제 문항 수 
     const [customQuestionCount, setCustomQuestionCount] = useState(""); // 문항 수 직접 입력을 위한 상태 변수
-    // 미리 정의된 문항 수 버튼을 위한 상태 변수
-    const [selectedPredefinedCount, setSelectedPredefinedCount] = useState(selectedQuestionCount);
-    const [selected, setSelected] = useState(false);
+    const [selectedCountType, setSelectedCountType] = useState('button'); // 선택된 문항 수 버튼 파악
     const [questions, setQuestions] = useState([]);
-    const [showCustomCountInput, setShowCustomCountInput] = useState(false); // "기타" 버튼을 클릭했는지 여부
+
+    const [showNoneQuestion, setShowNoneQuestion] = useState(false); // 에러 발생 시 NoneQuestion 보이기 여부를 관리하는 상태 추가
+    
 
     // 태그 가져오기
     useEffect(() => {
@@ -183,14 +196,14 @@ export default function SelectQuestion() {
                 try {
                     const response = await axios.get(`/api/v1/exams/${Number(examId)}`);
                     setTags(response.data.tags);
-                } catch (error) {
+                } catch(error) {
                     console.error('Tags Error fetching data:', error);
                 }
             };
             fetchTag();
         }
     }, [examId]);
-
+    
 
 
     // 태그 선택
@@ -205,42 +218,43 @@ export default function SelectQuestion() {
 
     // 키워드 추가
     const handlePushKeyword = (e) => {
-        if ((e.key === 'Enter' || e.type === 'click' || e.key === ' ') && !e.nativeEvent.isComposing) {
+        if ((e.key === 'Enter' || e.type === 'click') && !e.nativeEvent.isComposing) {
             e.preventDefault();
-            if (search.trim() !== '') {
-                setKeywords([...keywords, search.trim()]); // 입력된 단어를 키워드 배열에 추가
+            const trimmedSearch = search.replace(/\s+/g, ''); // 정규식을 사용하여 모든 공백 제거
+            if (trimmedSearch !== '') { // 빈 문자열이 아닌 경우에만 추가
+                setKeywords([...keywords, trimmedSearch]); // 입력된 단어를 키워드 배열에 추가
                 setSearch(''); // 검색어를 초기화
             }
         }
-    };
+    };    
 
-
-
-
+  
     // 키워드 삭제
-    const handelDeleteKeyword = (index) => {
+    const handelDeleteKeyword = (index) => { 
         const deleteKeywords = [...keywords];
         deleteKeywords.splice(index, 1); // 선택된 인덱스의 키워드를 제거
         setKeywords(deleteKeywords); // 변경된 키워드 배열을 업데이트
     }
 
 
-
+    // CountInput onChange 이벤트 핸들러
     const handleCustomQuestionCountChange = (e) => {
         const value = e.target.value.trim(); // 입력된 값의 양 끝 공백 제거
         const numberValue = value === "" ? 0 : Number(value); // 문자열을 숫자로 변환
-        setCustomQuestionCount(numberValue); // 상태 업데이트
+        setCustomQuestionCount(numberValue); 
         setSelectedQuestionCount(numberValue); // 선택된 문제 수도 업데이트
     }
-
-
-
-
+    
+    // CountInput 클릭 이벤트 핸들러
+    const handleInputClick = () => {
+        setSelectedCountType('input');  // CountInput 선택 상태 설정
+    };
 
     // 문항 수 선택 핸들러
     const handleQuestionCountClick = (count) => {
-        setSelectedQuestionCount(count);
-        setSelectedPredefinedCount(count);
+        setSelectedCountType('button'); // CountButton 선택 상태 설정
+        setSelectedQuestionCount(count); 
+        setCustomQuestionCount(""); // CountInput 값 초기화
     }
 
     // 유형 정보 API 전달
@@ -264,17 +278,19 @@ export default function SelectQuestion() {
         console.log(URL);
 
         // API 호출
+        // API 호출
         try {
             const response = await axios.get(URL);
-            console.log(response.data.questions);
             setQuestions(response.data.questions);
+            console.log(response.data.questions);
         } catch (error) {
-            if (error.response && error.response.status === 404) { // 404 에러 처리
-                alert("해당 문제가 없습니다.");
+            if (error.response && error.response.status === 404) { // 404 에러 처리 
+                    <NoneQuestion />
             } else {
                 console.error("Error fetching questions:", error);
             }
-        }
+        }   
+        
     }
 
     return (
@@ -284,13 +300,12 @@ export default function SelectQuestion() {
                 <TagsContainer>
                     {Object.keys(tags).map(tagGroup => (
                         <div key={tagGroup}>
-                            <p>{tagGroup}</p>
+                            <SelectTitle>{tagGroup}</SelectTitle>
                             {tags[tagGroup].map(tag => (
                                 <TagButton
                                     key={tag}
-                                    selected={selectedTags.some(item => item.tagGroup === tagGroup && item.tag === tag)}
-                                    onClick={() => handleTagClick(tagGroup, tag)}
-                                >
+                                    $selected={selectedTags.some(item => item.tagGroup === tagGroup && item.tag === tag)}
+                                    onClick={() => handleTagClick(tagGroup, tag)} >
                                     {tag}
                                 </TagButton>
                             ))}
@@ -298,7 +313,7 @@ export default function SelectQuestion() {
                     ))}
                 </TagsContainer>
                 <div>
-                    <p> 키워드 검색  </p>
+                    <SelectTitle>키워드 검색</SelectTitle>
                     <KeywordInput
                         type="text"
                         value={search}
@@ -316,8 +331,8 @@ export default function SelectQuestion() {
                         {keywords.map((keyword, index) => (
                             <KeywordContainer key={index}>
                                 <Keyword>
-                                    {keyword}
-                                    <DeleteKeywordImg src="/img/x버튼.png" alt="delete img" onClick={() => handelDeleteKeyword(index)} />
+                                   {keyword} 
+                                     <DeleteKeywordImg src="/img/x버튼.png" alt="delete img" onClick={() => handelDeleteKeyword(index)} />
                                 </Keyword>
                             </KeywordContainer>
                         ))}
@@ -325,51 +340,43 @@ export default function SelectQuestion() {
                 </div>
                 <br />
                 <QuestionCount>
-                    <p> 문제 갯수 </p>
-                    <div style={{ display: 'inline-flex' }}>
-                        {/* <button>
-                                        <CountInput
-                            type="number"
-                            value={customQuestionCount}
-                            placeholder="직접 입력"
-                            onChange={handleCustomQuestionCountChange}
-                            min={1}
-                        />
-                        </button> */}
-                    </div>
+                    <SelectTitle> 문제 갯수 </SelectTitle>
+                    
                     {/*숫자만 입력 가능하게*/}
+                    {/* 숫자 입력란 */}
                     <CountInput
-                        type="text" pattern="[0-9]*"
-                        value={customQuestionCount || ""}
-                        placeholder={customQuestionCount === "" ? "직접 입력" : ""}
-                        onChange={handleCustomQuestionCountChange}
-                        min={1}
-                        onClick={() => setSelectedQuestionCount(parseInt(customQuestionCount))}
+                    type="text" pattern="[0-9]*" 
+                    value={customQuestionCount || ""}
+                    placeholder={customQuestionCount === "" ? "직접 입력" : ""}
+                    onChange={handleCustomQuestionCountChange}
+                    onClick={handleInputClick} // 클릭 이벤트 핸들러 추가
+                    $selected={selectedCountType === 'input'} // 선택된 상태에 따라 배경색 변경
                     />
 
-
+                    {/* 미리 정의된 문제 수 버튼 */}
                     {[10, 20, 30, 40].map(count => (
                         <CountButton
-                            key={count}
-                            type="button"
-                            selected={selectedPredefinedCount === count}
-                            onClick={() => handleQuestionCountClick(count)}
+                        key={count}
+                        type="button"
+                        $selected={selectedQuestionCount === count && selectedCountType === 'button'}
+                        onClick={() => handleQuestionCountClick(count)}
                         >
-                            {count} 문제
+                        {count} 문제
                         </CountButton>
                     ))}
-
-                    {/* 전체 검색 */}
-                    {/* <CountButton onClick={() => setSelectedQuestionCount(0)} selected={selectedQuestionCount === 0}> 전체 </CountButton> */}
+  
+                    {/* 전체 검색 버튼 */}
+                    <CountButton onClick={() => setSelectedQuestionCount(0)} $selected={selectedQuestionCount === 0 && selectedCountType === 'button'}> 전체 </CountButton>
                 </QuestionCount>
-                <br />
+                <br />  
                 <SubmitButtonContainer>
                     <SubmitButton type="submit" value="문제 검색" onClick={handleSubmit} />
                 </SubmitButtonContainer>
 
-            </Container>
-            <ShowQuestionList questions={questions} />
+                </Container>
+            
+            <ShowQuestionList questions={questions}/>
         </div>
     );
-
+    
 }

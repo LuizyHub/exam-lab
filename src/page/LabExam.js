@@ -4,8 +4,6 @@ import { Font, PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@
 import "../css/style.css"
 import { handleShuffle } from '../function/shuffleArray'
 import { renderImages, parseImages } from '../function/renderImages'
-import { useRecoilValue } from 'recoil';
-import { isVisibleState } from '../recoil/atoms';
 import NavigationBar from '../components/NavigationBar';
 import styled from 'styled-components';
 import axios from "axios";
@@ -14,7 +12,9 @@ import Exam from "../components/Exam";
 const LabExamContent = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
+    margin-left: 320px;
+    margin-right: 18%;
+    margin-top: 16px;
     transition: margin-left 0.3s ease;
 `;
 
@@ -70,7 +70,6 @@ export default function LabExam() {
   const [isNewWorkBook, setNewWorkBook] = useState("");
   const [isQuestion, setIsQuestion] = useState([]);
   const [isCommentary, setIsCommentary] = useState(false); //답안지 상태관리
-  const isSidebarOpen = useRecoilValue(isVisibleState);
 
   useEffect(() => {
     if (workbookId) {
@@ -118,7 +117,7 @@ export default function LabExam() {
   };
 
   return (
-    <LabExamContent $isSidebarOpen={isSidebarOpen}>
+    <LabExamContent>
       {/* <Exam /> */}
       <h2>{isWorkBook.title}</h2>
       <input placeholder="시험지 이름 입력" value={isNewWorkBook} onChange={handleInputChange}></input>

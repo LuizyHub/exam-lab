@@ -18,7 +18,6 @@ const NavItem = styled.button`
   background-color: transparent;
   height: 40px;
   width:100%;
-  font-size: 15px;
   transition: height 0.3s ease;
   &:hover {
     background-color: #ECF7F7;
@@ -28,6 +27,7 @@ const NavItem = styled.button`
 
 const NavText = styled.p`
   margin-left: 15px;
+  font-size: 18px;
 `;
 
 const NavLink = styled(Link)`
@@ -36,11 +36,11 @@ const NavLink = styled(Link)`
 `;
 
 const NavIcon = styled.img`
-  width: ${({ $primary }) => $primary ? '25px' : '20px'};
+  width: ${({ $primary }) => $primary ? '27px' : '23px'};
   margin-right: 0px;
   margin-left: ${({ $primary }) => $primary ? '24px' : '25px'};
   position: relative;
-  right: ${({ $isSidebarOpen }) => $isSidebarOpen ? '5px' : '-190px'};
+  right: ${({ $isSidebarOpen }) => $isSidebarOpen ? '7px' : '-187px'};
 `;
 
 

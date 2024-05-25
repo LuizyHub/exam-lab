@@ -35,7 +35,16 @@ export default function Exam({ isQuestion, parseImages, renderImages, isCommenta
               </div>
             </div>
 
-            <div style={{ display: isCommentary ? 'block' : 'none', marginBottom: '10px', marginTop: '10px', border: '1px solid black', width: '70%' }}>해설 : {item.commentary}
+            <div style={{ display: isCommentary ? 'block' : 'none', marginBottom: '10px', border: '1px solid #EBEDEF', padding: '20px', width: '1180px', height: 'auto' }}>
+                <div>{index + 1}. </div>
+                <div style={{ padding: '1px' }}>
+                <div style={{ display: 'flex', marginBottom: '10px' }}><p style={{ margin: '0px' }}>답 :
+                  {String.fromCharCode(9311 + parseInt(item.answers))}
+                  {/* { parseInt(item.answers) } AI가 답을 생성할 때 0부터 시작하면 안된다. */}
+                </p></div>
+                  <div style={{ display: 'flex' }}><p style={{ margin: '0px' }}>해 : {item.commentary}</p></div>
+                </div>
+
             </div>
 
           </div>

@@ -150,7 +150,6 @@ export default function LabExam() {
   return (
     <>
       <LabExamContent $isSidebarOpen={isSidebarOpen}>
-
         <NavigationBar />
         <div className="lab-exam">
           <div className="button-container">
@@ -163,7 +162,7 @@ export default function LabExam() {
                     {({ loading }) => (loading ? 'Loading...' : 'PDF 다운')}
                   </PDFDownloadLink>
                 </div>
-                <button onClick={postData}>저장하기</button>
+                <button onClick={postData} style={{ display: isWorkBook.title === undefined ? 'block' : 'none' }}>저장하기</button>
               </div>
             </div>
             <div className="button-bottom-container">

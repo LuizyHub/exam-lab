@@ -25,6 +25,11 @@ const SelectTitle = styled.p`
     margin-left: 14px;
 `;
 
+const TitleSpan = styled.p`
+    font-size: 14px;
+`;
+
+
 const TagsContainer = styled.div`
     margin-bottom: 10px;
     display: flex;
@@ -185,7 +190,6 @@ export default function SelectQuestion() {
     const [customQuestionCount, setCustomQuestionCount] = useState(""); // 문항 수 직접 입력을 위한 상태 변수
     const [selectedCountType, setSelectedCountType] = useState('button'); // 선택된 문항 수 버튼 파악
     const [questions, setQuestions] = useState([]);
-
     const [showNoneQuestion, setShowNoneQuestion] = useState(false); // 에러 발생 시 NoneQuestion 보이기 여부를 관리하는 상태 추가
     
 

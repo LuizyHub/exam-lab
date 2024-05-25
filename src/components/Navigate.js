@@ -65,7 +65,7 @@ export default function Navigate() {
 
   return (
     <NavigationContainer>
-      <NavLink to='/exams/create'>
+<NavLink to='/exams/create'>
         <NavItem>
           <NavIcon src="/img/시험지제작소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
           <NavText>시험지 제작소</NavText>
@@ -76,10 +76,12 @@ export default function Navigate() {
           <NavIcon src="/img/문제관리소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} $primary="true"/>
           <NavText>문제 관리소</NavText>
       </NavItem>
+
       <NavItem onClick={() => handleNavigate('/workbooks')}>
         <NavIcon src="/img/시험지저장소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
         <NavText>시험지 저장소</NavText>
       </NavItem>
+
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
     </NavigationContainer>
   );

@@ -72,7 +72,6 @@ const DeleteImg = styled.img`
     width: 15px;
 `;
 
-
 export default function WorkBooks() {
 
     const navigate = useNavigate();
@@ -90,7 +89,6 @@ export default function WorkBooks() {
                 created_date: formatDateString(workbook.created_date),
                 updated_date: formatDateString(workbook.updated_date)
             }))); // 배열 전체를 저장
-            console.log(workbooks);
 
             // 시험지별 삭제 모달을 띠우기 위함
             const initialModalStates = {};
@@ -104,7 +102,7 @@ export default function WorkBooks() {
           });
       }, []);
 
-    // 날짜 문자열 포맷팅 함수
+      // 날짜 문자열 포맷팅 함수
     const formatDateString = (dateString) => {
         const date = new Date(dateString);
         const year = date.getFullYear();

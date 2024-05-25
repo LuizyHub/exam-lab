@@ -58,7 +58,6 @@ const ModalFooter = styled.div`
   justify-content: center;
   gap: 8px;
 `;
-
 const LoginA = styled.a`
   background-color: #5BB6B4;
   color: white;
@@ -83,11 +82,10 @@ const LoginModal = ({ onClose }) => {
           <CloseButton onClick={onClose}>&times;</CloseButton>
         </ModalHeader>
         <ModalBody>
-          <hr />
           <p>나만의 문제와 시험지 저장소 페이지를 이용하시려면 <br/> 로그인이 필요합니다.</p>
         </ModalBody>
         <ModalFooter>
-          <LoginA href='/users/login'>로그인</LoginA>
+        <LoginA href='/users/login'>로그인</LoginA>
         </ModalFooter>
       </ModalContent>
     </ModalOverlay>

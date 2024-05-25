@@ -91,15 +91,9 @@ export default function LabExam() {
 
   const [isWorkBook, setWorkBook] = useState([]);
   const [isNewWorkBook, setNewWorkBook] = useState("");
-<<<<<<< HEAD
-  const [isQuestion, setIsQuestion] = useState([]);
-  const [isCommentary, setIsCommentary] = useState(false); //답안지 상태관리
-=======
   const [isQuestion, setIsQuestion] = useState([]); //상태변수 이름 변경 필요
   const [isCommentaryQuestion, setIsCommentaryQuestion] = useState(true);//상태변수 이름 변경 필요
   const [isCommentary, setIsCommentary] = useState(false); //상태변수 이름 변경 필요
-  const isSidebarOpen = useRecoilValue(isVisibleState);
->>>>>>> fce28a5b8b77ac2dce5aa5fa72de0d59df76aaa5
 
   useEffect(() => {
     if (workbookId) {
@@ -153,17 +147,8 @@ export default function LabExam() {
   };
 
   return (
-<<<<<<< HEAD
-    <LabExamContent>
-      {/* <Exam /> */}
-      <h2>{isWorkBook.title}</h2>
-      <input placeholder="시험지 이름 입력" value={isNewWorkBook} onChange={handleInputChange}></input>
-      {/* 문제 섞기 버튼 */}
-      <button onClick={postData}>저장하기</button>
-=======
     <>
-      <LabExamContent $isSidebarOpen={isSidebarOpen}>
->>>>>>> fce28a5b8b77ac2dce5aa5fa72de0d59df76aaa5
+      <LabExamContent>
 
         <NavigationBar />
         <div className="lab-exam">

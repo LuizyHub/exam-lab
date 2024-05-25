@@ -127,19 +127,8 @@ export default function EditExam() {
   };
 
   return (
-<<<<<<< HEAD
-    <EditExamPage>
-      <h1>문제 등록하기</h1>
-      {/* 리모컨 */}
-      {/* <div style={{ marginBottom: '40px' }}>
-        <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleAutoLogin() }}>logIn</button>
-        <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLogout() }}>logOut</button>
-        <button style={{ backgroundColor: 'gray', color: 'white' }} onClick={() => { handleLoginState() }}>logState</button>
-      </div> */}
-=======
-    <EditExamPage $isSidebarOpen={isSidebarOpen}>
->>>>>>> fce28a5b8b77ac2dce5aa5fa72de0d59df76aaa5
-
+  <EditExamPage>
+      
       <div className="edit-exam">
 
         <div id="side-bar">

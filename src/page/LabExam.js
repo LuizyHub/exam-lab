@@ -24,7 +24,6 @@ Font.register({
   family: 'NanumGothic-Regular',
   src: '/font/NanumGothic-Regular.ttf', // Font.register 폰트 파일의 경로는 기본 public으로 시작
 });
-
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
@@ -37,10 +36,10 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     fontFamily: 'NanumGothic-Regular',
     fontSize: 10,
-    width: '90%', // Text 요소의 너비를 100%로 설정하여 부모 요소의 너비를 채우도록 함
-    height: 'auto', // Text 요소의 높이를 자동으로 조정하여 내용에 맞게 함
-    marginBottom: 10, // Text 요소 간의 하단 여백 추가
-    border: '1px solid #F9F9FA', // 각 Text 요소 주변에 테두리 추가
+    width: '90%',
+    height: 'auto',
+    marginBottom: 10,
+    border: '1px solid #F9F9FA',
   },
   image: {
     width: 80,
@@ -65,23 +64,24 @@ const styles = StyleSheet.create({
 const PdfDocument = ({ isQuestion, isCommentary }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {/* 각 페이지에 대한 컨텐츠를 추가. */}
       {isQuestion.map((question, index) => (
         <div key={index} style={styles.section}>
-          {/* 각 질문과 그에 따른 내용을 렌더링. */}
           <Text>{index + 1}. {question.question}</Text>
           {question.question_images_out && question.question_images_out.length > 0 && (
             question.question_images_out.map((image, imageIndex) => (
-              <Image key={imageIndex} src={image.url} style={styles.image} />
+              // 이미지 URL의 유효성 검사
+              image.url ? (
+                <Image key={imageIndex} src={image.url} style={styles.image} />
+              ) : null
             ))
           )}
-          {/* <Image src={question.question_images_out.url} /> */}
           <Text>{question.options}</Text>
         </div>
       ))}
     </Page>
   </Document>
 );
+
 
 export default function LabExam() {
 

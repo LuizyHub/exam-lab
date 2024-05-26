@@ -2,16 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from '../components/NavigationBar';
 import axios from "axios";
-import { useRecoilValue } from 'recoil';
-import { isVisibleState } from '../recoil/atoms';
 import {DeleteWorkBookModal} from '../modals/DeleteModal';
 import styled from 'styled-components';
 
 const WorkBooksContent = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
+    margin-left: 320px;
+    margin-right: 18%;
+    margin-top: 16px;
     transition: margin-left 0.3s ease;
+`;
+
+const PageTitle = styled.h1`
+  font-size: 36px;
+  font-weight: bold;
 `;
 
 const StyledParagraph = styled.p`
@@ -73,7 +78,6 @@ export default function WorkBooks() {
     const [workbooks, setWorkbooks] = useState([]);
     const [modalStates, setModalStates] = useState({}); // 시험별 모달 상태
 
-    const isSidebarOpen = useRecoilValue(isVisibleState);
 
     // 시험지 불러오기
     useEffect(() => {
@@ -143,8 +147,8 @@ export default function WorkBooks() {
 
 
         return (
-            <WorkBooksContent $isSidebarOpen={isSidebarOpen}>
-               <h1>시험지 저장소</h1>
+            <WorkBooksContent>
+               <PageTitle>시험지 저장소</PageTitle>
                 <WorkBookCreateButton onClick={() => {navigate('/exams/create')}}> 
                     <CreateImg src="/img/추가하기.png" alt="Create Icon" />
                 </WorkBookCreateButton>

@@ -11,10 +11,11 @@ import axios from 'axios';
 const NavigationContainer = styled.div`
     position: fixed;
     top: 0;
-    left: ${({ $isVisible }) => ($isVisible ? '0' : '-205px')};
+    left: ${({ $isVisible }) => ($isVisible ? '0' : '-199px')};
     width: 256px;
     height: 100%;
     background-color: #fff;
+    z-index: 9999;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease-in-out;
 `;
@@ -40,9 +41,9 @@ const NavigationContent = styled.div`
 `;
 
 const Logo = styled.img`
-    width: 140px;
+    width: 163px;
     margin-bottom: 35px;
-    
+    margin-right: 20px;
 `;
 
 const UserLabButton = styled.button`
@@ -61,7 +62,6 @@ const StyledButton = styled.button`
     color: #3E3F41;
     border: none;
     cursor: pointer;
-    font-size: 16px;
     text-decoration-line: none;
     margin-bottom: 80px;
     margin-top: 10px;
@@ -75,25 +75,26 @@ const LogImgContainer = styled.div`
 const LogImg = styled.img`
     width: 30px;
     position: absolute; 
-    left: ${({ $isVisible }) => $isVisible ? '30px' : ' '}; 
-    right: ${({ $isVisible }) => $isVisible ? ' ' : '8px'}; 
+    left: ${({ $isVisible }) => $isVisible ? '32px' : ' '}; 
+    right: ${({ $isVisible }) => $isVisible ? ' ' : '10px'}; 
     transition: right 0.1s ease-in-out;
 `;
 
 const LoginText = styled.span`
     margin-left: 6px;
-    font-size: 15px;
+    font-size: 18px;
 `;
 
 const LogoutText = styled.span`
     margin-left: 65px;
-    font-size: 15px;
+    font-size: 18px;
 `;
 
 const CloseButtonContainer = styled.div`
     position: absolute;
     top: 40px;
-    right: 7px;
+    right: 12px;
+    margin-left: 5px;
     transition: right 0.1s ease-in-out;
 `;
 
@@ -108,7 +109,7 @@ const CloseButton = styled.button`
 
 const NavigationIcon = styled.img`
     width: 20px;
-    outline: none;
+    outline: none;s
 `;
 
 

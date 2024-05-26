@@ -5,8 +5,6 @@ import AICreate from "../components/AICreate";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLoginController } from "../function/useLoginController";
-import { useRecoilValue } from 'recoil';
-import { isVisibleState } from '../recoil/atoms';
 import styled from 'styled-components';
 import { getData, sendDeleteData, sendPutData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
@@ -17,7 +15,9 @@ const EditExamPage = styled.div
   `
     display: flex;
     flex-direction: column;
-    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
+    margin-left: 270px;
+    margin-right: 18%;
+    margin-top: 16px;
     transition: margin-left 0.3s ease;
 `
   ;
@@ -26,7 +26,6 @@ export default function EditExam() {
 
   //로그인 리모컨
   const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
-  const isSidebarOpen = useRecoilValue(isVisibleState);
 
   const location = useLocation();
   // 선택된 시험의 examId와 examTitle을 받아, AttributeManager 컴포넌트에게 props로 전달
@@ -128,8 +127,8 @@ export default function EditExam() {
   };
 
   return (
-    <EditExamPage $isSidebarOpen={isSidebarOpen}>
-
+  <EditExamPage>
+      
       <div className="edit-exam">
 
         <div id="side-bar">

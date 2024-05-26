@@ -4,8 +4,6 @@ import { Font, PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image } 
 // import "../css/style.css"
 import { handleShuffle } from '../function/shuffleArray'
 import { renderImages, parseImages } from '../function/renderImages'
-import { useRecoilValue } from 'recoil';
-import { isVisibleState } from '../recoil/atoms';
 import NavigationBar from '../components/NavigationBar';
 import styled from 'styled-components';
 import '../css/labexam.css';
@@ -16,7 +14,9 @@ const LabExamContent =
   styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
+    margin-left: 320px;
+    margin-right: 18%;
+    margin-top: 16px;
     transition: margin-left 0.3s ease;
 `;
 
@@ -94,7 +94,6 @@ export default function LabExam() {
   const [isQuestion, setIsQuestion] = useState([]); //상태변수 이름 변경 필요
   const [isCommentaryQuestion, setIsCommentaryQuestion] = useState(true);//상태변수 이름 변경 필요
   const [isCommentary, setIsCommentary] = useState(false); //상태변수 이름 변경 필요
-  const isSidebarOpen = useRecoilValue(isVisibleState);
 
   useEffect(() => {
     if (workbookId) {
@@ -149,7 +148,7 @@ export default function LabExam() {
 
   return (
     <>
-      <LabExamContent $isSidebarOpen={isSidebarOpen}>
+      <LabExamContent>
 
         <NavigationBar />
         <div className="lab-exam">

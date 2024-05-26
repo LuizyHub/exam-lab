@@ -35,8 +35,8 @@ const ListButton = styled.button`
 
 const ToggleButton = styled.button`
     padding: 10px 20px;
-    background-color: ${({ show }) => show ? '#EDFAFA' : '#F5F5F7'};
-    color: ${({ show }) => show ? '#24ABA8' : '#9A9DA0'};
+    background-color: ${({ $show }) => $show ? '#EDFAFA' : '#F5F5F7'};
+    color: ${({ $show }) => $show ? '#24ABA8' : '#9A9DA0'};
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -44,7 +44,6 @@ const ToggleButton = styled.button`
     top: 120px;
     right: 10px;
 `;
-
 
 const CheckBox = styled.input`
     position: absolute; 
@@ -144,55 +143,54 @@ export default function ShowQuestionList({ questions }) {
             ) : (
                 <ListButton onClick={handleSelectAllQuestions}>전체 선택</ListButton>
             )}
-            <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} show={showSelectedQuestions}>
+            <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} $show={showSelectedQuestions}>
                 선택된 문제 {showSelectedQuestionsCount}
             </ToggleButton>
-        <ShowQuestionContent>
-            
-            <Container>
-                <QuestionContainer>
-                    <QuestionList>
-                        {showSelectedQuestions ? (
-                            selectedQuestions.map((item, index) => (
-                                <QuestionItem
-                                    key={index}
-                                    onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
-                                    selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
-                                >
-                                    <StyledLabel onClick={() => handleLabelClick(item)}>
-                                        <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
-                                        <ShowQuestion
-                                            question={item.question}
-                                            question_images_out={item.question_images_out}
-                                            question_images_in={item.question_images_in}
-                                            options={item.options}
-                                        />
-                                    </StyledLabel>
-                                </QuestionItem>
-                            ))
-                        ) : (
-                            questions.map((item, index) => (
-                                <QuestionItem
-                                    key={index}
-                                    onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
-                                    selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
-                                >
-                                    <StyledLabel>
-                                        <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
-                                        <ShowQuestion
-                                            question={item.question}
-                                            question_images_out={item.question_images_out}
-                                            question_images_in={item.question_images_in}
-                                            options={item.options}
-                                        />
-                                    </StyledLabel>
-                                </QuestionItem>
-                            ))
-                        )}
-                    </QuestionList>
-                </QuestionContainer>
-            </Container>
-        </ShowQuestionContent>
+            <ShowQuestionContent>
+                <Container>
+                    <QuestionContainer>
+                        <QuestionList>
+                            {showSelectedQuestions ? (
+                                selectedQuestions.map((item, index) => (
+                                    <QuestionItem
+                                        key={index}
+                                        onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
+                                        selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
+                                    >
+                                        <StyledLabel onClick={() => handleLabelClick(item)}>
+                                            <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
+                                            <ShowQuestion
+                                                question={item.question}
+                                                question_images_out={item.question_images_out}
+                                                question_images_in={item.question_images_in}
+                                                options={item.options}
+                                            />
+                                        </StyledLabel>
+                                    </QuestionItem>
+                                ))
+                            ) : (
+                                questions.map((item, index) => (
+                                    <QuestionItem
+                                        key={index}
+                                        onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
+                                        selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
+                                    >
+                                        <StyledLabel>
+                                            <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
+                                            <ShowQuestion
+                                                question={item.question}
+                                                question_images_out={item.question_images_out}
+                                                question_images_in={item.question_images_in}
+                                                options={item.options}
+                                            />
+                                        </StyledLabel>
+                                    </QuestionItem>
+                                ))
+                            )}
+                        </QuestionList>
+                    </QuestionContainer>
+                </Container>
+            </ShowQuestionContent>
         </div>
     );
 }

@@ -1,0 +1,89 @@
+name: Build and Deploy Java
+ 
+on:
+  push:
+    branches:
+      - feature/be/154
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: spring
+
+    steps:
+      - name: Set up environment variables
+        run: |
+          echo "aws.s3.region=${{ secrets.AWS_S3_REGION }}" >> src/main/resources/application.properties
+          echo "aws.s3.accessKeyId=${{ secrets.AWS_S3_ACCESSKEYID }}" >> src/main/resources/application.properties
+          echo "aws.s3.secretKey=${{ secrets.AWS_S3_SECRETKEY }}" >> src/main/resources/application.properties
+          echo "logging.level.root=${{ secrets.LOGGING_LEVEL_ROOT }}" >> src/main/resources/application.properties
+          echo "spring.ai.openai.api-key=${{ secrets.SPRING_AI_OPENAI_API_KEY }}" >> src/main/resources/application.properties
+          echo "spring.datasource.url=${{ secrets.SPRING_DATASOURCE_URL }}" >> src/main/resources/application.properties
+          echo "spring.datasource.username=${{ secrets.SPRING_DATASOURCE_USERNAME }}" >> src/main/resources/application.properties
+          echo "spring.datasource.password=${{ secrets.SPRING_DATASOURCE_PASSWORD }}" >> src/main/resources/application.properties
+          echo "spring.datasource.driverClassName=${{ secrets.SPRING_DATASOURCE_DRIVERCLASSNAME }}" >> src/main/resources/application.properties
+          echo "spring.jpa.hibernate.ddl-auto=${{ secrets.SPRING_JPA_HIBERNATE_DDL_AUTO }}" >> src/main/resources/application.properties
+          echo "spring.elasticsearch.rest.uris=${{ secrets.SPRING_ELASTICSEARCH_REST_URIS }}" >> src/main/resources/application.properties
+          echo "spring.elasticsearch.rest.username=${{ secrets.SPRING_ELASTICSEARCH_REST_USERNAME }}" >> src/main/resources/application.properties
+          echo "spring.elasticsearch.rest.password=${{ secrets.SPRING_ELASTICSEARCH_REST_PASSWORD }}" >> src/main/resources/application.properties
+          echo "spring.data.mongodb.uri=${{ secrets.SPRING_DATA_MONGODB_URI }}" >> src/main/resources/application.properties
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: exam-lab-jar
+          path: build/libs/exam-lab-0.0.1-SNAPSHOT.jar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: exam-lab-jar
+          path: ./exam-lab-0.0.1-SNAPSHOT.jar
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EXAM_LAB_BE_PEM }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Shutdown existing server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SERVER_IP }} "
+            pkill -f 'exam-lab-0.0.1-SNAPSHOT.jar' || true;
+            rm -f /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar;
+            rm -f /home/ubuntu/nohup.out;
+          "
+
+      - name: Copy new JAR file to server
+        run: |
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ./exam-lab-0.0.1-SNAPSHOT.jar ${{ secrets.SERVER_IP }}:/home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar
+
+      - name: Start new server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SERVER_IP }} "
+            nohup java -jar /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar &
+          " 

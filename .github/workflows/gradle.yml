@@ -68,20 +68,20 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EXAM_LAB_BE_PEM }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com >> ~/.ssh/known_hosts
+#          ssh-keyscan -H ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com >> ~/.ssh/known_hosts
 
       - name: Shutdown existing server
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com \
+          ssh -i ~/.ssh/id_rsa ubuntu@ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com \
             "pkill -f 'exam-lab-0.0.1-SNAPSHOT.jar' || true; \
             rm -f /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar; \
             rm -f /home/ubuntu/nohup.out;"
 
       - name: Copy new JAR file to server
         run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ./exam-lab-0.0.1-SNAPSHOT.jar ubuntu@ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com:/home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar
+          scp -i ~/.ssh/id_rsa ./exam-lab-0.0.1-SNAPSHOT.jar ubuntu@ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com:/home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar
 
       - name: Start new server
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com \
+          ssh -i ~/.ssh/id_rsa ubuntu@ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com \
             "nohup java -jar /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar &"

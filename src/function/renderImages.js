@@ -34,6 +34,4 @@ export function parseImages(item, itemElements) {
     });
   }
   return parsedItem;
-
 }
-

@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Font, PDFDownloadLink, Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { handleShuffle } from '../function/shuffleArray';
-import { renderImages, parseImages } from '../function/renderImages';
-import { useRecoilValue } from 'recoil';
-import { isVisibleState } from '../recoil/atoms';
+// import "../css/style.css"
+import { handleShuffle } from '../function/shuffleArray'
+import { renderImages, parseImages } from '../function/renderImages'
 import NavigationBar from '../components/NavigationBar';
 import styled from 'styled-components';
 import '../css/labexam.css';
 import axios from "axios";
 import Exam from "../components/Exam";
 
-const LabExamContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: ${({ $isSidebarOpen }) => $isSidebarOpen ? '250px' : '60px'};
-  transition: margin-left 0.3s ease;
+const LabExamContent =
+  styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-left: 320px;
+    margin-right: 18%;
+    margin-top: 16px;
+    transition: margin-left 0.3s ease;
 `;
 
 Font.register({
@@ -114,10 +116,9 @@ export default function LabExam() {
 
   const [isWorkBook, setWorkBook] = useState([]);
   const [isNewWorkBook, setNewWorkBook] = useState("");
-  const [isQuestion, setIsQuestion] = useState([]);
-  const [isCommentaryQuestion, setIsCommentaryQuestion] = useState(true);
-  const [isCommentary, setIsCommentary] = useState(false);
-  const isSidebarOpen = useRecoilValue(isVisibleState);
+  const [isQuestion, setIsQuestion] = useState([]); //상태변수 이름 변경 필요
+  const [isCommentaryQuestion, setIsCommentaryQuestion] = useState(true);//상태변수 이름 변경 필요
+  const [isCommentary, setIsCommentary] = useState(false); //상태변수 이름 변경 필요
 
   useEffect(() => {
     if (workbookId) {
@@ -169,7 +170,7 @@ export default function LabExam() {
 
   return (
     <>
-      <LabExamContent $isSidebarOpen={isSidebarOpen}>
+      <LabExamContent>
         <NavigationBar />
         <div className="lab-exam">
           <div className="button-container">

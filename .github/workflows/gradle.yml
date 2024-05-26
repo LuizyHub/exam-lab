@@ -68,7 +68,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EXAM_LAB_BE_PEM }}" > ~/.ssh/exam-lab-be.pem
           chmod 600 ~/.ssh/exam-lab-be.pem
-          ssh-keyscan -H ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com >> ~/.ssh/known_hosts
+#          ssh-keyscan -H ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com >> ~/.ssh/known_hosts
 
       - name: Shutdown existing server
         run: |

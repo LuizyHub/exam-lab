@@ -78,7 +78,7 @@ const PdfDocument = ({ isQuestion, isCommentary }) => {
 
   return (
       <Document>
-    <Page size="A4" style={styles.page} wrap>
+    <Page size="A4" style={styles.page}>
       {isQuestion.map((question, index) => (
         <View key={index} style={styles.section}>
           <Text>{index + 1}. {question.question}</Text>

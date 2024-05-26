@@ -41,12 +41,12 @@ const styles = StyleSheet.create({
     // border: '1px solid #F9F9FA',
   },
   image: {
-    width: '40%',
+    width: '30%',
     height: 'auto',
     marginBottom: 5,
   },
   fullWidthImage: {
-    width: '40%',
+    width: '100%',
     height: 'auto',
   },
   input: {
@@ -77,32 +77,32 @@ const PdfDocument = ({ isQuestion, isCommentary }) => {
   };
 
   return (
-    <Document>
-      <Page size="A4" style={styles.page} wrap>
-        {isQuestion.map((question, index) => (
-          <View key={index} style={styles.section}>
-            <Text>{index + 1}. {question.question}</Text>
-            {question.question_images_out && question.question_images_out.length > 0 && (
-              question.question_images_out.map((image, imageIndex) => (
-                image.url ? (
-                  <Image 
+      <Document>
+    <Page size="A4" style={styles.page} wrap>
+      {isQuestion.map((question, index) => (
+        <View key={index} style={styles.section}>
+          <Text>{index + 1}. {question.question}</Text>
+          {question.question_images_out && question.question_images_out.length > 0 && (
+            question.question_images_out.map((image, imageIndex) => (
+              image.url ? (
+                <Image 
                     key={imageIndex} 
                     src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`} // 이미지 URL에 쿼리 파라미터 추가
                     style={styles.image}
                     onError={() => handleImageError(imageIndex)} // 이미지 로드 오류 처리 핸들러 추가
                   />
-                ) : null
-              ))
-            )}
+              ) : null
+            ))
+          )}
           {question.options.map((option, optionIndex) => (
             <Text key={optionIndex}>
               {String.fromCharCode(9312 + optionIndex)} {option}
             </Text>
           ))}
-          </View>
-        ))}
-      </Page>
-    </Document>
+        </View>
+      ))}
+    </Page>
+  </Document>
   );
 };
 

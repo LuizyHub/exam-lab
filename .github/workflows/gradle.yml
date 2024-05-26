@@ -68,7 +68,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EXAM_LAB_BE_PEM }}" > ~/.ssh/exam-lab-be.pem
           chmod 600 ~/.ssh/exam-lab-be.pem
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+#          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Shutdown existing server
         run: |
@@ -82,10 +82,15 @@ jobs:
           scp -i ~/.ssh/exam-lab-be.pem ./exam-lab-0.0.1-SNAPSHOT.jar ubuntu@${{ secrets.SERVER_IP }}:/home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar
 
       - name: Start new JAR file
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ubuntu
-          key: ~/.ssh/exam-lab-be.pem
-          script: |
-            nohup java -jar /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar &
+        run: |
+          ssh -i ~/.ssh/exam-lab-be.pem ubuntu@ec2-${{ secrets.SERVER_IP }}.ap-northeast-2.compute.amazonaws.com \
+            "nohup java -jar /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar &"
+
+#      - name: Start new JAR file
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.SERVER_IP }}
+#          username: ubuntu
+#          key: ~/.ssh/exam-lab-be.pem
+#          script: |
+#            nohup java -jar /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar &

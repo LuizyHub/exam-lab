@@ -1,0 +1,1128 @@
+openapi: 3.0.1
+info:
+  title: Exam Lab API
+  description: API for Exam Lab
+  version: 0.1.0
+servers:
+- url: https://exam-lab.store/
+- url: http://localhost:8080/
+tags: []
+paths:
+  /api/v1/exams:
+    get:
+      tags:
+      - exams
+      summary: Get all exams
+      description: Get all exams
+      operationId: exams
+      parameters:
+      - name: sample
+        in: query
+        description: true일 경우 sample 시험도 포함 default는 false
+        required: false
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamList'
+              examples:
+                exams:
+                  value: "{\"exams\":[{\"exam_title\":\"운전면허 - 1,2종\",\"exam_id\"\
+                    :1,\"size\":0},{\"exam_title\":\"수능 - 영어\",\"exam_id\":2,\"size\"\
+                    :0}]}"
+    post:
+      tags:
+      - exams
+      summary: Add exams
+      description: 회원만이 시험을 추가할 수 있습니다.응답 message로 생성된 시험지 ID를 반환합니다.
+      operationId: add-exams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamAdd'
+            examples:
+              add-exams:
+                value: "{\"exam_title\":\"소웨공\",\"tags\":{\"난이도\":[\"상\",\"중\",\"하\
+                  \"],\"단원\":[\"1\",\"2\",\"3\"]}}"
+      responses:
+        "201":
+          description: "201"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-exams1523854693'
+              examples:
+                add-exams:
+                  value: "{\"code\":201,\"message\":\"5\"}"
+  /api/v1/questions:
+    put:
+      tags:
+      - questions
+      summary: Update question
+      description: Question 내용 업데이트
+      operationId: update-question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-v1-questions-420259584'
+            examples:
+              update-question:
+                value: "{\"question\":\"변경된 질문입니다.\",\"options\":[\"변경된 보기1\",\"변경\
+                  된 보기2\",\"변경된 보기3\",\"변경된 보기4\"],\"answers\":[1,3],\"id\":\"Ow4HcY8BXRBYEYFc-8Hb\"\
+                  ,\"commentary\":\"변경된 설명입니다.\",\"tags\":{\"난이도\":[\"중\"],\"단원\"\
+                  :[\"2\"]}}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                update-question:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
+  /api/v1/users:
+    post:
+      tags:
+      - users
+      summary: Add user
+      description: 사용자 추가성공할 경우 200 OK를 반환합니다실패할 경우 400 Bad Request를 반환합니다.
+      operationId: user add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-v1-users-963924044'
+            examples:
+              user add:
+                value: "{\"password\":\"12c0d05c-37f8-4e07-a769-de626d63c443!\",\"\
+                  password_confirm\":\"12c0d05c-37f8-4e07-a769-de626d63c443!\",\"\
+                  user_id\":\"12c0d05c-37f8-4e07-a769-de626d63c443@gmail.com\",\"\
+                  name\":\"12c0d05c-37f8-4e07-a769-de626d63c443\"}"
+      responses:
+        "200":
+          description: "200"
+  /api/v1/workbooks:
+    get:
+      tags:
+      - workbooks
+      summary: 사용자의 문제집 목록을 조회한다.
+      description: "사용자의 시험지 목록을 조회한다.    \n- 로그인 되어있어야 합니다."
+      operationId: workbooks-get
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workbook-summary-list'
+              examples:
+                workbooks-get:
+                  value: "{\"code\":200,\"message\":[{\"id\":\"6641ccd6326cb54726931cbf\"\
+                    ,\"title\":\"한국인 상식 시험지\",\"summary\":\"힌국인 상식 시험지 입니다.\",\"created_date\"\
+                    :\"2024-05-13T17:18:30.311\",\"updated_date\":\"2024-05-13T17:18:30.311\"\
+                    },{\"id\":\"6641ccd6326cb54726931cc0\",\"title\":\"한국인 상식 시험지\"\
+                    ,\"summary\":\"힌국인 상식 시험지 입니다.\",\"created_date\":\"2024-05-13T17:18:30.353\"\
+                    ,\"updated_date\":\"2024-05-13T17:18:30.353\"}]}"
+    post:
+      tags:
+      - workbooks
+      summary: 시험지를 생성한다.
+      description: "시험지를 생성한다.    \n- 로그인 되어있어야 합니다.  \n- content에는 어떤값이 들어가도 json형\
+        식만 맞다면 동작합니다."
+      operationId: workbooks-post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workbook-create'
+            examples:
+              workbooks-post:
+                value: "{\n\t\"title\": \"한국인 상식 시험지\",\n    \"summary\": \"힌국인 상식\
+                  \ 시험지 입니다.\",\n\t\"content\": {\n        \"questions\": [\n    \
+                  \        {\n                \"id\": \"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"호돌이\",\n          \
+                  \          \"수호랑\",\n                    \"반다비\",\n            \
+                  \        \"하니\"\n                ],\n                \"answers\"\
+                  : [\n                    0\n                ],\n               \
+                  \ \"commentary\": \"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\n           \
+                  \     \"commentary_images_in\": [],\n                \"commentary_images_out\"\
+                  : [],\n                \"tags\": null\n            },\n        \
+                  \    {\n                \"id\": \"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"한글을 창제한 왕인 다음 중 누구입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"세종대왕\",\n         \
+                  \           \"태조\",\n                    \"광해군\",\n            \
+                  \        \"영조\"\n                ],\n                \"answers\"\
+                  : [\n                    0\n                ],\n               \
+                  \ \"commentary\": \"한글을 창제한 왕은 세종대왕입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            },\n            {\n       \
+                  \         \"id\": \"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\",\n  \
+                  \              \"type\": \"객관식\",\n                \"question\"\
+                  : \"한글은 누가 창제하였습니까?\",\n                \"question_images_in\":\
+                  \ [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"이순신\",\n          \
+                  \          \"세종대왕\",\n                    \"광개토대왕\",\n         \
+                  \           \"김구\"\n                ],\n                \"answers\"\
+                  : [\n                    1\n                ],\n               \
+                  \ \"commentary\": \"한글은 세종대왕에 의해 창제되었습니다.\",\n                \"\
+                  commentary_images_in\": [],\n                \"commentary_images_out\"\
+                  : [],\n                \"tags\": null\n            },\n        \
+                  \    {\n                \"id\": \"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 한국의 전통 음식이 아닌 것은?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"김치\",\n           \
+                  \         \"스시\",\n                    \"불고기\",\n              \
+                  \      \"비빔밥\"\n                ],\n                \"answers\"\
+                  : [\n                    1\n                ],\n               \
+                  \ \"commentary\": \"스시는 일본의 전통 음식입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            },\n            {\n       \
+                  \         \"id\": \"b78fef73-7237-40e2-8a68-dca7a9611a2a\",\n  \
+                  \              \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 한국의 수도는 어디입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"서울\",\n           \
+                  \         \"부산\",\n                    \"인천\",\n               \
+                  \     \"대구\"\n                ],\n                \"answers\": [\n\
+                  \                    0\n                ],\n                \"commentary\"\
+                  : \"서울은 대한민국의 수도입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            }\n        ],\n        \"size\"\
+                  : 5\n    }\n}"
+      responses:
+        "201":
+          description: "201"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workbook'
+              examples:
+                workbooks-post:
+                  value: "{\"code\":201,\"message\":{\"id\":\"6641ccd6326cb54726931cbf\"\
+                    ,\"title\":\"한국인 상식 시험지\",\"summary\":\"힌국인 상식 시험지 입니다.\",\"content\"\
+                    :{\"questions\":[{\"id\":\"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니\
+                    까?\",\"question_images_in\":[],\"question_images_out\":[],\"options\"\
+                    :[\"호돌이\",\"수호랑\",\"반다비\",\"하니\"],\"answers\":[0],\"commentary\"\
+                    :\"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\"commentary_images_in\":[],\"\
+                    commentary_images_out\":[],\"tags\":null},{\"id\":\"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글을 창제한 왕인 다음 중 누구입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"세종대왕\",\"태조\",\"\
+                    광해군\",\"영조\"],\"answers\":[0],\"commentary\":\"한글을 창제한 왕은 세종대왕\
+                    입니다.\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글은 누가 창제하였습니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"이순신\",\"세종대왕\",\"\
+                    광개토대왕\",\"김구\"],\"answers\":[1],\"commentary\":\"한글은 세종대왕에 의해\
+                    \ 창제되었습니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
+                    :[],\"tags\":null},{\"id\":\"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 전통 음식이 아닌 것은?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"김치\",\"스시\",\"불고\
+                    기\",\"비빔밥\"],\"answers\":[1],\"commentary\":\"스시는 일본의 전통 음식입니다\
+                    .\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"b78fef73-7237-40e2-8a68-dca7a9611a2a\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 수도는 어디입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"서울\",\"부산\",\"인천\
+                    \",\"대구\"],\"answers\":[0],\"commentary\":\"서울은 대한민국의 수도입니다.\"\
+                    ,\"commentary_images_in\":[],\"commentary_images_out\":[],\"tags\"\
+                    :null}],\"size\":5},\"created_date\":\"2024-05-13T17:18:30.311716\"\
+                    ,\"updated_date\":\"2024-05-13T17:18:30.311716\"}}"
+  /api/v1/exams/{examId}:
+    get:
+      tags:
+      - exams
+      summary: Get exam type
+      description: Get exam type
+      operationId: exam-typenon-exam-type
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamType'
+              examples:
+                exam-type:
+                  value: "{\"exam_title\":\"운전면허 - 1,2종\",\"tags\":{\"category\":[\"\
+                    상황\",\"표지\",\"화물\",\"법\"]}}"
+        "400":
+          description: "400"
+    put:
+      tags:
+      - exams
+      summary: patch exams
+      description: 본인의 시험만 수정할 수 있습니다.시험 내용을 덮어쓰기 합니다.
+      operationId: patch-exams
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+            examples:
+              patch-exams:
+                value: "{\"tags\":{\"난이도\":[\"상\",\"중\",\"하\",\"최하\"],\"단원\":[\"1\"\
+                  ,\"2\",\"3\",\"4\",\"5\"]},\"exam_title\":\"소프트웨어공학\"}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                patch-exams:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
+    delete:
+      tags:
+      - exams
+      summary: delete exams
+      description: 본인의 시험만 삭제할 수 있습니다 또한 관련된 문제들도 삭제 됩니다
+      operationId: delete-exams
+      parameters:
+      - name: examId
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                delete-exams:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
+  /api/v1/questions/{questionId}:
+    delete:
+      tags:
+      - questions
+      summary: Delete questions by questionId
+      description: 해당되는 문제 ID Question 삭제
+      operationId: delete-questions-by-questionId
+      parameters:
+      - name: questionId
+        in: path
+        description: QuestionId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                delete-questions-by-questionId:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
+  /api/v1/users/login:
+    post:
+      tags:
+      - users
+      summary: Login
+      description: 로그인성공할 경우 redirect 시킵니다실패할 경우 400 Bad Request를 반환합니다.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api-v1-users-login1770795545'
+            examples:
+              login:
+                value: "{\"password\":\"lab111!\",\"user_id\":\"lab1@gmail.com\"}"
+      responses:
+        "200":
+          description: "200"
+  /api/v1/users/logout:
+    post:
+      tags:
+      - users
+      summary: Logout
+      description: 로그아웃
+      operationId: logout
+      responses:
+        "200":
+          description: "200"
+  /api/v1/users/status:
+    get:
+      tags:
+      - users
+      summary: Get user status
+      description: 로그인 상태를 확인합니다.로그인 상태일 경우 200과 userName을 반환합니다로그인 상태가 아닌 경우 401
+        Unauthorized를 반환합니다.
+      operationId: user status
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-users-status615510992'
+              examples:
+                user status:
+                  value: "{\"user_name\":\"lab1\",\"login\":true}"
+  /api/v1/workbooks/{workbookId}:
+    get:
+      tags:
+      - workbooks
+      summary: 시험지를 조회한다.
+      description: "시험지를 조회한다.    \n- 로그인 되어있어야 합니다.  \n- content에는 어떤값이 들어가도 json형\
+        식만 맞다면 동작합니다."
+      operationId: workbooks-get-id
+      parameters:
+      - name: workbookId
+        in: path
+        description: 시험지 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workbook'
+              examples:
+                workbooks-get-id:
+                  value: "{\"code\":200,\"message\":{\"id\":\"6641ccd6326cb54726931cc1\"\
+                    ,\"title\":\"한국인 상식 시험지\",\"summary\":\"힌국인 상식 시험지 입니다.\",\"content\"\
+                    :{\"questions\":[{\"id\":\"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니\
+                    까?\",\"question_images_in\":[],\"question_images_out\":[],\"options\"\
+                    :[\"호돌이\",\"수호랑\",\"반다비\",\"하니\"],\"answers\":[0],\"commentary\"\
+                    :\"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\"commentary_images_in\":[],\"\
+                    commentary_images_out\":[],\"tags\":null},{\"id\":\"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글을 창제한 왕인 다음 중 누구입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"세종대왕\",\"태조\",\"\
+                    광해군\",\"영조\"],\"answers\":[0],\"commentary\":\"한글을 창제한 왕은 세종대왕\
+                    입니다.\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글은 누가 창제하였습니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"이순신\",\"세종대왕\",\"\
+                    광개토대왕\",\"김구\"],\"answers\":[1],\"commentary\":\"한글은 세종대왕에 의해\
+                    \ 창제되었습니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
+                    :[],\"tags\":null},{\"id\":\"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 전통 음식이 아닌 것은?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"김치\",\"스시\",\"불고\
+                    기\",\"비빔밥\"],\"answers\":[1],\"commentary\":\"스시는 일본의 전통 음식입니다\
+                    .\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"b78fef73-7237-40e2-8a68-dca7a9611a2a\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 수도는 어디입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"서울\",\"부산\",\"인천\
+                    \",\"대구\"],\"answers\":[0],\"commentary\":\"서울은 대한민국의 수도입니다.\"\
+                    ,\"commentary_images_in\":[],\"commentary_images_out\":[],\"tags\"\
+                    :null}],\"size\":5},\"created_date\":\"2024-05-13T17:18:30.42\"\
+                    ,\"updated_date\":\"2024-05-13T17:18:30.42\"}}"
+    put:
+      tags:
+      - workbooks
+      summary: 시험지를 수정한다.
+      description: "시험지를 수정한다.    \n- 로그인 되어있어야 합니다.  \n- content에는 어떤값이 들어가도 json형\
+        식만 맞다면 동작합니다."
+      operationId: workbooks-put
+      parameters:
+      - name: workbookId
+        in: path
+        description: 시험지 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/workbook'
+            examples:
+              workbooks-put:
+                value: "{\n\t\"title\": \"한국인 상식 시험지\",\n    \"summary\": \"힌국인 상식\
+                  \ 시험지 입니다.\",\n\t\"content\": {\n        \"questions\": [\n    \
+                  \        {\n                \"id\": \"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"호돌이\",\n          \
+                  \          \"수호랑\",\n                    \"반다비\",\n            \
+                  \        \"하니\"\n                ],\n                \"answers\"\
+                  : [\n                    0\n                ],\n               \
+                  \ \"commentary\": \"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\n           \
+                  \     \"commentary_images_in\": [],\n                \"commentary_images_out\"\
+                  : [],\n                \"tags\": null\n            },\n        \
+                  \    {\n                \"id\": \"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"한글을 창제한 왕인 다음 중 누구입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"세종대왕\",\n         \
+                  \           \"태조\",\n                    \"광해군\",\n            \
+                  \        \"영조\"\n                ],\n                \"answers\"\
+                  : [\n                    0\n                ],\n               \
+                  \ \"commentary\": \"한글을 창제한 왕은 세종대왕입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            },\n            {\n       \
+                  \         \"id\": \"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\",\n  \
+                  \              \"type\": \"객관식\",\n                \"question\"\
+                  : \"한글은 누가 창제하였습니까?\",\n                \"question_images_in\":\
+                  \ [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"이순신\",\n          \
+                  \          \"세종대왕\",\n                    \"광개토대왕\",\n         \
+                  \           \"김구\"\n                ],\n                \"answers\"\
+                  : [\n                    1\n                ],\n               \
+                  \ \"commentary\": \"한글은 세종대왕에 의해 창제되었습니다.\",\n                \"\
+                  commentary_images_in\": [],\n                \"commentary_images_out\"\
+                  : [],\n                \"tags\": null\n            },\n        \
+                  \    {\n                \"id\": \"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                  ,\n                \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 한국의 전통 음식이 아닌 것은?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"김치\",\n           \
+                  \         \"스시\",\n                    \"불고기\",\n              \
+                  \      \"비빔밥\"\n                ],\n                \"answers\"\
+                  : [\n                    1\n                ],\n               \
+                  \ \"commentary\": \"스시는 일본의 전통 음식입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            },\n            {\n       \
+                  \         \"id\": \"b78fef73-7237-40e2-8a68-dca7a9611a2a\",\n  \
+                  \              \"type\": \"객관식\",\n                \"question\"\
+                  : \"다음 중 한국의 수도는 어디입니까?\",\n                \"question_images_in\"\
+                  : [],\n                \"question_images_out\": [],\n          \
+                  \      \"options\": [\n                    \"서울\",\n           \
+                  \         \"부산\",\n                    \"인천\",\n               \
+                  \     \"대구\"\n                ],\n                \"answers\": [\n\
+                  \                    0\n                ],\n                \"commentary\"\
+                  : \"서울은 대한민국의 수도입니다.\",\n                \"commentary_images_in\"\
+                  : [],\n                \"commentary_images_out\": [],\n        \
+                  \        \"tags\": null\n            }\n        ],\n        \"size\"\
+                  : 5\n    }\n}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workbook'
+              examples:
+                workbooks-put:
+                  value: "{\"code\":200,\"message\":{\"id\":\"6641ccd6326cb54726931cbd\"\
+                    ,\"title\":\"한국인 상식 시험지\",\"summary\":\"힌국인 상식 시험지 입니다.\",\"content\"\
+                    :{\"questions\":[{\"id\":\"676cf9d7-9720-4403-b19b-e8f4d0777892\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 1988년 서울 올림픽의 마스코트는 무엇입니\
+                    까?\",\"question_images_in\":[],\"question_images_out\":[],\"options\"\
+                    :[\"호돌이\",\"수호랑\",\"반다비\",\"하니\"],\"answers\":[0],\"commentary\"\
+                    :\"1988년 서울 올림픽의 마스코트는 호돌이입니다.\",\"commentary_images_in\":[],\"\
+                    commentary_images_out\":[],\"tags\":null},{\"id\":\"177b65c2-59e0-4ab6-8b2a-675c7dc76492\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글을 창제한 왕인 다음 중 누구입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"세종대왕\",\"태조\",\"\
+                    광해군\",\"영조\"],\"answers\":[0],\"commentary\":\"한글을 창제한 왕은 세종대왕\
+                    입니다.\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"416f8407-96ae-4e9a-97a8-efecdf1fd0c2\"\
+                    ,\"type\":\"객관식\",\"question\":\"한글은 누가 창제하였습니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"이순신\",\"세종대왕\",\"\
+                    광개토대왕\",\"김구\"],\"answers\":[1],\"commentary\":\"한글은 세종대왕에 의해\
+                    \ 창제되었습니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
+                    :[],\"tags\":null},{\"id\":\"1808e549-d341-47f8-90e2-603e141a4d24\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 전통 음식이 아닌 것은?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"김치\",\"스시\",\"불고\
+                    기\",\"비빔밥\"],\"answers\":[1],\"commentary\":\"스시는 일본의 전통 음식입니다\
+                    .\",\"commentary_images_in\":[],\"commentary_images_out\":[],\"\
+                    tags\":null},{\"id\":\"b78fef73-7237-40e2-8a68-dca7a9611a2a\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 한국의 수도는 어디입니까?\",\"question_images_in\"\
+                    :[],\"question_images_out\":[],\"options\":[\"서울\",\"부산\",\"인천\
+                    \",\"대구\"],\"answers\":[0],\"commentary\":\"서울은 대한민국의 수도입니다.\"\
+                    ,\"commentary_images_in\":[],\"commentary_images_out\":[],\"tags\"\
+                    :null}],\"size\":5},\"created_date\":\"2024-05-13T17:18:30.21\"\
+                    ,\"updated_date\":\"2024-05-13T17:18:30.240076\"}}"
+    delete:
+      tags:
+      - workbooks
+      summary: 시험지를 삭제한다.
+      description: "시험지를 삭제한다.    \n- 로그인 되어있어야 합니다"
+      operationId: workbooks-delete
+      parameters:
+      - name: workbookId
+        in: path
+        description: 시험지 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                workbooks-delete:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
+  /api/v1/exams/{examId}/ai:
+    post:
+      tags:
+      - exams
+      summary: Get ai questions
+      description: "## 조건 \n- 로그인 되어있어야합니다\n- 본인으 시험이여야합니다\n- 시험 자료 파일이 있어야합니다"
+      operationId: ai-questions
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiQuestions'
+              examples:
+                ai-questions:
+                  value: "{\"questions\":[{\"id\":null,\"type\":null,\"question\"\
+                    :\"문제1\",\"question_images_in\":null,\"question_images_out\":null,\"\
+                    options\":[\"보기1\",\"보기2\",\"보기3\",\"보기4\"],\"answers\":[1],\"\
+                    commentary\":\"해설1\",\"commentary_images_in\":null,\"commentary_images_out\"\
+                    :null,\"tags\":null}],\"size\":1}"
+  /api/v1/exams/{examId}/file:
+    get:
+      tags:
+      - exams
+      summary: Get exam file
+      description: "## Get exam file \n## 조건 \n- 본인의 시험만 파일 조회 가능합니다.\n- 파일이 없을 경우\
+        \ 파일 존재 여부를 false로 반환합니다."
+      operationId: exam-file
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamFile'
+              examples:
+                exam-file:
+                  value: "{\"code\":200,\"message\":{\"file_title\":\"강의자료.txt\",\"\
+                    exist\":true}}"
+    post:
+      tags:
+      - exams
+      summary: Add file
+      description: "## 강의자료 추가  Form-data로 파일을 전송합니다.\n### 조건 \n- 본인의 시험만 파일 추가 가능\
+        합니다.\n- 파일이 이미 존재하면 안됩니다."
+      operationId: post-file
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                post-file:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
+    delete:
+      tags:
+      - exams
+      summary: Delete exam file
+      description: |-
+        ## Delete exam file
+        조건 : 본인의 시험만 파일 삭제 가능합니다
+      operationId: delete-exam-file
+      parameters:
+      - name: examId
+        in: path
+        description: Exam id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                delete-exam-file:
+                  value: "{\"code\":200,\"message\":\"OK\"}"
+  /api/v1/exams/{examId}/questions:
+    get:
+      tags:
+      - questions
+      summary: Search questions
+      description: Exam ID를 통한 Questions 조회
+      operationId: Search-questions
+      parameters:
+      - name: examId
+        in: path
+        description: ExamId
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: tags_단원
+        in: query
+        description: 문제의 태그 - 단원
+        required: false
+        schema:
+          type: string
+      - name: tags_난이도
+        in: query
+        description: 문제의 태그 - 난이도
+        required: false
+        schema:
+          type: string
+      - name: includes
+        in: query
+        description: 문제에 포함된 키워드
+        required: false
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: 검색된 문제의 개수
+        required: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-exams-examId-questions-1876066633'
+              examples:
+                Search-questions:
+                  value: "{\"questions\":[{\"id\":\"PA4HcY8BXRBYEYFc_MHM\",\"type\"\
+                    :\"객관식\",\"question\":\"소웨공 테스트 문제?\",\"question_images_in\":[],\"\
+                    question_images_out\":[],\"options\":[\"① 답 예시 1\",\"② 답 예시 2\"\
+                    ,\"③ 답 예시 3\",\"④ 답 예시 4\"],\"answers\":[3],\"commentary\":\"\
+                    30이 가장 큰 수입니다.\",\"commentary_images_in\":[],\"commentary_images_out\"\
+                    :[],\"tags\":{\"난이도\":[\"하\"],\"단원\":[\"1\"]}}],\"size\":1}"
+    post:
+      tags:
+      - questions
+      summary: Add question
+      description: 문제 추가
+      operationId: add-questions
+      parameters:
+      - name: examId
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        description: |-
+          questionUploadInfo-ContentType: application/jsonquestionImagesIn-ContentType:image.png
+          questionImagesOut-ContentType:image.png
+          commentaryImagesOut-ContentType:image.png
+          commentaryImagesOut-ContentType:image.png
+          multipart/form-data
+        required: true
+        schema:
+          type: string
+        example: multipart/form-data
+      responses:
+        "201":
+          description: "201"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api-v1-workbooks-workbookId486549215'
+              examples:
+                add-questions:
+                  value: "{\"code\":201,\"message\":{\"id\":\"Og4HcY8BXRBYEYFc-8EZ\"\
+                    ,\"type\":\"객관식\",\"question\":\"다음 중 총중량 1.5톤 피견인 승용자동차를 4.5톤\
+                    \ 화물자동차로 견인하는 경우 필요한 운전면허에 해당하지 않은 것은?\",\"question_images_in\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/cdfae80e-7526-422f-b5f1-a0def3b92e23.png\"\
+                    ,\"description\":\"설명1\",\"attribute\":\"속성1\"}],\"question_images_out\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/5a7a1f57-378d-46ee-92aa-6784ffa39271.png\"\
+                    ,\"description\":\"설명2\",\"attribute\":\"속성2\"}],\"options\":[\"\
+                    ① 제1종 대형면허 및 소형견인차면허\",\"② 제1종 보통면허 및 대형견인차면허\",\"③ 제1종 보통면허 및\
+                    \ 소형견인차면허\",\"④ 제2종 보통면허 및 대형견인차면허\"],\"answers\":[4],\"commentary\"\
+                    :\"도로교통법 시행규칙 별표18 총중량 750킬로그램을 초과하는 3톤 이하의 피견인 자동차를 견인하기 위해서는\
+                    \ 견인 하는 자동차를 운전할 수 있는 면허와 소형견인차면허 또는 대형견인차면허를 가지고 있어야 한다.\",\"\
+                    commentary_images_in\":[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/f000cdc4-c4f1-4e31-b115-e57ac253749d.png\"\
+                    ,\"description\":\"설명3\",\"attribute\":\"속성3\"}],\"commentary_images_out\"\
+                    :[{\"url\":\"https://examlab-image.s3.ap-northeast-2.amazonaws.com/test_images/fddee274-946a-42b2-a2e8-f10c9e9f04a5.png\"\
+                    ,\"description\":\"설명4\",\"attribute\":\"속성4\"}],\"tags\":{}}}"
+components:
+  schemas:
+    ExamType:
+      title: ExamType
+      type: object
+    ExamList:
+      title: ExamList
+      required:
+      - exams
+      type: object
+      properties:
+        exams:
+          type: array
+          description: Exam
+          items:
+            required:
+            - exam_id
+            - exam_title
+            - size
+            type: object
+            properties:
+              size:
+                type: number
+                description: Exam size
+              exam_id:
+                type: number
+                description: Exam id
+              exam_title:
+                type: string
+                description: Exam title
+    workbook-summary-list:
+      title: workbook-summary-list
+      type: object
+    ExamAdd:
+      title: ExamAdd
+      required:
+      - exam_title
+      - tags
+      type: object
+      properties:
+        tags:
+          type: object
+          description: tag 정보들
+        exam_title:
+          type: string
+          description: 시험지 이름
+    api-v1-exams1523854693:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: number
+          description: 응답 코드
+        message:
+          type: string
+          description: 생성된 시험지 ID
+    api-v1-questions-420259584:
+      required:
+      - answers
+      - commentary
+      - id
+      - options
+      - question
+      - tags
+      type: object
+      properties:
+        question:
+          type: string
+          description: 변경될 질문 내용
+        answers:
+          type: array
+          description: 변경될 정답
+          items:
+            oneOf:
+            - type: object
+            - type: boolean
+            - type: string
+            - type: number
+        options:
+          type: array
+          description: 변경될 보기 내용
+          items:
+            oneOf:
+            - type: object
+            - type: boolean
+            - type: string
+            - type: number
+        id:
+          type: string
+          description: 문제 ID
+        commentary:
+          type: string
+          description: 변경될 해설
+        tags:
+          type: object
+          properties:
+            '*':
+              type: array
+              description: 변경될 문제 태그 value
+              nullable: true
+              items:
+                oneOf:
+                - type: object
+                - type: boolean
+                - type: string
+                - type: number
+          description: 변경될 문제 태그
+    api-v1-users-login1770795545:
+      required:
+      - password
+      - user_id
+      type: object
+      properties:
+        password:
+          type: string
+          description: Password
+        user_id:
+          type: string
+          description: User id
+    workbook-create:
+      title: workbook-create
+      type: object
+    ExamFile:
+      title: ExamFile
+      required:
+      - code
+      type: object
+      properties:
+        code:
+          type: number
+          description: 응답 코드
+        message:
+          required:
+          - exist
+          - file_title
+          type: object
+          properties:
+            exist:
+              type: boolean
+              description: 파일 존재 여부
+            file_title:
+              type: string
+              description: File title
+    api-v1-exams-examId-questions-1876066633:
+      required:
+      - questions
+      - size
+      type: object
+      properties:
+        size:
+          type: number
+          description: 문제의 개수
+        questions:
+          type: array
+          description: 문제 목록
+          items:
+            required:
+            - answers
+            - commentary
+            - commentary_images_in
+            - commentary_images_out
+            - id
+            - options
+            - question
+            - question_images_in
+            - question_images_out
+            - tags
+            - type
+            type: object
+            properties:
+              question:
+                type: string
+                description: 문제 내용
+              question_images_out:
+                type: array
+                description: 문제 정답 이미지 목록
+                items:
+                  type: object
+                  properties:
+                    description:
+                      type: string
+                      description: 이미지 설명
+                      nullable: true
+                    attribute:
+                      type: string
+                      description: 이미지 속성
+                      nullable: true
+                    url:
+                      type: string
+                      description: 이미지 URL
+                      nullable: true
+              question_images_in:
+                type: array
+                description: 문제 설명 이미지 목록
+                items:
+                  type: object
+                  properties:
+                    description:
+                      type: string
+                      description: 이미지 설명
+                      nullable: true
+                    attribute:
+                      type: string
+                      description: 이미지 속성
+                      nullable: true
+                    url:
+                      type: string
+                      description: 이미지 URL
+                      nullable: true
+              answers:
+                type: array
+                description: 정답 목록
+                items:
+                  oneOf:
+                  - type: object
+                  - type: boolean
+                  - type: string
+                  - type: number
+              options:
+                type: array
+                description: 보기 목록
+                items:
+                  oneOf:
+                  - type: object
+                  - type: boolean
+                  - type: string
+                  - type: number
+              id:
+                type: string
+                description: 문제의 고유 식별자
+              type:
+                type: string
+                description: 문제의 유형
+              commentary_images_in:
+                type: array
+                description: 해설 설명 이미지 목록
+                items:
+                  type: object
+                  properties:
+                    description:
+                      type: string
+                      description: 이미지 설명
+                      nullable: true
+                    attribute:
+                      type: string
+                      description: 이미지 속성
+                      nullable: true
+                    url:
+                      type: string
+                      description: 이미지 URL
+                      nullable: true
+              commentary_images_out:
+                type: array
+                description: 해설 이미지 목록
+                items:
+                  type: object
+                  properties:
+                    description:
+                      type: string
+                      description: 이미지 설명
+                      nullable: true
+                    attribute:
+                      type: string
+                      description: 이미지 속성
+                      nullable: true
+                    url:
+                      type: string
+                      description: 이미지 URL
+                      nullable: true
+              commentary:
+                type: string
+                description: 문제 해설
+              tags:
+                type: object
+                properties:
+                  '*':
+                    type: array
+                    description: 문제의 카테고리 태그 정보
+                    nullable: true
+                    items:
+                      oneOf:
+                      - type: object
+                      - type: boolean
+                      - type: string
+                      - type: number
+                description: 문제의 태그 맵 정보
+    AiQuestions:
+      title: AiQuestions
+      type: object
+    workbook:
+      title: workbook
+      type: object
+    api-v1-users-status615510992:
+      required:
+      - login
+      - user_name
+      type: object
+      properties:
+        user_name:
+          type: string
+          description: 사용자 이름
+        login:
+          type: boolean
+          description: 로그인 여부
+    api-v1-workbooks-workbookId486549215:
+      type: object
+    api-v1-users-963924044:
+      required:
+      - name
+      - password
+      - password_confirm
+      - user_id
+      type: object
+      properties:
+        password:
+          type: string
+          description: Password
+        password_confirm:
+          type: string
+          description: Password confirm
+        user_id:
+          type: string
+          description: User id
+        name:
+          type: string
+          description: User name

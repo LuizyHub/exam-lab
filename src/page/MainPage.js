@@ -97,7 +97,7 @@ const NavContainer = styled.div`
 `;
 
 const NavContent = styled.div`
-    margin-left: ${({ $primary }) => $primary ? '200px' : '290px'};
+    margin-left: ${({ $primary }) => $primary ? '200px' : '340px'};
     margin-top: 40px;
 `;
 
@@ -191,11 +191,11 @@ export default function MainPage() {
 
                 {selectedNav === 'intro' && <MainIntroExam />}
                 {selectedNav === 'register' && <MainIntroQuestion />}
-                <footer>
-                    <Bottom />
-                </footer>
                 <NavigationBar />
             </MainContainer>
+            <footer>
+                <Bottom />
+            </footer>
         </StyleSheetManager>
     );
 }

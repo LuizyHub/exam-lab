@@ -182,9 +182,9 @@ export default function NavigationBar() {
                 <NavigationContent>
                     <Navigate />
                     {/* 배포 시 삭제될 개발용 로그인 버튼 */}
-                    <button onClick={handleAutoLogin}>자동 로그인</button>
+                    {/* <button onClick={handleAutoLogin}>자동 로그인</button>
                     <button onClick={handleLogout} primary="true">로그아웃</button>
-                    <button onClick={handleLoginState}>로그인정보 받아오기</button>
+                    <button onClick={handleLoginState}>로그인정보 받아오기</button> */}
                 </NavigationContent>
                 {userInfo.loginStatus === true ? (
                     <>

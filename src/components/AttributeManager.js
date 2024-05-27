@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../css/attribute.css'
 import axios from 'axios';
 
-export default function AttributeManager({ examId }) {
+export default function AttributeManager({ examId, setExamId }) {
     const [attributes, setAttributes] = useState([{ name: '난이도', values: ['상', '중', '하'] }]); // 속성,태그에 대한 default을 설정한다.
     const [examTitle, setExamTitle] = useState('');
     const [isShowModal, setIsShowModal] = useState(attributes.map(() => false));
@@ -22,7 +22,7 @@ export default function AttributeManager({ examId }) {
                     console.log(error);
                 });
         }
-    }, [examId]);
+    }, [examId]);//attributes
 
     const handleExamTitleChange = (event) => {
         setExamTitle(event.target.value);
@@ -90,6 +90,8 @@ export default function AttributeManager({ examId }) {
         axios.post('/api/v1/exams', data)
             .then(response => {
                 console.log('success', response.data);
+                console.log('success', response.data.message);
+                setExamId(response.data.message);
             })
             .catch(error => {
                 console.error('error', error);

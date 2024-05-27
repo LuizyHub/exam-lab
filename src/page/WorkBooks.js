@@ -14,9 +14,35 @@ const WorkBooksContent = styled.div`
     transition: margin-left 0.3s ease;
 `;
 
+const PageIcon = styled.img`
+  width: 50px;
+  height: 65px;
+  background-color: #D9F1F1;
+  padding: 10px 10px;
+  border-radius: 10px;
+  margin-top: 15px;
+  margin-right: 25px;
+`;
+
 const PageTitle = styled.h1`
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
+  margin-bottom: 0px;
+`;
+
+const PageIntro = styled.p`
+  margin-top: 8px;
+  font-size: 19px;
+  color: #313132;
+`;
+
+const PageName = styled.p`
+  color: #262626;
+  font-size: 18px;
+  margin-top: 108px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  padding-bottom: 5px;
 `;
 
 const StyledParagraph = styled.p`
@@ -148,7 +174,14 @@ export default function WorkBooks() {
 
         return (
             <WorkBooksContent>
-               <PageTitle>시험지 저장소</PageTitle>
+               <div style={{ display: "flex" }}>
+                    <PageIcon src="/img/시험지저장소_icon.png" alt="page Icon" />
+                    <div>
+                    <PageTitle>시험지 저장소</PageTitle>
+                    <PageIntro>제작한 시험지는 저장소에 모여있어요.</PageIntro>
+                    </div>
+                </div>
+                <PageName> 제작한 시험지 </PageName>
                 <WorkBookCreateButton onClick={() => {navigate('/exams/create')}}> 
                     <CreateImg src="/img/추가하기.png" alt="Create Icon" />
                 </WorkBookCreateButton>

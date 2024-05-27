@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
     border: 1px solid #ccc;
+    width: 100%;
     border-radius: 5px;
     padding: 20px;
     margin-bottom: 20px;
@@ -15,18 +16,22 @@ const Container = styled.div`
 `;
 
 const Title = styled.h1`
-    
+    font-size: 30px;
+    color: #262626;
 `;
 
+const ContainerTitle = styled.p`
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 14px;
+    margin-bottom: 5px;
+`;
 
 const SelectTitle = styled.p`
     font-size: 16px;
     font-weight: bold;
     margin-left: 14px;
-`;
-
-const TitleSpan = styled.p`
-    font-size: 14px;
+    margin-bottom: 10px;
 `;
 
 
@@ -38,19 +43,16 @@ const TagsContainer = styled.div`
 
 const TagButton = styled.button`
     margin: 5px 10px; 
-    background-color: ${({ $selected }) => $selected ? '#C6E7E7' : '#FFFFFF'};
+    background-color: ${({ $selected }) => $selected ? '#D9F1F1' : '#FFFFFF'};
     color: #2D2C2B;
-    border: 0.5px solid ${({ $selected }) => $selected ? '#C6E7E7' : '#E2E8EE'};
+    border: 0.5px solid ${({ $selected }) => $selected ? '#BADEDE' : '#EBEDEF'};
     border-radius: 4px;
     padding: 5px 8px;
     cursor: pointer;
     flex: 1; 
-    width: 180px;
-    height: 58px;
+    width: 277px;
+    height: 48px;
     font-size: 15px;
-    &:hover {
-        background-color: #EDFAFA;
-    }
 `;
     
 
@@ -66,10 +68,11 @@ const KeywordContainer = styled.div`
 `;
 
 const KeywordInput = styled.input`
-    width: 88%;
+    width: 85%;
     height: 44px;
     margin-left: 10px;
     margin-right: 10px;
+    margin-top: 0px;
     padding: 5px 15px;
     border : 1px solid #E2E8EE;
     border-radius: 4px;
@@ -84,11 +87,13 @@ const KeywordInput = styled.input`
 
 
 const Keyword = styled.button`
-    height: 25px;
-    padding: 0 10px;;
-    font-size: 12px;
-    border: 1px solid #C6E7E7;
-    background-color: #EDFAFA;
+    height: 36px;
+    padding: 0px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    border: 1px solid #BADEDE;
+    color: #262626;
+    background-color: #D9F1F1;
     border-radius: 20px;
     margin-top: 10px;
     margin-left: 10px;
@@ -123,18 +128,15 @@ const CountButton = styled.button`
   padding: 5px 8px;
   cursor: pointer;
   flex: 1;
-  width: 190px;
-  height: 60px;
+  width: 179px;
+  height: 48px;
   font-size:15px;
-  &:hover {
-    background-color: #EDFAFA;
-  }
 `;
 
 const CountInput = styled.input`
   margin-left: 10px;
-  width: 170px;
-  height: 48px;
+  width: 159px;
+  height: 38px;
   background-color: ${({ $selected }) => ($selected ? '#C6E7E7' : '#FFFFFF')};
   color: #2D2C2B;
   border: 0.5px solid ${({ $selected }) => ($selected ? '#E2E8EE' : '#E2E8EE')};
@@ -146,12 +148,8 @@ const CountInput = styled.input`
   font-size:15px;
   &:focus {
     background-color: #C6E7E7;
-    border: 0.5px solid #E2E8EE;
+    border: 0.5px solid #fff;
   }
-  &:hover {
-    background-color: #EDFAFA;
-  }
-
 `;
 
 
@@ -170,8 +168,10 @@ const SubmitButton = styled.input`
     cursor: pointer;
     margin-top: 10px;
     align-self: center;
-    font-size:15px;
+    font-size:16px;
     font-weight: bold;
+    width: 102px;
+    hight: 37px;
     &:hover {
         background-color: #C6E7E7;
     }
@@ -301,6 +301,7 @@ export default function SelectQuestion() {
         <div>
             <Title>{examTitle}</Title>
             <Container>
+                <ContainerTitle>문제 검색</ContainerTitle>
                 <TagsContainer>
                     {Object.keys(tags).map(tagGroup => (
                         <div key={tagGroup}>
@@ -345,17 +346,10 @@ export default function SelectQuestion() {
                 <br />
                 <QuestionCount>
                     <SelectTitle> 문제 갯수 </SelectTitle>
+
+                    {/* 전체 검색 버튼 */}
+                    <CountButton onClick={() => setSelectedQuestionCount(0)} $selected={selectedQuestionCount === 0 && selectedCountType === 'button'}> 전체 </CountButton>
                     
-                    {/*숫자만 입력 가능하게*/}
-                    {/* 숫자 입력란 */}
-                    <CountInput
-                    type="text" pattern="[0-9]*" 
-                    value={customQuestionCount || ""}
-                    placeholder={customQuestionCount === "" ? "직접 입력" : ""}
-                    onChange={handleCustomQuestionCountChange}
-                    onClick={handleInputClick} // 클릭 이벤트 핸들러 추가
-                    $selected={selectedCountType === 'input'} // 선택된 상태에 따라 배경색 변경
-                    />
 
                     {/* 미리 정의된 문제 수 버튼 */}
                     {[10, 20, 30, 40].map(count => (
@@ -368,9 +362,18 @@ export default function SelectQuestion() {
                         {count} 문제
                         </CountButton>
                     ))}
+
+                     {/*숫자만 입력 가능하게*/}
+                    {/* 숫자 입력란 */}
+                    <CountInput
+                    type="text" pattern="[0-9]*" 
+                    value={customQuestionCount || ""}
+                    placeholder={customQuestionCount === "" ? "직접 입력" : ""}
+                    onChange={handleCustomQuestionCountChange}
+                    onClick={handleInputClick} // 클릭 이벤트 핸들러 추가
+                    $selected={selectedCountType === 'input'} // 선택된 상태에 따라 배경색 변경
+                    />
   
-                    {/* 전체 검색 버튼 */}
-                    <CountButton onClick={() => setSelectedQuestionCount(0)} $selected={selectedQuestionCount === 0 && selectedCountType === 'button'}> 전체 </CountButton>
                 </QuestionCount>
                 <br />  
                 <SubmitButtonContainer>
@@ -378,8 +381,7 @@ export default function SelectQuestion() {
                 </SubmitButtonContainer>
 
                 </Container>
-            
-            <ShowQuestionList questions={questions}/>
+            <ShowQuestionList questions={questions} questionsSize={questions.length}/>
         </div>
     );
     

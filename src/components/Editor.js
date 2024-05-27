@@ -1,9 +1,10 @@
 import React from 'react';
 
-export const Editor = ({ editorRef, contentEditable, onInput, onDragOver, onCopy, onCut, onPaste, onKeyDown, onKeyUp, readOnly, dangerouslySetInnerHTML, style }) => {
+export const Editor = ({ className = 'editor', editorRef, contentEditable, onInput, onDragOver, onCopy, onCut, onPaste, onKeyDown, onKeyUp, readOnly, dangerouslySetInnerHTML, style }) => {
+   const defaultClassName = `${className} editor`;
   return (
     <div
-      className="editor"
+      className={ defaultClassName }
       contentEditable={contentEditable}
       ref={editorRef}
       onInput={onInput}

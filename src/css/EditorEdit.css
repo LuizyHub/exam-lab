@@ -5,6 +5,7 @@
 
 .editor-edit .server-button button {
   background-color: transparent;
+  padding: 0;
   border-style: none;
-  /* text-align: right; */
+  margin-left: 10px;
 }

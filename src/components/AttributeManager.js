@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/attribute.css'
 import axios from 'axios';
 
@@ -127,6 +128,11 @@ export default function AttributeManager({ examId }) {
     return (
         <div className='attribute-mgr'>
             <input className='title' value={examTitle} onChange={handleExamTitleChange} placeholder="시험지 제목" />
+            <div className='server-button'>
+                <button style={{width: '130px', marginRight: '20px'}}><Link to="http://localhost:3000/exams/create" style={{ color: 'inherit', textDecoration: 'inherit' }}>시험지 제작하기</Link></button>
+                <button id='server-button-save' onClick={handleExamDataSubmit}>저장</button>
+                <button id='server-button-edit' onClick={handleUpdateExamData} >수정</button>
+            </div>
             <div className='attribute-input'>
                 {attributes.map((attribute, index) => (
 
@@ -195,11 +201,6 @@ export default function AttributeManager({ examId }) {
 
                     </div>
                 ))}
-            </div>
-
-            <div className='server-button'>
-                <button id='server-button-save' onClick={handleExamDataSubmit}>저장</button>
-                <button id='server-button-edit' onClick={handleUpdateExamData} >수정</button>
             </div>
         </div >
     );

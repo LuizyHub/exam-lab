@@ -142,6 +142,7 @@ export default function EditExam() {
             console.log(examId);
           }}>+</button>
           <button onClick={() => setModalOpen(true)}>+AI</button>
+          <button>숨기기</button>
         </div>
 
         <NavigationBar />

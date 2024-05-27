@@ -15,9 +15,35 @@ const SelectExam = styled.div`
   transition: margin-left 0.3s ease;
 `;
 
+const PageIcon = styled.img`
+  width: 66px;
+  height: 65px;
+  background-color: #D9F1F1;
+  padding: 10px 10px;
+  border-radius: 10px;
+  margin-top: 15px;
+  margin-right: 25px;
+`;
+
 const PageTitle = styled.h1`
-  font-size: 36px;
+  font-size: 30px;
   font-weight: bold;
+  margin-bottom: 0px;
+`;
+
+const PageIntro = styled.p`
+  margin-top: 8px;
+  font-size: 19px;
+  color: #313132;
+`;
+
+const PageName = styled.p`
+  color: #262626;
+  font-size: 18px;
+  margin-top: 108px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  padding-bottom: 5px;
 `;
 
 const ButtonContainer = styled.div`
@@ -27,7 +53,7 @@ const ButtonContainer = styled.div`
 
 const ExamButton = styled.button`
     background-color: #fff;
-    border: 0.5px solid #C6E7E7;
+    border: 1px solid #E2E8EE;
     color: #262626;
     padding: 15px 32px;
     border-radius: 7px;
@@ -40,29 +66,38 @@ const ExamButton = styled.button`
     height: 91px;
     position: relative;
     &:hover {
-      background-color: #ECF7F7;
+      background-color: #D9F1F1;
+      border: 1px solid #BADEDE;
     }
 `;
 
 const ExamCreateButton = styled(ExamButton)`
     background-color: #F5F5F7;
-    border: 0.5px solid #fff;
+    border: none;
     width: 384px;
     height: 91px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
     &:hover {
-      background-color: #EDFAFA;
+      background-color: #D9F1F1;
     }
 `;
 
 const CreateImg = styled.img`
     width: 30px;
+    transition: all 0.3s ease;
+
+    ${ExamCreateButton}:hover & {
+      content: url("/img/호버생성버튼.png"); 
+  }
 `;
 
 const DeleteImg = styled.img`
     position: absolute;
-    top: 6px ;
-    right: 6px;
-    width: 15px;
+    top: 15px;
+    right: 15px;
+    width: 20px;
 `;
 
 export default function SelectExamPage() {
@@ -121,17 +156,25 @@ export default function SelectExamPage() {
   return (
     <SelectExam>
         <div>
-        <PageTitle>문제 관리소</PageTitle>
-        <p>문제를 새롭게 등록해보세요</p>
+        <div style={{ display: "flex" }}>
+            <PageIcon src="/img/문제관리소_icon.png" alt="page Icon" />
+            <div>
+              <PageTitle>문제 관리소</PageTitle>
+              <PageIntro>문제를 새롭게 등록해보세요</PageIntro>
+            </div>
+          </div>
+          <PageName>등록된 문제</PageName>
         <ButtonContainer>
-          <ExamCreateButton onClick={() => {navigate('/edit')}}> 
-            <CreateImg src="/img/추가하기.png" alt="Create Icon" />
-          </ExamCreateButton>
+          <div>
+            <ExamCreateButton onClick={() => {navigate('/edit')}}> 
+              <CreateImg src="/img/추가하기.png" alt="Create Icon" />
+            </ExamCreateButton>
+          </div>
           {exams.map(exam => (
             <div key={exam.exam_id}>
               <ExamButton onClick={() => handleExamTypeClick(exam.exam_id, exam.exam_title)}>
-                <p style={{fontSize: '18px',  marginTop:'0px', marginBottom:'0px', fontWeight: 'bold'}}>{exam.exam_title} </p>
-                <p style={{fontSize: '16px', marginTop:'6px', marginBottom:'0px'}}> {exam.size}문제 </p>
+                  <p style={{ fontSize: '18px', marginTop: '0px', marginBottom: '0px', fontWeight: 'bold', color: '#262626' }}>{exam.exam_title} </p>
+                  <p style={{ fontSize: '16px', marginTop: '6px', marginBottom: '0px', color: '#3E3F41' }}> {exam.size}문제 </p>
                 <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(exam.exam_id); }} />
               </ExamButton>  
 

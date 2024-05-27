@@ -7,17 +7,17 @@ import { getLoginInfo } from '../function/LoginState';
 import styled from 'styled-components';
 
 const NavigationContainer = styled.nav`
-  padding: 10px 0px;
 `;
 
 const NavItem = styled.button`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  margin-left: 0px;
   border: none;
   background-color: transparent;
   height: 40px;
-  width:100%;
+  width: 100%;
   transition: height 0.3s ease;
   &:hover {
     background-color: #ECF7F7;
@@ -37,10 +37,9 @@ const NavLink = styled(Link)`
 
 const NavIcon = styled.img`
   width: ${({ $primary }) => $primary ? '27px' : '23px'};
-  margin-right: 0px;
-  margin-left: ${({ $primary }) => $primary ? '24px' : '25px'};
+  margin-left: 0px;
   position: relative;
-  right: ${({ $isSidebarOpen }) => $isSidebarOpen ? '7px' : '-187px'};
+  right: ${({ $isSidebarOpen }) => $isSidebarOpen ? '0px' : '-160px'};
 `;
 
 
@@ -65,7 +64,7 @@ export default function Navigate() {
 
   return (
     <NavigationContainer>
-<NavLink to='/exams/create'>
+    <NavLink to='/exams/create'>
         <NavItem>
           <NavIcon src="/img/시험지제작소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
           <NavText>시험지 제작소</NavText>

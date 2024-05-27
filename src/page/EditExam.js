@@ -190,12 +190,13 @@ export default function EditExam() {
           <div className="editor-exam">
             {isExamCreate.map((component, index) => (
               <div className="editor-exam-out-line" key={index}>
-                <div>{component}</div>
+                {component}
               </div>
             ))}
           </div>
-
-          <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} />
+          <div className="editor-out-line">
+            <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} />
+          </div>
         </div>
       </div>
     </EditExamPage>

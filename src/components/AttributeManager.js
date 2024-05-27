@@ -8,21 +8,33 @@ export default function AttributeManager({ examId, setExamId }) {
     const [examTitle, setExamTitle] = useState('');
     const [isShowModal, setIsShowModal] = useState(attributes.map(() => false));
     // 선택한 속성에 대한 모달을 띠우기 위해 배열로 만드며 false로 초기화한다.
-
+    const [isState, setState] = useState(true);
     useEffect(() => {
         if (examId) {
-            axios.get(`/api/v1/exams/${examId}`)
-                .then(response => {
-                    const { exam_title, tags } = response.data;
-                    const attributesArray = Object.entries(tags).map(([name, values]) => ({ name, values }));
-                    setAttributes(attributesArray);
-                    setExamTitle(exam_title);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+        axios.get(`/api/v1/exams/${examId}`)
+            .then(response => {
+                const { exam_title, tags } = response.data;
+                const attributesArray = Object.entries(tags).map(([name, values]) => ({ name, values }));
+                setAttributes(attributesArray);
+                setExamTitle(exam_title);
+                if (exam_title !== 'undefined') {
+                    setState(false);
+                } else { 
+                    setState(true);
+                }
+                console.log(exam_title)
+            })
+            .catch(error => {
+                console.log(error);
+            });
         }
     }, [examId]);//attributes
+
+//     useEffect(() => {
+//     if (examTitle === 'undefined') {
+//       setState(false);
+//     }
+//   }, [examTitle]);
 
     const handleExamTitleChange = (event) => {
         setExamTitle(event.target.value);
@@ -78,6 +90,7 @@ export default function AttributeManager({ examId, setExamId }) {
 
     // 시험 제목과 속성, 태그들을 생성한다.
     const handleExamDataSubmit = () => {
+        setState(!isState);
         const data = {
             exam_title: examTitle,
             tags: {}
@@ -100,6 +113,7 @@ export default function AttributeManager({ examId, setExamId }) {
 
     // 시험 제목과 속성, 태그들을 업데이트한다.
     const handleUpdateExamData = () => {
+        // setState(!isState);
         const data = {
             exam_title: examTitle,
             tags: {}
@@ -132,8 +146,13 @@ export default function AttributeManager({ examId, setExamId }) {
             <input className='title' value={examTitle} onChange={handleExamTitleChange} placeholder="시험지 제목" />
             <div className='server-button'>
                 <button style={{width: '130px', marginRight: '20px'}}><Link to="http://localhost:3000/exams/create" style={{ color: 'inherit', textDecoration: 'inherit' }}>시험지 제작하기</Link></button>
-                <button id='server-button-save' onClick={handleExamDataSubmit}>저장</button>
-                <button id='server-button-edit' onClick={handleUpdateExamData} >수정</button>
+                {/* <button id='server-button-save' onClick={handleExamDataSubmit}>저장</button>
+                <button id='server-button-edit' onClick={handleUpdateExamData} >수정</button> */}
+                {isState ? (
+                    <button id='server-button-save' onClick={handleExamDataSubmit}>저장</button>
+                ) : (
+                    <button id='server-button-save' onClick={handleUpdateExamData} >수정</button>
+                )}
             </div>
             <div className='attribute-input'>
                 {attributes.map((attribute, index) => (

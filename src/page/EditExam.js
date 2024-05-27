@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLoginController } from "../function/useLoginController";
 import styled from 'styled-components';
-import { getData, sendDeleteData, sendPutData } from "../function/axiosData";
+import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
 // import { useDataHandle } from "../..//dataHandle";
@@ -31,8 +31,8 @@ export default function EditExam() {
   // 선택된 시험의 examId와 examTitle을 받아, AttributeManager 컴포넌트에게 props로 전달
   const [examTitle, setExamTitle] = useState('');
   const [examId, setExamId] = useState('');
-  //DON'T DELETED
   const [isObject, setObject] = useState([]); //EditorEdit List
+  const [isTag, setTag] = useState([]);
   const [isSize, setSize] = useState(100);
   const [isDeleteIndex, setDeleteIndex] = useState();
   const [modalOpen, setModalOpen] = useState(false);
@@ -57,6 +57,12 @@ export default function EditExam() {
         // setSize(object.size)
       }).catch((error) => {
         console.error('아직 등록된 문제가 없습니다.', error);
+      });
+
+      getTagsData(examId).then((object) => {
+        setTag(object.tags);
+      }).catch((error) => {
+        console.error("tag가 없습니다.",error);
       });
 
     }
@@ -105,7 +111,7 @@ export default function EditExam() {
 
   const handleExamCreate = () => {
     // 새로운 컴포넌트를 생성하여 상태에 추가
-    setExamCreate([...isExamCreate, <EditorExam key={isExamCreate.length} examId={examId} handleExamDelete={handleExamDelete} />]);
+    setExamCreate([...isExamCreate, <EditorExam key={isExamCreate.length} examId={examId} handleExamDelete={handleExamDelete} isTag={isTag} />]);
     //하단으로 내려가는 css 함수
     setTimeout(() => {
       window.scrollTo({
@@ -128,7 +134,6 @@ export default function EditExam() {
 
   return (
   <EditExamPage>
-      
       <div className="edit-exam">
 
         <div id="side-bar">
@@ -137,6 +142,7 @@ export default function EditExam() {
             console.log(examId);
           }}>+</button>
           <button onClick={() => setModalOpen(true)}>+AI</button>
+          <button>숨기기</button>
         </div>
 
         <NavigationBar />
@@ -164,7 +170,7 @@ export default function EditExam() {
           <div className="editor-exam">
             {isExamCreate.map((component, index) => (
               <div className="editor-exam-out-line" key={index}>
-                <div key={index}>{component}</div>
+                <div>{component}</div>
               </div>
             ))}
           </div>

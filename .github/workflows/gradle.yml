@@ -68,22 +68,22 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EXAM_LAB_BE_PEM }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -p 22 ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
           
       - name: Shutdown existing server
         run: |
-          ssh -i ~/.ssh/id_rsa ubuntu@"${{ secrets.SERVER_IP }}" \
+          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@"${{ secrets.SERVER_IP }}" \
             "pkill -f 'exam-lab-0.0.1-SNAPSHOT.jar' || true; \
             rm -f /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar; \
             rm -f /home/ubuntu/nohup.out;"
 
       - name: Copy new JAR file to server
         run: |
-          scp -i ~/.ssh/id_rsa ./exam-lab-0.0.1-SNAPSHOT.jar ubuntu@${{ secrets.SERVER_IP }}:/home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar
+          scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ./exam-lab-0.0.1-SNAPSHOT.jar ubuntu@${{ secrets.SERVER_IP }}:/home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar
 
       - name: Start new JAR file
         run: |
-          ssh -i ~/.ssh/id_rsa ubuntu@${{ secrets.SERVER_IP }}
+          ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SERVER_IP }}
             "nohup java -jar /home/ubuntu/exam-lab-0.0.1-SNAPSHOT.jar &"
 
 #      - name: Start new JAR file

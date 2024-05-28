@@ -1,7 +1,8 @@
 <div align="center">
   <h1> ExamLab🧪</h1>
+  
+![메인페이지_나만의시험지_nav (3)](https://github.com/LuizyHub/exam-lab/assets/104267255/31602ecc-1394-407a-a112-450d661fd5aa)
 
-![Frame 30](https://github.com/LuizyHub/exam-lab/assets/120697456/22de4a75-8e4a-4624-9fa6-1106a443b844)
 </div>
 
 > 배포 링크 <br />

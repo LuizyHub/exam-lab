@@ -9,6 +9,10 @@ public final class Util {
     }
 
     public static boolean matchesTagsPattern(String str) {
-        return str.matches("^tags_[a-zA-Z가-힣0-9]+$");
+        return str.matches("^tags_([a-zA-Z가-힣0-9]+(?:\\s+[a-zA-Z가-힣0-9]+)*)$");
+    }
+
+    public static boolean matchesTagsValuePattern(String str) {
+        return str.matches("^[a-zA-Z가-힣0-9]+(?:\\s+[a-zA-Z가-힣0-9]+)*");
     }
 }

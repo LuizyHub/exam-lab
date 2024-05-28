@@ -32,16 +32,19 @@ public class ParmasValidator implements ConstraintValidator<ValidParams, MultiVa
             }
             //value 검증
             for (String s: params.get(key)) {
-                if(key.equals("count")&&Integer.parseInt(s)>10000){
+                if(s.length() > MAX_SEARCH_PARAMETER_SIZE){
                     return false;
-                } else if(key.equals("includes")||s.length() > MAX_SEARCH_PARAMETER_SIZE){
+                }
+                else if(key.equals("count")&&Integer.parseInt(s)>10000){
+                    return false;
+                } else if(key.equals("includes")){
                     String[] words = s.split(" ");
                     for (String word : words) {
-                        if (!Util.isSingleToken(word) || word.length() > MAX_SEARCH_PARAMETER_SIZE) {
+                        if (!Util.isSingleToken(word)) {
                             return false;
                         }
                     }
-                } else if (!Util.isSingleToken(s)||s.length() > MAX_SEARCH_PARAMETER_SIZE) {
+                } else if(key.contains("tags")&&!Util.matchesTagsValuePattern(s)) {
                     return false;
                 }
             }

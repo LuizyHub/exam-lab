@@ -1,5 +1,6 @@
 <div align="center">
-  <h1> ExamLab🧪</h1>
+  <h1> ExamLab <img src="https://github.com/LuizyHub/exam-lab/assets/104267255/9e5d7fce-90f1-491a-a3ab-431e47590ef1" height="35">
+  </h1>
   
 ![메인페이지_나만의시험지_nav (4)](https://github.com/LuizyHub/exam-lab/assets/104267255/983afa38-8252-41d2-aeba-b95a7192fb04)
 

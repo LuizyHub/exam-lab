@@ -115,12 +115,7 @@ export default function AttributeManager({ examId }) {
             });
     };
 
-    // 속성과 태그의 input에 스페이스바 입력을 막는다.
-    const handleSpaceKeyPress = (event) => {
-        if (event.key === ' ') {
-            event.preventDefault();
-        }
-    };
+
 
 
 
@@ -136,7 +131,6 @@ export default function AttributeManager({ examId }) {
                                 value={attribute.name}
                                 onChange={(event) => handleAttributeChange(index, event)}
                                 placeholder="속성"
-                                onKeyDown={(event) => handleSpaceKeyPress(event)}
                                 style={{ width: '100px' }}
                             />
 
@@ -147,7 +141,6 @@ export default function AttributeManager({ examId }) {
                                             value={value}
                                             onChange={(event) => handleTagChange(index, tagIndex, event)}
                                             placeholder="태그"
-                                            onKeyDown={(event) => handleSpaceKeyPress(event)}
                                             style={{ backgroundColor: 'transparent', width: '30px' }}
                                         />
 

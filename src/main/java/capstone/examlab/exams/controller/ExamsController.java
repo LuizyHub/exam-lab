@@ -61,10 +61,15 @@ public class ExamsController {
             @Login User user,
             @Validated @RequestBody ExamAddDto examAddDto) throws BadRequestException {
 
+        for (String key : examAddDto.getTags().keySet()) {
+            if (!Util.matchesTagsValuePattern(key))
+                throw new BadRequestException("태그 명을 다시 입력해 주세요.");
+        }
+
         for (List<String> tags : examAddDto.getTags().values()) {
             for (String tag : tags) {
-                if (!Util.isSingleToken(tag))
-                    throw new BadRequestException("태그는 공백 없이 한 단어로 입력해주세요.");
+                if (!Util.matchesTagsValuePattern(tag))
+                    throw new BadRequestException("태그 값을 다시 입력해 주세요.");
             }
         }
 
@@ -96,10 +101,15 @@ public class ExamsController {
             @PathVariable @ValidExamId Long examId,
             @Validated @RequestBody ExamUpdateDto examUpdateDto) throws BadRequestException {
 
+        for(String key : examUpdateDto.getTags().keySet()) {
+            if (!Util.matchesTagsValuePattern(key))
+                throw new BadRequestException("태그 명을 다시 입력해 주세요.");
+        }
+
         for (List<String> tags : examUpdateDto.getTags().values()) {
             for (String tag : tags) {
-                if (!Util.isSingleToken(tag))
-                    throw new BadRequestException("태그는 공백 없이 한 단어로 입력해주세요.");
+                if (!Util.matchesTagsValuePattern(tag))
+                    throw new BadRequestException("태그 값을 다시 입력해 주세요.");
             }
         }
 

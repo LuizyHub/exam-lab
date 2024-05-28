@@ -119,24 +119,25 @@
                 <img src="https://img.shields.io/badge/Elasticsearch-3ab8ac?logo=Elasticsearch&logoColor=e9b919">
                 <img src="https://img.shields.io/badge/MongoDB-114411?logo=mongodb">
                 <img src="https://img.shields.io/badge/Amazon S3-7D929E?logo=Amazon S3&logoColor=ffffff">
-                <img src="https://img.shields.io/badge/Docker-2496ED?&logo=Docker&logoColor=white">
             </td>
         </tr>
-        <tr>
+        <tr> 
             <td>
                 <p>프레임 워크</p>
             </td>
             <td>
                 <img src="https://img.shields.io/badge/React-61DAFB?logo=React&logoColor=ffffff">
-                <img src="https://img.shields.io/badge/Spring Boot-114411?logo=Spring Boot&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/Spring Boot-52b520?logo=Spring Boot&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/Spring Data-114411?logo=amazondocumentdb&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/Spring AI-6aac3d?logo=Spring Boot&logoColor=ffffff">
             </td>
         </tr>
-        <tr>
+        <tr> 
             <td>
                 <p>AI</p>
             </td>
             <td>
-                <img src="https://img.shields.io/badge/OpenAI-74AA9C?&logo=OpenAI&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/Gpt 4o-74AA9C?&logo=OpenAI&logoColor=ffffff">
             </td>
         </tr>
                 <tr>
@@ -145,8 +146,9 @@
             </td>
             <td>
                 <img src="https://img.shields.io/badge/Nginx-009639?logo=Nginx&logoColor=ffffff&">
-                <img src="https://img.shields.io/badge/Amazon EC2-FF9900?logo=Amazon EC2&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/AWS-FF9900?logo=Amazon EC2&logoColor=ffffff">
                 <img src="https://img.shields.io/badge/GitHub Actions-2088FF?logo=github-actions&logoColor=ffffff">
+                <img src="https://img.shields.io/badge/Docker-2496ED?&logo=Docker&logoColor=white">
             </td>
         </tr>
         <tr>
@@ -217,9 +219,9 @@
 ### 테스트코드로 Swagger생성
 <img width="85%" alt="createSwagger" src="https://github.com/LuizyHub/exam-lab/assets/120697456/541cae50-d117-48d7-a165-b9f7a66b34ab" >
 
-- API 문서에 신뢰성 : Spring REST Docs를 사용해 테스트코드를 기반으로 api 문서 생성
-- 효과적인 API 문서 : Swagger UI를 도입해 직접 api를 실행하고 볼 수 있는 문서 생성
-- 자동 생성 : Spring REST Docs로 OpenAPI3 문서를 만들 기 위한 restdocs-api-spec 라이브러리 사용
+- API 문서에 신뢰성 : Spring REST Docs를 사용해 테스트코드를 기반으로 api 문서를 생성합니다.
+- 효과적인 API 문서 : Swagger UI를 도입해 직접 api를 실행하고 볼 수 있는 문서를 생성합니다.
+- 자동 생성 : Spring REST Docs로 OpenAPI3문서를 만들기 위해 restdocs-api-spec 라이브러리를 사용했습니다.
 - 기술 블로그 : https://code-l.tistory.com/36
 
 ### 서버 성능에 맞춰 DB 구축
@@ -262,8 +264,8 @@
 
 ## 🧑🏻‍💻 팀원 소개 👩🏻‍💻
 
-|                                                         박정제                                                          |                                                         김지수                                                         |                                                        윤성빈                                                        |                                                        김동우                                                        |
-|:--------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/LuizyHub/exam-lab/assets/120697456/75033304-87ad-4ca1-8952-e013392ca7b0" width="100" /> | <img src="https://github.com/LuizyHub/exam-lab/assets/120697456/889b4bae-4f43-4c3d-8814-ccba28ff71ca" width="80" /> | <img src="https://github.com/LuizyHub/exam-lab/assets/120697456/d3c9afd0-c401-464c-8ada-66a58c64933b" width="75"> | <img src="https://github.com/LuizyHub/exam-lab/assets/120697456/6c60dd4c-e986-4008-8de8-8ff38056e9a6" width="85"> |
-|                                                        **BE**                                                        |                                                       **BE**                                                        |                                                      **FE**                                                       |                                                      **FE**                                                       |
-|                                       [@LuizyHub](https://github.com/LuizyHub)                                       |                                     [@jisu-0305](https://github.com/jisu-0305)                                      |                                       [@binnary](https://github.com/binnay)                                       |                                         [@4BFC](https://github.com/4BFC)                                          |
+|                                                         박정제                                                          |                                                         김지수                                                         |                                                        윤성빈                                                        |                                                         김동우                                                         |
+|:--------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------:|
+| <img src="https://github.com/LuizyHub/exam-lab/assets/120697456/75033304-87ad-4ca1-8952-e013392ca7b0" height="150"/> | <img src="https://github.com/LuizyHub/exam-lab/assets/120697456/5392a423-dc8e-447d-bbb4-c2df055653a3" height="150" /> | <img src="https://github.com/LuizyHub/exam-lab/assets/120697456/a7201fed-5d8f-473b-9384-bc823d0d41e3" height="150"> | <img src="https://github.com/LuizyHub/exam-lab/assets/120697456/29803b8c-11f7-439d-b408-889f8efb2b0a" height="150"> |
+|                                                        **BE**                                                        |                                                       **BE**                                                        |                                                      **FE**                                                       |                                                       **FE**                                                        |
+|                                       [@LuizyHub](https://github.com/LuizyHub)                                       |                                     [@jisu-0305](https://github.com/jisu-0305)                                      |                                       [@binnary](https://github.com/binnay)                                       |                                          [@4BFC](https://github.com/4BFC)                                           |

@@ -10,13 +10,12 @@ import LoginModal from '../modals/LoginModal';
 const NavigationContainer = styled.div`
     position: fixed;
     top: 0;
-    left: ${({ $isVisible }) => ($isVisible ? '0' : '-199px')};
-    width: 256px;
+    left: 0;
+    width: 70px;
     height: 100%;
     background-color: #fff;
-    z-index: 100;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: left 0.3s ease-in-out;
+    z-index: 999;
+    box-shadow: ${({ $isVisible }) => ($isVisible ? '0' : '0 0 10px rgba(0, 0, 0, 0.1)')};
 `;
 
 const TopContent = styled.div`
@@ -31,33 +30,37 @@ const NavigationBarContent = styled.div`
     flex-direction: column;
     width: 100%; 
     height: 100%;
-    padding-top: 18px;
+    padding-top: 96px;
 `;
 
 const NavigationContent = styled.div`
-    margin-top: 4px;
 `;
 
-const Logo = styled.img`
-    width: 163px;
-    margin-bottom: 35px;
-    margin-left: 76px;
+const NavigationIcon = styled.img`
+    width: 20px;
+    outline: none;
 `;
 
 const UserContainer = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 10px 20px;
-    margin-left: 61px;
+    padding: 12px 15px;
+    margin-left: 0px;
     margin-bottom: 10px;
     position: absolute;
-    bottom: 110px;
+    bottom: 190px;
 `;
 
-const UserName = styled.p`
-    font-size: 18px;
-    font-weight: 500;
+const UserButton = styled.button`
+    background-color: #29B8B5;
+    color: #fff;
+    border: none;
+    border-radius: 180px;
+    padding: 15px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-right: 12px;
     position: relative;
 `;
 
@@ -69,7 +72,7 @@ const StyledButton = styled.button`
     border: none;
     cursor: pointer;
     text-decoration-line: none;
-    margin-bottom: 100px;
+    margin-bottom: 80px;
     margin-top: 10px;
 `;
 
@@ -77,26 +80,39 @@ const LogImgContainer = styled.div`
     display: flex;
     align-items: center;
     position: absolute;
-    bottom: 80px;
+    bottom: 155px;
 `;
 
-const LogText = styled.span`
-    margin-left: 75px;
-    font-size: 18px;
-    font-weight: 500;
-    cursor: pointer;
+const LogImg = styled.img`
+    width: 30px;
+    position: relative;
+    left: 15px;
 `;
+
+const CloseButtonContainer = styled.div`
+    position: absolute;
+    top: 40px;
+    right: 12px;
+`;
+
+const CloseButton = styled.button`
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+`;
+
 
 const NavItem = styled.button`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  margin-left: 0px;
   border: none;
   background-color: transparent;
   height: 40px;
   width: 100%;
   transition: height 0.3s ease;
-  cursor: pointer;
   background-color: ${({ $isHovered }) => ($isHovered ? '#ECF7F7' : 'transparent')};
   &:active,
   &:focus {
@@ -104,18 +120,19 @@ const NavItem = styled.button`
   }
 `;
 
-const NavText = styled.p`
-  margin-left: 70px;
-  font-size: 18px;
-  font-weight: 500;
-`;
-
 const NavLink = styled(Link)`
   color: black;
   text-decoration-line:none;
 `;
 
-export default function NavigationBar() {
+const NavIcon = styled.img`
+  width: ${({ $primary }) => $primary ? '27px' : '23px'};
+  position: relative;
+  left: 20px;
+  cursor: pointer;
+`;
+
+export default function SideBar() {
     const [isVisible, setIsVisible] = useRecoilState(isVisibleState);
     const [userInfo, setUserInfo] = useState({ userName: '', loginStatus: false });
     const [loginInfo, setLoginInfo] = useRecoilState(loginState);
@@ -185,9 +202,11 @@ export default function NavigationBar() {
         <NavigationContainer $isVisible={isVisible}>
             <NavigationBarContent>
                 <TopContent>
-                    <Link to='/'>
-                        <Logo src='/img/logo.svg' alt='logo' />
-                    </Link>
+                    <CloseButtonContainer >
+                        <CloseButton onClick={toggleVisibility}>
+                            <NavigationIcon src='/img/네비게이션바.png' alt='navigation' />
+                        </CloseButton>
+                    </CloseButtonContainer>
                 </TopContent>
 
                 <NavigationContent>
@@ -197,7 +216,7 @@ export default function NavigationBar() {
                             onMouseEnter={() => setHoveredNavItem('create')}
                             onMouseLeave={() => setHoveredNavItem('')}
                         >
-                            <NavText>시험지 제작소</NavText>
+                            <NavIcon src="/img/시험지제작소.svg" alt="icon Image" $isSidebarOpen={isVisible} />
                         </NavItem>
                     </NavLink>
 
@@ -207,7 +226,7 @@ export default function NavigationBar() {
                         onMouseLeave={() => setHoveredNavItem('')}
                         onClick={() => handleNavigate('/exams')}
                     >
-                        <NavText>문제 관리소</NavText>
+                        <NavIcon src="/img/문제관리소.svg" alt="icon Image" $isSidebarOpen={isVisible} $primary="true" />
                     </NavItem>
 
                     <NavItem
@@ -216,26 +235,19 @@ export default function NavigationBar() {
                         onMouseLeave={() => setHoveredNavItem('')}
                         onClick={() => handleNavigate('/workbooks')}
                     >
-                        <NavText>시험지 저장소</NavText>
+                        <NavIcon src="/img/시험지저장소.svg" alt="icon Image" $isSidebarOpen={isVisible} />
                     </NavItem>
 
                     {showModal && <LoginModal onClose={() => setShowModal(false)} />}
-                    
-                    {/* 배포 시 삭제될 개발용 로그인 버튼 */}
-                    <div style={{marginLeft: "75px"}}>
-                        <button onClick={handleAutoLogin}>자동 로그인</button>
-                        <button onClick={handleLogout} primary="true">로그아웃</button>
-                        <button onClick={handleLoginState}>로그인정보 받아오기</button>
-                    </div>
                 </NavigationContent>
                 {userInfo.loginStatus === true ? (
                     <>
                         <UserContainer>
-                            <UserName>{userInfo.userName}님의 연구소</UserName>
+                            <UserButton>{userInfo.userName}</UserButton>
                         </UserContainer>
                         <StyledButton onClick={handleLogout}>
                             <LogImgContainer>
-                                <LogText>로그아웃</LogText>
+                                <LogImg src='/img/로그아웃_icon.png'/>
                             </LogImgContainer>
                         </StyledButton>
                     </>
@@ -243,13 +255,12 @@ export default function NavigationBar() {
                     <a href='/users/login'>
                         <StyledButton>
                             <LogImgContainer>
-                                <LogText>로그인 / 회원가입</LogText>
+                                <LogImg src='/img/로그인_icon.png'/>
                             </LogImgContainer>
                         </StyledButton>
                     </a>
                 )}
             </NavigationBarContent>
-
         </NavigationContainer>
     );
 }

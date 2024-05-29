@@ -35,8 +35,11 @@
   /* border: 1px solid #D6D6D6; */
   padding: 0;
   align-items: center;
+  width: 1147px;
 }
-
+.edit-exam .editor-edit{
+  width: 100%;
+}
 /* .editor-exam {
   padding: 20px;
   background-color: #F9F9FA;
@@ -56,11 +59,10 @@
 .editor-exam .server-button button {
   background-color: transparent;
   border-style: none;
-  /* text-align: right; */
 }
 
 .editor-exam .editor {
-  font-size: 10px;
+  /* font-size: 10px; */
   padding: 20px;
   border: 1px solid #F9F9FA;
   background-color: #FFFFFF;
@@ -77,6 +79,28 @@
   padding: 20px;
   margin-bottom: 20px;
   background-color: #F9F9FA;
+}
+
+.editor-exam .editor-exam-out-line #tags-container{
+  display: flex;
+  margin-bottom: 0.6rem;
+}
+
+
+.editor-exam .editor-exam-out-line #key-container {
+  width : 4vw;
+}
+
+.editor-exam .editor-exam-out-line #key-container>p {
+  margin: 0;
+}
+
+.editor-exam .editor-exam-out-line #value-container >button {
+  border: none;
+  background-color: #FFFFFF;
+  color: #9A9DA0;
+  margin-left: 1rem;
+  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
 }
 
 .editor-edit .editor-out-line {

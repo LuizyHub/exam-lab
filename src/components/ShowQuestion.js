@@ -38,4 +38,3 @@ export default function ShowQuestion({ question, question_images_in, question_im
     </QuestionContent>
   );
 }
-

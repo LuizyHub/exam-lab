@@ -8,7 +8,8 @@ import { handleOnInput, handleDragOver, handleCopy, handleCut, handlePaste, hand
 import { Editor } from './Editor';
 import { sendPostData, sendDeleteData, sendPutData } from '../function/axiosData';
 
-export default function EditorExam({ examId, handleExamDelete, isTag  }) {
+export default function
+  EditorExam({ examId, handleExamDelete, isTag }) {
 
   //Commentary Ctrl
   const [isCommentHide, setCommentHide] = useState(false);
@@ -79,7 +80,7 @@ export default function EditorExam({ examId, handleExamDelete, isTag  }) {
   // 버튼 스타일 설정 함수
     const getButtonStyle = (key, item) => {
       return isSelectedTags[key] && isSelectedTags[key].includes(item)
-        ? { backgroundColor: 'lightblue' }
+        ? { backgroundColor: '#D9F1F1', color: '#24ABA8' }
         : {};
     };
 
@@ -108,12 +109,10 @@ export default function EditorExam({ examId, handleExamDelete, isTag  }) {
             style={{ display: 'none' }}
             ref={imageSelectorRef1}
             onChange={(e) => {
-              //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
               const result = handleImageSelect(e, editorRef1);
               console.log(result);
               setUrlIn(prevState => [...prevState, result]);
               setUrlInId(prevState => [...prevState, result.name])
-              //업로드 되면서 공백 없이 바로 question에 존재하는 html입력 값을 확인
               const isResQuestion = editorRef1.current.innerHTML;//
               const imageReplaceResult = imageReplace(isResQuestion);
               console.log(imageReplaceResult);
@@ -172,13 +171,10 @@ export default function EditorExam({ examId, handleExamDelete, isTag  }) {
               const result = handleImageSelect(e, editorRef2);
               setUrlOut(prevState => [...prevState, result]);
               console.log(result);
-              //blob : 로컬 이미지 가져온 url값을 저장하고 해당 이미지를 생성해서 렌더링하기 수행한다
               setUrlOutId(prevState => [...prevState, result.name])
             }}
           />
-          <div
-          // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
-          >
+          <div>
 
             <Editor
               editorRef={editorRef2}
@@ -388,25 +384,30 @@ export default function EditorExam({ examId, handleExamDelete, isTag  }) {
         />
 
       </div>
-
-    <div className='editor_out_line'>
-      <div>
-        {Object.entries(isTag).map(([key, array]) => (
-          <div key={key}>
-            <strong>{key}:</strong>
-            {array.map((item, index) => (
-              <button
-                key={`${key}-${index}`}
-                style={getButtonStyle(key, item)}
-                onClick={() => handleButtonClick(key, item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        ))}
+      {/* 태그 선택 영역 */}
+      <div className='tags-container'>
+          {Object.entries(isTag).map(([key, array]) => (
+            <div key={key} id='tags-container'>
+              <div id='key-container'>
+                <p id='key'>
+                  {key}
+                </p>
+              </div>
+              <div id='value-container'>
+                {array.map((item, index) => (
+                  <button
+                    id='value'
+                    key={`${key}-${index}`}
+                    style={getButtonStyle(key, item)}
+                    onClick={() => handleButtonClick(key, item)}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
       </div>
-    </div>
 
       {/*------------------ 버튼 영역---------------------- */}
 
@@ -424,13 +425,10 @@ export default function EditorExam({ examId, handleExamDelete, isTag  }) {
         <button onClick={() => {
           sendDeleteData(UUID);
           handleExamDelete(examId);
-          // getData();//get이 내부로 들어가야하나?
         }}>삭제</button>
 
-        {/* UUID가 필요한가? 제거하고 실행 해볼 것 */}
         <button onClick={() => {
           sendPutData(UUID, isData.question, isData.options, isCommentAnswers, isCommentary);
-          // getData();//get이 내부로 들어가야하나?
         }}>수정</button>
 
         <button onClick={() => {
@@ -438,29 +436,6 @@ export default function EditorExam({ examId, handleExamDelete, isTag  }) {
           handleCommentHide();
         }}>답안</button>
 
-        {/* <button onClick={() => {
-          console.log("\n저장된 QUESTION_ID 값 : " + UUID
-            + "\n저장된 EXAM_ID 값 : " + examId);
-          console.log(
-            "저장된 API question 값 : " + isData.question
-            + "\n저장된 imageIn 값 : " + isUrlIn[0]
-            // + "\n저장된 imageIn name : " + isUrlIn[0].name
-            + "\n저장된 isUrlInId name : " + isUrlInId[0]
-            + "\n저장된 imageOut 값 : " + isUrlOut
-            + "\n저장된 imageIn 값 : " + isUrlIn
-            + "\n저장된 API options 값 : " + isData.options
-            + "\n저장된 API isUrlIn 값 : " + isData.isUrlIn
-            + "\n저장된 API isUrlOutDes 값 : " + isUrlOutDes
-            + "\n저장된 API isUrlOutDes 값 : " + isUrlOutDes
-          );
-          isUrlIn.forEach((image) => { console.log("In" + image) })
-          isUrlOut.forEach((image) => { console.log("Out" + image) })
-          // isResUrlOut.forEach((image) => { console.log("ResOut" + image) })
-          console.log(
-            "저장된 Answer 값 : " + isCommentAnswers
-            + "\n저장된 Commentary 값 : " + isCommentary
-          );
-        }}>확인</button> */}
       </div>
     </div>
   );

@@ -9,16 +9,26 @@ import styled from 'styled-components';
 import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
-// import { useDataHandle } from "../..//dataHandle";
 
+// const EditExamPage = styled.div
+//   `
+//     display: flex;
+//     flex-direction: column;
+//     margin-left: 270px;
+//     margin-right: 18%;
+//     margin-top: 16px;
+//     transition: margin-left 0.3s ease;
+// `
+//   ;
+
+// 모든 모니터에 맞출 수 있게 코드 수정  
 const EditExamPage = styled.div
   `
     display: flex;
     flex-direction: column;
-    margin-left: 270px;
-    margin-right: 18%;
-    margin-top: 16px;
     transition: margin-left 0.3s ease;
+    justify-content: center;
+    align-items: center;
 `
   ;
 
@@ -33,14 +43,11 @@ export default function EditExam() {
   const [examId, setExamId] = useState('');
   const [isObject, setObject] = useState([]); //EditorEdit List
   const [isTag, setTag] = useState([]);
+  const [isExistingExam, setExistingExam] = useState(true);
+
   const [isSize, setSize] = useState(100);
   const [isDeleteIndex, setDeleteIndex] = useState();
   const [modalOpen, setModalOpen] = useState(false);
-
-  // 각 Editor의 contentEditable 상태를 관리하는 상태
-  // console.log("Location:", location);
-  // console.log("Exam ID:", examId);
-  // console.log("Exam Title:", examTitle);
 
   useEffect(() => {
     // location.state가 정의되어 있을 때만 examId와 examTitle을 설정합니다.
@@ -52,22 +59,27 @@ export default function EditExam() {
       // console.log("Exam ID:", examId);
       // console.log("Exam Title:", examTitle);
 
-      getData(examId).then((object) => {
-        setObject(object.questions);
-        // setSize(object.size)
-      }).catch((error) => {
-        console.error('아직 등록된 문제가 없습니다.', error);
-      });
-
-      getTagsData(examId).then((object) => {
-        setTag(object.tags);
-      }).catch((error) => {
-        console.error("tag가 없습니다.",error);
-      });
-
     }
+  }, [location]);
 
-    //별개의 useEffect 커스텀 컴포넌트로 뺄지 고민 중
+  useEffect(() => {
+      if (examId) {
+        getData(examId).then((object) => {
+          setObject(object.questions);
+        }).catch((error) => {
+          console.error('아직 등록된 문제가 없습니다.', error);
+        });
+
+        getTagsData(examId).then((object) => {
+          setTag(object.tags);
+        }).catch((error) => {
+          console.error("tag가 없습니다.", error);
+        });
+      }
+  }, [examId]); // examId가 설정될 때 데이터를 가져옵니다.
+
+  useEffect(() => { 
+        //별개의 useEffect 커스텀 컴포넌트로 뺄지 고민 중
     //스크롤 따라오는 sideBar 함수
     const handleScroll = () => {
       const sidebar = document.getElementById('side-bar');
@@ -102,23 +114,25 @@ export default function EditExam() {
     // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     return () => {
       window.removeEventListener('scroll', handleScroll);
-    };
-
-  }, [location]);
-
+  };
+  })
+  
   const [isExamCreate, setExamCreate] = useState([]); //EditorExam List
   const [isGetExam, setExam] = useState([]);
 
   const handleExamCreate = () => {
     // 새로운 컴포넌트를 생성하여 상태에 추가
-    setExamCreate([...isExamCreate, <EditorExam key={isExamCreate.length} examId={examId} handleExamDelete={handleExamDelete} isTag={isTag} />]);
-    //하단으로 내려가는 css 함수
-    setTimeout(() => {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth',
-      });
-    }, 100);
+     if (examId) { // examId가 설정된 경우에만 컴포넌트 생성
+      setExamCreate([...isExamCreate, <EditorExam key={isExamCreate.length} examId={examId} handleExamDelete={handleExamDelete} isTag={isTag} />]);
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth',
+        });
+      }, 100);
+    } else {
+      console.error('examId is not set'); // examId가 설정되지 않은 경우의 오류 로그
+    }
   };
 
   //아래 둘을 하나의 함수로 변경
@@ -132,6 +146,10 @@ export default function EditExam() {
     setObject(deleteElement);
   };
 
+  const toggleExamVisibility = () => {
+      setExistingExam((prevState) => !prevState); // 상태를 반전시킵니다.
+    };
+
   return (
   <EditExamPage>
       <div className="edit-exam">
@@ -142,40 +160,43 @@ export default function EditExam() {
             console.log(examId);
           }}>+</button>
           <button onClick={() => setModalOpen(true)}>+AI</button>
-          <button>숨기기</button>
+          <button onClick={toggleExamVisibility}>숨기기</button>
         </div>
 
         <NavigationBar />
         <div></div>
-        <AttributeManager examId={examId}></AttributeManager>
+        <AttributeManager examId={examId} setExamId={setExamId}></AttributeManager>
 
-        {/* 기존문제 가져오기 */}
+        
         <div className="editor-edit">
           <hr />
           <div className="title">문제등록</div>
-
+          {/* 기존문제 가져오기 */}
           {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
-          <div>
-            {isObject.map((object, index) => (
-              <div
-                key={index}
-                className="editor-out-line"
-              >
-                <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} />
-              </div>
-            ))}
-          </div>
+          {isExistingExam &&(
+            <div className="existing-exam">
+              {isObject.map((object, index) => (
+                <div
+                  key={index}
+                  className="editor-out-line"
+                >
+                  <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} />
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* 문제 템플릿 추가하기 */}
           <div className="editor-exam">
             {isExamCreate.map((component, index) => (
               <div className="editor-exam-out-line" key={index}>
-                <div>{component}</div>
+                {component}
               </div>
             ))}
           </div>
-
-          <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} />
+          <div className="editor-out-line">
+            <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} />
+          </div>
         </div>
       </div>
     </EditExamPage>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/attribute.css'
+import { DeleteAttributeModal } from "../modals/DeleteModal";
 import axios from 'axios';
 
 export default function AttributeManager({ examId, setExamId }) {
@@ -132,12 +133,7 @@ export default function AttributeManager({ examId, setExamId }) {
             });
     };
 
-    // 속성과 태그의 input에 스페이스바 입력을 막는다.
-    const handleSpaceKeyPress = (event) => {
-        if (event.key === ' ') {
-            event.preventDefault();
-        }
-    };
+
 
 
 
@@ -163,7 +159,6 @@ export default function AttributeManager({ examId, setExamId }) {
                                 value={attribute.name}
                                 onChange={(event) => handleAttributeChange(index, event)}
                                 placeholder="속성"
-                                onKeyDown={(event) => handleSpaceKeyPress(event)}
                                 style={{ width: '100px' }}
                             />
 
@@ -174,7 +169,6 @@ export default function AttributeManager({ examId, setExamId }) {
                                             value={value}
                                             onChange={(event) => handleTagChange(index, tagIndex, event)}
                                             placeholder="태그"
-                                            onKeyDown={(event) => handleSpaceKeyPress(event)}
                                             style={{ backgroundColor: 'transparent', width: '30px' }}
                                         />
 
@@ -191,34 +185,13 @@ export default function AttributeManager({ examId, setExamId }) {
                             <button onClick={() => handleDeleteConfirm(index)}>- 속성 삭제</button>
                         </div>
 
-                        {isShowModal[index] &&  // 배열에서 해당 인덱스의 모달 표시 여부를 확인
-                            <div
-                                style={{
-                                    position: 'fixed',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        backgroundColor: 'white',
-                                        padding: 20,
-                                        borderRadius: 5,
-                                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
-                                    }}
-                                >
-                                    <h3>속성 삭제시, 모든 문제에 대한 속성이 삭제됩니다. 진행하시겠습니까?</h3>
-                                    <button onClick={() => { handleDeleteAttribute(index); handleCloseModal(); }}>삭제하기</button>
-                                    <button onClick={handleCloseModal}>취소</button>
-                                </div>
-                            </div>
-                        }
+                        {isShowModal[index] && (
+                            <DeleteAttributeModal
+                                key={index}
+                                onClose={() => handleCloseModal(index)}
+                                handleDeleteAttribute={handleDeleteAttribute}
+                            />
+                        )}
 
                     </div>
                 ))}

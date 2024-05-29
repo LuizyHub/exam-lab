@@ -10,8 +10,7 @@ import '../css/labexam.css';
 import axios from "axios";
 import Exam from "../components/Exam";
 
-const LabExamContent =
-  styled.div`
+const LabExamContent = styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 320px;

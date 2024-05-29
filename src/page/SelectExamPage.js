@@ -3,8 +3,20 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import NavigationBar from '../components/NavigationBar';
+import Bottom from "../components/Bottom";
 import { DeleteExamModal }from '../modals/DeleteModal';
 
+
+const Container = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Content = styled.div`
+  flex: 1;
+  margin-bottom: 600px;
+`;
 
 const SelectExam = styled.div`
   display: flex;
@@ -16,14 +28,14 @@ const SelectExam = styled.div`
 `;
 
 const PageIcon = styled.img`
-  width: 66px;
-  height: 65px;
+  width: 58px;
   background-color: #D9F1F1;
-  padding: 10px 10px;
-  border-radius: 10px;
+  padding: 12px 16px;
+  border-radius: 20px;
   margin-top: 15px;
   margin-right: 25px;
 `;
+
 
 const PageTitle = styled.h1`
   font-size: 30px;
@@ -40,9 +52,9 @@ const PageIntro = styled.p`
 const PageName = styled.p`
   color: #262626;
   font-size: 18px;
+  font-weight: 600;
   margin-top: 108px;
   margin-bottom: 20px;
-  font-weight: bold;
   padding-bottom: 5px;
 `;
 
@@ -62,7 +74,7 @@ const ExamButton = styled.button`
     margin-right: 15px;
     font-size: 15px;
     text-align: left;
-    width: 384px;
+    width: 375px;
     height: 91px;
     position: relative;
     &:hover {
@@ -74,7 +86,7 @@ const ExamButton = styled.button`
 const ExamCreateButton = styled(ExamButton)`
     background-color: #F5F5F7;
     border: none;
-    width: 384px;
+    width: 375px;
     height: 91px;
     display: flex; 
     justify-content: center; 
@@ -154,10 +166,12 @@ export default function SelectExamPage() {
   }
 
   return (
+    <Container>
+      <Content>
     <SelectExam>
         <div>
         <div style={{ display: "flex" }}>
-            <PageIcon src="/img/문제관리소_icon.png" alt="page Icon" />
+            <PageIcon src="/img/문제관리소.svg" alt="page Icon" />
             <div>
               <PageTitle>문제 관리소</PageTitle>
               <PageIntro>문제를 새롭게 등록해보세요</PageIntro>
@@ -190,7 +204,13 @@ export default function SelectExamPage() {
         </ButtonContainer>
       </div>
 
+      </SelectExam>
+      </Content>
+
       <NavigationBar />
-    </SelectExam>
+      <footer>
+          <Bottom />
+      </footer> {/* Bottom 컴포넌트 추가 */}
+    </Container>
   );
 }

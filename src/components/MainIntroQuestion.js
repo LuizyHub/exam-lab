@@ -76,8 +76,13 @@ const StepIntro = styled.p`
     margin-bottom: 10px;
 `;
 
+const EditImageContainer = styled.div`
+`;
+
 const EdtiToolImg = styled.img`
     widht: 300px;
+    margin-top: 20px;
+    margin-right: 15px;
 `
 
 const AIIcon = styled.img`
@@ -90,7 +95,7 @@ export default function MaingIntQuestion() {
         <MainIntroduction>
             <br/><br/><br/>
             <IntroTitle>
-                <StepNumberStyle>나만의 시험지</StepNumberStyle>
+                <StepNumberStyle>문제 관리소</StepNumberStyle>
                 <Step> 새로운 문제를 손쉽게 시험지 연구소에 추가하여 <br/> 문제를 수집할 수 있어요. </Step>
                 <StepsContainer>
                     <StepBy>
@@ -117,13 +122,24 @@ export default function MaingIntQuestion() {
                 <IntroContent>
                     <Step>문제 등록 툴 사용법 </Step>
                     <StepIntro>문제 등록 툴을 익혀 쉽고 빠르게 문제 등록을 시작해보세요. </StepIntro>
-                    <EdtiToolImg src="./img/Intro_editTool.png" alt="editTool Image" />
+                    <EdtiToolImg src="./img/문제_container.svg" alt="editTool Image" />
+                    <br/>
+                    
+                    <EditImageContainer>
+                        <EdtiToolImg src="./img/bold_container.svg" alt="editTool Image" />
+                        <EdtiToolImg src="./img/image_container.svg" alt="editTool Image" />
+                        <EdtiToolImg src="./img/Italic type_container.svg" alt="editTool Image" />
+                        <br/>
+                        <EdtiToolImg src="./img/Line through_container.svg" alt="editTool Image" />
+                        <EdtiToolImg src="./img/Underline_container.svg" alt="editTool Image" />
+                    </EditImageContainer>
+                    
                 </IntroContent>
                 <IntroContent>
                     <Step> AI 문제 자동 생성 </Step>
                     <StepIntro>시험지 연구소 AI가 파일을 읽고 문제를 자동으로 생성해드려요.</StepIntro>
                     <p style={{color : "#9A9DA0", fontSize:"14px", marginTop:"0px"}}> * .pdf / .md / .txt 파일만 가능합니다. </p>
-                    <AIIcon src="./img/Intro_AI자동문제생성사진.png" alt="AI 자동생성 Image" />
+                    <AIIcon src="./img/Intro_AI자동문제생성사진.svg" alt="AI 자동생성 Image" />
                 </IntroContent>
             </IntroBody>
         </MainIntroduction>

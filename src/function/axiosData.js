@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-// export const configFormData = () => {
-
-// }
-export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, elementUrlOutDes, elementQuestions, elementOptions, elementCommentAnswers, elementCommentary) => {
+export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, elementUrlOutDes, elementQuestions, elementOptions, elementCommentAnswers, elementCommentary, elementTags) => {
   //** DON'T MOVE THIS LINE */
   const URL = `/api/v1/exams/${PAGE_ID}/questions`;
   const TYPE = 'application/json';
@@ -44,7 +41,7 @@ export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, element
     questionImagesTextOut: questionImagesTextOut, //from IN SCOPE
     answers: [elementCommentAnswers],
     //카테고리 영역 수정 보완 필요
-    // tags: { "category": ["test"] },
+    tags: elementTags ,
     commentary: elementCommentary
     //해답지 이미지 여역
     // commentaryImagesTextIn: [{ url: "", description: "설명", attribute: "속성" }],
@@ -126,48 +123,30 @@ export const sendPutData = async (UUID, elementQuestions, elementOptions, elemen
   }
 }
 
-// export const getData = () => {
-//   console.log("가져오기");
-//   const URL = '/api/v1/exams/5/questions';
-
-//   axios.get(URL)
-//     .then((response) => {
-//       const res = response.data;
-//       console.log(res);
-//       console.log(res.id);
-//       // setID(res.id);
-//       console.log(res.questions);
-//       res.questions.forEach((questions, index) => {
-//         console.log(`Question ${index + 1}:`);
-//         console.log(questions.question);
-//         setResQuestion(questions.question);
-//         console.log(questions.options);
-//         setResOption(questions.options);
-//         // questions.question_images_in.forEach((image) => {
-//         //   console.log(image.url);
-//         //   setResUrlIn(prevent => [...prevent, image.url]);
-//         // });
-//         setResUrlIn(questions.question_images_in.map(image => image.url));
-//         // questions.question_images_out.forEach((image) => {
-//         //   console.log(image.url);
-//         //   setResUrlOut(prevent => [...prevent, image.url]);
-//         // });
-//         setResUrlOut(questions.question_images_out.map(image => image.url));
-
-//         console.log(questions.question_images_out[0].description);
-//         setResUrlOutDes(questions.question_images_out[0].description)
-//       });
-//     })
-//     .catch((error) => {
-//       // 오류 처리
-//       console.log(error);
-//     });
-// }
-
 export const getData = async (PAGE_ID) => {
   try {
     console.log("가져오기");
     const URL = `/api/v1/exams/${PAGE_ID}/questions?count=0`;
+
+    const response = await axios.get(URL);
+    const res = response.data;
+    console.log(res);
+    console.log(res.size);
+    return res;
+    // res.questions.forEach((questions, index) => {
+    //   console.log(`Question ${index + 1}:`);
+    // });
+  } catch (error) {
+    // 오류 처리
+    console.log(error);
+  }
+}
+
+
+export const getTagsData = async (PAGE_ID) => {
+  try {
+    console.log("가져오기");
+    const URL = `/api/v1/exams/${PAGE_ID}`;
 
     const response = await axios.get(URL);
     const res = response.data;

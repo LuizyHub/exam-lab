@@ -108,7 +108,12 @@ export default function AICreate({ examId, modalOpen, setModalOpen }) {
             }
             {/* <button onClick={() => setModalOpen(true)}>AI로 문제 생성하기</button> */}
             {isObject.map((object, index) => (
-                <EditorEdit key={index} object={object} index={index} isObject={isObject} />
+                <div
+                  key={index}
+                  className="editor-out-line"
+                >
+                    <EditorEdit key={index} object={object} index={index} isObject={isObject} />
+                </div>
             ))}
         </div>
     );

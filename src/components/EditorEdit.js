@@ -7,11 +7,15 @@ import '../css/EditorEdit.css'
 export default function EditorEdit({ object, index, isObject, handleEditDelete }) {
   //Axios Get useState
   const [isContentEditable, setContentEditable] = useState(Array(isObject.length).fill(false));
-  // contentEditable 상태를 변경하는 함수
+  const [isEditing, setIsEditing] = useState(Array(isObject.length).fill(false)); // 추가된 상태 변수
   const handleStateChange = (index) => {
-    const updatedEditorState = [...isContentEditable]; // 이전 상태 복사
-    updatedEditorState[index] = true; // 클릭된 Editor의 상태를 true로 변경
-    setContentEditable(updatedEditorState); // 변경된 상태 업데이트
+    const updatedEditorState = [...isContentEditable];
+    updatedEditorState[index] = !updatedEditorState[index]; // 클릭 시 편집 모드를 토글
+    setContentEditable(updatedEditorState);
+
+    const updatedEditingState = [...isEditing];
+    updatedEditingState[index] = !updatedEditingState[index]; // 클릭 시 편집 상태를 토글
+    setIsEditing(updatedEditingState);
   };
 
   const [questionContent, setQuestionContent] = useState('');
@@ -24,7 +28,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
   const answersRef = useRef(null);
   const commentaryRef = useRef(null);
 
-  const handleEdit = () => {
+  const handleEdit = (index) => {
     // 참조가 null인지 확인하고, null이 아닐 때만 innerText를 가져옵니다.
     if (optionsRef.current && answersRef.current && commentaryRef.current) {
       const question = questionRef.current.innerText;
@@ -39,6 +43,9 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
     } else {
       console.log("참조가 아직 설정되지 않았습니다.");
     }
+
+    handleStateChange(index);
+
   };
 
   //이미지 마킹 실제 이미지로 전환 ->현재 중복이 되어 있는 코드이기에 검토 필요
@@ -64,54 +71,72 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
 
   return (
     <>
-      {/* <Editor
-        editorRef={questionRef}
-        contentEditable={isContentEditable[index]}
-        dangerouslySetInnerHTML={{ __html: replacedQuestion }}
-        style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} />
-      <Editor /> */}
       <div className="editor-edit">
-        <div
-          className="editor"
+
+        {/* <div
+          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           ref={questionRef}
+          contentEditable={isContentEditable[index]}
           dangerouslySetInnerHTML={{ __html: replacedQuestion }}
         >
-        </div>
+        </div> */}
+
+        <Editor
+          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`} 
+          editorRef={questionRef}
+          contentEditable={isContentEditable[index]}
+          dangerouslySetInnerHTML={{ __html: replacedQuestion }}
+        />
+        
         {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
           <div
             className="editor"
-          // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }}
           >
             {object.question_images_out.map((image, index) => (
-              <img key={index} src={image.url} className="examlab-image-right" style={{ width: '20%' }} />
+              <img 
+               key={index} 
+               src={image.url} 
+               className="examlab-image-right" 
+                style={{ width: '20%' }}
+              />
             ))}
           </div>
         ) : null}
 
         <EditorTool />
         <Editor
+          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           editorRef={optionsRef}
           contentEditable={isContentEditable[index]}
           dangerouslySetInnerHTML={{ __html: replacedOptions }}
-        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
         />
         <EditorTool />
         <Editor
+          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           editorRef={answersRef}
           contentEditable={isContentEditable[index]}
           dangerouslySetInnerHTML={{ __html: replacedAnswer }}
-        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
         />
         <EditorTool />
         <Editor
+          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           editorRef={commentaryRef}
           contentEditable={isContentEditable[index]}
           dangerouslySetInnerHTML={{ __html: object.commentary }}
-        // style={{ padding: '16px 24px', border: '1px solid #D6D6D6', borderRadius: '4px', width: '600px' }} 
         />
         <div className='server-button'>
-          <button onClick={() => { handleStateChange(index) }}>편집모드</button>
-          <button onClick={() => { handleEdit() }}>수정</button>
+         <button 
+            onClick={() => { handleStateChange(index) }}
+            style={{ display: isEditing[index] ? 'none' : 'inline-block' }} // 편집 모드 버튼 표시/숨기기
+          >
+            편집 모드
+          </button>
+          <button 
+            onClick={() => { handleEdit(index); console.log(isEditing[index])}} 
+            style={{ display: isEditing[index] ? 'inline-block' : 'none' }} // 수정 버튼 표시/숨기기
+          >
+            수정
+          </button>
           <button onClick={() => {
             sendDeleteData(object.id);
             handleEditDelete(index);

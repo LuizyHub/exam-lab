@@ -145,4 +145,3 @@ export default function MaingIntQuestion() {
         </MainIntroduction>
     );
 }
-

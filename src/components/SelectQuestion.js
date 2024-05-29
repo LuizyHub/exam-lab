@@ -77,7 +77,7 @@ const KeywordTitle = styled.p`
 `;
 
 const KeywordInput = styled.input`
-    width: 88%;
+    width: 85%;
     height: 44px;
     margin-left: 10px;
     margin-right: 10px;
@@ -164,8 +164,6 @@ const CountInput = styled.input`
   &:focus {
     background-color: #C6E7E7;
     border-color: #5BB6B4; 
-  }
-  
 `;
 
 

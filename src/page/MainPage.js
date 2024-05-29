@@ -245,8 +245,6 @@ export default function MainPage() {
                     </div>
                 }
 
-
-
                 <NavigationBar />
             </MainContainer>
             <footer>

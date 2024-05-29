@@ -2,19 +2,16 @@ import styled from "styled-components";
 import { useRecoilValue } from 'recoil';
 import { isVisibleState } from '../recoil/atoms';
 
-
 const BottomContainer = styled.div`
     display: flex;
-    width: ${({ $isSidebarOpen }) => ($isSidebarOpen ? 'calc(100% - 260px)' : '100%')}; /* Sidebar가 열려있을 때는 220px만큼 줄어들도록 설정 */
+    width: ${({ $isSidebarOpen }) => ($isSidebarOpen ? 'calc(100% - 260px)' : '100%')}; 
     height: 200px;
     bottom: 0;
     background-color: #F0F2F5;
-    padding-left: ${({ $isSidebarOpen }) => ($isSidebarOpen ? '260px' : '0px')}; /* Sidebar가 열려있을 때는 260px로 설정 */
-    transition: width 0.5s ease, padding-left 0.5s ease; /* transition 속성에 padding-left 추가 */
+    padding-left: ${({ $isSidebarOpen }) => ($isSidebarOpen ? '260px' : '0px')};
+    transition: width 0.5s ease, padding-left 0.5s ease;
     margin-top: auto;
 `;
-
-
 
 const BottomContent = styled.div`
     display: flex;

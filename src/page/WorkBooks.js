@@ -44,12 +44,22 @@ const PageIcon = styled.img`
   margin-right: 5px;
 `;
 
+const PageIcon = styled.img`
+  width: 50px;
+  height: 65px;
+  background-color: #D9F1F1;
+  padding: 10px 10px;
+  border-radius: 10px;
+  margin-top: 15px;
+  margin-right: 25px;
+`;
+
 const PageTitle = styled.h1`
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 0px;
     width: 300px;
-  
+
 `;
 
 const PageIntro = styled.p`

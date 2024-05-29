@@ -5,6 +5,17 @@
 
 .editor-edit .server-button button {
   background-color: transparent;
+  padding: 0;
   border-style: none;
-  /* text-align: right; */
+  margin-left: 10px;
 }
+
+/* .editor-edit {
+ background-color: #F9F9FA;
+} */
+
+.editor-edit .editorMode{
+  background-color: #F9F9FA;
+  margin-bottom: 7px;
+  padding: 10px;
+} 

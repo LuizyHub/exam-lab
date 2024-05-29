@@ -34,7 +34,6 @@ export default function ShowQuestion({ question, question_images_in, question_im
       
        {/* 외부 이미지 렌더링 */}
        <OutImage>{renderImages(question_images_out)}</OutImage>
-
       {/* 옵션 */}
       <Option>
         <StyledOl>

@@ -84,7 +84,6 @@ const LogText = styled.span`
     margin-left: 75px;
     font-size: 18px;
     font-weight: 500;
-    cursor: pointer;
 `;
 
 const NavItem = styled.button`
@@ -96,12 +95,7 @@ const NavItem = styled.button`
   height: 40px;
   width: 100%;
   transition: height 0.3s ease;
-  cursor: pointer;
   background-color: ${({ $isHovered }) => ($isHovered ? '#ECF7F7' : 'transparent')};
-  &:active,
-  &:focus {
-    background-color: #ECF7F7;
-  }
 `;
 
 const NavText = styled.p`
@@ -222,11 +216,11 @@ export default function NavigationBar() {
                     {showModal && <LoginModal onClose={() => setShowModal(false)} />}
                     
                     {/* 배포 시 삭제될 개발용 로그인 버튼 */}
-                    <div style={{marginLeft: "75px"}}>
+                    {/* <div style={{marginLeft: "75px"}}>
                         <button onClick={handleAutoLogin}>자동 로그인</button>
                         <button onClick={handleLogout} primary="true">로그아웃</button>
                         <button onClick={handleLoginState}>로그인정보 받아오기</button>
-                    </div>
+                    </div> */}
                 </NavigationContent>
                 {userInfo.loginStatus === true ? (
                     <>

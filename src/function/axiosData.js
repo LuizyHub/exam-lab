@@ -96,7 +96,7 @@ export const sendDeleteData = async (UUID) => {
   }
 }
 //if insert params that Object.question or options.. about Object useState
-export const sendPutData = async (UUID, elementQuestions, elementOptions, elementCommentAnswers, elementCommentary) => {
+export const sendPutData = async (UUID, elementQuestions, elementOptions, elementCommentAnswers, elementCommentary, isSelectedTags) => {
   console.log("수정");
   const URL = `/api/v1/questions`
 
@@ -109,7 +109,7 @@ export const sendPutData = async (UUID, elementQuestions, elementOptions, elemen
     // questionImagesTextOut: [],
     answers: [elementCommentAnswers],
     commentary: elementCommentary,
-    // tags: { "category": ["test"] },
+    tags:  isSelectedTags ,
   };
 
   try {

@@ -135,6 +135,7 @@ export default function EditExam() {
     }
   };
 
+  
   //아래 둘을 하나의 함수로 변경
   const handleExamDelete = (elementIndex) => {
     const deleteElement = isExamCreate.filter((_, index) => index !== elementIndex);
@@ -180,7 +181,7 @@ export default function EditExam() {
                   key={index}
                   className="editor-out-line"
                 >
-                  <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} />
+                  <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
                 </div>
               ))}
             </div>

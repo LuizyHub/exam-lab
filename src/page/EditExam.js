@@ -10,17 +10,6 @@ import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
 
-// const EditExamPage = styled.div
-//   `
-//     display: flex;
-//     flex-direction: column;
-//     margin-left: 270px;
-//     margin-right: 18%;
-//     margin-top: 16px;
-//     transition: margin-left 0.3s ease;
-// `
-//   ;
-
 // 모든 모니터에 맞출 수 있게 코드 수정  
 const EditExamPage = styled.div
   `
@@ -33,10 +22,6 @@ const EditExamPage = styled.div
   ;
 
 export default function EditExam() {
-
-  //로그인 리모컨
-  const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
-
   const location = useLocation();
   // 선택된 시험의 examId와 examTitle을 받아, AttributeManager 컴포넌트에게 props로 전달
   const [examTitle, setExamTitle] = useState('');
@@ -55,10 +40,9 @@ export default function EditExam() {
       const { examId, examTitle } = location.state;
       setExamId(examId);
       setExamTitle(examTitle);
-      // console.log("Location:", location);
-      // console.log("Exam ID:", examId);
-      // console.log("Exam Title:", examTitle);
-
+      console.log("Location:", location);
+      console.log("Exam ID:", examId);
+      console.log("Exam Title:", examTitle);
     }
   }, [location]);
 
@@ -135,7 +119,6 @@ export default function EditExam() {
     }
   };
 
-  
   //아래 둘을 하나의 함수로 변경
   const handleExamDelete = (elementIndex) => {
     const deleteElement = isExamCreate.filter((_, index) => index !== elementIndex);
@@ -171,20 +154,23 @@ export default function EditExam() {
         
         <div className="editor-edit">
           <hr />
-          <div className="title">문제등록</div>
-          {/* 기존문제 가져오기 */}
-          {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
-          <div>
-            {isObject.map((object, index) => (
-              <div
-                key={index}
-                className="editor-out-line"
-              >
-                <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
+          
+          {isExistingExam && <div>
+            <div className="title">문제등록</div>
+              {/* 기존문제 가져오기 */}
+              {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
+              <div>
+                {isObject.map((object, index) => (
+                  <div
+                    key={index}
+                    className="editor-out-line"
+                  >
+                    <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
+            </div>
+          }
           {/* 문제 템플릿 추가하기 */}
           <div className="editor-exam">
             {isExamCreate.map((component, index) => (

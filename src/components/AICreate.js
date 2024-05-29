@@ -6,7 +6,7 @@ import EditorEdit from './EditorEdit';
 
 
 //axiosData 함수에 있는 getData와 연동
-export default function AICreate({ examId, modalOpen, setModalOpen }) {
+export default function AICreate({ examId, modalOpen, setModalOpen, isTag }) {
     // const [modalOpen, setModalOpen] = useState(false);
     const [fileName, setFileName] = useState(""); // 파일 이름 상태 추가
     const fileInputRef = useRef(null);
@@ -92,6 +92,10 @@ export default function AICreate({ examId, modalOpen, setModalOpen }) {
         }
     }
 
+    const handleEditDelete = (index) => {
+        setObject((prevObjects) => prevObjects.filter((_, i) => i !== index));
+    };
+
     return (
         <div>
            {modalOpen && 
@@ -111,7 +115,7 @@ export default function AICreate({ examId, modalOpen, setModalOpen }) {
                   key={index}
                   className="editor-out-line"
                 >
-                    <EditorEdit key={index} object={object} index={index} isObject={isObject} />
+                    <EditorEdit key={index} object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
                 </div>
             ))}
         </div>

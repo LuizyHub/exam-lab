@@ -52,7 +52,7 @@ const CloseButton = styled.span`
 `;
 
 const ModalBody = styled.div`
-    margin-bottom: 16px;
+    margin-bottom: 0px;
     text-align: center;
     hr {
     border: 0;
@@ -98,14 +98,45 @@ export const DeleteExamModal = ({exam, handleExamDelete, handleCloseModal}) => {
     );
 };
 
+
+export const DeleteAttributeModal = ({ onClose, handleDeleteAttribute }) => {
+    return (
+        <DeleteConfirmModal>
+            <ModalContent>
+                <ModalHeader>
+                    <ModalTitle> 속성 삭제 </ModalTitle>
+                    <CloseButton onClick={onClose}>&times;</CloseButton>
+                </ModalHeader>
+                <ModalBody>
+                    <hr />
+                    <ModalText>
+                        해당 속성과 관련 태그들이 모든 문제에서 삭제됩니다. 정말로 삭제하시겠습니까?
+                    </ModalText>
+                    <ModalButton onClick={handleDeleteAttribute}>삭제하기</ModalButton>
+                </ModalBody>
+            </ModalContent>
+        </DeleteConfirmModal>
+    );
+}
+
+
+
 export const DeleteWorkBookModal = ({workbook, handleWorkBookDelete, handleCloseModal}) => {
     return(
         <DeleteConfirmModal>
+            <ModalContent>
+            <ModalHeader>
+                <ModalTitle> 시험지 삭제 </ModalTitle>
+                <CloseButton onClick={() => handleCloseModal(workbook.id)}>&times;</CloseButton>
+            </ModalHeader>
             <ModalBody>
-                <h3>{workbook.title}에 대한 모든 문제들이 삭제됩니다. 정말로 삭제하시겠습니까? </h3>
-                <ModalButton primary="true" onClick={() => handleWorkBookDelete(workbook.id)}>삭제하기</ModalButton>
-                <ModalButton onClick={() => handleCloseModal(workbook.id)}>취소</ModalButton>
+                <hr />
+                <ModalText>
+                    <HighlightText>{workbook.title}</HighlightText> 시험지가 삭제됩니다. 정말로 삭제하시겠습니까?
+                </ModalText>
+                <ModalButton onClick={() => handleWorkBookDelete(workbook.id)}>삭제하기</ModalButton>
             </ModalBody>
+            </ModalContent>
         </DeleteConfirmModal>
     );
 }

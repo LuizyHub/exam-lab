@@ -19,8 +19,7 @@ const ModalContent = styled.div`
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
-  width: 100%;
+  width: 707px;
   z-index: 1;
 `;
 
@@ -34,12 +33,12 @@ const ModalHeader = styled.div`
 const ModalTitle = styled.h2`
   margin: 0;
   text-align: center;
+  font-size: 26px;
   flex-grow: 1;
 `;
 
 const CloseButton = styled.span`
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 34px;
   cursor: pointer;
 `;
 
@@ -53,25 +52,36 @@ const ModalBody = styled.div`
   }
 `;
 
+const ModalText = styled.p`
+  font-size: 21px;
+`;
+
 const ModalFooter = styled.div`
   display: flex;
   justify-content: center;
   gap: 8px;
 `;
+
 const LoginA = styled.a`
   background-color: #5BB6B4;
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-top: 15px;
+  width: 140px;
+  height: 51px;
+  font-size: 21px;
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
   text-decoration: none;
-  display: inline-block;
-  &:hover {
-    background-color: #ECF7F7;
-  }
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  text-align: center; 
 `;
+
 
 const LoginModal = ({ onClose }) => {
   return (
@@ -82,10 +92,11 @@ const LoginModal = ({ onClose }) => {
           <CloseButton onClick={onClose}>&times;</CloseButton>
         </ModalHeader>
         <ModalBody>
-          <p>나만의 문제와 시험지 저장소 페이지를 이용하시려면 <br/> 로그인이 필요합니다.</p>
+          <hr />
+          <ModalText>문제 관리소와 시험지 저장소 페이지를 이용하시려면 로그인이 필요합니다.</ModalText>
         </ModalBody>
         <ModalFooter>
-        <LoginA href='/users/login'>로그인</LoginA>
+          <LoginA href='/users/login'>로그인</LoginA>
         </ModalFooter>
       </ModalContent>
     </ModalOverlay>

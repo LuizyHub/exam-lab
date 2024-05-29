@@ -6,53 +6,93 @@ import styled from 'styled-components';
 const ShowQuestionContent = styled.div`
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 20px;
+    padding: 10px 10px;
     margin-bottom: 20px;
     margin-top: 30px;
     overflow: auto;
+    width: 101.7%;
+    height: ${({ $noQuestions }) => $noQuestions ? '200px' : 'auto'};
+`;
+
+const ChoseContainer = styled.div`
+    border: 1px solid #ccc;
+    background-color: #fff;
+    position: relative;
+    padding: 20px;
+    width: 100%;
+`;
+
+const ContainerTitle = styled.p`
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 14px;
+    margin-bottom: 5px;
+`;
+
+const QuestionSize = styled.p`
+    font-size: 16px;
+    color: #6B6E72;
+    margin-left: 14px;
+`;
+
+const ChosseText = styled.div`
+`;
+
+const ButtonContainer = styled.div`
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+`;
+
+const ButtonGroup = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 10px;
 `;
 
 const CreateButton = styled.button`
-    width: 100%;
-    height: 100px;
-    padding: 10px 20px;
-    border: 1px solid black;
-    color: black;
-    border: none;
+    width: 144px;
+    height: 37px;
+    padding: 10px;
     border-radius: 5px;
+    color: #FFFFFF;
+    background-color: ${({ $selectedCount }) => $selectedCount > 0 ? '#29B8B5' : '#9A9DA0'};
+    border: none;
     cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
 `;
 
 const ListButton = styled.button`
     padding: 10px 20px;
-    margin-top: 20px;
-    background-color: #5BB6B4;
-    color: white;
-    border: none;
+    background-color: #fff;
+    color: #6B6E72;
+    border: 1px solid #DCDCDD;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    &:hover {
+        color: #24ABA8;
+        background-color: #D9F1F1;
+        border: 1px solid #BADEDE;
+    }
 `;
 
 const ToggleButton = styled.button`
     padding: 10px 20px;
-    background-color: ${({ $show }) => $show ? '#EDFAFA' : '#F5F5F7'};
-    color: ${({ $show }) => $show ? '#24ABA8' : '#9A9DA0'};
-    border: none;
+    background-color: ${({ $show }) => $show ? '#D9F1F1' : '#fff'};
+    color: ${({ $show }) => $show ? '#24ABA8' : '#24ABA8'};
+    border: 1px solid #DCDCDD;
     border-radius: 5px;
     cursor: pointer;
-    position: absolute;
-    top: 120px;
-    right: 10px;
-`;
-
-const CheckBox = styled.input`
-    position: absolute; 
-    top: 0px;
-    right: 0px; 
-    width: 20px; 
-    margin: 10px;
-    height: 20px; 
-    background-color: black;
+    font-size: 16px;
+    font-weight: bold;
 `;
 
 const Container = styled.div`
@@ -63,24 +103,25 @@ const Container = styled.div`
 const QuestionContainer = styled.div`
     flex: 8;
     height: 100vh;
-    padding: 20px;
+    padding: 5px 10px;
     border-radius: 10px;
 `;
 
 const QuestionList = styled.ul`
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 10px;
     list-style: none;
-    padding: 0;
+    padding: 5px;
 `;
 
 const QuestionItem = styled.li`
+    font-size: 14px;
     margin-bottom: 20px;
-    padding: 20px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    border: 1px solid ${({ $selected }) => $selected ? '#5BB6B4' : '#ccc'};
     border-radius: 3px;
-    background-color: ${({ selected }) => selected ? '#EDFAFA' : '#fff'};
+    background-color: ${({ $selected }) => $selected ? '#D9F1F1' : '#fff'};
     transition: background-color 0.3s; 
     cursor: pointer;
 `;
@@ -91,9 +132,19 @@ const StyledLabel = styled.label`
     flex-direction: column;
     position: relative;
     margin: 10px;
+    cursor: pointer;
 `;
 
-export default function ShowQuestionList({ questions }) {
+const NoneQuestion = styled.p`
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  color: #9A9DA0;
+  transform: translate(-50%, -50%);
+`;
+
+
+export default function ShowQuestionList({ questions, questionsSize }) {
     const navigate = useNavigate();
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [showSelectedQuestions, setShowSelectedQuestions] = useState(false);
@@ -112,19 +163,13 @@ export default function ShowQuestionList({ questions }) {
         }
     };
 
-    // 전체 선택 버튼 클릭 -> 모든 문제를 선택된 문제로 설정
     const handleSelectAllQuestions = () => {
         const newQuestions = questions.filter(item => !selectedQuestions.some(q => q.id === item.id));
         setSelectedQuestions([...selectedQuestions, ...newQuestions]);
     };
 
-    // 전체 삭제 버튼 클릭 -> 선택된 문제 모두 초기화
     const handleDeleteAllQuestions = () => {
         setSelectedQuestions([]);
-    };
-
-    const handleLabelClick = (item) => {
-        handleSelectQuestion(item); // 라벨 클릭 시 CheckBox 선택/해제 기능과 동일한 기능 수행
     };
 
     const handleSubmitQuestion = () => {
@@ -136,61 +181,76 @@ export default function ShowQuestionList({ questions }) {
     };
 
     return (
-        <div style={{position: 'relative'}}>
-            <CreateButton onClick={handleSubmitQuestion}>시험지 생성 </CreateButton>
-            {showSelectedQuestions ? (
-                <ListButton onClick={handleDeleteAllQuestions}>전체 삭제</ListButton>
+        <div style={{ position: 'relative' }}>
+          <ChoseContainer>
+            <ChosseText>
+              <ContainerTitle>문제 고르기</ContainerTitle>
+              {questionsSize <= 0 ? (
+                <QuestionSize>총 0문제</QuestionSize>
+              ) : (
+                <QuestionSize>총 {questionsSize}문제</QuestionSize>
+              )}
+            </ChosseText>
+            <ButtonContainer>
+                <CreateButton onClick={handleSubmitQuestion} $selectedCount={selectedQuestions.length}>시험지 생성하기</CreateButton>
+                <ButtonGroup>
+                    <ListButton onClick={handleSelectAllQuestions}>전체 선택</ListButton>
+                    <ListButton onClick={handleDeleteAllQuestions}>전체 삭제</ListButton>
+                    <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} $show={showSelectedQuestions}>
+                        선택 문제만 보기 ({showSelectedQuestionsCount})
+                    </ToggleButton>
+                </ButtonGroup>
+            </ButtonContainer>
+          </ChoseContainer>
+          <ShowQuestionContent $noQuestions={questionsSize <= 0}>
+            {questionsSize > 0 ? (
+              <Container>
+                <QuestionContainer>
+                  <QuestionList>
+                    {showSelectedQuestions ? (
+                      selectedQuestions.map((item, index) => (
+                        <QuestionItem
+                          key={index}
+                          onClick={() => handleSelectQuestion(item)}
+                          $selected={selectedQuestions.some((q) => q.id === item.id)}
+                        >
+                          <StyledLabel onClick={() => handleSelectQuestion(item)}>
+                            <ShowQuestion
+                              question={item.question}
+                              question_images_out={item.question_images_out}
+                              question_images_in={item.question_images_in}
+                              options={item.options}
+                            />
+                          </StyledLabel>
+                        </QuestionItem>
+                      ))
+                    ) : (
+                      questions.map((item, index) => (
+                        <QuestionItem
+                          key={index}
+                          onClick={() => handleSelectQuestion(item)}
+                          $selected={selectedQuestions.some((q) => q.id === item.id)}
+                        >
+                          <StyledLabel onClick={() => handleSelectQuestion(item)}>
+                            <ShowQuestion
+                              question={item.question}
+                              question_images_out={item.question_images_out}
+                              question_images_in={item.question_images_in}
+                              options={item.options}
+                            />
+                          </StyledLabel>
+                        </QuestionItem>
+                      ))
+                    )}
+                  </QuestionList>
+                </QuestionContainer>
+              </Container>
             ) : (
-                <ListButton onClick={handleSelectAllQuestions}>전체 선택</ListButton>
+              <QuestionContainer>
+                <NoneQuestion>문제를 검색해주세요</NoneQuestion>
+              </QuestionContainer>
             )}
-            <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} $show={showSelectedQuestions}>
-                선택된 문제 {showSelectedQuestionsCount}
-            </ToggleButton>
-            <ShowQuestionContent>
-                <Container>
-                    <QuestionContainer>
-                        <QuestionList>
-                            {showSelectedQuestions ? (
-                                selectedQuestions.map((item, index) => (
-                                    <QuestionItem
-                                        key={index}
-                                        onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
-                                        selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
-                                    >
-                                        <StyledLabel onClick={() => handleLabelClick(item)}>
-                                            <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
-                                            <ShowQuestion
-                                                question={item.question}
-                                                question_images_out={item.question_images_out}
-                                                question_images_in={item.question_images_in}
-                                                options={item.options}
-                                            />
-                                        </StyledLabel>
-                                    </QuestionItem>
-                                ))
-                            ) : (
-                                questions.map((item, index) => (
-                                    <QuestionItem
-                                        key={index}
-                                        onClick={() => handleSelectQuestion(item)} // 버튼 클릭 시 배경색 변경
-                                        selected={selectedQuestions.some((q) => q.id === item.id)} // 선택된 문제에 따라 배경색 변경
-                                    >
-                                        <StyledLabel>
-                                            <CheckBox type="checkbox" checked={selectedQuestions.some((q) => q.id === item.id)} onChange={() => handleSelectQuestion(item)} />
-                                            <ShowQuestion
-                                                question={item.question}
-                                                question_images_out={item.question_images_out}
-                                                question_images_in={item.question_images_in}
-                                                options={item.options}
-                                            />
-                                        </StyledLabel>
-                                    </QuestionItem>
-                                ))
-                            )}
-                        </QuestionList>
-                    </QuestionContainer>
-                </Container>
-            </ShowQuestionContent>
+          </ShowQuestionContent>
         </div>
-    );
+      );
 }

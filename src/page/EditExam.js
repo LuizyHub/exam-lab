@@ -151,12 +151,11 @@ export default function EditExam() {
         <div></div>
         <AttributeManager examId={examId} setExamId={setExamId}></AttributeManager>
 
-        
         <div className="editor-edit">
+          <div className="title">문제등록</div>
           <hr />
-          
           {isExistingExam && <div>
-            <div className="title">문제등록</div>
+          
               {/* 기존문제 가져오기 */}
               {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
               <div>
@@ -179,9 +178,9 @@ export default function EditExam() {
               </div>
             ))}
           </div>
-          <div className="editor-out-line">
-            <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} />
-          </div>
+          {/* <div className="editor-out-line"> */}
+            <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} isTag={isTag} />
+          {/* </div> */}
         </div>
       </div>
     </EditExamPage>

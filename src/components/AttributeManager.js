@@ -145,7 +145,7 @@ export default function AttributeManager({ examId, setExamId }) {
         <div className='attribute-mgr'>
             <input className='title' value={examTitle} onChange={handleExamTitleChange} placeholder="시험지 제목" />
             <div className='server-button'>
-                <button style={{width: '130px', marginRight: '20px'}}><Link to="http://localhost:3000/exams/create" style={{ color: 'inherit', textDecoration: 'inherit' }}>시험지 제작하기</Link></button>
+                <button style={{width: '130px', marginRight: '20px'}}><Link to="http://exam-lab.store/exams/create" style={{ color: 'inherit', textDecoration: 'inherit' }}>시험지 제작하기</Link></button>
                 {/* <button id='server-button-save' onClick={handleExamDataSubmit}>저장</button>
                 <button id='server-button-edit' onClick={handleUpdateExamData} >수정</button> */}
                 {isState ? (

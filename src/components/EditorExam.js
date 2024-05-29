@@ -90,7 +90,6 @@ export default function
       <div className='questionArea'>
         <div>
         
-
           <EditorTool
             editorRef={editorRef1}
             contentType={'문제'}
@@ -277,8 +276,9 @@ export default function
                 selection.addRange(range);
               }
             }}
+
             dangerouslySetInnerHTML={{ __html: optionsInit }}
-            onInput={() => {
+            onInput={(e) => {
               const answers = editorRef3.current.innerHTML;
 
 
@@ -293,18 +293,17 @@ export default function
               const optionsArray = splitOptionsArray.filter(option => option !== '');
 
               setData(prevState => ({ ...prevState, options: optionsArray }));
+
+
             }}
           />
-
-
         </div >
       </div>
       {/* -------------------------아래부터 답안 등록 -------------- */}
       <div id='CommentaryArea' style={{ display: isCommentHide ? 'none' : 'block' }} >
-
         <EditorTool
           editorRef={editorRef4}
-          contentType={'선택지'}
+          contentType={'정답'}
           // handleContentType={handleContentType1}
           handleToolClick={handleToolClick}
           // imageSelectorRef={imageSelectorRef1}
@@ -312,7 +311,7 @@ export default function
           isImageSize={isImageSize}
           handleImgSize={handleImgSize}
         />
-
+       
         <Editor
           editorRef={editorRef4}
           contentEditable={true}
@@ -357,10 +356,9 @@ export default function
           }}
 
         />
-
         <EditorTool
           editorRef={editorRef5}
-          contentType={'선택지'}
+          contentType={'해설지'}
           // handleContentType={handleContentType1}
           handleToolClick={handleToolClick}
           // imageSelectorRef={imageSelectorRef1}

@@ -4,7 +4,7 @@ import { Editor } from "./Editor";
 import EditorTool from "./EditorTool";
 import '../css/EditorEdit.css'
 //파일위치 항상 확인
-export default function EditorEdit({ object, index, isObject, handleEditDelete }) {
+export default function EditorEdit({ object, index, isObject, handleEditDelete, isTag }) {
   //Axios Get useState
   const [isContentEditable, setContentEditable] = useState(Array(isObject.length).fill(false));
   const [isEditing, setIsEditing] = useState(Array(isObject.length).fill(false)); // 추가된 상태 변수
@@ -27,6 +27,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
   const optionsRef = useRef(null);
   const answersRef = useRef(null);
   const commentaryRef = useRef(null);
+  const [isSelectedTags, setSelectedTags] = useState({});
 
   const handleEdit = (index) => {
     // 참조가 null인지 확인하고, null이 아닐 때만 innerText를 가져옵니다.
@@ -39,7 +40,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
       console.log(options, answers, commentary);
       console.log(object.id);
       //options가 foreach로 각 배열들을 인식 할 수 있게 해야한다.
-      sendPutData(object.id, question, [options], answers, commentary);
+      sendPutData(object.id, question, [options], answers, commentary, isSelectedTags);
     } else {
       console.log("참조가 아직 설정되지 않았습니다.");
     }
@@ -47,6 +48,35 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
     handleStateChange(index);
 
   };
+
+    // 버튼 스타일 설정 함수
+    const getButtonStyle = (key, item) => {
+      return isSelectedTags[key] && isSelectedTags[key].includes(item)
+        ? { backgroundColor: '#D9F1F1', color: '#24ABA8' }
+        : {};
+    };
+
+    
+  const handleButtonClick = (key, item) => {
+    setSelectedTags(prevSelectedTags => {
+      const newSelectedTags = { ...prevSelectedTags };
+      if (newSelectedTags[key] && newSelectedTags[key].includes(item)) {
+        // 이미 선택된 항목이면 해제
+        newSelectedTags[key] = newSelectedTags[key].filter(tag => tag !== item);
+        if (newSelectedTags[key].length === 0) {
+          delete newSelectedTags[key];
+        }
+      } else {
+        // 선택되지 않은 항목이면 추가
+        if (!newSelectedTags[key]) {
+          newSelectedTags[key] = [];
+        }
+        newSelectedTags[key].push(item);
+      }
+      return newSelectedTags;
+    });
+  };
+
 
   //이미지 마킹 실제 이미지로 전환 ->현재 중복이 되어 있는 코드이기에 검토 필요
 
@@ -60,7 +90,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
     return '';
   });
 
-  const replacedQuestion = `<b>${index + 1}. ${question}</b>`
+  const replacedQuestion = `<b>${question}</b>`
 
   const replacedOptions = object.options.map((option, index) => {
     const specialCharacter = option.includes(String.fromCharCode(9312 + index)) ? '' : String.fromCharCode(9312 + index); // 9312은 ①의 유니코드 코드 포인트
@@ -124,6 +154,32 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete }
           contentEditable={isContentEditable[index]}
           dangerouslySetInnerHTML={{ __html: object.commentary }}
         />
+
+  {/* 태그 선택 영역 */}
+  <div className='tags-container'>
+            {Object.entries(isTag).map(([key, array]) => (
+              <div key={key} id='tags-container'>
+                <div id='key-container'>
+                  <p id='key'>
+                    {key}
+                  </p>
+                </div>
+                <div id='value-container'>
+                  {array.map((item, index) => (
+                    <button
+                      id='value'
+                      key={`${key}-${index}`}
+                      style={getButtonStyle(key, item)}
+                      onClick={() => handleButtonClick(key, item)}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+        </div>
+
         <div className='server-button'>
          <button 
             onClick={() => { handleStateChange(index) }}

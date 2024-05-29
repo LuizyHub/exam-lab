@@ -135,6 +135,7 @@ export default function EditExam() {
     }
   };
 
+  
   //아래 둘을 하나의 함수로 변경
   const handleExamDelete = (elementIndex) => {
     const deleteElement = isExamCreate.filter((_, index) => index !== elementIndex);
@@ -173,18 +174,16 @@ export default function EditExam() {
           <div className="title">문제등록</div>
           {/* 기존문제 가져오기 */}
           {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
-          {isExistingExam &&(
-            <div className="existing-exam">
-              {isObject.map((object, index) => (
-                <div
-                  key={index}
-                  className="editor-out-line"
-                >
-                  <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} />
-                </div>
-              ))}
-            </div>
-          )}
+          <div>
+            {isObject.map((object, index) => (
+              <div
+                key={index}
+                className="editor-out-line"
+              >
+                <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} />
+              </div>
+            ))}
+          </div>
 
           {/* 문제 템플릿 추가하기 */}
           <div className="editor-exam">

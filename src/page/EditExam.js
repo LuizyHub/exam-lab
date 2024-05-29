@@ -180,7 +180,7 @@ export default function EditExam() {
                 key={index}
                 className="editor-out-line"
               >
-                <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} />
+                <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
               </div>
             ))}
           </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import axios from 'axios';
 import ShowQuestionList from "./ShowQuestionList";
-import { NoneQuestion, OneMoreQuestion } from "../modals/SelectQuestionModal";
+import { NoneQuestionModal } from "../modals/SelectQuestionModal";
 import styled from 'styled-components';
 
 
@@ -22,14 +22,15 @@ const Title = styled.h1`
 
 const ContainerTitle = styled.p`
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 700;
+    margin-top: 24px;
     margin-left: 14px;
     margin-bottom: 5px;
 `;
 
 const SelectTitle = styled.p`
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 600;
     margin-left: 14px;
     margin-bottom: 10px;
 `;
@@ -50,9 +51,10 @@ const TagButton = styled.button`
     padding: 5px 8px;
     cursor: pointer;
     flex: 1; 
-    width: 277px;
+    width: 240px;
     height: 48px;
     font-size: 15px;
+    font-weight: 500;
 `;
     
 
@@ -67,17 +69,25 @@ const KeywordContainer = styled.div`
     align-items: center;
 `;
 
+const KeywordTitle = styled.p`
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 14px;
+    margin-bottom: 0px;
+`;
+
 const KeywordInput = styled.input`
-    width: 85%;
+    width: 88%;
     height: 44px;
     margin-left: 10px;
     margin-right: 10px;
-    margin-top: 0px;
+    margin-top: 0;
     padding: 5px 15px;
     border : 1px solid #E2E8EE;
     border-radius: 4px;
     outline: none;
     font-size: 15px;
+    font-weight: 500;
     transition: border-color 0.2s; 
     flex: 1;
     &:focus {
@@ -90,7 +100,7 @@ const Keyword = styled.button`
     height: 36px;
     padding: 0px 20px;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 500;
     border: 1px solid #BADEDE;
     color: #262626;
     background-color: #D9F1F1;
@@ -113,6 +123,9 @@ const SearchImg = styled.img`
     top: 22px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    &:hover {
+        border-color: #5BB6B4; 
+      }
 `;
 
 const QuestionCount = styled.div`
@@ -120,7 +133,7 @@ const QuestionCount = styled.div`
 `;
 
 const CountButton = styled.button`
-  margin: 5px 10px;
+  margin: 5px 6px;
   background-color: ${({ $selected }) => ($selected ? '#C6E7E7' : '#FFFFFF')};
   color: #2D2C2B;
   border: 0.5px solid ${({ $selected }) => ($selected ? '#C6E7E7' : '#E2E8EE')};
@@ -128,14 +141,15 @@ const CountButton = styled.button`
   padding: 5px 8px;
   cursor: pointer;
   flex: 1;
-  width: 179px;
+  width: 160px;
   height: 48px;
   font-size:15px;
+  font-weight: 500;
 `;
 
 const CountInput = styled.input`
-  margin-left: 10px;
-  width: 159px;
+  margin-left: 6px;
+  width: 140px;
   height: 38px;
   background-color: ${({ $selected }) => ($selected ? '#C6E7E7' : '#FFFFFF')};
   color: #2D2C2B;
@@ -143,13 +157,15 @@ const CountInput = styled.input`
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
-  margin-right: 5px;
+  margin-right: 3px;
   text-align: center;
   font-size:15px;
+  font-weight: 500;
   &:focus {
     background-color: #C6E7E7;
-    border: 0.5px solid #fff;
+    border-color: #5BB6B4; 
   }
+  
 `;
 
 
@@ -169,7 +185,7 @@ const SubmitButton = styled.input`
     margin-top: 10px;
     align-self: center;
     font-size:16px;
-    font-weight: bold;
+    font-weight: 600;
     width: 102px;
     hight: 37px;
     &:hover {
@@ -191,6 +207,7 @@ export default function SelectQuestion() {
     const [selectedCountType, setSelectedCountType] = useState('button'); // 선택된 문항 수 버튼 파악
     const [questions, setQuestions] = useState([]);
     const [showNoneQuestion, setShowNoneQuestion] = useState(false); // 에러 발생 시 NoneQuestion 보이기 여부를 관리하는 상태 추가
+    
     
 
     // 태그 가져오기
@@ -289,7 +306,8 @@ export default function SelectQuestion() {
             console.log(response.data.questions);
         } catch (error) {
             if (error.response && error.response.status === 404) { // 404 에러 처리 
-                    <NoneQuestion />
+                setShowNoneQuestion(true);
+                    
             } else {
                 console.error("Error fetching questions:", error);
             }
@@ -318,11 +336,11 @@ export default function SelectQuestion() {
                     ))}
                 </TagsContainer>
                 <div>
-                    <SelectTitle>키워드 검색</SelectTitle>
+                    <KeywordTitle>키워드 검색</KeywordTitle>
                     <KeywordInput
                         type="text"
                         value={search}
-                        placeholder="원하는 문제의 태그를 입력해주세요."
+                        placeholder="원하는 문제의 키워드를 입력해주세요."
                         onChange={(e) => setSearch(e.target.value)}
                         onKeyDown={handlePushKeyword}
                     />
@@ -345,7 +363,7 @@ export default function SelectQuestion() {
                 </div>
                 <br />
                 <QuestionCount>
-                    <SelectTitle> 문제 갯수 </SelectTitle>
+                    <SelectTitle> 문항수 </SelectTitle>
 
                     {/* 전체 검색 버튼 */}
                     <CountButton onClick={() => setSelectedQuestionCount(0)} $selected={selectedQuestionCount === 0 && selectedCountType === 'button'}> 전체 </CountButton>
@@ -359,7 +377,7 @@ export default function SelectQuestion() {
                         $selected={selectedQuestionCount === count && selectedCountType === 'button'}
                         onClick={() => handleQuestionCountClick(count)}
                         >
-                        {count} 문제
+                        {count} 문항
                         </CountButton>
                     ))}
 
@@ -381,6 +399,7 @@ export default function SelectQuestion() {
                 </SubmitButtonContainer>
 
                 </Container>
+                {showNoneQuestion && <NoneQuestionModal onClose={() => setShowNoneQuestion(false)} />} 
             <ShowQuestionList questions={questions} questionsSize={questions.length}/>
         </div>
     );

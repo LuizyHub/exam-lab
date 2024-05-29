@@ -2,32 +2,54 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from '../components/NavigationBar';
 import axios from "axios";
+import Bottom from "../components/Bottom";
 import {DeleteWorkBookModal} from '../modals/DeleteModal';
 import styled from 'styled-components';
 
-const WorkBooksContent = styled.div`
+const Container = styled.div`
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    margin-left: 320px;
-    margin-right: 18%;
-    margin-top: 16px;
-    transition: margin-left 0.3s ease;
 `;
+
+const Content = styled.div`
+
+  margin-bottom: 600px;
+  flex-direction: column;
+  margin-left: 320px;
+  margin-right: 18%;
+  margin-top: 16px;
+`;
+
+const WorkBooksContent = styled.div`
+    display: flex;
+    flex-wrap: wrap; 
+`;
+
+
+
+const PageContent = styled.div`
+  display: flex;
+  flex-direction: column; 
+  margin-left: 20px;
+`;
+
 
 const PageIcon = styled.img`
   width: 50px;
-  height: 65px;
   background-color: #D9F1F1;
-  padding: 10px 10px;
-  border-radius: 10px;
+  padding: 15px 20px;
+  border-radius: 20px;
   margin-top: 15px;
-  margin-right: 25px;
+  margin-right: 5px;
 `;
 
 const PageTitle = styled.h1`
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 0px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    width: 300px;
+  
 `;
 
 const PageIntro = styled.p`
@@ -39,35 +61,55 @@ const PageIntro = styled.p`
 const PageName = styled.p`
   color: #262626;
   font-size: 18px;
+  font-weight: 600;
   margin-top: 108px;
   margin-bottom: 20px;
-  font-weight: bold;
   padding-bottom: 5px;
 `;
 
-const StyledParagraph = styled.p`
-    margin-right: 25px;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 `;
 
 const WorkBookButton = styled.button`
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
     background-color: #fff;
-    border: 0.5px solid #C6E7E7;
-    color: #6D6D6D;
-    padding: 15px 32px;
-    border-radius: 4px;
+    border: 1px solid #E2E8EE;
+    color: #262626;
+    padding: 10px 25px;
+    border-radius: 7px;
     font-size: 16px;
     margin: 4px 2px;
-    margin-right: 25px;
+    margin-right: 15px;
     font-size: 15px;
-    width: 700px;
+    text-align: left;
+    width: 375px;
+    height: 91px;
     position: relative;
-    text-align: center;
     &:hover {
-        background-color: #ECF7F7;
+        background-color: #D9F1F1;
+        border: 1px solid #BADEDE;
     }
+`;
+
+
+const WorkBookTitle = styled.p`
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #262626;
+`;
+
+// 날짜
+const StyledParagraph = styled.p`
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 8px;
+    margin-bottom: 0px;
+    color: #3E3F41;
 `;
 
 const WorkBookCreateButton = styled.button`
@@ -81,7 +123,8 @@ const WorkBookCreateButton = styled.button`
     margin: 4px 2px;
     margin-right: 15px;
     font-size: 15px;
-    width: 800px;
+    width: 384px;
+    height: 91px;
     &:hover {
       background-color: #C2C3C6;
     }
@@ -93,9 +136,9 @@ const CreateImg = styled.img`
 
 const DeleteImg = styled.img`
     position: absolute;
-    top: 6px ;
-    right: 6px;
-    width: 15px;
+    top: 15px;
+    right: 15px;
+    width: 20px;
 `;
 
 export default function WorkBooks() {
@@ -173,34 +216,42 @@ export default function WorkBooks() {
 
 
         return (
-            <WorkBooksContent>
+            <Container>
+                <Content>
                <div style={{ display: "flex" }}>
-                    <PageIcon src="/img/시험지저장소_icon.png" alt="page Icon" />
-                    <div>
-                    <PageTitle>시험지 저장소</PageTitle>
-                    <PageIntro>제작한 시험지는 저장소에 모여있어요.</PageIntro>
-                    </div>
+                    <PageIcon src="/img/시험지저장소.svg" alt="page Icon" />
+                    <PageContent>
+                        <PageTitle>시험지 저장소</PageTitle>
+                        <PageIntro>제작한 시험지는 저장소에 모여있어요.</PageIntro>
+                    </PageContent>
                 </div>
+
                 <PageName> 제작한 시험지 </PageName>
-                <WorkBookCreateButton onClick={() => {navigate('/exams/create')}}> 
+                <WorkBooksContent>
+                {/* <WorkBookCreateButton onClick={() => {navigate('/exams/create')}}> 
                     <CreateImg src="/img/추가하기.png" alt="Create Icon" />
-                </WorkBookCreateButton>
-               <div>
+                </WorkBookCreateButton> */}
+
                {workbooks && workbooks.map(workbook => (
-                <div key={workbook.id}>
+                <ButtonContainer key={workbook.id}>
                     <WorkBookButton onClick={() => handleWorkBookClick(workbook.id)}>
-                        <StyledParagraph>{workbook.title}</StyledParagraph>
-                        <StyledParagraph>작성일: {workbook.created_date}</StyledParagraph>
-                        <StyledParagraph>수정일: {workbook.updated_date}</StyledParagraph>
+                        <WorkBookTitle>{workbook.title}</WorkBookTitle>
+                        <StyledParagraph> {workbook.updated_date}</StyledParagraph>
                         <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(workbook.id); }} />
                     </WorkBookButton>
                     {modalStates[workbook.id] && (
                         <DeleteWorkBookModal workbook={workbook} handleWorkBookDelete={handleWorkBookDelete} handleCloseModal={handleCloseModal} />
                     )}
-                </div>
+                </ButtonContainer>
             ))}
-               </div>
-                <NavigationBar />
+
+
             </WorkBooksContent>
+            </Content>
+            <NavigationBar />
+            <footer>
+                <Bottom />
+            </footer>
+            </Container>
         );
 };

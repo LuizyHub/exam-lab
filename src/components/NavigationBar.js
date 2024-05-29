@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navigate from './Navigate';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { loginState } from '../recoil/atoms';
-import { isVisibleState } from '../recoil/atoms';
+import { loginState, isVisibleState } from '../recoil/atoms';
 import { getLoginInfo } from '../function/LoginState';
 import axios from 'axios';
 
@@ -22,37 +21,57 @@ const NavigationContainer = styled.div`
 
 const TopContent = styled.div`
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-top:16px;
+    margin-top: 16px;
 `;
 
 const NavigationBarContent = styled.div`
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    width: 100%; 
     height: 100%;
     padding-top: 20px;
 `;
 
 const NavigationContent = styled.div`
-    flex: 1;
 `;
 
 const Logo = styled.img`
     width: 163px;
     margin-bottom: 35px;
     margin-right: 20px;
+    margin-left: 22px;
 `;
 
-const UserLabButton = styled.button`
-    background-color: #fff;
-    border: 1px solid black;
-    width: 130px;
+const UserContainer = styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
     padding: 10px 20px;
-    border-radius: 5px;
+    margin-left: 8px;
     margin-bottom: 10px;
+    position: absolute;
+    bottom: 110px;
+`;
+
+const UserButton = styled.button`
+    background-color: #29B8B5;
+    color: #fff;
+    border: none;
+    border-radius: 180px;
+    padding: 15px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-right: 12px;
+    position: relative;
+    right: ${({ $isVisible }) => ($isVisible ? ' ' : '-180px')}; 
+`;
+
+const UserName = styled.p`
+    font-size: 18px;
+    font-weight: 500;
+    position: relative;
 `;
 
 const StyledButton = styled.button`
@@ -63,31 +82,43 @@ const StyledButton = styled.button`
     border: none;
     cursor: pointer;
     text-decoration-line: none;
-    margin-bottom: 80px;
+    margin-bottom: 100px;
     margin-top: 10px;
 `;
 
 const LogImgContainer = styled.div`
     display: flex;
     align-items: center;
+    position: absolute;
+    bottom: 80px;
 `;
 
-const LogImg = styled.img`
+const LoginImg = styled.img`
     width: 30px;
-    position: absolute; 
-    left: ${({ $isVisible }) => $isVisible ? '32px' : ' '}; 
-    right: ${({ $isVisible }) => $isVisible ? ' ' : '10px'}; 
-    transition: right 0.1s ease-in-out;
+    position: relative;
+    left: ${({ $isVisible }) => ($isVisible ? '25px' : ' ')}; 
+    right: ${({ $isVisible }) => ($isVisible ? ' ' : '-205px')}; 
+    transition: left 0.3s ease-in-out;
+`;
+
+const LogoutImg = styled.img`
+    width: 30px;
+    position: relative;
+    left: ${({ $isVisible }) => ($isVisible ? '25px' : ' ')}; 
+    right: ${({ $isVisible }) => ($isVisible ? ' ' : '-205px')}; 
+    transition: left 0.3s ease-in-out;
 `;
 
 const LoginText = styled.span`
-    margin-left: 6px;
+    margin-left: 45px;
     font-size: 18px;
+    font-weight: 500;
 `;
 
 const LogoutText = styled.span`
-    margin-left: 65px;
+    margin-left: 45px;
     font-size: 18px;
+    font-weight: 500;
 `;
 
 const CloseButtonContainer = styled.div`
@@ -106,14 +137,10 @@ const CloseButton = styled.button`
     transition: margin-left 0.2s ease-in-out;
 `;
 
-
 const NavigationIcon = styled.img`
     width: 20px;
-    outline: none;s
+    outline: none;
 `;
-
-
-
 
 export default function NavigationBar() {
     const [isVisible, setIsVisible] = useRecoilState(isVisibleState);
@@ -131,8 +158,8 @@ export default function NavigationBar() {
     const handleAutoLogin = async () => {
         try {
             const response = await axios.post('/api/v1/users/login', {
-                "password": "lab111!",
-                "user_id": "lab1@gmail.com"
+                password: 'lab111!',
+                user_id: 'lab1@gmail.com',
             });
             console.log('Login successful', response);
             setLoginInfo({ userName: response.data.user_name, loginStatus: true });
@@ -144,12 +171,12 @@ export default function NavigationBar() {
     const handleLogout = async () => {
         try {
             await axios.post('/api/v1/users/logout');
-            console.log("Logout successful");
+            console.log('Logout successful');
             setLoginInfo({ userName: '', loginStatus: false });
         } catch (error) {
             console.error('Logout failed', error);
         }
-    }
+    };
 
     const handleLoginState = async () => {
         try {
@@ -169,41 +196,41 @@ export default function NavigationBar() {
         <NavigationContainer $isVisible={isVisible}>
             <NavigationBarContent>
                 <TopContent>
-                    <Link to='/'> 
-                        <Logo src="/img/examLab_logo.png" alt="logo" />
+                    <Link to='/'>
+                        <Logo src='/img/시험지연구소.svg' alt='logo' />
                     </Link>
                     <CloseButtonContainer $isVisible={isVisible}>
                         <CloseButton onClick={toggleVisibility}>
-                            <NavigationIcon src="/img/네비게이션바.png" alt="navigation" /> 
+                            <NavigationIcon src='/img/네비게이션바.png' alt='navigation' />
                         </CloseButton>
                     </CloseButtonContainer>
                 </TopContent>
 
                 <NavigationContent>
                     <Navigate />
-                    {/* 배포 시 삭제될 개발용 로그인 버튼 */}
-                    {/* <button onClick={handleAutoLogin}>자동 로그인</button>
-                    <button onClick={handleLogout} primary="true">로그아웃</button>
-                    <button onClick={handleLoginState}>로그인정보 받아오기</button> */}
                 </NavigationContent>
+                      {/* 배포 시 삭제될 개발용 로그인 버튼 */}
+                    {/* <button onClick={handleAutoLogin}>자동 로그인</button>
+                    <button onClick={handleLogout}>로그아웃</button>
+                    <button onClick={handleLoginState}>로그인정보 받아오기</button> */}
                 {userInfo.loginStatus === true ? (
                     <>
-                        <UserLabButton>
-                            <p>{userInfo.userName}님의 연구소</p>
-                        </UserLabButton>
+                        <UserContainer>
+                            <UserButton $isVisible={isVisible}>{userInfo.userName}</UserButton>
+                            <UserName>{userInfo.userName}님의 연구소</UserName>
+                        </UserContainer>
                         <StyledButton onClick={handleLogout}>
                             <LogImgContainer>
-                                <LogImg src='/img/로그아웃_icon.png' $isVisible={isVisible} />
+                                <LogoutImg src='/img/로그아웃_icon.png' $isVisible={isVisible} />
                                 <LogoutText>로그아웃</LogoutText>
                             </LogImgContainer>
                         </StyledButton>
                     </>
                 ) : (
-                        
                     <a href='/users/login'>
                         <StyledButton>
                             <LogImgContainer>
-                                <LogImg src='/img/로그인_icon.png' $isVisible={isVisible} />
+                                <LoginImg src='/img/로그인_icon.png' $isVisible={isVisible} />
                                 <LoginText>로그인 / 회원가입</LoginText>
                             </LogImgContainer>
                         </StyledButton>
@@ -213,7 +240,7 @@ export default function NavigationBar() {
             {!isVisible && (
                 <CloseButtonContainer>
                     <CloseButton onClick={toggleVisibility}>
-                        <NavigationIcon src="/img/네비게이션바.png" alt="navigation" />
+                        <NavigationIcon src='/img/네비게이션바.png' alt='navigation' />
                     </CloseButton>
                 </CloseButtonContainer>
             )}

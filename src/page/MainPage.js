@@ -18,7 +18,6 @@ const MainContainer = styled.div`
 
 
 const PageContent = styled.div`
-    
 
 `;
 
@@ -55,7 +54,7 @@ const Logo = styled.img`
 const LogoIntro = styled.p`
     font-size: 18px;
     font-weight: bold;
-    width: 500px;
+    width: 550px;
     color: #262626;
 `;
 
@@ -104,12 +103,13 @@ const NavContent = styled.div`
 const NavContentP = styled.p`
     color: ${({ $selected }) => $selected ? '#29B8B5' : '#9A9DA0'};
     font-size: 16px;
+    font-weight: 500;
     margin-bottom: 10px;
 `;
 
 const NavContentTitle = styled.p`
     font-size: 24px;
-    font-weight: bold;
+    font-weight: 700;
     margin-top: 1px;
     color: ${({ $selected }) => $selected ? '#262626' : '#9A9DA0'};
 `;
@@ -117,10 +117,11 @@ const NavButton = styled.button`
     background-color: ${({ $selected }) => $selected ? '#29B8B5' : '#9A9DA0'};
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: ${({ $primary }) => $primary ? '10px 20px' : '20px 30px'};
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: ${({ $primary }) => $primary ? '20px' : '30px'};
     font-size: 18px;
+    font-weight: 700;
     transition: background-color 0.3s, color 0.3s;
     &:hover {
         background-color: ${({ $selected }) => $selected ? '#238C8A' : '#D3DCE6'};
@@ -131,6 +132,35 @@ const MoveIcon = styled.img`
     width: 7px;
     margin-left: 10px;
     margin-top: 5px;
+`;
+
+const MoveContent = styled.div`
+    background-color: #D9F1F1;
+    width: 100%;
+    height: 442px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`;
+
+const PageIconCircle = styled.button`
+    background-color: #fff;
+    border: none;
+    padding: 15px 15px;
+    border-radius: 60px;
+`;
+
+const PageIcon = styled.img`
+    width: 50px;
+    margin-left: ${({ $primary }) => $primary ? '8px' : '9px'};
+`;
+
+const MoveTitle = styled.p`
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 50px;
 `;
 
 export default function MainPage() {
@@ -144,14 +174,13 @@ export default function MainPage() {
                     <ContentWrapper>
                         <LogoWrapper $isSidebarOpen={isSidebarOpen}>
                             <LogoTitle>쉽고 빠르게 나만의 시험지 만들기</LogoTitle>
-                            <Logo src="/img/examLab_logo.png" alt="logo" />
-                            <LogoIntro>시험지 제작소에서 문제를 조합하여 나만의 시험지를 간편하게 제작하고<br/>
-                                        문제 저장소에서 AI와 함께 문제를 관리하며 <br/>
-                                        시험지 저장소에서 내가 만든 시험지를 확인해보세요.
+                            <Logo src="/img/logo.svg" alt="logo" />
+                            <LogoIntro>“시험지 연구소”는 사용자의 필요에 맞는 맞춤형 시험지를 생성할 수 있어요. <br />
+                                AI를 활용해 문제를 생성하여, 지금 바로 시험지를 생성해보세요.
                             </LogoIntro>
                         </LogoWrapper>
                         <ImageWrapper>
-                            <MainImage src="/img/mainImage.png" alt="Main Image" />
+                            <MainImage src="/img/top_illust.svg" alt="Main Image" />
                         </ImageWrapper>
                     </ContentWrapper>
                 </PageContent>
@@ -165,9 +194,9 @@ export default function MainPage() {
                         <NavContent $primary="true" $isSidebarOpen={isSidebarOpen}>
                             <NavContentP $selected={selectedNav === 'intro'}>How To Use</NavContentP>
                             <NavContentTitle $selected={selectedNav === 'intro'}>문제를 조합해서 나만의 시험지 제작하기</NavContentTitle>
-                            <NavButton $selected={selectedNav === 'intro'}>
+                            <NavButton $selected={selectedNav === 'intro'} $primary="true">
                                 <StyledLink to={{ pathname: '/exams/create' }}>시험지 제작소 바로가기
-                                     <MoveIcon src="/img/페이지열림_icon.png" alt="> Image" />
+                                     <MoveIcon src="/img/페이지열림_icon.svg" alt="> Image" />
                                 </StyledLink>
                             </NavButton>
                         </NavContent>
@@ -180,17 +209,44 @@ export default function MainPage() {
                         <NavContent $isSidebarOpen={isSidebarOpen}>
                             <NavContentP $selected={selectedNav === 'register'}>How To Use</NavContentP>
                             <NavContentTitle $selected={selectedNav === 'register'}>나만의 문제 등록하기</NavContentTitle>
-                            <NavButton $selected={selectedNav === 'register'}>
-                                <StyledLink to={{ pathname: '/exams' }}>문제 관리소 바로가기
-                                 <MoveIcon src="/img/페이지열림_icon.png" alt="> Image" />
-                                </StyledLink>
+                            <NavButton $selected={selectedNav === 'register'} $primary="true">
+                                <StyledLink to={{ pathname: '/exams' }}>문제 관리소 바로가기 </StyledLink>
                             </NavButton>
                         </NavContent>
                     </NavContainer>
                 </Navigation>
 
-                {selectedNav === 'intro' && <MainIntroExam />}
-                {selectedNav === 'register' && <MainIntroQuestion />}
+                {selectedNav === 'intro' && 
+                     <div>
+                        <MainIntroExam />
+                        <MoveContent>
+                        <PageIconCircle>
+                            <PageIcon src="/img/시험지제작소.svg" alt="page Icon" $primary="true"/>
+                        </PageIconCircle>
+                        <MoveTitle $selected={selectedNav === 'intro'}>원하는 문제를 조합해서 쉽고 빠르게 <br/> 나만의 시험지 제작하기</MoveTitle>
+                            <NavButton $selected={selectedNav === 'intro'}>
+                                    <StyledLink to={{ pathname: '/exams/create' }}>시험지 제작소 바로가기</StyledLink>
+                                </NavButton>
+                        </MoveContent>
+                   </div>
+                   }
+                {selectedNav === 'register' && 
+                    <div>
+                        <MainIntroQuestion />
+                        <MoveContent>
+                            <PageIconCircle>
+                                <PageIcon src="/img/문제관리소.svg" alt="page Icon" />
+                            </PageIconCircle>
+                            <MoveTitle $selected={selectedNav === 'register'}>새로운 문제를 손쉽게 <br/> 문제 저장소에 등록하기</MoveTitle>
+                            <NavButton $selected={selectedNav === 'register'}>
+                               <StyledLink to={{ pathname: '/exams' }}>문제 관리소 바로가기 </StyledLink>
+                            </NavButton>
+                        </MoveContent>
+                    </div>
+                }
+
+
+
                 <NavigationBar />
             </MainContainer>
             <footer>

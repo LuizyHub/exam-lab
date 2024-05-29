@@ -7,6 +7,7 @@ import { getLoginInfo } from '../function/LoginState';
 import styled from 'styled-components';
 
 const NavigationContainer = styled.nav`
+
 `;
 
 const NavItem = styled.button`
@@ -37,9 +38,9 @@ const NavLink = styled(Link)`
 
 const NavIcon = styled.img`
   width: ${({ $primary }) => $primary ? '27px' : '23px'};
-  margin-left: 0px;
+  margin-left: 25px;
   position: relative;
-  right: ${({ $isSidebarOpen }) => $isSidebarOpen ? '0px' : '-160px'};
+  right: ${({ $isSidebarOpen }) => $isSidebarOpen ? '0px' : '-188px'};
 `;
 
 
@@ -66,18 +67,18 @@ export default function Navigate() {
     <NavigationContainer>
     <NavLink to='/exams/create'>
         <NavItem>
-          <NavIcon src="/img/시험지제작소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
+          <NavIcon src="/img/시험지제작소.svg" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
           <NavText>시험지 제작소</NavText>
         </NavItem>
       </NavLink>
       
       <NavItem onClick={() => handleNavigate('/exams')}>
-          <NavIcon src="/img/문제관리소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} $primary="true"/>
+          <NavIcon src="/img/문제관리소.svg" alt="icon Image" $isSidebarOpen={isSidebarOpen} $primary="true"/>
           <NavText>문제 관리소</NavText>
       </NavItem>
 
       <NavItem onClick={() => handleNavigate('/workbooks')}>
-        <NavIcon src="/img/시험지저장소_icon.png" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
+        <NavIcon src="/img/시험지저장소.svg" alt="icon Image" $isSidebarOpen={isSidebarOpen} />
         <NavText>시험지 저장소</NavText>
       </NavItem>
 

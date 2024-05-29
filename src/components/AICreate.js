@@ -84,6 +84,7 @@ export default function AICreate({ examId, modalOpen, setModalOpen }) {
             console.log('문제 업로드 성공:', aiResponse.data);
             const object = aiResponse.data;
             setObject(object.questions);
+            console.log(object);
         } catch (error) {
             console.error('문제 생성 실패:', error);
             alert('문제 생성에 실패했습니다.');

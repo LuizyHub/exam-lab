@@ -14,6 +14,7 @@ const Container = styled.div`
 
 const Content = styled.div`
   flex: 1;
+  margin-bottom: 600px;
 `;
 
 const SelectExam = styled.div`
@@ -26,11 +27,10 @@ const SelectExam = styled.div`
 `;
 
 const PageIcon = styled.img`
-  width: 58px;
-  height: 65px;
+  width: 50px;
   background-color: #D9F1F1;
-  padding: 10px 10px;
-  border-radius: 10px;
+  padding: 20px 20px;
+  border-radius: 20px;
   margin-top: 15px;
   margin-right: 25px;
 `;
@@ -47,16 +47,63 @@ const PageIntro = styled.p`
   color: #313132;
 `;
 
+const StepNumberStyle = styled.p`
+    color: #24ABA8;
+    font-size: 16px;
+    margin-bottom: 14px;
+    margin-left: 140px;
+    font-weight: bold;
+`;
+
+const StepsContainer = styled.div`
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    margin-top: 40px;
+`;
+
+const StepBy = styled.div`
+
+
+`;
+
+const NextStepIcon = styled.img`
+    width: 20px;
+    margin: 3px 10px;
+    margin-top: 40px;
+`;
+
+const StepButton = styled.button`
+    background-color : ${({ $primary }) => $primary ? '#D9F1F1' : '#FFFFFF'};    
+    color: #3E3F41;
+    border: 1px solid ${({ $primary }) => $primary ? '#BADEDE' : '#EBEDEF'};
+    border-radius: 8px;
+    padding: 5px 8px;
+    flex: 1; 
+    width: 310px;
+    height: 65px;
+    font-size: 18px;
+    margin: 0 10px;
+`;
+
+
+const StepIntro = styled.p`
+    font-size: 16px;
+    color: #313132;
+    margin-top: 10px;
+    margin-bottom: 10px;
+`;
+
 const ExamTypeButton = styled.button`
   border: none;
   color: ${({ $selected }) => ($selected ? '#262626' : '#9A9DA0')};
   background-color: #fff;
   font-size: 18px;
+  font-weight: 600;
   margin-top: 108px;
   margin-bottom: 20px;
   margin-right: 20px;
-  border-bottom: ${({ $selected }) => ($selected ? '2px solid #000' : 'none')};
-  font-weight: bold;
+  border-bottom: ${({ $selected }) => ($selected ? '2.5px solid #000' : 'none')};
   padding-bottom: 5px;
 `;
 
@@ -71,7 +118,7 @@ const ExamButton = styled.button`
   margin: 4px 2px;
   margin-right: 15px;
   text-align: left;
-  width: 384px;
+  width: 375px;
   height: 91px;
   &:hover {
     background-color: #ECF7F7;
@@ -133,12 +180,32 @@ export default function SelectExamCreatePage() {
       <Content>
         <SelectExam>
           <div style={{ display: "flex" }}>
-            <PageIcon src="/img/시험지제작소_icon.png" alt="page Icon" />
+            <PageIcon src="/img/시험지제작소.svg" alt="page Icon" />
             <div>
               <PageTitle>시험지 제작소</PageTitle>
               <PageIntro>등록된 문제를 조합해서 나만의 시험지를 제작해보세요</PageIntro>
             </div>
           </div>
+          <StepsContainer>
+                    <StepBy>
+                        <StepNumberStyle $primary="true"> STEP1 </StepNumberStyle>
+                        <StepButton $primary="true"> 시험 종류 선택</StepButton>
+                    </StepBy>
+                    <StepBy>
+                        <NextStepIcon src="/img/polygon_icon.png" alt="polygon Icon" />
+                    </StepBy>
+                    <StepBy>
+                        <StepNumberStyle> STEP2 </StepNumberStyle>
+                        <StepButton>문제 검색 및 선택 </StepButton>
+                    </StepBy>
+                    <StepBy>
+                        <NextStepIcon src="/img/polygon_icon.png" alt="polygon Icon" />
+                    </StepBy>
+                    <StepBy>
+                        <StepNumberStyle> STEP3 </StepNumberStyle>
+                        <StepButton> 나만의 시험지 제작 완료</StepButton>
+                    </StepBy>
+                </StepsContainer>
 
           <div>
             <ExamTypeButton $selected={showResearchExams} onClick={() => setShowResearchExams(true)}>

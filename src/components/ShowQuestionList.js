@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ShowQuestion from "./ShowQuestion";
 import styled from 'styled-components';
+import { OneMoreQuestionModal } from "../modals/SelectQuestionModal";
 
 const ShowQuestionContent = styled.div`
     border: 1px solid #ccc;
@@ -24,13 +25,14 @@ const ChoseContainer = styled.div`
 
 const ContainerTitle = styled.p`
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 600;
     margin-left: 14px;
     margin-bottom: 5px;
 `;
 
 const QuestionSize = styled.p`
     font-size: 16px;
+    font-weight: 500;
     color: #6B6E72;
     margin-left: 14px;
 `;
@@ -56,7 +58,6 @@ const ButtonGroup = styled.div`
 
 const CreateButton = styled.button`
     width: 144px;
-    height: 37px;
     padding: 10px;
     border-radius: 5px;
     color: #FFFFFF;
@@ -64,7 +65,7 @@ const CreateButton = styled.button`
     border: none;
     cursor: pointer;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 10px;
 `;
 
@@ -76,7 +77,7 @@ const ListButton = styled.button`
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
     &:hover {
         color: #24ABA8;
         background-color: #D9F1F1;
@@ -87,12 +88,13 @@ const ListButton = styled.button`
 const ToggleButton = styled.button`
     padding: 10px 20px;
     background-color: ${({ $show }) => $show ? '#D9F1F1' : '#fff'};
-    color: ${({ $show }) => $show ? '#24ABA8' : '#24ABA8'};
+    color: ${({ $selectedCount }) => $selectedCount > 0 ? '#24ABA8' : '#ccc'};
     border: 1px solid #DCDCDD;
     border-radius: 5px;
-    cursor: pointer;
+    cursor: ${({ $selectedCount }) => $selectedCount > 0 ? 'pointer' : 'not-allowed'};
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
+    pointer-events: ${({ $selectedCount }) => $selectedCount > 0 ? 'auto' : 'none'};
 `;
 
 const Container = styled.div`
@@ -149,6 +151,7 @@ export default function ShowQuestionList({ questions, questionsSize }) {
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [showSelectedQuestions, setShowSelectedQuestions] = useState(false);
     const [showSelectedQuestionsCount, setShowSelectedQuestionsCount] = useState("");
+    const [selectOneMore, setSelectOneMore] = useState(false); // 에러 발생 시 NoneQuestion 보이기 여부를 관리하는 상태 추가
 
     useEffect(() => {
         setShowSelectedQuestionsCount(selectedQuestions.length);
@@ -176,7 +179,7 @@ export default function ShowQuestionList({ questions, questionsSize }) {
         if (showSelectedQuestionsCount > 0) {
             navigate("../workbooks/create", { state: { selectedQuestions: selectedQuestions } });
         } else {
-            alert("한 문제 이상 선택해야합니다.")
+            setSelectOneMore(true);
         }
     };
 
@@ -196,7 +199,7 @@ export default function ShowQuestionList({ questions, questionsSize }) {
                 <ButtonGroup>
                     <ListButton onClick={handleSelectAllQuestions}>전체 선택</ListButton>
                     <ListButton onClick={handleDeleteAllQuestions}>전체 삭제</ListButton>
-                    <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} $show={showSelectedQuestions}>
+                    <ToggleButton onClick={() => setShowSelectedQuestions(!showSelectedQuestions)} $show={showSelectedQuestions} $selectedCount={selectedQuestions.length}>
                         선택 문제만 보기 ({showSelectedQuestionsCount})
                     </ToggleButton>
                 </ButtonGroup>
@@ -251,6 +254,7 @@ export default function ShowQuestionList({ questions, questionsSize }) {
               </QuestionContainer>
             )}
           </ShowQuestionContent>
+          {selectOneMore && <OneMoreQuestionModal onClose={() => setSelectOneMore(false)} />} 
         </div>
       );
 }

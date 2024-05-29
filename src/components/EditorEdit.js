@@ -27,7 +27,15 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
   const optionsRef = useRef(null);
   const answersRef = useRef(null);
   const commentaryRef = useRef(null);
-  const [isSelectedTags, setSelectedTags] = useState({});
+  const [isSelectedTags, setSelectedTags] = useState(() => {
+    const initialTags = {};
+    if (object.tags) {
+      Object.entries(object.tags).forEach(([key, tags]) => {
+        initialTags[key] = tags;
+      });
+    }
+    return initialTags;
+  });
 
   const handleEdit = (index) => {
     // 참조가 null인지 확인하고, null이 아닐 때만 innerText를 가져옵니다.
@@ -110,7 +118,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
           dangerouslySetInnerHTML={{ __html: replacedQuestion }}
         >
         </div> */}
-
+        <p>문제</p>
         <Editor
           className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`} 
           editorRef={questionRef}
@@ -133,21 +141,24 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
           </div>
         ) : null}
 
-        <EditorTool />
+        {/* <EditorTool /> */}
+        <p>선택지</p>
         <Editor
           className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           editorRef={optionsRef}
           contentEditable={isContentEditable[index]}
           dangerouslySetInnerHTML={{ __html: replacedOptions }}
         />
-        <EditorTool />
+        {/* <EditorTool /> */}
+        <p>정답</p>
         <Editor
           className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           editorRef={answersRef}
           contentEditable={isContentEditable[index]}
           dangerouslySetInnerHTML={{ __html: replacedAnswer }}
         />
-        <EditorTool />
+        {/* <EditorTool /> */}
+        <p>해설지</p>
         <Editor
           className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           editorRef={commentaryRef}
@@ -155,8 +166,8 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
           dangerouslySetInnerHTML={{ __html: object.commentary }}
         />
 
-  {/* 태그 선택 영역 */}
-  <div className='tags-container'>
+          {/* 태그 선택 영역 */}
+          <div className='tags-container' style={{ display: isEditing[index] ? 'flex' : 'none' }}>
             {Object.entries(isTag).map(([key, array]) => (
               <div key={key} id='tags-container'>
                 <div id='key-container'>
@@ -183,16 +194,17 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
         <div className='server-button'>
          <button 
             onClick={() => { handleStateChange(index) }}
-            style={{ display: isEditing[index] ? 'none' : 'inline-block' }} // 편집 모드 버튼 표시/숨기기
+            style={{ display: isEditing[index] ? 'none' : 'flex' }} // 편집 모드 버튼 표시/숨기기
           >
             편집 모드
           </button>
           <button 
-            onClick={() => { handleEdit(index); console.log(isEditing[index])}} 
-            style={{ display: isEditing[index] ? 'inline-block' : 'none' }} // 수정 버튼 표시/숨기기
+            onClick={() => { handleEdit(index); console.log(object)}} 
+            style={{ display: isEditing[index] ? 'flex' : 'none' }} // 수정 버튼 표시/숨기기
           >
             수정
           </button>
+
           <button onClick={() => {
             sendDeleteData(object.id);
             handleEditDelete(index);

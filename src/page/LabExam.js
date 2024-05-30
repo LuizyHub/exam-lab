@@ -48,7 +48,6 @@ const StepsContainer = styled.div`
 
 const StepBy = styled.div`
     margin-top: 26px;
-
 `;
 
 const StepButton = styled.button`
@@ -95,29 +94,44 @@ Font.register({
   family: 'NanumGothic-Regular',
   src: '/font/NanumGothic-Regular.ttf',
 });
+Font.register({
+  family: 'NanumGothic-Bold',
+  src: '/font/NanumGothic-Bold.ttf',
+});
+Font.register({
+  family: 'NanumGothic-ExtraBold',
+  src: '/font/NanumGothic-ExtraBold.ttf',
+});
+
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
-    padding: 10,
+    padding: 0
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    fontFamily: 'NanumGothic-Regular',
+    fontFamily: 'NanumGothic-ExtraBold',
+    marginTop: 22,
     marginBottom: 20,
     textAlign: 'center',
   },
   section: {
-    margin: 10,
     padding: 10,
+    marginLeft: 8,
+    marginRight: 17,
+    marginTop: 0,
     flexGrow: 1,
     fontFamily: 'NanumGothic-Regular',
     fontSize: 10,
     width: '100%',
     height: 'auto',
-    marginBottom: 10,
+    marginBottom: '15px',
+  },
+  questionText : {
+    marginBottom: '15px'
   },
   image: {
     width: '30%',
@@ -135,10 +149,24 @@ const styles = StyleSheet.create({
     width: '123px',
     height: '39px',
   },
+  horizontalLine: {
+    borderTop: '1.5px solid black', // 가로로 그어진 줄
+    marginTop:0,
+    marginBottom: 15
+  },
+  verticalLine: {
+    borderLeft: '1.5px solid black', // 세로로 그어진 줄
+    height: '88%', // 페이지 높이만큼 세로로 그어집니다.
+    position: 'absolute',
+    marginTop: '65px',
+    marginBottom: '10px',
+    left: '50%', // 페이지의 가운데에 위치하도록 설정합니다.
+  }
 });
 
+const PdfDocument = ({ pdfTitle, isQuestion, isCommentaryQuestion }) => {
+  const PAGE_SIZE = 5; // 각 페이지에 출력할 문제 수
 
-const PdfDocument = ({ pdfTitle, isQuestion, isCommentaryQuestion}) => {
   const [reloadImage, setReloadImage] = useState({}); // 이미지 재로드 상태 추가
 
   // 이미지 로드 오류 처리 함수 추가
@@ -149,95 +177,111 @@ const PdfDocument = ({ pdfTitle, isQuestion, isCommentaryQuestion}) => {
     }));
   };
 
-  // Divide questions into two separate arrays for two columns
-  const halfIndex = Math.ceil(isQuestion.length / 2);
-  const firstColumnQuestions = isQuestion.slice(0, halfIndex);
-  const secondColumnQuestions = isQuestion.slice(halfIndex);
+  // Divide questions into pages
+  const pages = [];
+  for (let i = 0; i < isQuestion.length; i += PAGE_SIZE * 2) {
+    const firstColumnQuestions = isQuestion.slice(i, i + PAGE_SIZE);
+    const secondColumnQuestions = isQuestion.slice(i + PAGE_SIZE, i + PAGE_SIZE * 2);
+    pages.push({ firstColumnQuestions, secondColumnQuestions });
+  }
 
   return (
     <Document>
       {isCommentaryQuestion ? (
-        // 문제 페이지
-      <Page size="A4" style={[styles.page]} wrap>
-        <Text style={styles.title}>{pdfTitle}</Text>
-        <View style={{ flexDirection: 'row' }}>
-          {/* First Column */}
-          <View style={{ flex: 1 }}>
-            {firstColumnQuestions.map((question, index) => (
-              <View key={index} style={styles.section}>
-                <Text>{index + 1}. {question.question}</Text>
-                {question.question_images_out && question.question_images_out.length > 0 && (
-                  question.question_images_out.map((image, imageIndex) => (
-                    image.url ? (
-                      <View key={imageIndex} style={{ width: '100%' }}>
-                        <Image
-                          src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`}
-                          style={styles.image}
-                          onError={() => handleImageError(imageIndex)}
-                        />
-                      </View>
-                    ) : null
-                  ))
-                )}
-                {question.options.map((option, optionIndex) => (
-                  <Text key={optionIndex}>
-                    {String.fromCharCode(9312 + optionIndex)} {option}
-                  </Text>
-                ))}
-              </View>
-            ))}
-          </View>
-
-          {/* Second Column */}
-          <View style={{ flex: 1 }}>
-            {secondColumnQuestions.map((question, index) => (
-              <View key={index + halfIndex} style={styles.section}>
-                <Text>{index + halfIndex + 1}. {question.question}</Text>
-                {question.question_images_out && question.question_images_out.length > 0 && (
-                  question.question_images_out.map((image, imageIndex) => (
-                    image.url ? (
-                      <View key={imageIndex} style={{ width: '100%' }}>
-                        <Image
-                          src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`}
-                          style={styles.image}
-                          onError={() => handleImageError(imageIndex)}
-                        />
-                      </View>
-                    ) : null
-                  ))
-                )}
-                {question.options.map((option, optionIndex) => (
-                  <Text key={optionIndex}>
-                    {String.fromCharCode(9312 + optionIndex)} {option}
-                  </Text>
-                ))}
-              </View>
-            ))}
-          </View>
-        </View>
-      </Page>
-          ) : ( // 해설 페이지
-          <Page size="A4" style={[styles.page]} wrap>
-              {isQuestion.map((question, index) => (
-                  <View key={index} style={styles.section}>
-                      <View style={{ display: 'flex' }}>
-                          <Text style={{ marginRight: '5px' }}><b>{index + 1}.</b></Text>
-                          <View style={{ padding: '1px' }}>
-                              <View style={{ marginBottom: '10px' }}>
-                                  <Text style={{ margin: '0px' }}>답 : {String.fromCharCode(9311 + parseInt(question.answers))}</Text>
-                              </View>
-                              <View>
-                                  <Text style={{ margin: '0px' }}>해 : {question.commentary}</Text>
-                              </View>
+        pages.map((page, pageIndex) => (
+          <Page key={pageIndex} size="A4" style={styles.page} wrap>
+            <Text style={styles.title}>{pdfTitle}</Text>
+            <View style={styles.horizontalLine} /> {/* 가로로 그어진 줄 추가 */}
+            <View style={{ flexDirection: 'row' }}>
+              {/* First Column */}
+              <View style={{ flex: 1, marginLeft:10, marginRight:20 }}>
+                {page.firstColumnQuestions.map((question, questionIndex) => (
+                  <View key={questionIndex} style={styles.section}>
+                    <Text style={styles.questionText}>{pageIndex * PAGE_SIZE * 2 + questionIndex + 1}. {question.question}</Text>
+                    {/* 이미지 출력 */}
+                    {question.question_images_out && question.question_images_out.length > 0 && (
+                      question.question_images_out.map((image, imageIndex) => (
+                        image.url ? (
+                          <View key={imageIndex} style={{ width: '100%' }}>
+                            <Image
+                              src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`}
+                              style={styles.image}
+                              onError={() => handleImageError(imageIndex)}
+                            />
                           </View>
-                      </View>
+                        ) : null
+                      ))
+                    )}
+  
+                    {/* 문제에 해당하는 옵션들 출력 */}
+                    {question.options.map((option, optionIndex) => (
+                      <Text key={optionIndex} style={{marginBottom: '5px'}}>
+                        {String.fromCharCode(9312 + optionIndex)} {option}
+                      </Text>
+                    ))}
+  
                   </View>
-              ))}
-          </Page>
+                ))}
+              </View>
+              {/* Second Column */}
+              <View style={{ flex: 1, marginLeft:10, marginRight:20 }}>
+                {page.secondColumnQuestions.map((question, questionIndex) => (
+                  <View key={questionIndex} style={styles.section}>
+                    <Text style={styles.questionText}>{pageIndex * PAGE_SIZE * 2 + PAGE_SIZE + questionIndex + 1}. {question.question}</Text>
+                    {/* 이미지 출력 */}
+                    {question.question_images_out && question.question_images_out.length > 0 && (
+                      question.question_images_out.map((image, imageIndex) => (
+                        image.url ? (
+                          <View key={imageIndex} style={{ width: '100%' }}>
+                            <Image
+                              src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`}
+                              style={styles.image}
+                              onError={() => handleImageError(imageIndex)}
+                            />
+                          </View>
+                        ) : null
+                      ))
+                    )}
+                    {/* 문제에 해당하는 옵션들 출력 */}
+                    {question.options.map((option, optionIndex) => (
+                      <Text key={optionIndex} style={{marginBottom: '5px'}}>
+                        {String.fromCharCode(9312 + optionIndex)} {option}
+                      </Text>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            </View>
+            <View style={styles.verticalLine} /> {/* 전체 페이지의 세로줄 */}
+          </Page> 
+        ))
+      ) : ( // 해설 페이지
+        <Page size="A4" style={[styles.page]} wrap>
+            <Text style={styles.title}>{pdfTitle} 답안지</Text>
+            <View style={styles.horizontalLine} />
+          {isQuestion.map((question, index) => (
+            <View key={index} style={styles.section}>
+              <View style={{ display: 'flex' }}>
+                <Text style={{ marginRight: '5px' }}><b>{index + 1}.</b></Text>
+                <View style={{ padding: '1px' }}>
+                  <View style={{ marginBottom: '10px' }}>
+                    <Text style={{ margin: '0px' }}>답 : {String.fromCharCode(9311 + parseInt(question.answers))}</Text>
+                  </View>
+                  <View>
+                    <Text style={{ margin: '0px' }}>해 : {question.commentary}</Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          ))}
+        </Page>
       )}
-  </Document>
-    );
-};
+    </Document>
+  );
+}
+
+
+
 
 
 export default function LabExam() {

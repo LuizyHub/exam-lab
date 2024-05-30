@@ -115,118 +115,118 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
     <>
       <div className="editor-edit">
 
-      <div className='server-button'>
-         <button 
-            onClick={() => { handleStateChange(index) }}
-            style={{ display: isEditing[index] ? 'none' : 'flex' }} // 편집 모드 버튼 표시/숨기기
-          >
-            <img src={edit_Icon} alt="edit-Icon"/>
-          </button>
+        <div className='server-button'>
           <button 
-            onClick={() => { handleEdit(index); console.log(object)}} 
-            style={{ display: isEditing[index] ? 'flex' : 'none' }} // 수정 버튼 표시/숨기기
-          >
-            <img src={save_Icon} alt="edit-Icon"/>
-          </button>
+              onClick={() => { handleStateChange(index) }}
+              style={{ display: isEditing[index] ? 'none' : 'flex' }} // 편집 모드 버튼 표시/숨기기
+            >
+              <img src={edit_Icon} alt="edit-Icon"/>
+            </button>
+            <button 
+              onClick={() => { handleEdit(index); console.log(object)}} 
+              style={{ display: isEditing[index] ? 'flex' : 'none' }} // 수정 버튼 표시/숨기기
+            >
+              <img src={save_Icon} alt="edit-Icon"/>
+            </button>
 
-          <button onClick={() => {
-            sendDeleteData(object.id);
-            handleEditDelete(index);
-          }}>
-            <img src={delete_Icon} alt="edit-Icon"/>
-          </button>
-        </div>
-        {/* <div
-          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
-          ref={questionRef}
-          contentEditable={isContentEditable[index]}
-          dangerouslySetInnerHTML={{ __html: replacedQuestion }}
-        >
-        </div> */}
-        <div className="block">
-          {/* <span>문제</span> */}
-          <Editor
-            className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`} 
-            editorRef={questionRef}
+            <button onClick={() => {
+              sendDeleteData(object.id);
+              handleEditDelete(index);
+            }}>
+              <img src={delete_Icon} alt="edit-Icon"/>
+            </button>
+          </div>
+          {/* <div
+            className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
+            ref={questionRef}
             contentEditable={isContentEditable[index]}
             dangerouslySetInnerHTML={{ __html: replacedQuestion }}
-          />
-        </div>
-        
-        {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
-          <div
-            className="block"
           >
-            {/* <span>이미지</span> */}
-            {object.question_images_out.map((image, index) => (
-              <img 
-               key={index} 
-               src={image.url} 
-               className="examlab-image-right" 
-                style={{ width: '20%' }}
-              />
-            ))}
+          </div> */}
+          <div className="block">
+            {/* <span>문제</span> */}
+            <Editor
+              className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`} 
+              editorRef={questionRef}
+              contentEditable={isContentEditable[index]}
+              dangerouslySetInnerHTML={{ __html: replacedQuestion }}
+            />
           </div>
-        ) : null}
+          
+          {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
+            <div
+              className="block"
+            >
+              {/* <span>이미지</span> */}
+              {object.question_images_out.map((image, index) => (
+                <img 
+                key={index} 
+                src={image.url} 
+                className="examlab-image-right" 
+                  style={{ width: '20%' }}
+                />
+              ))}
+            </div>
+          ) : null}
 
-        {/* <EditorTool /> */}
-        <div className="block">
-          {/* <span>선택지</span> */}
-          <Editor
-            className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
-            editorRef={optionsRef}
-            contentEditable={isContentEditable[index]}
-            dangerouslySetInnerHTML={{ __html: replacedOptions }}
-          />
-        </div>
-        {/* <EditorTool /> */}
-        <div className="block">
-          {/* <span>정답</span> */}
-          <Editor
-            className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
-            editorRef={answersRef}
-            contentEditable={isContentEditable[index]}
-            dangerouslySetInnerHTML={{ __html: replacedAnswer }}
-          />
           {/* <EditorTool /> */}
-        </div>
+          <div className="block">
+            {/* <span>선택지</span> */}
+            <Editor
+              className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
+              editorRef={optionsRef}
+              contentEditable={isContentEditable[index]}
+              dangerouslySetInnerHTML={{ __html: replacedOptions }}
+            />
+          </div>
+          {/* <EditorTool /> */}
+          <div className="block">
+            {/* <span>정답</span> */}
+            <Editor
+              className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
+              editorRef={answersRef}
+              contentEditable={isContentEditable[index]}
+              dangerouslySetInnerHTML={{ __html: replacedAnswer }}
+            />
+            {/* <EditorTool /> */}
+          </div>
 
-        <div className="block">
-        {/* <span>해설지</span> */}
-        <Editor
-          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
-          editorRef={commentaryRef}
-          contentEditable={isContentEditable[index]}
-          dangerouslySetInnerHTML={{ __html: object.commentary }}
-        />
-        </div>
-
-          {/* 태그 선택 영역 */}
-          <div className='tags-container' style={{ display: isEditing[index] ? 'flex' : 'none' }}>
-            {Object.entries(isTag).map(([key, array]) => (
-              <div key={key} id='tags-container'>
-                <div id='key-container'>
-                  <p id='key'>
-                    {key}
-                  </p>
-                </div>
-                <div id='value-container'>
-                  {array.map((item, index) => (
-                    <button
-                      id='value'
-                      key={`${key}-${index}`}
-                      style={getButtonStyle(key, item)}
-                      onClick={() => handleButtonClick(key, item)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-        </div>
-
+          <div className="block">
+          {/* <span>해설지</span> */}
+          <Editor
+            className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
+            editorRef={commentaryRef}
+            contentEditable={isContentEditable[index]}
+            dangerouslySetInnerHTML={{ __html: object.commentary }}
+          />
+          </div>
       </div>
+        
+            {/* 태그 선택 영역 */}
+        <div className='tags-container_in' style={{ display: isEditing[index] ? 'block' : 'none' }}>
+                {Object.entries(isTag).map(([key, array]) => (
+                  <div key={key} id='tags-container'>
+                    <div id='key-container'>
+                      <p id='key'>
+                        {key}
+                      </p>
+                    </div>
+                    <div id='value-container'>
+                      {array.map((item, index) => (
+                        <button
+                          id='value'
+                          key={`${key}-${index}`}
+                          style={getButtonStyle(key, item)}
+                          onClick={() => handleButtonClick(key, item)}
+                        >
+                          {item}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+          </div>
+
     </>
   )
 }

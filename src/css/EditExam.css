@@ -31,12 +31,15 @@
 
 #side-bar>button:hover{
   background-color: #BADEDE;
+  cursor: pointer;
 }
 
 .examlab-image-right {
   /* width: 30%; */
 }
-
+.editor-edit>div>hr {
+  margin-bottom: 30px;
+}
 .edit-exam {
   display: flex;
   flex-direction: column;
@@ -92,6 +95,17 @@
   background-color: #FFFFFF;
 }
 
+.editor-exam .editor-Tool {
+  display: flex;
+}
+
+.editor-exam .editor-Tool>p {
+  display: flex;
+  color:#24ABA8;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
 .editor-exam .editor-exam-out-line {
   padding: 20px;
   margin-bottom: 20px;
@@ -125,7 +139,7 @@
   color : #24ABA8
 }
 .editor-edit .editor-out-line {
-  padding: 20px;
+  padding: 15px;
   border: 1px solid #D6D6D6;
   border-radius: 4px;
   width: 1098px;

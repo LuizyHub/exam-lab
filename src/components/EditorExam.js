@@ -10,7 +10,7 @@ import { sendPostData, sendDeleteData, sendPutData } from '../function/axiosData
 import delete_Icon from "../img/delete_Icon.svg";
 import edit_Icon from "../img/edit_Icon.svg";
 import save_Icon from "../img/save_Icon.svg";
-
+import '../css/EditorExam.css'
 export default function
   EditorExam({ examId, handleExamDelete, isTag }) {
 

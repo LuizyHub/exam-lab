@@ -290,8 +290,9 @@ export default function AttributeManager({ examId }) {
             </Link>
           </ServerButton>
           <ServerButton onClick={handleUpdateExamData}>
-            저장하기
+                저장하기
           </ServerButton>
+
         </ServerButtonContainer>
         <AttributeInputContainer>
           {attributes.map((attribute, index) => (

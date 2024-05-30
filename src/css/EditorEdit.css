@@ -2,6 +2,11 @@ body {
   font-size: 14px;
 }
 
+.editor-edit{
+  display: flex;
+  flex-direction: column;
+}
+
 .editor-edit .server-button {
   display: flex;
   justify-content: flex-end;
@@ -32,4 +37,36 @@ body {
 } 
 .editor{
   margin-bottom: 15px;
+}
+
+
+#tags-container_in{
+  display: flex;
+  flex-direction: row;
+  width: 0;
+  margin-top: 1.5rem;
+  /* margin-bottom: 0.6rem; */
+  background-color: aqua;
+}
+
+#tags-container_in #key-container {
+  display: flex;
+  flex-direction: column;
+  width : 4vw;
+}
+
+#key-container>p {
+  margin: 0;
+}
+
+#value-container >button {
+  border: none;
+  background-color: #FFFFFF;
+  color: #9A9DA0;
+  margin-left: 1rem;
+  padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+}
+#value-container >button:hover{
+  background-color: #D9F1F1;
+  color : #24ABA8
 }

@@ -11,16 +11,85 @@ import axios from "axios";
 import Exam from "../components/Exam";
 import SideBar from "../components/SideBar";
 import shuffle_Icon from "../img/shuffle_icon.svg"
-const LabExamContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-left: 270px;
-    margin-right: 18%;
-    margin-top: 16px;
-    transition: margin-left 0.3s ease;
-    justify-content: center;
-    align-items: center;
+
+
+const LabExamContainer = styled.div`
 `;
+
+const LabExamContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 320px;
+  margin-right: 18%;
+  margin-top: 16px;
+  transition: margin-left 0.3s ease;
+`;
+
+
+const PageIntroContainer = styled.div`
+  top:0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(102.06deg, #E0F9F8 12.5%, #E2E6FA 98.35%);
+  margin-top: 0px;
+
+`;
+
+const PageIntroContent = styled.div`
+  margin-left: 320px;
+  margin-top: 16px;
+`;
+
+
+
+const StepsContainer = styled.div`
+    display: flex;
+`;
+
+const StepBy = styled.div`
+    margin-top: 26px;
+
+`;
+
+const StepButton = styled.button`
+    background-color : #29B8B5;    
+    color: #3E3F41;
+    border: 1.5px solid #29B8B5;
+    border-radius: 8px;
+    padding: 5px 8px;
+    flex: 1; 
+    width: 250px;
+    height: 65px;
+    font-size: 18px;
+    margin: 0 10px;
+    margin-left: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const StepNumberStyle = styled.p`
+    color : #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    font-weight: bold;
+`;
+
+const StepTitle = styled.p`
+    font-size: 16px;
+    font-weight: 500;
+    color : #FFFFFF;
+    margin-top: 6px;
+    margin-bottom: 10px;
+`;
+
+const NextStepIcon = styled.img`
+    width: 18px;
+    margin: 3px 10px;
+    margin-top: 20px;
+`;
+
 
 Font.register({
   family: 'NanumGothic-Regular',
@@ -33,6 +102,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     padding: 10,
   },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'NanumGothic-Regular',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
   section: {
     margin: 10,
     padding: 10,
@@ -42,19 +118,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 'auto',
     marginBottom: 10,
-    // border: '1px solid #F9F9FA',
   },
   image: {
     width: '30%',
     height: 'auto',
     marginBottom: 5,
-  },
-  fullWidthImage: {
-    width: '100%',
-    height: 'auto',
-  },
-  input: {
-    marginBottom: 10,
   },
   buttonPdf: {
     textDecoration: 'none',
@@ -69,7 +137,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const PdfDocument = ({ isQuestion, isCommentaryQuestion}) => {
+
+const PdfDocument = ({ pdfTitle, isQuestion, isCommentaryQuestion}) => {
   const [reloadImage, setReloadImage] = useState({}); // 이미지 재로드 상태 추가
 
   // 이미지 로드 오류 처리 함수 추가
@@ -80,63 +149,101 @@ const PdfDocument = ({ isQuestion, isCommentaryQuestion}) => {
     }));
   };
 
+  // Divide questions into two separate arrays for two columns
+  const halfIndex = Math.ceil(isQuestion.length / 2);
+  const firstColumnQuestions = isQuestion.slice(0, halfIndex);
+  const secondColumnQuestions = isQuestion.slice(halfIndex);
+
   return (
     <Document>
-    {isCommentaryQuestion ? (
+      {isCommentaryQuestion ? (
         // 문제 페이지
-        <Page size="A4" style={[styles.page]} wrap>
-            {isQuestion.map((question, index) => (
-                <View key={index} style={styles.section}>
-                    <Text>{index + 1}. {question.question}</Text>
-                    {question.question_images_out && question.question_images_out.length > 0 && (
-                        question.question_images_out.map((image, imageIndex) => (
-                            image.url ? (
-                                <View key={imageIndex} style={{ width: '100%' }}> {/* 이미지를 포함하는 뷰 추가 */}
-                                    <Image
-                                        src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`}
-                                        style={styles.image}
-                                        onError={() => handleImageError(imageIndex)}
-                                    />
-                                </View>
-                            ) : null
-                        ))
-                    )}
-                    {question.options.map((option, optionIndex) => (
-                        <Text key={optionIndex}>
-                            {String.fromCharCode(9312 + optionIndex)} {option}
-                        </Text>
-                    ))}
-                </View>
+      <Page size="A4" style={[styles.page]} wrap>
+        <Text style={styles.title}>{pdfTitle}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          {/* First Column */}
+          <View style={{ flex: 1 }}>
+            {firstColumnQuestions.map((question, index) => (
+              <View key={index} style={styles.section}>
+                <Text>{index + 1}. {question.question}</Text>
+                {question.question_images_out && question.question_images_out.length > 0 && (
+                  question.question_images_out.map((image, imageIndex) => (
+                    image.url ? (
+                      <View key={imageIndex} style={{ width: '100%' }}>
+                        <Image
+                          src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`}
+                          style={styles.image}
+                          onError={() => handleImageError(imageIndex)}
+                        />
+                      </View>
+                    ) : null
+                  ))
+                )}
+                {question.options.map((option, optionIndex) => (
+                  <Text key={optionIndex}>
+                    {String.fromCharCode(9312 + optionIndex)} {option}
+                  </Text>
+                ))}
+              </View>
             ))}
-        </Page>
-    ) : (
-        // 해설 페이지
-        <Page size="A4" style={[styles.page]} wrap>
-            {isQuestion.map((question, index) => (
-                <View key={index} style={styles.section}>
-                    <View style={{ display: 'flex' }}>
-                        <Text style={{ marginRight: '5px' }}><b>{index + 1}.</b></Text>
-                        <View style={{ padding: '1px' }}>
-                            <View style={{ marginBottom: '10px' }}>
-                                <Text style={{ margin: '0px' }}>답 : {String.fromCharCode(9311 + parseInt(question.answers))}</Text>
-                            </View>
-                            <View>
-                                <Text style={{ margin: '0px' }}>해 : {question.commentary}</Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
+          </View>
+
+          {/* Second Column */}
+          <View style={{ flex: 1 }}>
+            {secondColumnQuestions.map((question, index) => (
+              <View key={index + halfIndex} style={styles.section}>
+                <Text>{index + halfIndex + 1}. {question.question}</Text>
+                {question.question_images_out && question.question_images_out.length > 0 && (
+                  question.question_images_out.map((image, imageIndex) => (
+                    image.url ? (
+                      <View key={imageIndex} style={{ width: '100%' }}>
+                        <Image
+                          src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`}
+                          style={styles.image}
+                          onError={() => handleImageError(imageIndex)}
+                        />
+                      </View>
+                    ) : null
+                  ))
+                )}
+                {question.options.map((option, optionIndex) => (
+                  <Text key={optionIndex}>
+                    {String.fromCharCode(9312 + optionIndex)} {option}
+                  </Text>
+                ))}
+              </View>
             ))}
-        </Page>
-    )}
-</Document>
-  );
+          </View>
+        </View>
+      </Page>
+          ) : ( // 해설 페이지
+          <Page size="A4" style={[styles.page]} wrap>
+              {isQuestion.map((question, index) => (
+                  <View key={index} style={styles.section}>
+                      <View style={{ display: 'flex' }}>
+                          <Text style={{ marginRight: '5px' }}><b>{index + 1}.</b></Text>
+                          <View style={{ padding: '1px' }}>
+                              <View style={{ marginBottom: '10px' }}>
+                                  <Text style={{ margin: '0px' }}>답 : {String.fromCharCode(9311 + parseInt(question.answers))}</Text>
+                              </View>
+                              <View>
+                                  <Text style={{ margin: '0px' }}>해 : {question.commentary}</Text>
+                              </View>
+                          </View>
+                      </View>
+                  </View>
+              ))}
+          </Page>
+      )}
+  </Document>
+    );
 };
+
 
 export default function LabExam() {
   const location = useLocation();
-  const { selectedQuestions } = location.state;
-  const workbookId = location.state.workbookId;
+  const { selectedQuestions, workbookId, workbookPage } = location.state;
+  
 
   const [isWorkBook, setWorkBook] = useState([]);
   const [isNewWorkBook, setNewWorkBook] = useState("");
@@ -193,7 +300,76 @@ export default function LabExam() {
   };
 
   return (
-    <>
+    <div>
+      {workbookPage ? 
+        (<div> 
+          <PageIntroContainer>
+              <PageIntroContent>
+                  <StepsContainer>
+                          <StepBy>
+                              <StepButton> 
+                              <div>
+                                  <StepNumberStyle> Step 1 </StepNumberStyle>
+                                  <StepTitle>시험지 선택</StepTitle>
+                              </div>
+                              </StepButton>
+                          </StepBy>
+
+                              <StepBy>
+                                  <NextStepIcon src="/img/polygon_icon.svg" alt="polygon Icon" />
+                              </StepBy>
+                              <StepBy>
+                                  <StepButton>
+                                  <div>
+                                      <StepNumberStyle> Step 2 </StepNumberStyle>
+                                      <StepTitle>PDF 다운로드 </StepTitle>
+                                  </div>
+                                  </StepButton>
+                              </StepBy>
+                  </StepsContainer>
+              </PageIntroContent>
+          </PageIntroContainer>
+        
+        </div>) : (
+      <PageIntroContainer>
+              <PageIntroContent>
+                  <StepsContainer>
+                          <StepBy>
+                              <StepButton> 
+                              <div>
+                                  <StepNumberStyle> Step 1 </StepNumberStyle>
+                                  <StepTitle>시험 종류 선택</StepTitle>
+                              </div>
+                              </StepButton>
+                          </StepBy>
+
+                              <StepBy>
+                                  <NextStepIcon src="/img/polygon_icon.svg" alt="polygon Icon" />
+                              </StepBy>
+                              <StepBy>
+                                  <StepButton>
+                                  <div>
+                                      <StepNumberStyle> Step 2 </StepNumberStyle>
+                                      <StepTitle>문제 검색 및 선택</StepTitle>
+                                  </div>
+                                  </StepButton>
+                              </StepBy>
+                              <StepBy>
+                                  <NextStepIcon src="/img/polygon_icon.svg" alt="polygon Icon" />
+                              </StepBy>
+                              <StepBy>
+                                  <StepButton>
+                                  <div>
+                                      <StepNumberStyle> Step 3 </StepNumberStyle>
+                                      <StepTitle>나만의 시험지 제작 완료</StepTitle>
+                                  </div>
+                                  </StepButton>
+                              </StepBy>
+                  </StepsContainer>
+              </PageIntroContent>
+          </PageIntroContainer>
+        )}
+    <LabExamContainer>
       <LabExamContent>
         <SideBar />
         <NavigationBar />
@@ -203,7 +379,7 @@ export default function LabExam() {
               <div>
                 <input className="title" placeholder="시험지 이름 입력" value={isWorkBook.title} onChange={handleInputChange} />
                 <div id="button-pdf">
-                  <PDFDownloadLink id="button" document={<PdfDocument isQuestion={isQuestion} isCommentary={isCommentary} isCommentaryQuestion={isCommentaryQuestion} />} fileName="lab_exam.pdf" style={styles.buttonPdf}>
+                  <PDFDownloadLink document={<PdfDocument  pdfTitle={isWorkBook.title} isQuestion={isQuestion} isCommentary={isCommentary} isCommentaryQuestion={isCommentaryQuestion} />} fileName={`${isWorkBook.title}.pdf`}  style={styles.buttonPdf}>
                     {/* 수정 */}
                     {({ loading }) => (
                       <span id="button">
@@ -231,6 +407,7 @@ export default function LabExam() {
           <Exam isQuestion={isQuestion} parseImages={parseImages} renderImages={renderImages} isCommentary={isCommentary} isCommentaryQuestion={isCommentaryQuestion} />
         </div>
       </LabExamContent>
-    </>
+    </LabExamContainer>
+    </div>
   );
 }

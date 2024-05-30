@@ -28,9 +28,22 @@ const SelectExam = styled.div`
   transition: margin-left 0.3s ease;
 `;
 
+const PageIntroContainer = styled.div`
+  top:0;
+  width: 100%;
+  height: 300px;
+  background-color: #EEF0FC;
+
+`;
+
+const PageIntroContent = styled.div`
+  margin-left: 320px;
+  margin-top: 16px;
+`;
+
 const PageIcon = styled.img`
   width: 58px;
-  background-color: #D9F1F1;
+  background-color: #fff;
   padding: 12px 16px;
   border-radius: 20px;
   margin-top: 15px;
@@ -49,6 +62,50 @@ const PageIntro = styled.p`
   font-size: 19px;
   color: #313132;
 `;
+
+
+const StepsContainer = styled.div`
+    display: flex;
+    margin-top: 40px;
+`;
+
+const StepBy = styled.div`
+    margin-right: 38px;
+`;
+
+const StepButton = styled.button`
+    background-color : ${({ $primary }) => $primary ? '#29B8B5' : '#FFFFFF'};    
+    color: #3E3F41;
+    border: 1.5px solid ${({ $primary }) => $primary ? '#29B8B5' : '#BADEDE'};
+    border-radius: 8px;
+    padding: 5px 8px;
+    flex: 1; 
+    width: 250px;
+    height: 65px;
+    font-size: 18px;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const StepNumberStyle = styled.p`
+    color : ${({ $primary }) => $primary ? '#FFFFFF' : '#24ABA8'};    
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    font-weight: bold;
+`;
+
+const StepTitle = styled.p`
+    font-size: 16px;
+    font-weight: 500;
+    color : ${({ $primary }) => $primary ? '#FFFFFF' : '#3E3F41'};    
+    margin-top: 6px;
+    margin-bottom: 10px;
+`;
+
+
 
 const PageName = styled.p`
   color: #262626;
@@ -116,10 +173,6 @@ const DeleteImg = styled.img`
 `;
 
 
-const NoneExam = styled.p`
-  color: #6D6D6D;
-  font-size: 18px;
-`;
 
 export default function SelectExamPage() {
   const navigate = useNavigate();
@@ -197,16 +250,48 @@ const handleCreateExam = () => {
 
   return (
     <Container>
+      <PageIntroContainer>
+        <PageIntroContent>
+              <div style={{ display: "flex" }}>
+                <PageIcon src="/img/문제관리소_colorIcon.svg" alt="page Icon" />
+                <div>
+                  <PageTitle>문제 관리소</PageTitle>
+                  <PageIntro>문제를 새롭게 등록해보세요</PageIntro>
+                </div>
+              </div>
+              <StepsContainer>
+                    <StepBy>
+                        <StepButton> 
+                          <div>
+                            <StepNumberStyle> Function 1 </StepNumberStyle>
+                            <StepTitle>나만의 문제 등록하기</StepTitle>
+                          </div>
+                        </StepButton>
+                      </StepBy>
+
+                        <StepBy>
+                            <StepButton>
+                              <div>
+                                <StepNumberStyle> Function 2 </StepNumberStyle>
+                                <StepTitle>AI 문제 자동 생성</StepTitle>
+                               </div>
+                            </StepButton>
+                        </StepBy>
+
+                        <StepBy>
+                            <StepButton>
+                              <div>
+                                <StepNumberStyle> Function 3 </StepNumberStyle>
+                                <StepTitle>시험지 제작하기</StepTitle>
+                              </div>
+                            </StepButton>
+                        </StepBy>
+              </StepsContainer>
+              </PageIntroContent>
+          </PageIntroContainer>
       <Content>
     <SelectExam>
       <div>
-        <div style={{ display: "flex" }}>
-          <PageIcon src="/img/문제관리소.svg" alt="page Icon" />
-          <div>
-            <PageTitle>문제 관리소</PageTitle>
-            <PageIntro>문제를 새롭게 등록해보세요</PageIntro>
-          </div>
-        </div>
         <PageName>등록된 문제</PageName>
         <ButtonContainer>
 

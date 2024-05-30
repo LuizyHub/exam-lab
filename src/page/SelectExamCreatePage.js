@@ -27,9 +27,22 @@ const SelectExam = styled.div`
   transition: margin-left 0.3s ease;
 `;
 
+const PageIntroContainer = styled.div`
+  top:0;
+  width: 100%;
+  height: 300px;
+  background-color: #ECFBFB;
+
+`;
+
+const PageIntroContent = styled.div`
+  margin-left: 320px;
+  margin-top: 16px;
+`;
+
 const PageIcon = styled.img`
   width: 50px;
-  background-color: #D9F1F1;
+  background-color: #fff;
   padding: 20px 20px;
   border-radius: 20px;
   margin-top: 15px;
@@ -48,18 +61,9 @@ const PageIntro = styled.p`
   color: #313132;
 `;
 
-const StepNumberStyle = styled.p`
-    color: #24ABA8;
-    font-size: 16px;
-    margin-bottom: 14px;
-    margin-left: 140px;
-    font-weight: bold;
-`;
 
 const StepsContainer = styled.div`
     display: flex;
-    align-items: center; 
-    justify-content: space-between;
     margin-top: 40px;
 `;
 
@@ -68,31 +72,42 @@ const StepBy = styled.div`
 
 `;
 
-const NextStepIcon = styled.img`
-    width: 20px;
-    margin: 3px 10px;
-    margin-top: 40px;
-`;
-
 const StepButton = styled.button`
-    background-color : ${({ $primary }) => $primary ? '#D9F1F1' : '#FFFFFF'};    
+    background-color : ${({ $primary }) => $primary ? '#29B8B5' : '#FFFFFF'};    
     color: #3E3F41;
-    border: 1px solid ${({ $primary }) => $primary ? '#BADEDE' : '#EBEDEF'};
+    border: 1.5px solid ${({ $primary }) => $primary ? '#29B8B5' : '#BADEDE'};
     border-radius: 8px;
     padding: 5px 8px;
     flex: 1; 
-    width: 310px;
+    width: 250px;
     height: 65px;
     font-size: 18px;
     margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
-
-const StepIntro = styled.p`
+const StepNumberStyle = styled.p`
+    color : ${({ $primary }) => $primary ? '#FFFFFF' : '#24ABA8'};    
     font-size: 16px;
-    color: #313132;
-    margin-top: 10px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    font-weight: bold;
+`;
+
+const StepTitle = styled.p`
+    font-size: 16px;
+    font-weight: 500;
+    color : ${({ $primary }) => $primary ? '#FFFFFF' : '#3E3F41'};    
+    margin-top: 6px;
     margin-bottom: 10px;
+`;
+
+const NextStepIcon = styled.img`
+    width: 18px;
+    margin: 3px 10px;
+    margin-top: 20px;
 `;
 
 const ExamTypeButton = styled.button`
@@ -101,7 +116,7 @@ const ExamTypeButton = styled.button`
     background-color: #fff;
     font-size: 18px;
     font-weight: 600;
-    margin-top: 108px;
+    margin-top: 30px;
     margin-bottom: 20px;
     margin-right: 20px;
     border-bottom: ${({ $selected }) => ($selected ? '2.5px solid #000' : 'none')};
@@ -180,36 +195,52 @@ export default function SelectExamCreatePage() {
 
   return (
     <Container>
+      <PageIntroContainer>
+        <PageIntroContent>
+              <div style={{ display: "flex" }}>
+                <PageIcon src="/img/시험지제작소_colorIcon.svg" alt="page Icon" />
+                <div>
+                  <PageTitle>시험지 제작소</PageTitle>
+                  <PageIntro>등록된 문제를 조합해서 나만의 시험지를 제작해보세요</PageIntro>
+                </div>
+              </div>
+              <StepsContainer>
+                    <StepBy>
+                        <StepButton $primary="true"> 
+                          <div>
+                            <StepNumberStyle $primary="true"> Step 1 </StepNumberStyle>
+                            <StepTitle $primary="true">시험 종류 선택</StepTitle>
+                          </div>
+                        </StepButton>
+                      </StepBy>
+
+                        <StepBy>
+                            <NextStepIcon src="/img/polygon_icon.svg" alt="polygon Icon" />
+                        </StepBy>
+                        <StepBy>
+                            <StepButton>
+                              <div>
+                                <StepNumberStyle> Step 2 </StepNumberStyle>
+                                <StepTitle>문제 검색 및 선택</StepTitle>
+                               </div>
+                            </StepButton>
+                        </StepBy>
+                        <StepBy>
+                            <NextStepIcon src="/img/polygon_icon.svg" alt="polygon Icon" />
+                        </StepBy>
+                        <StepBy>
+                            <StepButton>
+                              <div>
+                                <StepNumberStyle> Step 3 </StepNumberStyle>
+                                <StepTitle>나만의 시험지 제작 완료</StepTitle>
+                              </div>
+                            </StepButton>
+                        </StepBy>
+              </StepsContainer>
+              </PageIntroContent>
+          </PageIntroContainer>
       <Content>
         <SelectExam>
-          <div style={{ display: "flex" }}>
-            <PageIcon src="/img/시험지제작소.svg" alt="page Icon" />
-            <div>
-              <PageTitle>시험지 제작소</PageTitle>
-              <PageIntro>등록된 문제를 조합해서 나만의 시험지를 제작해보세요</PageIntro>
-            </div>
-          </div>
-          <StepsContainer>
-                    <StepBy>
-                        <StepNumberStyle $primary="true"> STEP1 </StepNumberStyle>
-                        <StepButton $primary="true"> 시험 종류 선택</StepButton>
-                    </StepBy>
-                    <StepBy>
-                        <NextStepIcon src="/img/polygon_icon.png" alt="polygon Icon" />
-                    </StepBy>
-                    <StepBy>
-                        <StepNumberStyle> STEP2 </StepNumberStyle>
-                        <StepButton>문제 검색 및 선택 </StepButton>
-                    </StepBy>
-                    <StepBy>
-                        <NextStepIcon src="/img/polygon_icon.png" alt="polygon Icon" />
-                    </StepBy>
-                    <StepBy>
-                        <StepNumberStyle> STEP3 </StepNumberStyle>
-                        <StepButton> 나만의 시험지 제작 완료</StepButton>
-                    </StepBy>
-                </StepsContainer>
-
           <div>
             <ExamTypeButton $selected={showResearchExams} onClick={() => setShowResearchExams(true)}>
               연구소 문제

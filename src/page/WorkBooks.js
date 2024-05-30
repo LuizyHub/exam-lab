@@ -25,30 +25,33 @@ const WorkBooksContent = styled.div`
     display: flex;
     flex-wrap: wrap; 
 `;
+const PageIntroContainer = styled.div`
+  top:0;
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(102.06deg, #E0F9F8 12.5%, #E2E6FA 98.35%);
 
 
-const PageContent = styled.div`
-  display: flex;
-  flex-direction: column; 
-  margin-left: 20px;
 `;
 
+const PageIntroContent = styled.div`
+  margin-left: 320px;
+  margin-top: 16px;
+`;
 
 const PageIcon = styled.img`
-  width: 50px;
-  background-color: #D9F1F1;
-  padding: 15px 20px;
+  width: 45px;
+  background-color: #fff;
+  padding: 18px 22px;
   border-radius: 20px;
   margin-top: 15px;
-  margin-right: 5px;
+  margin-right: 25px;
 `;
 
 const PageTitle = styled.h1`
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 0px;
-    width: 300px;
-  
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 0px;
 `;
 
 const PageIntro = styled.p`
@@ -56,6 +59,57 @@ const PageIntro = styled.p`
   font-size: 19px;
   color: #313132;
 `;
+
+
+const StepsContainer = styled.div`
+    display: flex;
+    margin-top: 40px;
+`;
+
+const StepBy = styled.div`
+
+
+`;
+
+const StepButton = styled.button`
+    background-color : ${({ $primary }) => $primary ? '#29B8B5' : '#FFFFFF'};    
+    color: #3E3F41;
+    border: 1.5px solid ${({ $primary }) => $primary ? '#29B8B5' : '#BADEDE'};
+    border-radius: 8px;
+    padding: 5px 8px;
+    flex: 1; 
+    width: 250px;
+    height: 65px;
+    font-size: 18px;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const StepNumberStyle = styled.p`
+    color : ${({ $primary }) => $primary ? '#FFFFFF' : '#24ABA8'};    
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 0px;
+    font-weight: bold;
+`;
+
+const StepTitle = styled.p`
+    font-size: 16px;
+    font-weight: 500;
+    color : ${({ $primary }) => $primary ? '#FFFFFF' : '#3E3F41'};    
+    margin-top: 6px;
+    margin-bottom: 10px;
+`;
+
+const NextStepIcon = styled.img`
+    width: 18px;
+    margin: 3px 10px;
+    margin-top: 20px;
+`;
+
+
 
 const PageName = styled.p`
   color: #262626;
@@ -155,6 +209,7 @@ const NoneExam = styled.p`
 export default function WorkBooks() {
 
     const navigate = useNavigate();
+    const [workbookPage, setWorkbookPage] = useState(true); // 상단 스텝바를 교차하기 위함
     const [workbooks, setWorkbooks] = useState([]);
     const [modalStates, setModalStates] = useState({}); // 시험별 모달 상태
 
@@ -195,7 +250,7 @@ export default function WorkBooks() {
 
         // 시험지 선택
         const handleWorkBookClick = (workbookId) => {
-            navigate('/workbooks/create', { state: { workbookId } });
+            navigate('/workbooks/create', { state: { workbookId, workbookPage } });
         }
 
         // 시험지 삭제하기 모달 열기
@@ -228,14 +283,41 @@ export default function WorkBooks() {
 
         return (
             <Container>
+                <PageIntroContainer>
+                    <PageIntroContent>
+                        <div style={{ display: "flex" }}>
+                            <PageIcon src="/img/시험지저장소_colorIcon.svg" alt="page Icon" />
+                            <div>
+                            <PageTitle>시험지 저장소</PageTitle>
+                            <PageIntro>제작한 시험지는 저장소에 모여있어요.</PageIntro>
+                            </div>
+                        </div>
+                        <StepsContainer>
+                                <StepBy>
+                                    <StepButton $primary="true"> 
+                                    <div>
+                                        <StepNumberStyle $primary="true"> Step 1 </StepNumberStyle>
+                                        <StepTitle $primary="true">시험지 선택</StepTitle>
+                                    </div>
+                                    </StepButton>
+                                </StepBy>
+
+                                    <StepBy>
+                                        <NextStepIcon src="/img/polygon_icon.svg" alt="polygon Icon" />
+                                    </StepBy>
+                                    <StepBy>
+                                        <StepButton>
+                                        <div>
+                                            <StepNumberStyle> Step 2 </StepNumberStyle>
+                                            <StepTitle>PDF 다운로드</StepTitle>
+                                        </div>
+                                        </StepButton>
+                                    </StepBy>
+                        </StepsContainer>
+                        </PageIntroContent>
+                    </PageIntroContainer>
                 <Content>
-               <div style={{ display: "flex" }}>
-                    <PageIcon src="/img/시험지저장소.svg" alt="page Icon" />
-                    <PageContent>
-                        <PageTitle>시험지 저장소</PageTitle>
-                        <PageIntro>제작한 시험지는 저장소에 모여있어요.</PageIntro>
-                    </PageContent>
-                </div>
+
 
                 <PageName> 제작한 시험지 </PageName>
                  {workbooks.length === 0 ? (

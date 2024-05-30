@@ -12,9 +12,9 @@
 <br/>
 
 <p align=center>
-  <a href="">팀 노션</a>
+  <a href="https://bow-snail-89d.notion.site/d913942c81e343339927bc654bb0b158?pvs=4">팀 노션</a>
   &nbsp; | &nbsp; 
-  <a href="">개발위키</a>
+  <a href="https://bow-snail-89d.notion.site/f927d58b843d4b63bb6e9041e35b8cd3?v=cbaa33b73c3b4092a16aaf1fd9857ec5&pvs=4">개발위키</a>
   &nbsp; | &nbsp;
   <a href="https://bow-snail-89d.notion.site/6b0f7d9d2e574e1597de6c6c19a68ded?pvs=4">기획서</a>   &nbsp; | &nbsp;
   <a href="https://bow-snail-89d.notion.site/Ground-Rule-4c2c96afbfbf4a6aa1353a4ed6517daa?pvs=4">그라운드 룰</a> 

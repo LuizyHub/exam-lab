@@ -13,7 +13,6 @@ import AI_create_Icon from'../img/AI_create_icon.svg';
 import create_Icon from '../img/Create_icon.svg';
 import hidden_Icon from '../img/Hidden_icon.svg';
 import SideBar from "../components/SideBar";
-
 // const EditExamPage = styled.div
 //   `
 //     display: flex;
@@ -38,13 +37,11 @@ const EditExamPage = styled.div
     align-items: center;
 `
   ;
-
   const PageIntroContainer = styled.div`
     top:0px;
     width: 100%;
     height: 120px;
     background-color: #EEF0FC;
-
 `;
 
 const PageIntroContent = styled.div`
@@ -133,11 +130,6 @@ const ExamButton = styled.button`
       border: 1px solid #BADEDE;
     }
 `;
-
-
-
-
-
 
 export default function EditExam() {
   const location = useLocation();

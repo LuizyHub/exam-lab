@@ -299,7 +299,9 @@ export default function EditExam() {
             <AttributeManager examId={examId} setExamId={setExamId} ></AttributeManager>
             <div className="editor-edit">
               <div className="title">문제등록</div>
+              <div>
               <hr />
+              </div>
               {isExistingExam && <div>
               
                   {/* 기존문제 가져오기 */}

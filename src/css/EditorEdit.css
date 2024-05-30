@@ -14,16 +14,27 @@ body {
 }
 
 .editor-edit .server-button button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   background-color: transparent;
   padding: 0;
   border-style: none;
   margin-left: 10px;
   margin-right: 45px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 /* 마지막 버튼 스타일 */
 .editor-edit .server-button button:last-child {
   margin-right: 0;
+}
+
+.editor-edit .server-button button:hover{
+  background-color:#D9F1F1;
 }
 
 /* .editor-edit {

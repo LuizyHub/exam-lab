@@ -236,6 +236,7 @@ export default function AttributeManager({ examId, setExamId }) {
       setAttributes(newAttributes);
     };
   
+    //* 수정할 예정
     const handleExamDataSubmit = () => {
       setState(!isState);
       const data = {
@@ -251,6 +252,7 @@ export default function AttributeManager({ examId, setExamId }) {
         .then(response => {
           console.log('success', response.data);
           console.log('success', response.data.message);
+          setExamId(response.data.message);
         })
         .catch(error => {
           console.error('error', error);
@@ -289,7 +291,8 @@ export default function AttributeManager({ examId, setExamId }) {
               시험지 제작하기
             </Link>
           </ServerButton>
-          <ServerButton onClick={handleUpdateExamData}>
+          <ServerButton onClick={()=>{handleUpdateExamData()
+             handleExamDataSubmit()}}>
             저장하기
           </ServerButton>
         </ServerButtonContainer>

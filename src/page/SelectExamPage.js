@@ -6,6 +6,7 @@ import SideBar from "../components/SideBar";
 import NavigationBar from '../components/NavigationBar';
 import Bottom from "../components/Bottom";
 import { DeleteExamModal }from '../modals/DeleteModal';
+import { InputExamTitleModal } from "../modals/InputExamTitleModal";
 
 
 const Container = styled.div`
@@ -111,7 +112,7 @@ const PageName = styled.p`
   color: #262626;
   font-size: 18px;
   font-weight: 600;
-  margin-top: 108px;
+  margin-top: 30px;
   margin-bottom: 20px;
   padding-bottom: 5px;
 `;
@@ -179,6 +180,7 @@ export default function SelectExamPage() {
   const [exams, setExams] = useState([]);
   const [createdExamId, setCreatedExamId] = useState(null); 
   const [modalStates, setModalStates] = useState({}); // 시험별 모달 상태
+  const [isExamTitleModal, setIsExamTitleModal] = useState(false);
 
 
   useEffect(() => {
@@ -197,22 +199,27 @@ export default function SelectExamPage() {
   }, []);
 
 // 시험 생성
-const handleCreateExam = () => {
-  const data = {
-    exam_title: "시험지 제목",
-    tags: {"난이도": ["상", "중", "하"]}
-  };
+// const handleCreateExam = () => {
+//   const data = {
+//     exam_title: "시험지 제목",
+//     tags: {"난이도": ["상", "중", "하"]}
+//   };
 
-  axios.post('/api/v1/exams', data)
-    .then(response => {
-      console.log('success', response.data);
-      console.log('success', response.data.message);
-      setCreatedExamId(response.data.message);
-      navigate('/edit', { state: { createdExamId: response.data.message } });
-    })
-    .catch(error => {
-      console.error('error', error);
-    });
+//   axios.post('/api/v1/exams', data)
+//     .then(response => {
+//       console.log('success', response.data);
+//       console.log('success', response.data.message);
+//       setCreatedExamId(response.data.message);
+//       navigate('/edit', { state: { createdExamId: response.data.message } });
+//     })
+//     .catch(error => {
+//       console.error('error', error);
+//     });
+// }
+
+
+const handleCreateExam = () => {
+  setIsExamTitleModal(true);
 }
   
 
@@ -295,7 +302,7 @@ const handleCreateExam = () => {
         <PageName>등록된 문제</PageName>
         <ButtonContainer>
 
-            <ExamCreateButton onClick={() => handleCreateExam()}>
+            <ExamCreateButton onClick={()=> setIsExamTitleModal(true)}>
               <CreateImg src="/img/추가하기.png" alt="Create Icon" />
             </ExamCreateButton>
               {exams.map(exam => (
@@ -326,6 +333,9 @@ const handleCreateExam = () => {
       <footer>
           <Bottom />
       </footer>
+
+      {isExamTitleModal && <InputExamTitleModal onClose={()=>setIsExamTitleModal(false)}/>}
+
     </Container>
   );
 }

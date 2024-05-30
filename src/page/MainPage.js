@@ -222,7 +222,7 @@ export default function MainPage() {
                         <MainIntroExam />
                         <MoveContent>
                         <PageIconCircle>
-                            <PageIcon src="/img/시험지제작소.svg" alt="page Icon" $primary="true"/>
+                            <PageIcon src="/img/시험지제작소_colorIcon.svg" alt="page Icon" $primary="true"/>
                         </PageIconCircle>
                         <MoveTitle $selected={selectedNav === 'intro'}>원하는 문제를 조합해서 쉽고 빠르게 <br/> 나만의 시험지 제작하기</MoveTitle>
                             <NavButton $selected={selectedNav === 'intro'}>
@@ -236,7 +236,7 @@ export default function MainPage() {
                         <MainIntroQuestion />
                         <MoveContent>
                             <PageIconCircle>
-                                <PageIcon src="/img/문제관리소.svg" alt="page Icon" />
+                                <PageIcon src="/img/문제관리소_colorIcon.svg" alt="page Icon" />
                             </PageIconCircle>
                             <MoveTitle $selected={selectedNav === 'register'}>새로운 문제를 손쉽게 <br/> 문제 저장소에 등록하기</MoveTitle>
                             <NavButton $selected={selectedNav === 'register'}>

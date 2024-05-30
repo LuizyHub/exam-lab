@@ -9,12 +9,14 @@ import styled from 'styled-components';
 import '../css/labexam.css';
 import axios from "axios";
 import Exam from "../components/Exam";
+import SideBar from "../components/SideBar";
 
-const LabExamContent =
-  styled.div`
+const LabExamContent = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: 270px;
+    margin-left: 320px;
+    margin-right: 18%;
+    margin-top: 16px;
     transition: margin-left 0.3s ease;
     justify-content: center;
     align-items: center;
@@ -193,6 +195,7 @@ export default function LabExam() {
   return (
     <>
       <LabExamContent>
+        <SideBar />
         <NavigationBar />
         <div className="lab-exam">
           <div className="button-container">

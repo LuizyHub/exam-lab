@@ -12,18 +12,30 @@ import '../css/EditExam.css';
 import AI_create_Icon from'../img/AI_create_icon.svg'
 import create_Icon from '../img/Create_icon.svg'
 import hidden_Icon from '../img/Hidden_icon.svg'
+import SideBar from "../components/SideBar";
+
+// const EditExamPage = styled.div
+//   `
+//     display: flex;
+//     flex-direction: column;
+//     margin-left: 270px;
+//     margin-right: 18%;
+//     margin-top: 16px;
+//     transition: margin-left 0.3s ease;
+// `
+//   ;
 
 // 모든 모니터에 맞출 수 있게 코드 수정  
 const EditExamPage = styled.div
   `
-  display: flex;
-  flex-direction: column;
-  margin-left: 320px;
-  margin-right: 18%;
-  margin-top: 16px;
-  transition: margin-left 0.3s ease;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-left: 270px;
+    margin-right: 18%;
+    margin-top: 16px;
+    transition: margin-left 0.3s ease;
+    justify-content: center;
+    align-items: center;
 `
   ;
 
@@ -159,10 +171,10 @@ export default function EditExam() {
           </button>
         </div>
 
+        <SideBar />
         <NavigationBar />
         <div></div>
         <AttributeManager examId={examId} setExamId={setExamId} ></AttributeManager>
-
         <div className="editor-edit">
           <div className="title">문제등록</div>
           <hr />

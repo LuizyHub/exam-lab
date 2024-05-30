@@ -235,8 +235,6 @@ export default function AttributeManager({ examId, setExamId }) {
       newAttributes[attributeIndex].values.splice(tagIndex, 1);
       setAttributes(newAttributes);
     };
-  
-    //* 수정할 예정
     const handleExamDataSubmit = () => {
       setState(!isState);
       const data = {
@@ -291,6 +289,7 @@ export default function AttributeManager({ examId, setExamId }) {
               시험지 제작하기
             </Link>
           </ServerButton>
+
           <ServerButton onClick={()=>{handleUpdateExamData()
              handleExamDataSubmit()}}>
             저장하기

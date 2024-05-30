@@ -122,7 +122,6 @@ export default function AICreate({ examId, modalOpen, setModalOpen, isTag }) {
                   key={index}
                   className="editor-out-line"
                 >
-                    <EditorEdit key={index} object={object} index={index} isObject={isObject} />
                     <EditorEdit key={index} object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
                 </div>
             ))}

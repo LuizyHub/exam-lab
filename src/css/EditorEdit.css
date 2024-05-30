@@ -1,3 +1,7 @@
+body {
+  font-size: 14px;
+}
+
 .editor-edit .server-button {
   display: flex;
   justify-content: flex-end;

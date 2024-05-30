@@ -1,6 +1,7 @@
 import SelectQuestion from "../components/SelectQuestion";
 import NavigationBar from "../components/NavigationBar";
 import styled from 'styled-components';
+import SideBar from "../components/SideBar";
 
 
 const SelectQuesion = styled.div`
@@ -19,6 +20,7 @@ export default function SelectQuestionPage() {
         <SelectQuesion>
             <div>
                 <SelectQuestion />
+                <SideBar />
                 <NavigationBar />
             </div>
         </SelectQuesion>

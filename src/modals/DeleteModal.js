@@ -99,7 +99,7 @@ export const DeleteExamModal = ({exam, handleExamDelete, handleCloseModal}) => {
 };
 
 
-export const DeleteAttributeModal = ({ onClose, handleDeleteAttribute }) => {
+export const DeleteAttributeModal = ({ attribute, onClose, onDelete }) => {
     return (
         <DeleteConfirmModal>
             <ModalContent>
@@ -110,14 +110,15 @@ export const DeleteAttributeModal = ({ onClose, handleDeleteAttribute }) => {
                 <ModalBody>
                     <hr />
                     <ModalText>
-                        해당 속성과 관련 태그들이 모든 문제에서 삭제됩니다. 정말로 삭제하시겠습니까?
+                        <HighlightText>{attribute.name}</HighlightText> 속성과 관련 태그들이 모든 문제에서 삭제됩니다. 정말로 삭제하시겠습니까?
                     </ModalText>
-                    <ModalButton onClick={handleDeleteAttribute}>삭제하기</ModalButton>
+                    <ModalButton onClick={onDelete}>삭제하기</ModalButton>
                 </ModalBody>
             </ModalContent>
         </DeleteConfirmModal>
     );
 }
+
 
 
 

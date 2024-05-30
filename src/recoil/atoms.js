@@ -9,3 +9,8 @@ export const isVisibleState = atom({
     key: 'isVisibleState',
     default: false,
   });
+
+  export const hoverState = atom({
+    key: 'hoverState',
+    default: '',
+  });

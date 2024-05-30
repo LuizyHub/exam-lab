@@ -13,14 +13,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  margin-rigt: 30%;
 }
 
-#side-bar button {
+#side-bar>button {
+  display: flex;
+  padding: 0;
   background-color: transparent;
+  border: none;
   border-radius: 50px;
-  width: 25px;
-  height: 25px;
+  align-items: center;
+  justify-items: center;
   margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#side-bar>button:hover{
+  background-color: #BADEDE;
 }
 
 .examlab-image-right {

@@ -141,4 +141,3 @@ export const DeleteWorkBookModal = ({workbook, handleWorkBookDelete, handleClose
         </DeleteConfirmModal>
     );
 }
-

@@ -229,7 +229,6 @@ const handleCreateExam = () => {
                   }
                 </div>
               ))}
-
         </ButtonContainer>
       </div>
 

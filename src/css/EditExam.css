@@ -64,11 +64,18 @@
 .editor-exam .server-button {
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 15px;
 }
 
 .editor-exam .server-button button {
   background-color: transparent;
   border-style: none;
+  margin-right: 45px;
+}
+
+/* 마지막 버튼 스타일 */
+.editor-exam .server-button button:last-child {
+  margin-right: 0;
 }
 
 .editor-exam .editor {
@@ -129,14 +136,12 @@
   margin-bottom: 20px;
 }
 
-
 /* .editor {
   padding: 16px 24px;
   border: 1px solid #D6D6D6;
   border-radius: 4px;
   width: 600px;
 } */
-
 
 /* 
 .editor {
@@ -148,7 +153,6 @@
   align-self: flex-start;
 }
 */
-
 
 /* .editor { */
 /* align-items: center; */

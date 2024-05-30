@@ -1,6 +1,7 @@
 .editor-edit .server-button {
   display: flex;
   justify-content: flex-end;
+  margin-top: 20px;
 }
 
 .editor-edit .server-button button {
@@ -8,6 +9,12 @@
   padding: 0;
   border-style: none;
   margin-left: 10px;
+  margin-right: 45px;
+}
+
+/* 마지막 버튼 스타일 */
+.editor-edit .server-button button:last-child {
+  margin-right: 0;
 }
 
 /* .editor-edit {
@@ -19,3 +26,14 @@
   margin-bottom: 7px;
   padding: 10px;
 } 
+
+.block{
+  display: flex;
+  margin-right: 5px;
+}
+
+.block>span{
+  display: flex;
+  justify-content: flex-start;
+  width: 65px;
+}

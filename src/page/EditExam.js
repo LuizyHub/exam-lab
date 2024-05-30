@@ -9,9 +9,9 @@ import styled from 'styled-components';
 import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
-import AI_create_Icon from'../img/AI_create_icon.svg'
-import create_Icon from '../img/Create_icon.svg'
-import hidden_Icon from '../img/Hidden_icon.svg'
+import AI_create_Icon from'../img/AI_create_icon.svg';
+import create_Icon from '../img/Create_icon.svg';
+import hidden_Icon from '../img/Hidden_icon.svg';
 import SideBar from "../components/SideBar";
 
 // const EditExamPage = styled.div

@@ -98,30 +98,34 @@
   background-color: #F9F9FA;
 }
 
-.editor-exam .editor-exam-out-line #tags-container{
+#tags-container{
   display: flex;
-  margin-bottom: 0.6rem;
+  margin-top: 1.5rem;
+  /* margin-bottom: 0.6rem; */
 }
 
 
-.editor-exam .editor-exam-out-line #key-container {
+#key-container {
   width : 4vw;
 }
 
-.editor-exam .editor-exam-out-line #key-container>p {
+#key-container>p {
   margin: 0;
 }
 
-.editor-exam .editor-exam-out-line #value-container >button {
+#value-container >button {
   border: none;
   background-color: #FFFFFF;
   color: #9A9DA0;
   margin-left: 1rem;
   padding: 0.3rem 0.5rem 0.3rem 0.5rem;
 }
-
+#value-container >button:hover{
+  background-color: #D9F1F1;
+  color : #24ABA8
+}
 .editor-edit .editor-out-line {
-  padding: 16px 24px;
+  padding: 20px;
   border: 1px solid #D6D6D6;
   border-radius: 4px;
   width: 1098px;

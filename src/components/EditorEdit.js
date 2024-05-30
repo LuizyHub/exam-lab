@@ -115,6 +115,27 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
     <>
       <div className="editor-edit">
 
+      <div className='server-button'>
+         <button 
+            onClick={() => { handleStateChange(index) }}
+            style={{ display: isEditing[index] ? 'none' : 'flex' }} // 편집 모드 버튼 표시/숨기기
+          >
+            <img src={edit_Icon} alt="edit-Icon"/>
+          </button>
+          <button 
+            onClick={() => { handleEdit(index); console.log(object)}} 
+            style={{ display: isEditing[index] ? 'flex' : 'none' }} // 수정 버튼 표시/숨기기
+          >
+            <img src={save_Icon} alt="edit-Icon"/>
+          </button>
+
+          <button onClick={() => {
+            sendDeleteData(object.id);
+            handleEditDelete(index);
+          }}>
+            <img src={delete_Icon} alt="edit-Icon"/>
+          </button>
+        </div>
         {/* <div
           className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           ref={questionRef}
@@ -123,7 +144,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
         >
         </div> */}
         <div className="block">
-          <span>문제</span>
+          {/* <span>문제</span> */}
           <Editor
             className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`} 
             editorRef={questionRef}
@@ -136,7 +157,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
           <div
             className="block"
           >
-            <span>이미지</span>
+            {/* <span>이미지</span> */}
             {object.question_images_out.map((image, index) => (
               <img 
                key={index} 
@@ -150,7 +171,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
 
         {/* <EditorTool /> */}
         <div className="block">
-          <span>선택지</span>
+          {/* <span>선택지</span> */}
           <Editor
             className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
             editorRef={optionsRef}
@@ -160,7 +181,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
         </div>
         {/* <EditorTool /> */}
         <div className="block">
-          <span>정답</span>
+          {/* <span>정답</span> */}
           <Editor
             className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
             editorRef={answersRef}
@@ -171,7 +192,7 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
         </div>
 
         <div className="block">
-        <span>해설지</span>
+        {/* <span>해설지</span> */}
         <Editor
           className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           editorRef={commentaryRef}
@@ -205,27 +226,6 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
             ))}
         </div>
 
-        <div className='server-button'>
-         <button 
-            onClick={() => { handleStateChange(index) }}
-            style={{ display: isEditing[index] ? 'none' : 'flex' }} // 편집 모드 버튼 표시/숨기기
-          >
-            <img src={edit_Icon} alt="edit-Icon"/>
-          </button>
-          <button 
-            onClick={() => { handleEdit(index); console.log(object)}} 
-            style={{ display: isEditing[index] ? 'flex' : 'none' }} // 수정 버튼 표시/숨기기
-          >
-            <img src={save_Icon} alt="edit-Icon"/>
-          </button>
-
-          <button onClick={() => {
-            sendDeleteData(object.id);
-            handleEditDelete(index);
-          }}>
-            <img src={delete_Icon} alt="edit-Icon"/>
-          </button>
-        </div>
       </div>
     </>
   )

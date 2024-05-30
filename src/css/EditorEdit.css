@@ -1,7 +1,7 @@
 .editor-edit .server-button {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .editor-edit .server-button button {
@@ -26,14 +26,6 @@
   margin-bottom: 7px;
   padding: 10px;
 } 
-
-.block{
-  display: flex;
-  margin-right: 5px;
-}
-
-.block>span{
-  display: flex;
-  justify-content: flex-start;
-  width: 65px;
+.editor{
+  margin-bottom: 15px;
 }

@@ -179,7 +179,6 @@ export default function EditExam() {
           <div className="title">문제등록</div>
           <hr />
           {isExistingExam && <div>
-          
               {/* 기존문제 가져오기 */}
               {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
               <div>

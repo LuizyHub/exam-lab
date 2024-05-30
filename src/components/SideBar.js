@@ -92,7 +92,7 @@ const LogImg = styled.img`
 const CloseButtonContainer = styled.div`
     position: absolute;
     top: 40px;
-    right: 12px;
+    left: 20px;
 `;
 
 const CloseButton = styled.button`

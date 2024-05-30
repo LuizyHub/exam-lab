@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     height: 'auto',
     marginBottom: '15px',
   },
-  questionText : {
+  questionText: {
     marginBottom: '15px'
   },
   image: {
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   horizontalLine: {
     borderTop: '1.5px solid black', // 가로로 그어진 줄
-    marginTop:0,
+    marginTop: 0,
     marginBottom: 15
   },
   verticalLine: {
@@ -161,8 +161,73 @@ const styles = StyleSheet.create({
     marginTop: '65px',
     marginBottom: '10px',
     left: '50%', // 페이지의 가운데에 위치하도록 설정합니다.
+  },
+  tableContainer: {
+    display: 'table',
+    width: '100%',
+    fontFamily: 'NanumGothic-Regular',
+  },
+   tableContainer: {
+    display: 'table',
+    width: '100%',
+  },
+  tableRow: {
+    display: 'table-row',
+  },
+  tableCell: {
+    display: 'table-cell',
+    padding: '8px',
+    border: '1px solid #000',
+  },
+  tableHeaderText: {
+    fontWeight: 'bold',
+  },
+  tableCellLast: {
+    display: 'table-cell',
+    padding: '5px',
+    fontFamily: 'NanumGothic-Regular',
+  },
+  tableHeaderText: {
+    fontWeight: 'bold',
+    fontFamily: 'NanumGothic-Regular',
+  },
+  // 격자 형식의 테이블 스타일
+  gridContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row', // 가로로 출력
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+  },
+  gridItem: {
+    width: 'calc(20% - 20px)', // 패딩과 보더 등의 추가적인 공간을 고려하여 너비 조정
+    height: '50px', // 임의로 높이 설정
+    padding: '8px',
+    boxSizing: 'border-box',
+    marginLeft: '0px',
+    marginRight: '0px'
+  },
+  
+  gridContent: {
+    width: '100%',
+    height: '100%',
+    border: '1px solid #000',
+  },
+  gridHeaderText: {
+    fontWeight: 'bold',
+    fontFamily: 'NanumGothic-Regular', // 폰트 추가
+    fontSize: 12, // 폰트 크기 조정
+  },
+  answerText: {
+    fontFamily: 'NanumGothic-Regular', // 폰트 추가
+  },
+  pageContent : {
+    marginLeft: '15px',
+    marginRight: '15px',
   }
 });
+
 
 const PdfDocument = ({ pdfTitle, isQuestion, isCommentaryQuestion }) => {
   const PAGE_SIZE = 5; // 각 페이지에 출력할 문제 수
@@ -256,25 +321,45 @@ const PdfDocument = ({ pdfTitle, isQuestion, isCommentaryQuestion }) => {
           </Page> 
         ))
       ) : ( // 해설 페이지
-        <Page size="A4" style={[styles.page]} wrap>
+          <Page size="A4" style={[styles.page]} wrap>
             <Text style={styles.title}>{pdfTitle} 답안지</Text>
             <View style={styles.horizontalLine} />
-          {isQuestion.map((question, index) => (
-            <View key={index} style={styles.section}>
-              <View style={{ display: 'flex' }}>
-                <Text style={{ marginRight: '5px' }}><b>{index + 1}.</b></Text>
-                <View style={{ padding: '1px' }}>
-                  <View style={{ marginBottom: '10px' }}>
-                    <Text style={{ margin: '0px' }}>답 : {String.fromCharCode(9311 + parseInt(question.answers))}</Text>
-                  </View>
-                  <View>
-                    <Text style={{ margin: '0px' }}>해 : {question.commentary}</Text>
+
+            <View style={styled.pageContent}>
+            {/* 테이블 형식으로 답과 해설을 표시하는 부분 */}
+            <View style={styles.gridContainer}>
+              {isQuestion.map((question, index) => (
+                <View key={index} style={styles.gridItem}>
+                  {/* 문제 번호와 답 */}
+                  <View style={styles.gridContent}>
+                    <Text style={styles.gridHeaderText}>{index + 1}.</Text>
+                    <Text style={styles.answerText}> {String.fromCharCode(9311 + parseInt(question.answers))}</Text>
                   </View>
                 </View>
-              </View>
+              ))}
             </View>
-          ))}
+
+
+
+            <View style={styles.tableContainer}>
+              {isQuestion.map((question, index) => (
+                <View key={index} style={styles.tableRow}>
+
+                  
+                  {/* 해설 */}
+                  <View style={styles.tableCellLast}>
+                  <Text style={styles.tableHeaderText}> {index + 1}. </Text>
+                    <Text style={styles.tableHeaderText}>해설</Text>
+                    <Text>{question.commentary}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
         </Page>
+
+    
+    
       )}
     </Document>
   );

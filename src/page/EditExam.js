@@ -9,6 +9,9 @@ import styled from 'styled-components';
 import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
+import AI_create_Icon from'../img/AI_create_icon.svg'
+import create_Icon from '../img/Create_icon.svg'
+import hidden_Icon from '../img/Hidden_icon.svg'
 import SideBar from "../components/SideBar";
 
 // const EditExamPage = styled.div
@@ -37,10 +40,6 @@ const EditExamPage = styled.div
   ;
 
 export default function EditExam() {
-
-  //로그인 리모컨
-  const { handleAutoLogin, handleLogout, handleLoginState } = useLoginController();
-
   const location = useLocation();
   // 선택된 시험의 examId와 examTitle을 받아, AttributeManager 컴포넌트에게 props로 전달
   const [examTitle, setExamTitle] = useState('');
@@ -59,10 +58,9 @@ export default function EditExam() {
       const { examId, examTitle } = location.state;
       setExamId(examId);
       setExamTitle(examTitle);
-      // console.log("Location:", location);
-      // console.log("Exam ID:", examId);
-      // console.log("Exam Title:", examTitle);
-
+      console.log("Location:", location);
+      console.log("Exam ID:", examId);
+      console.log("Exam Title:", examTitle);
     }
   }, [location]);
 
@@ -162,35 +160,40 @@ export default function EditExam() {
           <button onClick={() => {
             handleExamCreate();
             console.log(examId);
-          }}>+</button>
-          <button onClick={() => setModalOpen(true)}>+AI</button>
-          <button onClick={toggleExamVisibility}>숨기기</button>
+          }}>
+            <img src={create_Icon} alt="Create" />
+          </button>
+          <button onClick={() => setModalOpen(true)}>
+            <img src={AI_create_Icon} alt="AI Create" />
+          </button>
+          <button onClick={toggleExamVisibility}>
+            <img src={hidden_Icon} alt="Hide" />  
+          </button>
         </div>
 
         <SideBar />
         <NavigationBar />
         <div></div>
-        <AttributeManager examId={examId}></AttributeManager>
-
-        
+        <AttributeManager examId={examId} setExamId={setExamId} ></AttributeManager>
         <div className="editor-edit">
-          <hr />
           <div className="title">문제등록</div>
-          {/* 기존문제 가져오기 */}
-          {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
-          {isExistingExam &&(
-            <div className="existing-exam">
-              {isObject.map((object, index) => (
-                <div
-                  key={index}
-                  className="editor-out-line"
-                >
-                  <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} />
-                </div>
-              ))}
+          <hr />
+          {isExistingExam && <div>
+          
+              {/* 기존문제 가져오기 */}
+              {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
+              <div>
+                {isObject.map((object, index) => (
+                  <div
+                    key={index}
+                    className="editor-out-line"
+                  >
+                    <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
-
+          }
           {/* 문제 템플릿 추가하기 */}
           <div className="editor-exam">
             {isExamCreate.map((component, index) => (
@@ -199,9 +202,9 @@ export default function EditExam() {
               </div>
             ))}
           </div>
-          <div className="editor-out-line">
-            <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} />
-          </div>
+          {/* <div className="editor-out-line"> */}
+            <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} isTag={isTag} />
+          {/* </div> */}
         </div>
       </div>
     </EditExamPage>

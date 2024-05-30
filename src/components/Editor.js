@@ -15,7 +15,7 @@ export const Editor = ({ className = 'editor', editorRef, contentEditable, onInp
       onPaste={onPaste}
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
-      style={style}
+      // style={style}
       dangerouslySetInnerHTML={dangerouslySetInnerHTML}
     />
   );

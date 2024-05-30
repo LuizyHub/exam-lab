@@ -9,9 +9,9 @@ import styled from 'styled-components';
 import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
-import AI_create_Icon from'../img/AI_create_icon.svg'
-import create_Icon from '../img/Create_icon.svg'
-import hidden_Icon from '../img/Hidden_icon.svg'
+import AI_create_Icon from'../img/AI_create_icon.svg';
+import create_Icon from '../img/Create_icon.svg';
+import hidden_Icon from '../img/Hidden_icon.svg';
 import SideBar from "../components/SideBar";
 
 // const EditExamPage = styled.div
@@ -179,7 +179,6 @@ export default function EditExam() {
           <div className="title">문제등록</div>
           <hr />
           {isExistingExam && <div>
-          
               {/* 기존문제 가져오기 */}
               {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
               <div>

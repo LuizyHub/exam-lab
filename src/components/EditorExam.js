@@ -7,6 +7,9 @@ import EditorTool from '../components/EditorTool';
 import { handleOnInput, handleDragOver, handleCopy, handleCut, handlePaste, handleKeyDown, handleKeyUp } from '../function/eventHandle';
 import { Editor } from './Editor';
 import { sendPostData, sendDeleteData, sendPutData } from '../function/axiosData';
+import delete_Icon from "../img/delete_Icon.svg";
+import edit_Icon from "../img/edit_Icon.svg";
+import save_Icon from "../img/save_Icon.svg";
 
 export default function
   EditorExam({ examId, handleExamDelete, isTag }) {
@@ -90,6 +93,39 @@ export default function
       <div className='questionArea'>
         <div>
         
+      <div className='server-button'>
+        <button type='submit' onClick={() => {
+          sendPostData(examId, isUrlIn, isUrlOut, isUrlOutDes, isData.question, isData.options, isCommentAnswers, isCommentary,isSelectedTags)
+            .then((id) => {
+              console.log(id)
+              console.log(typeof (id))
+              UUID = id;
+            });
+          console.log('Selected Tags:', isSelectedTags);
+        }}>
+        <img src={save_Icon} alt='save_icon'/>
+        </button>
+
+        <button onClick={() => {
+          sendDeleteData(UUID);
+          handleExamDelete(examId);
+        }}>
+          <img src={delete_Icon} alt='delete_Icon'></img></button>
+
+        <button onClick={() => {
+          sendPutData(UUID, isData.question, isData.options, isCommentAnswers, isCommentary);
+        }}>
+          <img src={edit_Icon} alt='edit_Icon'></img></button>
+          {/* 
+            <button onClick={() => {
+              console.log("test");
+              handleCommentHide();
+            }}>답안</button> */}
+
+      </div>
+
+        {/*------------------ 버튼 영역---------------------- */}
+
           <EditorTool
             editorRef={editorRef1}
             contentType={'문제'}
@@ -301,6 +337,7 @@ export default function
       </div>
       {/* -------------------------아래부터 답안 등록 -------------- */}
       <div id='CommentaryArea' style={{ display: isCommentHide ? 'none' : 'block' }} >
+
         <EditorTool
           editorRef={editorRef4}
           contentType={'정답'}
@@ -405,35 +442,6 @@ export default function
               </div>
             </div>
           ))}
-      </div>
-
-      {/*------------------ 버튼 영역---------------------- */}
-
-      <div className='server-button'>
-        <button type='submit' onClick={() => {
-          sendPostData(examId, isUrlIn, isUrlOut, isUrlOutDes, isData.question, isData.options, isCommentAnswers, isCommentary,isSelectedTags)
-            .then((id) => {
-              console.log(id)
-              console.log(typeof (id))
-              UUID = id;
-            });
-          console.log('Selected Tags:', isSelectedTags);
-        }}>생성</button>
-
-        <button onClick={() => {
-          sendDeleteData(UUID);
-          handleExamDelete(examId);
-        }}>삭제</button>
-
-        <button onClick={() => {
-          sendPutData(UUID, isData.question, isData.options, isCommentAnswers, isCommentary);
-        }}>수정</button>
-
-        <button onClick={() => {
-          console.log("test");
-          handleCommentHide();
-        }}>답안</button>
-
       </div>
     </div>
   );

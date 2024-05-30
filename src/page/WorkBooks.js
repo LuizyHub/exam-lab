@@ -141,6 +141,17 @@ const DeleteImg = styled.img`
     width: 20px;
 `;
 
+const NoneContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const NoneExam = styled.p`
+  color: #6D6D6D;
+  font-size: 18px;
+`;
+
 export default function WorkBooks() {
 
     const navigate = useNavigate();
@@ -227,26 +238,31 @@ export default function WorkBooks() {
                 </div>
 
                 <PageName> 제작한 시험지 </PageName>
-                <WorkBooksContent>
-                {/* <WorkBookCreateButton onClick={() => {navigate('/exams/create')}}> 
-                    <CreateImg src="/img/추가하기.png" alt="Create Icon" />
-                </WorkBookCreateButton> */}
-
-               {workbooks && workbooks.map(workbook => (
-                <ButtonContainer key={workbook.id}>
-                    <WorkBookButton onClick={() => handleWorkBookClick(workbook.id)}>
-                        <WorkBookTitle>{workbook.title}</WorkBookTitle>
-                        <StyledParagraph> {workbook.updated_date}</StyledParagraph>
-                        <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(workbook.id); }} />
-                    </WorkBookButton>
-                    {modalStates[workbook.id] && (
-                        <DeleteWorkBookModal workbook={workbook} handleWorkBookDelete={handleWorkBookDelete} handleCloseModal={handleCloseModal} />
+                 {workbooks.length === 0 ? (
+                        <NoneContent>
+                            <NoneExam> 제작한 시험지가 없습니다</NoneExam>
+                        </NoneContent>
+                    ) : (
+                        <WorkBooksContent>
+                            {/* <WorkBookCreateButton onClick={() => {navigate('/exams/create')}}> 
+                                <CreateImg src="/img/추가하기.png" alt="Create Icon" />
+                                </ WorkBookCreateButton> */}
+                            {workbooks.map(workbook => (
+                                <ButtonContainer key={workbook.id}>
+                                    <WorkBookButton onClick={() => handleWorkBookClick(workbook.id)}>
+                                        <WorkBookTitle>{workbook.title}</WorkBookTitle>
+                                        <StyledParagraph> {workbook.updated_date}</StyledParagraph>
+                                        <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(workbook.id); }} />
+                                    </WorkBookButton>
+                                    {modalStates[workbook.id] && (
+                                        <DeleteWorkBookModal workbook={workbook} handleWorkBookDelete={handleWorkBookDelete} handleCloseModal={handleCloseModal} />
+                                    )}
+                                </ButtonContainer>
+                            ))}
+                        </WorkBooksContent>
                     )}
-                </ButtonContainer>
-            ))}
 
 
-            </WorkBooksContent>
             </Content>
 
             <SideBar />

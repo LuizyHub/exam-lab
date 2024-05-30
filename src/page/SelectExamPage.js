@@ -115,9 +115,6 @@ const DeleteImg = styled.img`
     width: 20px;
 `;
 
-const NoneContent = styled.div`
-
-`;
 
 const NoneExam = styled.p`
   color: #6D6D6D;
@@ -212,18 +209,10 @@ const handleCreateExam = () => {
         </div>
         <PageName>등록된 문제</PageName>
         <ButtonContainer>
-          <div>
+
             <ExamCreateButton onClick={() => handleCreateExam()}>
               <CreateImg src="/img/추가하기.png" alt="Create Icon" />
             </ExamCreateButton>
-          </div>
-          {exams.length === 0 ? (
-              // <NoneContent>
-              //   <NoneExam>등록된 나만의 문제가 없습니다</NoneExam>
-              // </NoneContent>
-              <p>등록문제없음</p>
-          ) : (
-            <div>
               {exams.map(exam => (
                 <div key={exam.exam_id}>
                   <ExamButton onClick={() => handleExamTypeClick(exam.exam_id, exam.exam_title)}>
@@ -240,8 +229,6 @@ const handleCreateExam = () => {
                   }
                 </div>
               ))}
-            </div>
-          )}
         </ButtonContainer>
       </div>
 

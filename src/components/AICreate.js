@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { AIModal } from '../modals/AIModal';
+import { AIConfirmModal, AIModal } from '../modals/AIModal';
 import styled from 'styled-components';
 import EditorEdit from './EditorEdit';
 
@@ -11,8 +11,10 @@ export default function AICreate({ examId, modalOpen, setModalOpen, isTag }) {
     const [fileName, setFileName] = useState(""); // 파일 이름 상태 추가
     const fileInputRef = useRef(null);
     const [loading, setLoading] = useState(false); // 로딩 상태 추가
-
     const [isObject, setObject] = useState([]);//AI getObject가져오기
+
+    const [showConfirmModal, setShowConfirmModal] = useState(false); // AI문제 보여주는 모달창
+    const [isfailModal, setIsfailModal] = useState(false);
 
     useEffect(() => {
         if (examId) {
@@ -47,7 +49,9 @@ export default function AICreate({ examId, modalOpen, setModalOpen, isTag }) {
                     setFileName(file.name);
                 } catch (error) {
                     console.error('파일 업로드 실패:', error);
-                    alert('파일 업로드에 실패했습니다.');
+                    // console.log(error.response.data.message);
+                    // alert(error.response.data.message);
+                    
                 } finally {
                     setLoading(false);
                 }
@@ -70,7 +74,6 @@ export default function AICreate({ examId, modalOpen, setModalOpen, isTag }) {
             setFileName("");
         } catch (error) {
             console.error('파일 삭제 실패:', error);
-            alert('파일 삭제에 실패했습니다.');
         } finally {
             setLoading(false);
         }
@@ -85,9 +88,10 @@ export default function AICreate({ examId, modalOpen, setModalOpen, isTag }) {
             const object = aiResponse.data;
             setObject(object.questions);
             console.log(object);
+            setShowConfirmModal(true);
+            setModalOpen(false);
         } catch (error) {
             console.error('문제 생성 실패:', error);
-            alert('문제 생성에 실패했습니다.');
         } finally {
             setLoading(false);
         }
@@ -107,10 +111,12 @@ export default function AICreate({ examId, modalOpen, setModalOpen, isTag }) {
                     handleCreateAIQButtonClick={handleCreateAIQButtonClick}
                     loading={loading}
                     setModalOpen={setModalOpen}
+                    isfailModal={setIsfailModal}
+                    setIsfailModal={setIsfailModal}
                     fileInputRef={fileInputRef}
                 />
             }
-            {/* <button onClick={() => setModalOpen(true)}>AI로 문제 생성하기</button> */}
+
             {isObject.map((object, index) => (
                 <div
                   key={index}
@@ -119,6 +125,9 @@ export default function AICreate({ examId, modalOpen, setModalOpen, isTag }) {
                     <EditorEdit key={index} object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
                 </div>
             ))}
+            
+
+            {isObject && showConfirmModal && <AIConfirmModal AIObject={isObject} setShowConfirmModal={setShowConfirmModal} />}
         </div>
     );
 }

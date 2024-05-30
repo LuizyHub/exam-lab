@@ -45,7 +45,7 @@ const UserContainer = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 12px 15px;
+    padding: 12px 17px;
     margin-left: 0px;
     margin-bottom: 10px;
     position: absolute;
@@ -114,10 +114,6 @@ const NavItem = styled.button`
   width: 100%;
   transition: height 0.3s ease;
   background-color: ${({ $isHovered }) => ($isHovered ? '#ECF7F7' : 'transparent')};
-  &:active,
-  &:focus {
-    background-color: #ECF7F7;
-  }
 `;
 
 const NavLink = styled(Link)`
@@ -214,7 +210,6 @@ export default function SideBar() {
                         <NavItem
                             $isHovered={hoveredNavItem === 'create'}
                             onMouseEnter={() => setHoveredNavItem('create')}
-                            onMouseLeave={() => setHoveredNavItem('')}
                         >
                             <NavIcon src="/img/시험지제작소.svg" alt="icon Image" $isSidebarOpen={isVisible} />
                         </NavItem>
@@ -223,7 +218,6 @@ export default function SideBar() {
                     <NavItem
                         $isHovered={hoveredNavItem === 'manage'}
                         onMouseEnter={() => setHoveredNavItem('manage')}
-                        onMouseLeave={() => setHoveredNavItem('')}
                         onClick={() => handleNavigate('/exams')}
                     >
                         <NavIcon src="/img/문제관리소.svg" alt="icon Image" $isSidebarOpen={isVisible} $primary="true" />
@@ -232,7 +226,6 @@ export default function SideBar() {
                     <NavItem
                         $isHovered={hoveredNavItem === 'store'}
                         onMouseEnter={() => setHoveredNavItem('store')}
-                        onMouseLeave={() => setHoveredNavItem('')}
                         onClick={() => handleNavigate('/workbooks')}
                     >
                         <NavIcon src="/img/시험지저장소.svg" alt="icon Image" $isSidebarOpen={isVisible} />
@@ -263,5 +256,4 @@ export default function SideBar() {
             </NavigationBarContent>
         </NavigationContainer>
     );
-
 }

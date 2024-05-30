@@ -10,6 +10,8 @@ import '../css/labexam.css';
 import axios from "axios";
 import Exam from "../components/Exam";
 import SideBar from "../components/SideBar";
+import shuffle_Icon from "../img/shuffle_icon.svg"
+
 
 const LabExamContainer = styled.div`
 `;
@@ -125,13 +127,13 @@ const styles = StyleSheet.create({
   buttonPdf: {
     textDecoration: 'none',
     color: '#24ABA8',
-    fontSize: '16px',
+    fontSize: '14px',
     fontWeight: 'bold',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    height: '100%',
+    width: '123px',
+    height: '39px',
   },
 });
 
@@ -378,10 +380,15 @@ export default function LabExam() {
                 <input className="title" placeholder="시험지 이름 입력" value={isWorkBook.title} onChange={handleInputChange} />
                 <div id="button-pdf">
                   <PDFDownloadLink document={<PdfDocument  pdfTitle={isWorkBook.title} isQuestion={isQuestion} isCommentary={isCommentary} isCommentaryQuestion={isCommentaryQuestion} />} fileName={`${isWorkBook.title}.pdf`}  style={styles.buttonPdf}>
-                    {({ loading }) => (loading ? 'Loading...' : 'PDF 다운')}
+                    {/* 수정 */}
+                    {({ loading }) => (
+                      <span id="button">
+                      {loading ? 'Loading...' : 'PDF 다운'}
+                    </span>
+                    )}
                   </PDFDownloadLink>
                 </div>
-                <button onClick={postData} style={{ display: isWorkBook.title === undefined ? 'block' : 'none' }}>저장하기</button>
+                <button id="button-save" onClick={postData} style={{ display: isWorkBook.title === undefined ? 'block' : 'none', width: '123px', height: '39px' }}>저장하기</button>
               </div>
             </div>
             <div className="button-bottom-container">
@@ -390,6 +397,7 @@ export default function LabExam() {
                 <button onClick={handleCommentary} style={{ textDecoration: isCommentary ? 'underline' : 'none' }}>해설지</button>
               </div>
               <div className="button-bottom-sub">
+                <img src={shuffle_Icon} alt="shuffle_Icon"></img>
                 <button id="button-shuffle" onClick={() => handleShuffle(isQuestion, setIsQuestion)}>문제 셔플</button>
                 {/* <button>1쪽</button>
                 <button style={{ marginLeft: '1%' }}>2쪽</button> */}

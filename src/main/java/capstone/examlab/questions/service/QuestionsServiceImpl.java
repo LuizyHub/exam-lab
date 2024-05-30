@@ -39,11 +39,16 @@ public class QuestionsServiceImpl implements QuestionsService {
     //AI 문제 Create 로직
     public QuestionsListDto addAIQuestionsByExamId(Long examId, List<QuestionUpdateDto> questionsUpdateListDto) {
         List<QuestionDto> questionsList = new ArrayList<>();
+        List<Question> questions = new ArrayList<>();
+        List<Question> returnQuestions;
         for (QuestionUpdateDto questionUpdateDto : questionsUpdateListDto) {
             String questionType = "객관식";
             Question question = questionUpdateDto.toDocument(examId, questionType);
-            question = questionsRepository.save(question);
-            questionsList.add(QuestionDto.fromDocument(question));
+            questions.add(question);
+        }
+        returnQuestions = (List<Question>) questionsRepository.saveAll(questions);
+        for (Question returnQuestion : returnQuestions) {
+            questionsList.add(QuestionDto.fromDocument(returnQuestion));
         }
         return new QuestionsListDto(questionsList);
     }

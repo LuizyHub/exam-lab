@@ -324,55 +324,20 @@ export default function EditExam() {
                   </div>
                 </div>
               }
-              {/* 문제 템플릿 추가하기 */}
-              <div className="editor-exam">
-                {isExamCreate.map((component, index) => (
-                  <div className="editor-exam-out-line" key={index}>
-                    {component}
-  <EditExamPage>
-      <div className="edit-exam">
-
-        <div id="side-bar">
-          <button onClick={() => {
-            handleExamCreate();
-            console.log(examId);
-          }}>
-            <img src={create_Icon} alt="Create" />
-          </button>
-          <button onClick={() => setModalOpen(true)}>
-            <img src={AI_create_Icon} alt="AI Create" />
-          </button>
-          <button onClick={toggleExamVisibility}>
-            <img src={hidden_Icon} alt="Hide" />  
-          </button>
-        </div>
-
-        <SideBar />
-        <NavigationBar />
-        <div></div>
-        <AttributeManager examId={examId} setExamId={setExamId} ></AttributeManager>
-        <div className="editor-edit">
-          <div className="title">문제등록</div>
-          <hr />
-          {isExistingExam && <div>
-              {/* 기존문제 가져오기 */}
-              {/* isObject의 상태에 따라 EditorEdit 컴포넌트를 렌더링 */}
-              <div>
-                {isObject.map((object, index) => (
-                  <div
-                    key={index}
-                    className="editor-out-line"
-                  >
-                    <EditorEdit object={object} index={index} isObject={isObject} handleEditDelete={handleEditDelete} isTag={isTag} />
-                  </div>
-                ))}
+                 {/* 문제 템플릿 추가하기 */}
+          <div className="editor-exam">
+            {isExamCreate.map((component, index) => (
+              <div className="editor-exam-out-line" key={index}>
+                {component}
               </div>
-              {/* <div className="editor-out-line"> */}
-                <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} isTag={isTag} />
-              {/* </div> */}
-            </div>
+            ))}
           </div>
-        </EditExamPage>
+          {/* <div className="editor-out-line"> */}
+            <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} isTag={isTag} />
+          {/* </div> */}
+        </div>
+      </div>
+    </EditExamPage>
     </div>
   )
 }

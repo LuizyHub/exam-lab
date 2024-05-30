@@ -9,6 +9,9 @@ import styled from 'styled-components';
 import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
+import AI_create_Icon from'../img/AI_create_icon.svg'
+import create_Icon from '../img/Create_icon.svg'
+import hidden_Icon from '../img/Hidden_icon.svg'
 
 // 모든 모니터에 맞출 수 있게 코드 수정  
 const EditExamPage = styled.div
@@ -145,9 +148,15 @@ export default function EditExam() {
           <button onClick={() => {
             handleExamCreate();
             console.log(examId);
-          }}>+</button>
-          <button onClick={() => setModalOpen(true)}>+AI</button>
-          <button onClick={toggleExamVisibility}>숨기기</button>
+          }}>
+            <img src={create_Icon} alt="Create" />
+          </button>
+          <button onClick={() => setModalOpen(true)}>
+            <img src={AI_create_Icon} alt="AI Create" />
+          </button>
+          <button onClick={toggleExamVisibility}>
+            <img src={hidden_Icon} alt="Hide" />  
+          </button>
         </div>
 
         <NavigationBar />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavigationBar from '../components/NavigationBar';
 import axios from "axios";
+import SideBar from "../components/SideBar";
 import Bottom from "../components/Bottom";
 import {DeleteWorkBookModal} from '../modals/DeleteModal';
 import styled from 'styled-components';
@@ -13,7 +14,6 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-
   margin-bottom: 600px;
   flex-direction: column;
   margin-left: 320px;
@@ -25,7 +25,6 @@ const WorkBooksContent = styled.div`
     display: flex;
     flex-wrap: wrap; 
 `;
-
 
 
 const PageContent = styled.div`
@@ -44,22 +43,12 @@ const PageIcon = styled.img`
   margin-right: 5px;
 `;
 
-const PageIcon = styled.img`
-  width: 50px;
-  height: 65px;
-  background-color: #D9F1F1;
-  padding: 10px 10px;
-  border-radius: 10px;
-  margin-top: 15px;
-  margin-right: 25px;
-`;
-
 const PageTitle = styled.h1`
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 0px;
     width: 300px;
-
+  
 `;
 
 const PageIntro = styled.p`
@@ -98,6 +87,7 @@ const WorkBookButton = styled.button`
     width: 375px;
     height: 91px;
     position: relative;
+    cursor: pointer;
     &:hover {
         background-color: #D9F1F1;
         border: 1px solid #BADEDE;
@@ -258,6 +248,8 @@ export default function WorkBooks() {
 
             </WorkBooksContent>
             </Content>
+
+            <SideBar />
             <NavigationBar />
             <footer>
                 <Bottom />

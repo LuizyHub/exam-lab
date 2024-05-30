@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import MainIntroExam from '../components/MainIntroExam';
 import MainIntroQuestion from '../components/MainIntroQuestion';
 import NavigationBar from '../components/NavigationBar';
+import SideBar from '../components/SideBar';
 import Bottom from '../components/Bottom';
 import styled, { StyleSheetManager } from 'styled-components';
 
@@ -244,7 +245,7 @@ export default function MainPage() {
                         </MoveContent>
                     </div>
                 }
-
+                <SideBar />
                 <NavigationBar />
             </MainContainer>
             <footer>

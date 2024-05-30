@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
+import SideBar from "../components/SideBar";
 
 // const EditExamPage = styled.div
 //   `
@@ -26,7 +27,7 @@ const EditExamPage = styled.div
   `
     display: flex;
     flex-direction: column;
-    margin-left: 320px;
+    margin-left: 270px;
     margin-right: 18%;
     margin-top: 16px;
     transition: margin-left 0.3s ease;
@@ -166,9 +167,10 @@ export default function EditExam() {
           <button onClick={toggleExamVisibility}>숨기기</button>
         </div>
 
+        <SideBar />
         <NavigationBar />
         <div></div>
-        <AttributeManager examId={examId} setExamId={setExamId}></AttributeManager>
+        <AttributeManager examId={examId}></AttributeManager>
 
         
         <div className="editor-edit">

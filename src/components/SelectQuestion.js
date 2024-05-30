@@ -123,6 +123,7 @@ const SearchImg = styled.img`
     top: 22px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    cursor: pointer;
     &:hover {
         border-color: #5BB6B4; 
       }
@@ -162,9 +163,11 @@ const CountInput = styled.input`
   font-size:15px;
   font-weight: 500;
   &:focus {
-    background-color: #C6E7E7;
-    border-color: #5BB6B4; 
+    outline: none;
+    border-color: #5BB6B4;
+  }
 `;
+
 
 
 
@@ -304,6 +307,9 @@ export default function SelectQuestion() {
             console.log(response.data.questions);
         } catch (error) {
             if (error.response && error.response.status === 404) { // 404 에러 처리 
+                setShowNoneQuestion(true);
+                    
+            } if (error.response && error.response.status === 400) { // 400 에러 처리 
                 setShowNoneQuestion(true);
                     
             } else {

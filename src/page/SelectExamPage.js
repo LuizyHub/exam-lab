@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import SideBar from "../components/SideBar";
 import NavigationBar from '../components/NavigationBar';
 import Bottom from "../components/Bottom";
 import { DeleteExamModal }from '../modals/DeleteModal';
@@ -77,6 +78,7 @@ const ExamButton = styled.button`
     width: 375px;
     height: 91px;
     position: relative;
+    cursor: pointer;
     &:hover {
       background-color: #D9F1F1;
       border: 1px solid #BADEDE;
@@ -91,6 +93,7 @@ const ExamCreateButton = styled(ExamButton)`
     display: flex; 
     justify-content: center; 
     align-items: center;
+    cursor: pointer;
     &:hover {
       background-color: #D9F1F1;
     }
@@ -112,9 +115,19 @@ const DeleteImg = styled.img`
     width: 20px;
 `;
 
+const NoneContent = styled.div`
+
+`;
+
+const NoneExam = styled.p`
+  color: #6D6D6D;
+  font-size: 18px;
+`;
+
 export default function SelectExamPage() {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
+  const [createdExamId, setCreatedExamId] = useState(null); 
   const [modalStates, setModalStates] = useState({}); // 시험별 모달 상태
 
 
@@ -132,6 +145,26 @@ export default function SelectExamPage() {
         console.error(error);
       });
   }, []);
+
+// 시험 생성
+const handleCreateExam = () => {
+  const data = {
+    exam_title: "시험지 제목",
+    tags: {"난이도": ["상", "중", "하"]}
+  };
+
+  axios.post('/api/v1/exams', data)
+    .then(response => {
+      console.log('success', response.data);
+      console.log('success', response.data.message);
+      setCreatedExamId(response.data.message);
+      navigate('/edit', { state: { createdExamId: response.data.message } });
+    })
+    .catch(error => {
+      console.error('error', error);
+    });
+}
+  
 
   // 시험 종류 선택
   const handleExamTypeClick = (examId, examTitle) => {
@@ -169,48 +202,58 @@ export default function SelectExamPage() {
     <Container>
       <Content>
     <SelectExam>
-        <div>
+      <div>
         <div style={{ display: "flex" }}>
-            <PageIcon src="/img/문제관리소.svg" alt="page Icon" />
-            <div>
-              <PageTitle>문제 관리소</PageTitle>
-              <PageIntro>문제를 새롭게 등록해보세요</PageIntro>
-            </div>
+          <PageIcon src="/img/문제관리소.svg" alt="page Icon" />
+          <div>
+            <PageTitle>문제 관리소</PageTitle>
+            <PageIntro>문제를 새롭게 등록해보세요</PageIntro>
           </div>
-          <PageName>등록된 문제</PageName>
+        </div>
+        <PageName>등록된 문제</PageName>
         <ButtonContainer>
           <div>
-            <ExamCreateButton onClick={() => {navigate('/edit')}}> 
+            <ExamCreateButton onClick={() => handleCreateExam()}>
               <CreateImg src="/img/추가하기.png" alt="Create Icon" />
             </ExamCreateButton>
           </div>
-          {exams.map(exam => (
-            <div key={exam.exam_id}>
-              <ExamButton onClick={() => handleExamTypeClick(exam.exam_id, exam.exam_title)}>
-                  <p style={{ fontSize: '18px', marginTop: '0px', marginBottom: '0px', fontWeight: 'bold', color: '#262626' }}>{exam.exam_title} </p>
-                  <p style={{ fontSize: '16px', marginTop: '6px', marginBottom: '0px', color: '#3E3F41' }}> {exam.size}문제 </p>
-                <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(exam.exam_id); }} />
-              </ExamButton>  
-
-              {modalStates[exam.exam_id] && 
-                <DeleteExamModal 
-                  exam={exam} 
-                  handleExamDelete={handleExamDelete}  
-                  handleCloseModal={handleCloseModal}  
-                />
-              }
+          {exams.length === 0 ? (
+              // <NoneContent>
+              //   <NoneExam>등록된 나만의 문제가 없습니다</NoneExam>
+              // </NoneContent>
+              <p>등록문제없음</p>
+          ) : (
+            <div>
+              {exams.map(exam => (
+                <div key={exam.exam_id}>
+                  <ExamButton onClick={() => handleExamTypeClick(exam.exam_id, exam.exam_title)}>
+                    <p style={{ fontSize: '18px', marginTop: '0px', marginBottom: '0px', fontWeight: 'bold', color: '#262626' }}>{exam.exam_title}</p>
+                    <p style={{ fontSize: '16px', marginTop: '6px', marginBottom: '0px', color: '#3E3F41' }}>{exam.size}문제</p>
+                    <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" onClick={(e) => { e.stopPropagation(); handleOpenModal(exam.exam_id); }} />
+                  </ExamButton>
+                  {modalStates[exam.exam_id] && 
+                    <DeleteExamModal 
+                      exam={exam} 
+                      handleExamDelete={handleExamDelete}  
+                      handleCloseModal={handleCloseModal}  
+                    />
+                  }
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </ButtonContainer>
       </div>
+
 
       </SelectExam>
       </Content>
 
+      <SideBar />
       <NavigationBar />
       <footer>
           <Bottom />
-      </footer> {/* Bottom 컴포넌트 추가 */}
+      </footer>
     </Container>
   );
 }

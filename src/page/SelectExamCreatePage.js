@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import SideBar from "../components/SideBar";
 import NavigationBar from '../components/NavigationBar';
 import LoginModal from "../modals/LoginModal";
 import styled from "styled-components";
@@ -95,16 +96,17 @@ const StepIntro = styled.p`
 `;
 
 const ExamTypeButton = styled.button`
-  border: none;
-  color: ${({ $selected }) => ($selected ? '#262626' : '#9A9DA0')};
-  background-color: #fff;
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 108px;
-  margin-bottom: 20px;
-  margin-right: 20px;
-  border-bottom: ${({ $selected }) => ($selected ? '2.5px solid #000' : 'none')};
-  padding-bottom: 5px;
+    border: none;
+    color: ${({ $selected }) => ($selected ? '#262626' : '#9A9DA0')};
+    background-color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 108px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    border-bottom: ${({ $selected }) => ($selected ? '2.5px solid #000' : 'none')};
+    padding-bottom: 5px;
+    cursor: pointer;
 `;
 
 const ExamButton = styled.button`
@@ -120,6 +122,7 @@ const ExamButton = styled.button`
   text-align: left;
   width: 375px;
   height: 91px;
+  cursor: pointer;
   &:hover {
     background-color: #ECF7F7;
   }
@@ -233,6 +236,7 @@ export default function SelectExamCreatePage() {
         </SelectExam>
       </Content>
 
+      <SideBar />
       <NavigationBar />
       {showModal && <LoginModal onClose={() => setShowModal(false)} />}
       <footer>

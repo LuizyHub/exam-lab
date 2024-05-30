@@ -26,11 +26,12 @@ const BottomTextContent = styled.div`
     margin-left: 30px;
 `;
 
-const BottomText = styled.p`
+const BottomText = styled.div`
     margin-top: 0;
     margin-bottom: 8px;
     display: flex;
 `;
+
 
 const Logo = styled.img`
     width: 150px;

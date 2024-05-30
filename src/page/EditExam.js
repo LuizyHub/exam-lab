@@ -38,21 +38,21 @@ const EditExamPage = styled.div
 `
   ;
   const PageIntroContainer = styled.div`
-  top:0;
-  width: 100%;
-  height: 120px;
-  background-color: #EEF0FC;
+    top:0px;
+    width: 100%;
+    height: 120px;
+    background-color: #EEF0FC;
 `;
 
 const PageIntroContent = styled.div`
   margin-left: 320px;
-  margin-top: 16px;
+  margin-top: 0px;
 `;
 
 
 const StepsContainer = styled.div`
     display: flex;
-    margin-top: 40px;
+    margin-top: 0px;
 `;
 
 const StepBy = styled.div`
@@ -93,7 +93,11 @@ const StepTitle = styled.p`
     margin-bottom: 10px;
 `;
 
-
+const ContentTitle = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 40px;
+`;
 
 const PageName = styled.p`
   color: #262626;
@@ -130,8 +134,8 @@ const ExamButton = styled.button`
 export default function EditExam() {
   const location = useLocation();
   // 선택된 시험의 examId와 examTitle을 받아, AttributeManager 컴포넌트에게 props로 전달
-  const [examTitle, setExamTitle] = useState('');
-  const [examId, setExamId] = useState('');
+  // const [examTitle, setExamTitle] = useState('');
+  // const [examId, setExamId] = useState('');
   const [isObject, setObject] = useState([]); //EditorEdit List
   const [isTag, setTag] = useState([]);
   const [isExistingExam, setExistingExam] = useState(true);
@@ -140,17 +144,20 @@ export default function EditExam() {
   const [isDeleteIndex, setDeleteIndex] = useState();
   const [modalOpen, setModalOpen] = useState(false);
 
-  useEffect(() => {
-    // location.state가 정의되어 있을 때만 examId와 examTitle을 설정합니다.
-    if (location && location.state) {
-      const { examId, examTitle } = location.state;
-      setExamId(examId);
-      setExamTitle(examTitle);
-      console.log("Location:", location);
-      console.log("Exam ID:", examId);
-      console.log("Exam Title:", examTitle);
-    }
-  }, [location]);
+
+  const { examId, examTitle } = location.state;
+
+  // useEffect(() => {
+  //   // location.state가 정의되어 있을 때만 examId와 examTitle을 설정합니다.
+  //   if (location && location.state) {
+  //     const { examId, examTitle } = location.state;
+  //     setExamId(examId);
+  //     setExamTitle(examTitle);
+  //     console.log("Location:", location);
+  //     console.log("Exam ID:", examId);
+  //     console.log("Exam Title:", examTitle);
+  //   }
+  // }, [location]);
 
   useEffect(() => {
       if (examId) {
@@ -296,12 +303,11 @@ export default function EditExam() {
             <NavigationBar />
             <div></div>
     
-            <AttributeManager examId={examId} setExamId={setExamId} ></AttributeManager>
+            <AttributeManager examId={examId} ></AttributeManager>
             <div className="editor-edit">
-              <div className="title">문제등록</div>
-              <div>
+              
               <hr />
-              </div>
+              <ContentTitle>문제등록</ContentTitle>
               {isExistingExam && <div>
               
                   {/* 기존문제 가져오기 */}

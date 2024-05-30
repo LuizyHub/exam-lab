@@ -2,11 +2,21 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const images = [
-  '/img/AI문제생성1.svg',
-  '/img/AI문제생성2.svg',
-  '/img/AI문제생성3.svg',
-  '/img/AI문제생성4.svg',
-  '/img/AI문제생성5.svg',
+    '/img/AI문제생성1.svg',
+    '/img/AI문제생성2.svg',
+    '/img/AI문제생성3.svg',
+    '/img/AI문제생성4.svg',
+    '/img/AI문제생성5.svg',
+    '/img/AI문제생성6.svg'
+];
+
+const messages = [
+    '1번 문제 생성 중',
+    '2번 문제 생성 중',
+    '3번 문제 생성 중',
+    '4번 문제 생성 중',
+    '5번 문제 생성 중',
+    '문제를 준비중입니다'
 ];
 
 const LoadingMessage = styled.p`
@@ -18,12 +28,23 @@ const LoadingMessage = styled.p`
 `;
 
 const LoadingImage = styled.div`
-  width: 350px;
-  height: 100px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-image: ${({ $imageIndex }) => `url(${images[$imageIndex]})`};
+    width: 350px;
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: ${({ $imageIndex }) => `url(${images[$imageIndex]})`};
+`;
+
+const LoadingDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const LoadingGIF = styled.img`
+    width: 80px;
+    margin-top: 80px;
 `;
 
 const ModalBackground = styled.div`
@@ -43,7 +64,7 @@ const ModalTitle = styled.h3`
     text-align: center;
     font-size: 26px;
     margin-top: 10px;
-    color : ${({ $primary }) => $primary ? '#24ABA8' : '#262626'};
+    color: ${({ $primary }) => $primary ? '#24ABA8' : '#262626'};
 `;
 
 const ModalContent = styled.div`
@@ -183,7 +204,6 @@ const AICreateButton = styled.button`
     ${({ $disabled }) => $disabled && 'opacity: 0.5;'}
 `;
 
-
 const AIQuestionContent = styled.div`
     height: 35px;
     border: 1px solid #29B8B5;
@@ -206,7 +226,6 @@ const AIQuestion = styled.p`
     text-overflow: ellipsis; /* 초과된 텍스트는 생략 부호(예: ...)로 표시 */
 `;
 
-
 // AIFailModal 모달 CSS
 
 const FailModalContent = styled.div`
@@ -218,9 +237,6 @@ const FailModalContent = styled.div`
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 `;
-
-
-
 
 export function AIModal({
     fileName,
@@ -234,93 +250,98 @@ export function AIModal({
     fileInputRef
 }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [currentMessage, setCurrentMessage] = useState(messages[0]);
 
     useEffect(() => {
         const handleLoading = async () => {
             if (loading) {
                 setCurrentImageIndex(0);
+                setCurrentMessage(messages[0]);
 
                 for (let i = 0; i < images.length; i++) {
                     setCurrentImageIndex(i);
+                    setCurrentMessage(messages[i]);
                     await new Promise(resolve => setTimeout(resolve, 2500));
                 }
-                
             }
         };
 
         handleLoading();
     }, [loading]);
-
-
-    return (
-        <>
-            <ModalBackground>
-                <ModalContent>
-                    <CloseButton onClick={() => setModalOpen(false)}>&times;</CloseButton>
-                    <ModalTitle>AI 문제 자동 생성</ModalTitle>
-                    <hr style={{ color: '#EBEDEF' }} />
-                    {fileName && (
-                        <div>
-                            {loading && (
-                                <LoadingContainer>
-                                    <div>
-                                        <LoadingMessage>{currentImageIndex + 1}번 문제 생성중</LoadingMessage>
-                                        <br />
-                                        <LoadingImage $imageIndex={currentImageIndex} />
-                                    </div>
-                                </LoadingContainer>
-                            )}
-                        </div>
-                    )}
-                    {!loading && (
-                        <div>
-                            <ContainerTitle>선택한 파일</ContainerTitle>
-                            {fileName && (
-                                <div>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                        <FileName>{fileName}</FileName>
-                                        <FileDelete onClick={handleFileDelete}>
-                                            <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" />
-                                        </FileDelete>
-                                    </div>
-                                </div>
-                            )}
-                            {!fileName && (
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <NoneFileName>선택한 파일이 없습니다.</NoneFileName>
-                                    <FileUpLoad htmlFor="input-file"> 파일 선택 </FileUpLoad>
-                                    <input
-                                        type="file"
-                                        accept=".pdf,.txt,.md"
-                                        onChange={handleFileUpload}
-                                        ref={fileInputRef}
-                                        id="input-file"
-                                        style={{ display: "none" }}
-                                    />
-                                </div>
-                            )}
-                            <FileIntro>*.pdf / .txt / .md 파일만 가능합니다.</FileIntro>
-                            <FileIntro>*총 5개의 문제가 자동 생성됩니다. </FileIntro>
-
-                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                <AICreateButton
-                                    onClick={handleCreateAIQButtonClick}
-                                    $loading={loading}
-                                    $disabled={!fileName}
-                                    disabled={loading || !fileName}
-                                >
-                                    {loading ? '로딩 중...' : '문제 생성하기'}
-                                </AICreateButton>
-                            </div>
-
-                        </div>
-                    )}
-                </ModalContent>
-            </ModalBackground>
-        </>
-    );
-}
-
+  
+      return (
+          <>
+              <ModalBackground>
+                  <ModalContent>
+                      <CloseButton onClick={() => setModalOpen(false)}>&times;</CloseButton>
+                      <ModalTitle>AI 문제 자동 생성</ModalTitle>
+                      <hr style={{ color: '#EBEDEF' }} />
+                      { !fileName && loading && 
+                      <LoadingDiv>
+                           <LoadingGIF src="/img/loadingSpinner1.gif" />
+                      </LoadingDiv>
+                      }
+                      { fileName && (
+                          <div>
+                              {loading && (
+                                  <LoadingContainer>
+                                      <div>
+                                          <LoadingMessage>{currentMessage}</LoadingMessage>
+                                          <br />
+                                          <LoadingImage $imageIndex={currentImageIndex} />
+                                      </div>
+                                  </LoadingContainer>
+                              )}
+                          </div>
+                      )}
+                      {!loading && (
+                          <div>
+                              <ContainerTitle>선택한 파일</ContainerTitle>
+                              {fileName && (
+                                  <div>
+                                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                                          <FileName>{fileName}</FileName>
+                                          <FileDelete onClick={handleFileDelete}>
+                                              <DeleteImg src="/img/쓰레기통.png" alt="Delete Icon" />
+                                          </FileDelete>
+                                      </div>
+                                  </div>
+                              )}
+                              {!fileName && (
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                      <NoneFileName>선택한 파일이 없습니다.</NoneFileName>
+                                      <FileUpLoad htmlFor="input-file"> 파일 선택 </FileUpLoad>
+                                      <input
+                                          type="file"
+                                          accept=".pdf,.txt,.md"
+                                          onChange={handleFileUpload}
+                                          ref={fileInputRef}
+                                          id="input-file"
+                                          style={{ display: "none" }}
+                                      />
+                                  </div>
+                              )}
+                              <FileIntro>*.pdf / .txt / .md 파일만 가능합니다.</FileIntro>
+                              <FileIntro>*총 5개의 문제가 자동 생성됩니다. </FileIntro>
+  
+                              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                  <AICreateButton
+                                      onClick={handleCreateAIQButtonClick}
+                                      $loading={loading}
+                                      $disabled={!fileName}
+                                      disabled={loading || !fileName}
+                                  >
+                                      {loading ? '로딩 중...' : '문제 생성하기'}
+                                  </AICreateButton>
+                              </div>
+  
+                          </div>
+                      )}
+                  </ModalContent>
+              </ModalBackground>
+          </>
+      );
+  }
 
 // onClose, setModalOpen
 export function AIConfirmModal({ AIObject, setShowConfirmModal }) {

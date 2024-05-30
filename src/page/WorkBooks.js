@@ -115,7 +115,7 @@ const PageName = styled.p`
   color: #262626;
   font-size: 18px;
   font-weight: 600;
-  margin-top: 108px;
+  margin-top: 30px;
   margin-bottom: 20px;
   padding-bottom: 5px;
 `;

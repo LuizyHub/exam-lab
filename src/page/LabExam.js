@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const PdfDocument = ({ isQuestion}) => {
+const PdfDocument = ({ isQuestion, isCommentaryQuestion}) => {
   const [reloadImage, setReloadImage] = useState({}); // 이미지 재로드 상태 추가
 
   // 이미지 로드 오류 처리 함수 추가
@@ -79,52 +79,55 @@ const PdfDocument = ({ isQuestion}) => {
   };
 
   return (
-      <Document>
-        <Page size="A4" style={[styles.page]}  wrap>
-          {isQuestion.map((question, index) => (
-            <View key={index} style={styles.section}>
-              <Text>{index + 1}. {question.question}</Text>
-              {question.question_images_out && question.question_images_out.length > 0 && (
-                question.question_images_out.map((image, imageIndex) => (
-                  image.url ? (
-                    <View key={imageIndex} style={{ width: '100%' }}> {/* 이미지를 포함하는 뷰 추가 */}
-                        <Image 
-                          src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`} 
-                          style={styles.image}
-                          onError={() => handleImageError(imageIndex)} 
-                        />
-                      </View>
-                  ) : null
-                ))
-              )}
-              {question.options.map((option, optionIndex) => (
-                <Text key={optionIndex}>
-                  {String.fromCharCode(9312 + optionIndex)} {option}
-                </Text>
-              ))}
-            </View>
-          ))}
+    <Document>
+    {isCommentaryQuestion ? (
+        // 문제 페이지
+        <Page size="A4" style={[styles.page]} wrap>
+            {isQuestion.map((question, index) => (
+                <View key={index} style={styles.section}>
+                    <Text>{index + 1}. {question.question}</Text>
+                    {question.question_images_out && question.question_images_out.length > 0 && (
+                        question.question_images_out.map((image, imageIndex) => (
+                            image.url ? (
+                                <View key={imageIndex} style={{ width: '100%' }}> {/* 이미지를 포함하는 뷰 추가 */}
+                                    <Image
+                                        src={`${image.url}?reload=${reloadImage[imageIndex] || 0}`}
+                                        style={styles.image}
+                                        onError={() => handleImageError(imageIndex)}
+                                    />
+                                </View>
+                            ) : null
+                        ))
+                    )}
+                    {question.options.map((option, optionIndex) => (
+                        <Text key={optionIndex}>
+                            {String.fromCharCode(9312 + optionIndex)} {option}
+                        </Text>
+                    ))}
+                </View>
+            ))}
         </Page>
-
-          {/* 해설 페이지 */}
-          <Page size="A4" style={[styles.page]} wrap>
-                {isQuestion.map((question, index) => (
-                    <View key={index} style={styles.section}>
-                        <View style={{ display: 'flex' }}>
-                            <Text style={{ marginRight: '5px' }}><b>{index + 1}.</b></Text>
-                            <View style={{ padding: '1px' }}>
-                                <View style={{ marginBottom: '10px' }}>
-                                    <Text style={{ margin: '0px' }}>답 : {String.fromCharCode(9311 + parseInt(question.answers))}</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ margin: '0px' }}>해 : {question.commentary}</Text>
-                                </View>
+    ) : (
+        // 해설 페이지
+        <Page size="A4" style={[styles.page]} wrap>
+            {isQuestion.map((question, index) => (
+                <View key={index} style={styles.section}>
+                    <View style={{ display: 'flex' }}>
+                        <Text style={{ marginRight: '5px' }}><b>{index + 1}.</b></Text>
+                        <View style={{ padding: '1px' }}>
+                            <View style={{ marginBottom: '10px' }}>
+                                <Text style={{ margin: '0px' }}>답 : {String.fromCharCode(9311 + parseInt(question.answers))}</Text>
+                            </View>
+                            <View>
+                                <Text style={{ margin: '0px' }}>해 : {question.commentary}</Text>
                             </View>
                         </View>
                     </View>
-                ))}
-            </Page>
-      </Document>
+                </View>
+            ))}
+        </Page>
+    )}
+</Document>
   );
 };
 

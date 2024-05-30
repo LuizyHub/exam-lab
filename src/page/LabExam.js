@@ -21,7 +21,7 @@ const LabExamContent = styled.div`
   flex-direction: column;
   margin-left: 320px;
   margin-right: 18%;
-  margin-top: 16px;
+  margin-top: 0px;
   transition: margin-left 0.3s ease;
 `;
 
@@ -37,7 +37,7 @@ const PageIntroContainer = styled.div`
 
 const PageIntroContent = styled.div`
   margin-left: 320px;
-  margin-top: 16px;
+  margin-top: 0px;
 `;
 
 

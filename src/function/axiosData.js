@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, elementUrlOutDes, elementQuestions, elementOptions, elementCommentAnswers, elementCommentary, elementTags) => {
   //** DON'T MOVE THIS LINE */
-  const URL = `/api/v1/exams/${PAGE_ID}/questions`;
+  const URL = `/api/v1/exams/${Number(PAGE_ID)}/questions`;
   const TYPE = 'application/json';
   //** DON'T MOVE THIS LINE */
 
@@ -61,6 +61,9 @@ export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, element
     console.log(image.name);
     formData.append('questionImagesOut', image);
   });
+
+  console.log(URL);
+
   //server에 post 요청
   try {
     const response = await axios.post(URL, formData);
@@ -80,6 +83,7 @@ export const sendPostData = async (PAGE_ID, elementUrlIn, elementUrlOut, element
     // setResUrlOutDes(message.question_images_out[0].description);
     return message.id;
   } catch (error) {
+    console.log(URL);
     console.log(error);
     throw error;
   }
@@ -127,6 +131,8 @@ export const getData = async (PAGE_ID) => {
   try {
     console.log("가져오기");
     const URL = `/api/v1/exams/${PAGE_ID}/questions?count=0`;
+
+    console.log(URL);
 
     const response = await axios.get(URL);
     const res = response.data;

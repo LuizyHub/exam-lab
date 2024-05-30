@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { DeleteAttributeModal } from "../modals/DeleteModal";
 import { IntroduceAttribute } from "../modals/IntroduceModal";
 import axios from 'axios';
+import { CreateCompleteModal } from '../modals/CreateCompleteModal';
 
 const AttributeManagerContainer = styled.div`
   margin: 0;
@@ -171,6 +172,7 @@ export default function AttributeManager({ examId, setExamId }) {
     const [isShowModal, setIsShowModal] = useState(attributes.map(() => false));
     const [isState, setState] = useState(true);
     const [isShowIntro, setIsShowIntro] = useState(false);
+    const [isCompleteModal, setIsCompleteModal] = useState(false);
   
     useEffect(() => {
       if (examId) {
@@ -187,6 +189,18 @@ export default function AttributeManager({ examId, setExamId }) {
           });
       }
     }, [examId]);
+
+    useEffect(() => {
+        let timer;
+        if (isCompleteModal) {
+          timer = setTimeout(() => {
+            setIsCompleteModal(false);
+          }, 2000);
+        }
+        return () => clearTimeout(timer);
+      }, [isCompleteModal]);
+
+
   
     const handleExamTitleChange = (event) => {
       setExamTitle(event.target.value);
@@ -291,9 +305,9 @@ export default function AttributeManager({ examId, setExamId }) {
               시험지 제작하기
             </Link>
           </ServerButton>
-          <ServerButton onClick={handleUpdateExamData}>
-                저장하기
-          </ServerButton>
+          <ServerButton onClick={() => { handleUpdateExamData(); setIsCompleteModal(true); }}>
+            저장하기
+        </ServerButton>
         </ServerButtonContainer>
         <AttributeInputContainer>
           {attributes.map((attribute, index) => (
@@ -349,6 +363,7 @@ export default function AttributeManager({ examId, setExamId }) {
               <IntroduceImg src="/img/물음표_icon.svg" alt="? icon" onClick={()=> setIsShowIntro(true)}/>
         </BottomContainer>
         {isShowIntro && <IntroduceAttribute onClose={()=> setIsShowIntro(false)} />}
+        {isCompleteModal && <CreateCompleteModal onClose={()=> setIsCompleteModal(false)}/>}
       </AttributeManagerContainer>
     );
   }

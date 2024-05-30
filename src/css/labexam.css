@@ -129,7 +129,7 @@
 #button-pdf:hover{
   background-color: #24ABA8;
 }
-#button:hover > span{
+#button-pdf:hover #button{
   color: white;
 }
 

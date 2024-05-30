@@ -2,15 +2,16 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: 1170px;
+  width: 72rem;
   /* background-color: aquamarine; */
-  margin-left: 120px;
+  /* margin-left: 120px; */
+  justify-content: center;
   /* align-items: center; */
 }
 
 .button-container {
   flex-direction: row;
-  width: 1220px;
+  width: 1200px;
   margin-bottom: 40px;
   margin-top: 30px;
 }
@@ -28,8 +29,8 @@
 .button-container .button-main>div>input {
   /* font-weight: bold; */
   font-size: 25px;
-  margin-right: 90px;
-  margin-left: 5px;
+  /* margin-right: 90px; */
+  /* margin-left: 5px; */
   width: 95%;
   border: 1px solid transparent;
   font-weight: bold;
@@ -41,12 +42,12 @@
 }
 
 #button-shuffle {
-  margin-right: 87.5%;
+  /* margin-right: 87.5%; */
 }
 
 #button-pdf {
   background-color: #EDFAFA;
-  width: 123px;
+  width: 103px;
   /* font: #24ABA8; */
   display: flex;
   justify-content: center;
@@ -76,13 +77,63 @@
   text-underline-offset: 4px;
 }
 
+.button-bottom-container .button-bottom-sub {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #EBEDEF;
+  color: #9A9DA0;
+  border-radius: 5px;
+  padding: 0;
+  width: 91px;
+  height: 28px;
+
+  background-color: transparent;
+}
+
 .button-bottom-container .button-bottom-sub>button {
-  border: 1px solid #EDFAFA;
+  border:none;
   color: #9A9DA0;
   background-color: transparent;
 }
 
-.button-bottom-container .button-bottom-sub>button:hover {
+.button-bottom-container .button-bottom-sub>img {
+  width: 14px;
+  height: 13px;
+  /* fill: currentColor; */
+}
+
+.button-bottom-container .button-bottom-sub:hover {
   background-color: #24ABA8;
+  /* color: #FFFF; */
+}
+
+.button-bottom-container .button-bottom-sub:hover > button{
   color: #FFFF;
+}
+
+.button-bottom-container .button-bottom-sub:hover > img{
+  filter: invert(100%) brightness(5);
+}
+
+#button-pdf{
+  border-radius: 10px;
+}
+
+#button-save{
+  width: 123px;
+  height: 39px;
+  border-radius: 10px;
+}
+
+#button-pdf:hover{
+  background-color: #24ABA8;
+}
+#button:hover > span{
+  color: white;
+}
+
+#button-save:hover {
+  background-color: #D9F1F1;
+  color:#24ABA8;
 }

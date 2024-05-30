@@ -287,7 +287,7 @@ export default function AttributeManager({ examId, setExamId }) {
         />
         <ServerButtonContainer>
           <ServerButton>
-            <Link to="http://localhost:3000/exams/create" style={{ color: 'inherit', textDecoration: 'inherit' }}>
+            <Link to="https://exam-lab.store/exams/create" style={{ color: 'inherit', textDecoration: 'inherit' }}>
               시험지 제작하기
             </Link>
           </ServerButton>

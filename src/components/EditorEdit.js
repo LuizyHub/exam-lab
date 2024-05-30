@@ -2,7 +2,11 @@ import { useState, useRef } from "react";
 import { sendDeleteData, sendPutData } from "../function/axiosData";
 import { Editor } from "./Editor";
 import EditorTool from "./EditorTool";
-import '../css/EditorEdit.css'
+import delete_Icon from "../img/delete_Icon.svg";
+import edit_Icon from "../img/edit_Icon.svg";
+import save_Icon from "../img/save_Icon.svg";
+import '../css/EditorEdit.css';
+
 //파일위치 항상 확인
 export default function EditorEdit({ object, index, isObject, handleEditDelete, isTag }) {
   //Axios Get useState
@@ -111,6 +115,27 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
     <>
       <div className="editor-edit">
 
+      <div className='server-button'>
+         <button 
+            onClick={() => { handleStateChange(index) }}
+            style={{ display: isEditing[index] ? 'none' : 'flex' }} // 편집 모드 버튼 표시/숨기기
+          >
+            <img src={edit_Icon} alt="edit-Icon"/>
+          </button>
+          <button 
+            onClick={() => { handleEdit(index); console.log(object)}} 
+            style={{ display: isEditing[index] ? 'flex' : 'none' }} // 수정 버튼 표시/숨기기
+          >
+            <img src={save_Icon} alt="edit-Icon"/>
+          </button>
+
+          <button onClick={() => {
+            sendDeleteData(object.id);
+            handleEditDelete(index);
+          }}>
+            <img src={delete_Icon} alt="edit-Icon"/>
+          </button>
+        </div>
         {/* <div
           className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           ref={questionRef}
@@ -118,18 +143,21 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
           dangerouslySetInnerHTML={{ __html: replacedQuestion }}
         >
         </div> */}
-        <p>문제</p>
-        <Editor
-          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`} 
-          editorRef={questionRef}
-          contentEditable={isContentEditable[index]}
-          dangerouslySetInnerHTML={{ __html: replacedQuestion }}
-        />
+        <div className="block">
+          {/* <span>문제</span> */}
+          <Editor
+            className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`} 
+            editorRef={questionRef}
+            contentEditable={isContentEditable[index]}
+            dangerouslySetInnerHTML={{ __html: replacedQuestion }}
+          />
+        </div>
         
         {Array.isArray(object.question_images_out) && object.question_images_out.length > 0 ? (
           <div
-            className="editor"
+            className="block"
           >
+            {/* <span>이미지</span> */}
             {object.question_images_out.map((image, index) => (
               <img 
                key={index} 
@@ -142,29 +170,36 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
         ) : null}
 
         {/* <EditorTool /> */}
-        <p>선택지</p>
-        <Editor
-          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
-          editorRef={optionsRef}
-          contentEditable={isContentEditable[index]}
-          dangerouslySetInnerHTML={{ __html: replacedOptions }}
-        />
+        <div className="block">
+          {/* <span>선택지</span> */}
+          <Editor
+            className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
+            editorRef={optionsRef}
+            contentEditable={isContentEditable[index]}
+            dangerouslySetInnerHTML={{ __html: replacedOptions }}
+          />
+        </div>
         {/* <EditorTool /> */}
-        <p>정답</p>
-        <Editor
-          className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
-          editorRef={answersRef}
-          contentEditable={isContentEditable[index]}
-          dangerouslySetInnerHTML={{ __html: replacedAnswer }}
-        />
-        {/* <EditorTool /> */}
-        <p>해설지</p>
+        <div className="block">
+          {/* <span>정답</span> */}
+          <Editor
+            className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
+            editorRef={answersRef}
+            contentEditable={isContentEditable[index]}
+            dangerouslySetInnerHTML={{ __html: replacedAnswer }}
+          />
+          {/* <EditorTool /> */}
+        </div>
+
+        <div className="block">
+        {/* <span>해설지</span> */}
         <Editor
           className={`editor ${isContentEditable[index] ? 'editorMode' : ''}`}
           editorRef={commentaryRef}
           contentEditable={isContentEditable[index]}
           dangerouslySetInnerHTML={{ __html: object.commentary }}
         />
+        </div>
 
           {/* 태그 선택 영역 */}
           <div className='tags-container' style={{ display: isEditing[index] ? 'flex' : 'none' }}>
@@ -191,25 +226,6 @@ export default function EditorEdit({ object, index, isObject, handleEditDelete, 
             ))}
         </div>
 
-        <div className='server-button'>
-         <button 
-            onClick={() => { handleStateChange(index) }}
-            style={{ display: isEditing[index] ? 'none' : 'flex' }} // 편집 모드 버튼 표시/숨기기
-          >
-            편집 모드
-          </button>
-          <button 
-            onClick={() => { handleEdit(index); console.log(object)}} 
-            style={{ display: isEditing[index] ? 'flex' : 'none' }} // 수정 버튼 표시/숨기기
-          >
-            수정
-          </button>
-
-          <button onClick={() => {
-            sendDeleteData(object.id);
-            handleEditDelete(index);
-          }}>삭제</button>
-        </div>
       </div>
     </>
   )

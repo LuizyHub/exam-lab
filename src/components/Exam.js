@@ -20,13 +20,16 @@ export default function Exam({ isQuestion, parseImages, renderImages, isCommenta
 
           <div key={index} >
             {/*  display: isQuestion ? 'block' : 'none'에 애러가 생김 */}
-            <div key={index} style={{ display: isCommentaryQuestion ? 'block' : 'none', marginBottom: '10px', border: '1px solid #EBEDEF', padding: '20px', width: '1180px', height: 'auto' }}>
+            <div key={index} className="out-line" style={{ display: isCommentaryQuestion ? 'flex' : 'none', marginBottom: '10px', border: '1px solid #EBEDEF', padding: '20px', width: '100%', height: 'auto', borderRadius: '5px' }}>
+            <p style={{padding:0, margin:0, marginRight:'5px'}}><b>{index + 1}.</b></p>
               <div>
                 {/* 질문 */}
-                <div><b>{index + 1}. {parseImages(item.question, item.question_images_in)}</b></div>
+                <div style={{marginBottom: '6px'}}>
+                  <b>{parseImages(item.question, item.question_images_in)}</b>
+                </div>
 
                 {/* 이미지 렌더링 */}
-                <div style={{ width: '300px' }}>{renderImages(item.question_images_out)}</div>
+                <div style={{ width: '30%', marginBottom: '6px'}}>{renderImages(item.question_images_out)}</div>
                 {/* 4선지 */}
                 {item.options.map((option, optionIndex) => (
                   <div key={optionIndex}>{String.fromCharCode(9312 + optionIndex)} {option}</div>

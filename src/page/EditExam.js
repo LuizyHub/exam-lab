@@ -9,9 +9,9 @@ import styled from 'styled-components';
 import { getData, getTagsData } from "../function/axiosData";
 import EditorEdit from "../components/EditorEdit";
 import '../css/EditExam.css';
-import AI_create_Icon from'../img/AI_create_icon.svg'
-import create_Icon from '../img/Create_icon.svg'
-import hidden_Icon from '../img/Hidden_icon.svg'
+import AI_create_Icon from'../img/AI_create_icon.svg';
+import create_Icon from '../img/Create_icon.svg';
+import hidden_Icon from '../img/Hidden_icon.svg';
 import SideBar from "../components/SideBar";
 
 // const EditExamPage = styled.div
@@ -324,20 +324,20 @@ export default function EditExam() {
                   </div>
                 </div>
               }
-              {/* 문제 템플릿 추가하기 */}
-              <div className="editor-exam">
-                {isExamCreate.map((component, index) => (
-                  <div className="editor-exam-out-line" key={index}>
-                    {component}
-                  </div>
-                ))}
+                 {/* 문제 템플릿 추가하기 */}
+          <div className="editor-exam">
+            {isExamCreate.map((component, index) => (
+              <div className="editor-exam-out-line" key={index}>
+                {component}
               </div>
-              {/* <div className="editor-out-line"> */}
-                <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} isTag={isTag} />
-              {/* </div> */}
-            </div>
+            ))}
           </div>
-        </EditExamPage>
+          {/* <div className="editor-out-line"> */}
+            <AICreate examId={examId} modalOpen={modalOpen} setModalOpen={setModalOpen} isTag={isTag} />
+          {/* </div> */}
+        </div>
+      </div>
+    </EditExamPage>
     </div>
   )
 }

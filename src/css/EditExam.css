@@ -5,7 +5,7 @@
   max-height: calc(1vh + 600px);
 
   width: 78px;
-  height: 150px;
+  height: 200px;
   background-color: #EDFAFA;
   border-radius: 50px;
 
@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: center;
 
-  margin-rigt: 30%;
+  /* margin-right: 10%; */
 }
 
 #side-bar>button {
@@ -23,14 +23,21 @@
   background-color: transparent;
   border: none;
   border-radius: 50px;
+  width: 40px;
+  height: 40px;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
   margin-bottom: 10px;
   margin-top: 10px;
 }
+#side-bar>button>img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 #side-bar>button:hover{
-  background-color: #BADEDE;
+  background-color: #FFFFFF;
   cursor: pointer;
 }
 
@@ -142,7 +149,7 @@
   padding: 15px;
   border: 1px solid #D6D6D6;
   border-radius: 4px;
-  width: 1098px;
+  width: 1110px;
   margin-bottom: 20px;
   /* height: 280px; */
   /* align-items: center; */

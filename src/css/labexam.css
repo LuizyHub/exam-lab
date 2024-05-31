@@ -126,14 +126,21 @@
   border-radius: 10px;
 }
 
+#button-save.disabled{
+  background-color: gray; /* 비활성화된 버튼의 색상 */
+  color: darkgray; /* 비활성화된 버튼의 글자 색상 */
+  cursor: not-allowed; /* 비활성화된 버튼의 커서 모양 */
+}
+
 #button-pdf:hover{
   background-color: #24ABA8;
 }
-#button:hover > span{
+#button-pdf:hover #button{
   color: white;
 }
 
 #button-save:hover {
   background-color: #D9F1F1;
   color:#24ABA8;
+  cursor:pointer
 }

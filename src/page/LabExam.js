@@ -379,6 +379,7 @@ export default function LabExam() {
   const [isQuestion, setIsQuestion] = useState([]); //상태변수 이름 변경 필요
   const [isCommentaryQuestion, setIsCommentaryQuestion] = useState(true);//상태변수 이름 변경 필요
   const [isCommentary, setIsCommentary] = useState(false); //상태변수 이름 변경 필요
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     if (workbookId) {
@@ -422,6 +423,25 @@ export default function LabExam() {
         }
       };
       const response = await axios.post('/api/v1/workbooks', data);
+      setIsSaved(!isSaved);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error posting data:', error);
+    }
+  };
+
+  const putData = async () => {
+    try {
+      const data = {
+        title: isNewWorkBook,
+        summary: "not",
+        content: {
+          questions: isQuestion,
+          size: isQuestion.length
+        }
+      };
+      const response = await axios.put(`/api/v1/workbooks${workbookId}`, data);
+      setIsSaved(!isSaved);
       console.log(response.data);
     } catch (error) {
       console.error('Error posting data:', error);
@@ -517,7 +537,26 @@ export default function LabExam() {
                     )}
                   </PDFDownloadLink>
                 </div>
-                <button id="button-save" onClick={postData} style={{ display: isWorkBook.title === undefined ? 'block' : 'none', width: '123px', height: '39px' }}>저장하기</button>
+                <button id='button-save'
+                  onClick={postData}
+                /** 
+                onClick={() => {
+                    if (isSaved) {
+                      putData();
+                    } else {
+                      postData();
+                    }
+                  }}
+                */ 
+                  style={{ 
+                          display: isWorkBook.title === undefined ? 'block' : 'none', 
+                          width: '123px', 
+                          height: '39px'
+                        }}
+                  disabled={isSaved}
+                  >
+                  저장하기
+                </button>
               </div>
             </div>
             <div className="button-bottom-container">

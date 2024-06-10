@@ -34,6 +34,6 @@ jobs:
 
       - name: Upload build folder to server
         run: |
-          rsync -av --delete ./build/ ec2-user@${{ secrets.SERVER_IP }}:/home/ec2-user/build
+          rsync -av --delete ./build/ ec2-user@${{ secrets.SERVER_IP }}:/var/www/html
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EXAM_LAB_BE_PEM }}
